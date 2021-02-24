@@ -227,20 +227,18 @@ class TabCreateComment extends PureComponent {
                                                     </div>
 
                                                     <p>{t("Персональный пароль")}</p>
-                                                    <input  className="tel" type="text" placeholder={t("Введите пароль")} name="loginPassword" onChange={this.handleChange} value={loginPassword} />
+                                                    <input className="tel" type="text" placeholder={t("Введите пароль")} name="loginPassword" onChange={this.handleChange} value={loginPassword} />
                                                     <span> {t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку")} <a onClick={() => this.updateTab('sms_tab')}>{t("SMS авторизации")}</a><img src={skip_arrow} alt="" /> </span>
                                                     {clientLoginMessage && (
-                                                        <p style={{
-                                                            display: 'flex',
-                                                        }}>
-                                                            <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                                            /> <span style={{ color: 'red' }}>{clientLoginMessage}</span>
+                                                        <p className="regist_block_login_p">
+                                                            <img src={`${process.env.CONTEXT}public/img/client-verification.svg`}
+                                                            /> <span >{clientLoginMessage}</span>
                                                         </p>
                                                     )}
                                                     <div >
                                                         <input
                                                             // className={((!isValidLoginPhone || !loginPassword) ? 'disabledField' : '') +" comments_book_button" }
-                                                            className={" comments_book_button" }
+                                                            className={" comments_book_button"}
                                                             disabled={!isValidLoginPhone || !loginPassword}
                                                             type="submit" value={t("Войти")} onClick={this.handleLogin}
                                                         />
@@ -261,25 +259,22 @@ class TabCreateComment extends PureComponent {
                                                             getIsValidPhone={isValidSendPasswordPhone => this.setState({ isValidSendPasswordPhone })}
                                                         />
                                                     </div>
-                                                    <span style={{
-                                                        marginTop:"0px",
-                                                        marginBottom:"22px"
-                                                    }}>
+                                                    <span className="regist_block_sms_span">
                                                         {t("Введите номер телефона, на него будет отправлено SMS с паролем для входа.")}
                                                     </span>
                                                     {commentPassword && (
-                                                        <p style={{ display: 'flex', marginTop: '10px' }}>
-                                                            <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                                                            /> <span style={{ color: 'red' }}>{commentPassword}</span>
+                                                        <p className="regist_block_sms_p">
+                                                            <img src={`${process.env.CONTEXT}public/img/client-verification.svg`}
+                                                            /> <span>{commentPassword}</span>
                                                         </p>
                                                     )}
                                                     {timeExpires && (
-                                                        <p style={{ display: 'flex', marginTop: '10px' }}>
+                                                        <p className="regist_block_sms_p">
                                                             <span>{t("Осталось времени")}: {timeExpires}</span>
                                                         </p>
                                                     )}
                                                     <input
-                                                      className={" comments_book_button comments_sub_btn" }
+                                                        className={" comments_book_button comments_sub_btn"}
                                                         disabled={!isValidSendPasswordPhone || sendSmsTimer}
                                                         type="submit" value={t("Отправить")} onClick={this.handleSendPassword}
                                                     />

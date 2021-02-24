@@ -53,7 +53,7 @@ class Header extends PureComponent {
     outsideClickListener(event) {
         let flagLang = false;
         let flagBurger = false;
-        let burgerBtn=false;
+        let burgerBtn = false;
 
         if (this.state.langList) {
             event.path.forEach(element => {
@@ -67,8 +67,8 @@ class Header extends PureComponent {
         }
         if (this.state.burger) {
             event.path.forEach(element => {
-                if (element.className === "burger_menu active" ) { flagBurger = true }
-                if (element.className === "burger_menu_btn_off" ) { burgerBtn = true }
+                if (element.className === "burger_menu active") { flagBurger = true }
+                if (element.className === "burger_menu_btn_off") { burgerBtn = true }
             });
 
             if (!flagBurger && !burgerBtn) {
@@ -79,11 +79,11 @@ class Header extends PureComponent {
         }
 
     }
-    componentDidMount(){
+    componentDidMount() {
         document.addEventListener('click', this.outsideClickListener)
     }
     componentWillUnmount() {
-        document.removeEventListener('click', this.outsideClickListener)  
+        document.removeEventListener('click', this.outsideClickListener)
     }
     render() {
         const { info, screen, selectedSubcompany } = this.props;
@@ -129,7 +129,7 @@ class Header extends PureComponent {
                             </div>
                         </div>
                         <div className="burger_menu_btn_off" onClick={(event) => this.changeBurger()}>
-                            <img  src={burger_close} alt="telephone" />
+                            <img src={burger_close} alt="telephone" />
                         </div>
 
                         <div className={!burger ? "burger_menu" : "burger_menu active"}>
@@ -146,7 +146,7 @@ class Header extends PureComponent {
                                     <img src={arrow_down_white} alt="arrou"></img>
                                 </div>
                                 <div className="burger_menu_btn_on" onClick={(event) => this.changeBurger()}>
-                                    <img  src={burger_open} alt="telephone" />
+                                    <img src={burger_open} alt="telephone" />
                                 </div>
                             </div>
                             <p className="adress-text"> {info && `${info.city ? (info.city + ', ') : ''}${info["companyAddress" + info.defaultAddress]}`}</p>

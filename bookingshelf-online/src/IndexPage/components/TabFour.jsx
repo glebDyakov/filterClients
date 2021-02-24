@@ -125,24 +125,11 @@ class TabFour extends PureComponent {
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: `13px`,
-                                            lineHeight: "18px",
-                                            fontWeight: "400",
-                                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                        <p className='time_footer_p' >{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                     </div>
-                                    <div className="time-footer hover" style={{
-                                        // marginRight: `${margin_right}`
-                                    }}>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            letterSpacing: "0.1px",
-                                            fontWeight: "400",
-                                        }} onClick={event => this.setState({
+                                    <div className="time-footer hover" >
+                                        <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Услуги")}: {selectedServices.length} <img
                                             style={{
@@ -151,20 +138,8 @@ class TabFour extends PureComponent {
                                             }} src={arrow_down} alt="arrou"></img></p>
                                     </div>
                                     <div className="time-footer">
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            letterSpacing: "0.1px",
-                                            fontWeight: "400",
-                                        }} >{t("Дата")}:</p>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            letterSpacing: "0.1px",
-                                            fontWeight: "400",
-                                        }} >&nbsp;{currentDayMob}</p>
+                                        <p className="time_footer_p" >{t("Дата")}:</p>
+                                        <p className="time_footer_p" >&nbsp;{currentDayMob}</p>
                                     </div>
                                 </div >
                                 {openList && (
@@ -222,38 +197,18 @@ class TabFour extends PureComponent {
                                     <div className="time-footer hover" style={{
                                         marginRight: `${margin_right1}`
                                     }}>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "29px",
-                                            letterSpacing: "0.1px",
-                                        }} onClick={event => this.setState({
+                                        <p className="time-footer_desctop_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
                                         {/* } */}
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            letterSpacing: "0.1px",
-                                        }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>
                                     </div>
                                     <div className="time-footer" style={{
                                         marginRight: `${margin_right2}`
                                     }}>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "29px",
-                                            letterSpacing: "0.1px",
-                                        }} >{t("Дата")}:</p>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            letterSpacing: "0.1px",
-                                        }} >{currentDay}</p>
+                                        <p className="time-footer_desctop_p" >{t("Дата")}:</p>
+                                        <p className="service_footer_price_small_text" >{currentDay}</p>
                                     </div>
                                     {!!selectedServices.length && <button className="next_block" onClick={() => {
                                         if (selectedServices.length) {

@@ -55,15 +55,12 @@ class TabStaffComments extends PureComponent {
                                             <p>
                                                 {staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}
                                             </p>
-                                            {/* <span style={{ fontSize: "13px" }}>{staffCommentsStaff.description}</span> */}
 
                                         </span>
                                         {staffCommentsStaff.rating !== 0 ? (
                                             <div className="comments_rating">
-                                                <p>{t("Усредненный рейтинг:")}</p>
-                                                <div style={{
-                                                    display: "flex",
-                                                }}>
+                                                <p>{t("Усредненный рейтинг:")}Усредненный рейтинг:</p>
+                                                <div className="display_flex">
                                                     <StarRatings
                                                         rating={staffCommentsStaff.rating}
                                                         starHoverColor={'#ff9500'}
@@ -94,9 +91,7 @@ class TabStaffComments extends PureComponent {
                                     ? staffComments.map((staff) =>
                                         <li className="staff_popup_comment">
                                             <p >{staff.clientName}</p>
-                                            <div style={{
-                                                    display: "flex",
-                                                }}>
+                                            <div className="display_flex">
                                                 <StarRatings
                                                     rating={staff.rating}
                                                     starHoverColor={'#ff9500'}
@@ -123,15 +118,6 @@ class TabStaffComments extends PureComponent {
                             </ul>
                         </React.Fragment>
                     )}
-
-                    {/* <div style={{ display: isLoading ? 'none' : 'block', marginBottom: '50px' }}>
-                        <Paginator
-                            finalTotalPages={staffCommentsTotalPages}
-                            onPageChange={this.handlePageChange}
-                        />
-                    </div>
-
-                    <p className="skip_employee" onClick={() => setScreen('staff-create-comment')}>{t('Оставить отзыв')}</p> */}
                 </div>
             </div>
         );

@@ -91,19 +91,10 @@ class TabTwo extends Component {
                             <div className="specialist-block">
                                 <div className="supperVisDet service_footer-block">
                                     <div className="service_footer_price">
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: `12px`,
-                                            lineHeight: "18px",
-                                            fontWeight: "400",
-                                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                        <p className="service_footer_price_text">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                     </div>
-                                    <p style={{
-                                        color: 'white',
-                                        fontSize: "12px",
-                                        lineHeight: "18px",
-                                        letterSpacing: "0.1px",
+                                    <p className="service_footer_price_small_text" style={{
                                         fontWeight: "400",
                                         paddingLeft: `${padding_left}`,
                                     }} onClick={event => this.setState({
@@ -147,18 +138,10 @@ class TabTwo extends Component {
                                         }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                     </div>
-                                    <p style={{
-                                        color: 'white',
-                                        fontSize: "13px",
-                                        lineHeight: "18px",
-                                        letterSpacing: "0.1px",
+                                    <p className="service_footer_price_small_text" style={{
                                         paddingLeft: `${padding_left}`,
                                     }}>{t("Выбрано услуг")}: {selectedServices.length}</p>
-                                    <p style={{
-                                        color: 'white',
-                                        fontSize: "13px",
-                                        lineHeight: "18px",
-                                        letterSpacing: "0.1px",
+                                    <p className="service_footer_price_small_text" style={{
                                         paddingRight: `${padding_right}`,
                                     }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                     </p>
@@ -182,11 +165,10 @@ class TabTwo extends Component {
                 <MediaQuery maxWidth={mob}>
                     {visibleSearch ?
                         (<div className="title_block service-title">
-                            
+
                             <div className="row align-items-center content clients mb-2 search-block">
                                 <div className="search col-12">
-                                    <img style={{ position: 'absolute', left: '16px',width:"17px" }}
-                                        // src={`${process.env.CONTEXT}public/img/header-search.svg`} />
+                                    <img 
                                         src={search_icon} />
                                     <input style={{
                                         margin: "auto", width: "240px", height: "34px",
@@ -206,8 +188,8 @@ class TabTwo extends Component {
                                 </div>
                             </div>
                             <img onClick={e => this.setState({
-                                    visibleSearch: !visibleSearch,
-                                })} src={mobile_gray_cansel} alt="mobile_gray_cansel" />
+                                visibleSearch: !visibleSearch,
+                            })} src={mobile_gray_cansel} alt="mobile_gray_cansel" />
                         </div>)
                         : (<div className="title_block service-title">
                             {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) &&
@@ -269,8 +251,8 @@ class TabTwo extends Component {
                         <p className="modal_title">{t("Выберите услугу")}</p>
                         <div className="row align-items-center content clients mb-2 search-block desktop_visible">
                             <div className="search col-12">
-                                <img style={{ position: 'absolute', right: '26px' }}
-                                    // src={`${process.env.CONTEXT}public/img/header-search.svg`} />
+                                <img 
+                                   
                                     src={search_icon} />
                                 <input style={{
                                     margin: "auto", width: "240px", height: "34px",
@@ -336,7 +318,7 @@ class TabTwo extends Component {
                                     }
 
                                     return condition && finalServices && finalServices.length > 0 && (
-                                        <ul className="service_list">
+                                        <ul className="service_list" key={index}>
                                             <div style={{
                                                 borderBottom: "1px solid rgba(172, 172, 172, 0.2)",
                                                 paddingBottom: "9px",
@@ -381,7 +363,7 @@ class TabTwo extends Component {
                                                             const select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
 
                                                             if (select) {
-                                                                return <li
+                                                                return <li key={serviceKey}
                                                                     className={selectedService && selectedService.serviceId === service.serviceId && `selected `}
                                                                     style={{
                                                                         backgroundColor: "rgba(59, 75, 92)"
@@ -436,7 +418,7 @@ class TabTwo extends Component {
                                                                     </div>
                                                                 </li>
                                                             } else {
-                                                                return <li
+                                                                return <li key={serviceKey}
                                                                     className={selectedService && selectedService.serviceId === service.serviceId && `selected `}
                                                                 >
                                                                     <div className="service_item" >

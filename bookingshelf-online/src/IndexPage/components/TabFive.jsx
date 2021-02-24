@@ -14,16 +14,32 @@ class TabFive extends PureComponent {
       enteredCode: '',
     };
     this.handleActivationChange = this.handleActivationChange.bind(this);
+    this.prevBlock = this.prevBlock.bind(this);
+    this.onlineZap = this.onlineZap.bind(this);
   }
+  onlineZap(){
+    
+  }
+  prevBlock() {
+    if (this.props.flagAllStaffs) {
+      this.props.forceUpdateStaff([]);
+      this.props.setScreen(1)
+    } else {
+      this.props.setScreen(4);
+      this.props.refreshTimetable()
+    }
 
+  }
   handleActivationChange({ target: { name, value } }) {
     this.setState({ [name]: value })
   }
 
   render() {
 
-    const { setScreen, info, changeBackToRandomStaff, backToRandomStaff,selectedTime: time, refreshTimetable, selectedStaff, serviceId, selectedDay, selectedServices, selectedTime, getDurationForCurrentStaff,
-      group, handleChange, isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone, setterEmail, handleSave, clientActivationId, enteredCodeError, t } = this.props;
+    const {info, selectedTime: time, selectedStaff, serviceId, selectedDay, selectedServices, selectedTime, getDurationForCurrentStaff,
+      group, handleChange, isValidEmailAddress, setterPhone, setterEmail, handleSave, clientActivationId, enteredCodeError, t } = this.props;
+    const classBool = (!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false))
+    console.log(classBool)
     const { enteredCode } = this.state;
     const desctop = 710;
     const mob = 709;
@@ -63,7 +79,7 @@ class TabFive extends PureComponent {
             }}>{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</p>
           </div>
           <div className="last_list_services">
-            <p>{t("Список услуг:")}</p>
+            <p>{t("Список услуг:")}Список услуг:</p>
             {selectedServices.map((service, id) => (
               <p>{id + 1}. <span> {service.name}&nbsp;</span>
                 <strong>({service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo}&nbsp;{service.currency})</strong>
@@ -71,7 +87,7 @@ class TabFive extends PureComponent {
             ))}
           </div>
           <div className="last_list_price">
-            <p>{t("Итого:")}</p>
+            <p>{t("Итого:")}Итого:</p>
             <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
             <span>{selectedServices[0] && selectedServices[0].currency}</span>
           </div>
@@ -82,17 +98,7 @@ class TabFive extends PureComponent {
     return (
       <div className="service_selection screen5">
         <div className="title_block entry_form-title">
-          <span className="prev_block" onClick={() => {
-            if (flagAllStaffs) {
-              forceUpdateStaff([]);
-              setScreen(1)
-            } else {
-              setScreen(4);
-              refreshTimetable()
-            }
-          }
-          }
-          >
+          <span className="prev_block" onClick={this.prevBlock}>
             <span className="title_block_text">{t("Назад")}</span>
           </span>
           {/* <p className="modal_title">{t("Запись")}</p> */}
@@ -128,11 +134,6 @@ class TabFive extends PureComponent {
                   <MediaQuery maxWidth={mob}>
                     <div className="entry_form-item">
                       <p>{t("Телефон")}</p>
-                      {/* <p style={{ display: 'flex' }}>
-                      <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                      />  */}
-                      {/* <span>{t("На этот номер вы получите SMS с кодом подтверждения и информацию о записи")}</span> */}
-                      {/* </p> */}
                       <div className="phones_country">
                         <ReactPhoneInput
                           regions={['america', 'europe']}
@@ -200,11 +201,6 @@ class TabFive extends PureComponent {
                     )}
                     <div className="entry_form-item">
                       <p>{t("Телефон")}</p>
-                      {/* <p style={{ display: 'flex' }}>
-                      <img style={{ height: '19px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
-                      />  */}
-                      {/* <span>{t("На этот номер вы получите SMS с кодом подтверждения и информацию о записи")}</span> */}
-                      {/* </p> */}
                       <div className="phones_country">
                         <ReactPhoneInput
                           regions={['america', 'europe']}
@@ -230,8 +226,8 @@ class TabFive extends PureComponent {
         <MediaQuery maxWidth={mob}>
           <div className="last_footer_block">
             <input
-              className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " book_button"}
-              disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
+              className={(classBool ? 'disabledField' : '') + " book_button"}
+              disabled={!classBool}
               type="submit" value={clientActivationId ? t("Подтвердить код") : t('Записаться')} onClick={
                 () => {
                   if (clientActivationId) {
@@ -247,7 +243,7 @@ class TabFive extends PureComponent {
                   }
                 }} />
             <p>
-              {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp; 
+              {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp;
               <a rel="nofollow" href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
             </p>
           </div>
@@ -257,7 +253,7 @@ class TabFive extends PureComponent {
           <div className="specialist">
             <div className="last_footer_block">
               <p>
-              {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp; 
+                {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp;
               <a rel="nofollow" href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
               </p>
               <input

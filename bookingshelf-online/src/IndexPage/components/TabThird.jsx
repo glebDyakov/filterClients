@@ -40,7 +40,7 @@ class TabThird extends PureComponent {
                 priceTo += parseInt(service.priceTo)
                 duration += parseInt(getDurationForCurrentStaff(service))
             })
-            let margin_right = "22px";
+            let margin_right = "53px";
             let sizeWords = "36px";
             const priceFrom100 = priceFrom / 100;
             const priceTo100 = priceTo / 100;

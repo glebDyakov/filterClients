@@ -60,7 +60,7 @@ class TabCompanySelection extends PureComponent {
 
                                     <div>
                                         <div className="affiliate_name">{subcompany.companyName}</div>
-                                        <div className="stars desktop_visible" style={{ textTransform: 'capitalize' }}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
+                                        <div className="stars desktop_visible" >{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
                                     </div>
                                 </div>
 

@@ -60,7 +60,7 @@ class TabSix extends PureComponent {
                         }}>{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</p>
                     </div>
                     <div className="last_list_services">
-                        <p>{t("Список услуг:")}</p>
+                        <p>{t("Список услуг:")}Список услуг:</p>
                         {selectedServices.map((service, id) => (
                             <p>{id + 1}. <span> {service.name}&nbsp;</span>
                                 <strong>({service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo}&nbsp;{service.currency})</strong>
@@ -68,7 +68,7 @@ class TabSix extends PureComponent {
                         ))}
                     </div>
                     <div className="last_list_price">
-                        <p>{t("Итого:")}</p>
+                        <p>{t("Итого:")}Итого:</p>
                         <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                     </div>

@@ -9,7 +9,7 @@ import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
 import cansel from "../../../public/img/icons/cansel_black.svg";
 import { compose } from 'redux';
 import MediaQuery from 'react-responsive'
-import {culcDay} from "../../_helpers/data-calc"
+import { culcDay } from "../../_helpers/data-calc"
 class TabOne extends PureComponent {
     constructor(props) {
         super(props)
@@ -19,8 +19,25 @@ class TabOne extends PureComponent {
         }
         this.handleStaffCommentsClick = this.handleStaffCommentsClick.bind(this);
         this.handleSelectStaff = this.handleSelectStaff.bind(this);
+        this.approveFNo = this.approveFNo.bind(this);
+        this.approveFYes = this.approveFYes.bind(this);
     }
-
+    approveFNo() {
+        const activeStaff = this.props.staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
+        this.props.selectStaff(activeStaff)
+        this.props.handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
+        this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+        this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
+        this.props.setScreen(6)
+        this.props.setDefaultFlag()
+        this.setState({ staff: null })
+    }
+    approveFYes() {
+        this.props.selectStaff(this.state.staff)
+        this.props.handleMoveVisit()
+        this.props.setDefaultFlag()
+        this.setState({ staff: null })
+    }
     componentWillReceiveProps(newProps) {
         const { movingVisit } = newProps
         if (newProps.services && newProps.isStartMovingVisit && movingVisit && (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services))) {
@@ -83,8 +100,8 @@ class TabOne extends PureComponent {
         const mob = 709;
         let serviceInfo = null;
 
-        const currentDay = culcDay(selectedDay,"desctop") ;
-        const currentDayMob = culcDay(selectedDay,"mob");
+        const currentDay = culcDay(selectedDay, "desctop");
+        const currentDayMob = culcDay(selectedDay, "mob");
 
         let sizeWords = "36px";
         let margin_right = "22px";
@@ -120,24 +137,11 @@ class TabOne extends PureComponent {
                             <div className="supperVisDet service_footer-block">
 
                                 <div className="service_footer_price">
-                                    <p style={{
-                                        color: 'white',
-                                        fontSize: `13px`,
-                                        lineHeight: "18px",
-                                        fontWeight: "400",
-                                    }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                    <p className="service_footer_price_text">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                     <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                 </div>
-                                <div className="time-footer hover" style={{
-                                    // marginRight: `${margin_right}`
-                                }}>
-                                    <p style={{
-                                        color: 'white',
-                                        fontSize: "13px",
-                                        lineHeight: "18px",
-                                        letterSpacing: "0.1px",
-                                        fontWeight: "400",
-                                    }} onClick={event => this.setState({
+                                <div className="time-footer hover">
+                                    <p className="time_footer_p" onClick={event => this.setState({
                                         openList: !openList,
                                     })}>{t("Услуги")}: {selectedServices.length} <img
                                         style={{
@@ -145,29 +149,15 @@ class TabOne extends PureComponent {
                                             marginTop: "0px"
                                         }} src={arrow_down} alt="arrou"></img></p>
                                 </div>
-                                <div className="time-footer" style={{
-                                    // marginRight: `${margin_right}`
-                                }}>
-                                    <p style={{
-                                        color: 'white',
-                                        fontSize: "13px",
-                                        lineHeight: "18px",
-                                        letterSpacing: "0.1px",
-                                        fontWeight: "400",
-                                    }} >{t("Дата")}:</p>
-                                    <p style={{
-                                        color: 'white',
-                                        fontSize: "13px",
-                                        lineHeight: "18px",
-                                        letterSpacing: "0.1px",
-                                        fontWeight: "400",
-                                    }} >&nbsp;{currentDayMob}</p>
+                                <div className="time-footer">
+                                    <p lassName="time_footer_p" >{t("Дата")}:</p>
+                                    <p lassName="time_footer_p" >&nbsp;{currentDayMob}</p>
                                 </div>
                             </div >
                             {openList && (
                                 <div className="service_list_block">
                                     <div className="setvice_list_items">
-                                        {selectedServices.map((element,index ) =>
+                                        {selectedServices.map((element, index) =>
                                             <div key={index} className="setvice_list_item">
                                                 <div className="cansel_btn_small"> </div>
                                                 <p>{element.name}</p>
@@ -194,7 +184,7 @@ class TabOne extends PureComponent {
                                     <div className="service_list_block">
                                         <div className="setvice_list_items">
                                             <p>Услуги:</p>
-                                            {selectedServices.map((element,index) =>
+                                            {selectedServices.map((element, index) =>
                                                 <div key={index} className="setvice_list_item">
                                                     <div className="cansel_btn_small"> </div>
                                                     <p>{element.name}</p>
@@ -220,38 +210,18 @@ class TabOne extends PureComponent {
                                     <div className="time-footer hover" style={{
                                         marginRight: `${margin_right}`
                                     }}>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "29px",
-                                            letterSpacing: "0.1px",
-                                        }} onClick={event => this.setState({
+                                        <p className="time-footer_desctop_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
                                         {/* } */}
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            letterSpacing: "0.1px",
-                                        }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>
                                     </div>
                                     <div className="time-footer" style={{
                                         marginRight: `${margin_right}`
                                     }}>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "29px",
-                                            letterSpacing: "0.1px",
-                                        }} >{t("Дата")}:</p>
-                                        <p style={{
-                                            color: 'white',
-                                            fontSize: "13px",
-                                            lineHeight: "18px",
-                                            letterSpacing: "0.1px",
-                                        }} >{currentDay} {moment(time).format('LT')}</p>
+                                        <p className="time-footer_desctop_p" >{t("Дата")}:</p>
+                                        <p className="service_footer_price_small_text" >{currentDay} {moment(time).format('LT')}</p>
                                     </div>
                                     <span style={{
                                         width: "161px",
@@ -295,28 +265,14 @@ class TabOne extends PureComponent {
                                 <img src={cansel} onClick={e => this.setState({ staff: null })} alt="cansel" />
                             </div>
                             <div className="modal_window_btn">
-                                <button className="approveFYes" onClick={() => {
-                                    selectStaff(this.state.staff)
-                                    handleMoveVisit()
-                                    setDefaultFlag()
-                                    this.setState({ staff: null })
-                                }}>{t("Да")}
+                                <button className="approveFYes" onClick={() => this.approveFYes}>{t("Да")}
                                 </button>
                                 <div style={{
                                     height: "38px",
                                     width: "1px",
                                     backgroundColor: "rgba(9, 9, 58, 0.1)"
                                 }}></div>
-                                <button className="approveFNo" onClick={() => {
-                                    const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
-                                    selectStaff(activeStaff)
-                                    handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
-                                    this.props.dispatch(staffActions.toggleStartMovingVisit(false))
-                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
-                                    setScreen(6)
-                                    setDefaultFlag()
-                                    this.setState({ staff: null })
-                                }}>{t("Нет")}
+                                <button className="approveFNo" onClick={() => this.approveFNo}>{t("Нет")}
                                 </button>
                             </div>
 
@@ -418,38 +374,18 @@ class TabOne extends PureComponent {
                                                                     &nbsp;{staff.rating}
                                                                 </p>
                                                             </div>
-                                                        ) : <p style={{ fontSize: '13px', lineHeight: "20px", opacity: "0.5" }}>{t("Нет отзывов")}</p>}
+                                                        ) : <p className="no_zap">{t("Нет отзывов")}</p>}
                                                     </div>
                                                 </div>
                                             </div>
-                                            {staff.description ? (<p style={{
-                                                fontFamily: "Open Sans",
-                                                fontStyle: "normal",
-                                                fontWeight: "normal",
-                                                fontSize: "13px",
-                                                lineHeight: "20px",
-                                                color: "#09093A",
-                                                opacity: "0.5",
-                                                overflow: "hidden",
-                                                margin: "-21px 0px 0px 0px",
-                                            }}>{staff.description}</p>)
-                                                : (<p style={{
-                                                    fontFamily: "Open Sans",
-                                                    fontStyle: "normal",
-                                                    fontWeight: "normal",
-                                                    fontSize: "13px",
-                                                    lineHeight: "20px",
-                                                    color: "#09093A",
-                                                    opacity: "0.5",
-                                                    overflow: "hidden",
-                                                    margin: "-21px 0px 0px 0px",
-                                                }}>{t("Нет описания")}</p>)}
+                                            {staff.description ? (<p className="staff_popup_item_p">{staff.description}</p>)
+                                                : (<p className="staff_popup_item_p">{t("Нет описания")}</p>)}
                                             {nearestTime && nearestTime.map((time, id) =>
                                                 time.staffId === staff.staffId && time.availableDays.length !== 0 &&
-                                                <React.Fragment>
-                                                    <div className="mobile-visible" key={'time' + id}>
+                                                <React.Fragment key={'time' + id}>
+                                                    <div className="mobile-visible" >
                                                         <span>{t("Ближ. запись")}</span>
-                                                        <div className="stars" style={{ textTransform: 'capitalize' }}>{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
+                                                        <div className="stars" >{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
                                                     </div>
 
                                                     <span className="nearest_appointment">{t("Ближайшая запись")} - {roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</span>
@@ -460,8 +396,8 @@ class TabOne extends PureComponent {
                                             {nearestTime && !nearestTime.some((time, id) =>
                                                 time.staffId === staff.staffId && time.availableDays.length !== 0
 
-                                            ) && <div className="">
-                                                    <span style={{ fontSize: '13px', lineHeight: '20px', opacity: '0.5' }}>{t("Нет записи")}</span>
+                                            ) && <div>
+                                                    <span className="no_zap">{t("Нет записи")}</span>
                                                 </div>
                                             }
 
