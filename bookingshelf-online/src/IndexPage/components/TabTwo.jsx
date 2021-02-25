@@ -107,8 +107,8 @@ class TabTwo extends Component {
 
                                     <div className="service_list_block">
                                         <div className="setvice_list_items">
-                                            {selectedServices.map((element) =>
-                                                <div className="setvice_list_item">
+                                            {selectedServices.map((element, index) =>
+                                                <div key={index} className="setvice_list_item">
                                                     <div className="cansel_btn_small"> </div>
                                                     <p>{element.name}</p>
                                                 </div>
@@ -168,7 +168,7 @@ class TabTwo extends Component {
 
                             <div className="row align-items-center content clients mb-2 search-block">
                                 <div className="search col-12">
-                                    <img 
+                                    <img
                                         src={search_icon} />
                                     <input style={{
                                         margin: "auto", width: "240px", height: "34px",
@@ -251,8 +251,8 @@ class TabTwo extends Component {
                         <p className="modal_title">{t("Выберите услугу")}</p>
                         <div className="row align-items-center content clients mb-2 search-block desktop_visible">
                             <div className="search col-12">
-                                <img 
-                                   
+                                <img
+
                                     src={search_icon} />
                                 <input style={{
                                     margin: "auto", width: "240px", height: "34px",

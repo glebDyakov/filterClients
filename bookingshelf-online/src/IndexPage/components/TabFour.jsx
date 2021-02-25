@@ -171,8 +171,8 @@ class TabFour extends PureComponent {
                                     <div className="service_list_block">
                                         <div className="setvice_list_items">
                                             <p>Услуги:</p>
-                                            {selectedServices.map((element) =>
-                                                <div className="setvice_list_item">
+                                            {selectedServices.map((element,index) =>
+                                                <div key={index} className="setvice_list_item">
                                                     <div className="cansel_btn_small"> </div>
                                                     <p>{element.name}</p>
                                                 </div>

@@ -5,7 +5,7 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 import { withTranslation } from "react-i18next";
 import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
 import MediaQuery from 'react-responsive'
-import {culcDay} from "../../_helpers/data-calc"
+import { culcDay } from "../../_helpers/data-calc"
 
 class TabThird extends PureComponent {
     constructor(props) {
@@ -28,8 +28,8 @@ class TabThird extends PureComponent {
 
         const desctop = 710;
         const mob = 709;
-        const currentDay = culcDay(selectedDay,"desctop") ;
-        const currentDayMob = culcDay(selectedDay,"mob");
+        const currentDay = culcDay(selectedDay, "desctop");
+        const currentDayMob = culcDay(selectedDay, "mob");
         let serviceInfo = null
         if (selectedService.serviceId) {
             let priceFrom = 0;
@@ -89,8 +89,8 @@ class TabThird extends PureComponent {
                                 {openList && (
                                     <div className="service_list_block">
                                         <div className="setvice_list_items">
-                                            {selectedServices.map((element) =>
-                                                <div className="setvice_list_item">
+                                            {selectedServices.map((element, index) =>
+                                                <div key={index} className="setvice_list_item">
                                                     <div className="cansel_btn_small"> </div>
                                                     <p>{element.name}</p>
                                                 </div>

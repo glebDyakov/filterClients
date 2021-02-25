@@ -88,8 +88,8 @@ class TabStaffComments extends PureComponent {
                             </div>
                             <ul >
                                 {staffComments && staffComments.length > 0
-                                    ? staffComments.map((staff) =>
-                                        <li className="staff_popup_comment">
+                                    ? staffComments.map((staff,index) =>
+                                        <li key={index} className="staff_popup_comment">
                                             <p >{staff.clientName}</p>
                                             <div className="display_flex">
                                                 <StarRatings
@@ -106,7 +106,7 @@ class TabStaffComments extends PureComponent {
                                             </span>
                                         </li>)
                                     : (
-                                        <div className="final-book">
+                                        <div  className="final-book">
                                             <p >
                                                 {t('Нет ни одного отзыва')}
                                             </p>

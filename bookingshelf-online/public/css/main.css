@@ -337,6 +337,7 @@ q:before, q:after {
     line-height: 23px;
     width: 414px;
 }
+
 .final-screen-block span p {
     width: 384px;
 }
@@ -502,15 +503,15 @@ q:before, q:after {
 
 @media screen and (max-width: 480px) {
     .modal_menu .firm_name.not-selected {
-       width: 124px;
+        width: 124px;
     }
     .prev_block:hover, .next_block:hover {
         opacity: 1;
     }
     .title_block .prev_block, .title_block .next_block {
         padding-left: 13px;
-    padding-bottom: 0px;
-    margin: -3px 0px 0px -5px;
+        padding-bottom: 0px;
+        margin: -3px 0px 0px -5px;
     }
 }
 
@@ -1244,7 +1245,8 @@ a {
     width: 70px;
     height: 70px;
 }
-.final-book_hz{
+
+.final-book_hz {
     color: red;
     text-decoration: underline;
     font-weight: bold;
@@ -1252,11 +1254,13 @@ a {
     font-size: 13px;
     margin-bottom: 8px;
 }
-.final-book_hz_hz{
+
+.final-book_hz_hz {
     text-align: center;
     font-size: 18px;
     margin-bottom: 8px;
 }
+
 .star-container {
     padding-right: 5px;
 }
@@ -2556,7 +2560,7 @@ overflow: visible !important;  */
     .regist_block_login_p {
         display: flex;
     }
-    .title_block_text{
+    .title_block_text {
         margin-left: 14px;
     }
     .regist_block span .regist_block_sms_span {
@@ -2595,8 +2599,21 @@ overflow: visible !important;  */
     .burger_menu_btn_off {
         margin: 3px -6px 0px 0px;
     }
+    .comments .staff_popup_large{
+        width: 330px;
+    }
     .burger_menu.active {
         transform: translatey(31%);
+    }
+    .comments{
+        width: 330px;
+    }
+    .create_comments{
+        width: 330px;
+        padding: 7px;
+    }
+    .regist_block{
+        width: 330px;
     }
     .burger_menu .firm-text p {
         font-weight: 600;
@@ -2903,8 +2920,17 @@ overflow: visible !important;  */
     .react-tel-input .form-control {
         width: 330px !important;
     }
+    .staff_popup_comment{
+        width: 330px;
+    }
     .entry_form span {
         margin: 10px 0px 2px 1px;
+    }
+    .regist_block span{
+        width: 290px;
+    }
+    .regist_block .tel{
+        width: 290px;
     }
     .book_button {
         color: #FFF;

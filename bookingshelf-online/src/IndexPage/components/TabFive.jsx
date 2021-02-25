@@ -66,7 +66,7 @@ class TabFive extends PureComponent {
           <div className="last_list_services">
             <p>{t("Список услуг:")}Список услуг:</p>
             {selectedServices.map((service, id) => (
-              <p>{id + 1}. <span> {service.name}&nbsp;</span>
+              <p key={id}>{id + 1}. <span> {service.name}&nbsp;</span>
                 <strong>({service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo}&nbsp;{service.currency})</strong>
               </p>
             ))}
