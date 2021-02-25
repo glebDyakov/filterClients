@@ -24,6 +24,51 @@ class TabTwo extends Component {
         const { searchValue, openList, catigor, visibleSearch } = this.state;
         const desctop = 710;
         const mob = 709;
+        let servicesSum = 0;
+        
+        serviceGroups.map((serviceGroup) => {
+
+            const { services } = serviceGroup
+            const condition =
+                services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
+                flagAllStaffs
+
+            let finalServices
+
+            if (flagAllStaffs) {
+                if (selectedServices && selectedServices.length) {
+                    finalServices = services && services.filter(service => service.staffs && service.staffs.some(st => selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => st.staffId === selectedServStaff.staffId))))
+                } else {
+                    finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0)
+                }
+            } else {
+                finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
+            }
+
+            if (searchValue && searchValue.length > 0) {
+                finalServices = finalServices && finalServices.filter(service =>
+                    service.name.toLowerCase().includes(this.search.value.toLowerCase())
+                    || service.details.toLowerCase().includes(this.search.value.toLowerCase())
+                    || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
+                )
+            }
+
+            if (condition && info && finalServices && finalServices.length > 0) {
+                finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
+            }
+
+            if (finalServices) {
+                servicesSum += finalServices.length;
+                if (servicesSum >= 10) {
+                    this.startOpenservice = true;
+                }else{
+                    this.startOpenservice = false;
+                }
+            }
+        })
+
+
+
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
                 <div className="online-zapis-off">
@@ -53,6 +98,10 @@ class TabTwo extends Component {
                     (!servicesForStaff && selectedStaff && selectedStaff.length === 0)
                 )
         })
+
+
+
+
 
         let serviceInfo = null;
         let padding_left = "21px";
@@ -311,12 +360,6 @@ class TabTwo extends Component {
                                     if (condition && info && finalServices && finalServices.length > 0) {
                                         finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
                                     }
-                                    if (finalServices) {
-                                        if (finalServices.length >= 10) {
-                                            this.startOpenservice = true
-                                        }
-                                    }
-
                                     return condition && finalServices && finalServices.length > 0 && (
                                         <ul className="service_list" key={index}>
                                             <div style={{

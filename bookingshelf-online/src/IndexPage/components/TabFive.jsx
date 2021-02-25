@@ -55,7 +55,7 @@ class TabFive extends PureComponent {
               <img src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt="" />
               <div className="last_list_name">
                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                <p>{currentDay} {moment(time).format('LT')}</p>
+                <p>{t(`${currentDay}`)} {moment(time).format('LT')}</p>
               </div>
             </div>
             <p className="desktop_visible" style={{

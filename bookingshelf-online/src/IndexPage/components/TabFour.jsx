@@ -139,7 +139,7 @@ class TabFour extends PureComponent {
                                     </div>
                                     <div className="time-footer">
                                         <p className="time_footer_p" >{t("Дата")}:</p>
-                                        <p className="time_footer_p" >&nbsp;{currentDayMob}</p>
+                                        <p className="time_footer_p" >&nbsp;{t(`${currentDayMob}`)}</p>
                                     </div>
                                 </div >
                                 {openList && (
@@ -208,7 +208,7 @@ class TabFour extends PureComponent {
                                         marginRight: `${margin_right2}`
                                     }}>
                                         <p className="time-footer_desctop_p" >{t("Дата")}:</p>
-                                        <p className="service_footer_price_small_text" >{currentDay}</p>
+                                        <p className="service_footer_price_small_text" >{t(`${currentDay}`)}</p>
                                     </div>
                                     {!!selectedServices.length && <button className="next_block" onClick={() => {
                                         if (selectedServices.length) {

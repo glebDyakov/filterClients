@@ -1524,14 +1524,13 @@ overflow: visible !important;  */
     top: 75px;
     background: #FFFFFF;
     box-shadow: 0px 5px 15px rgba(18, 38, 63, 0.12);
-    transition: height 0.1s linear;
+    transition: height 0.4s linear;
     border-radius: 3px;
     z-index: 1500;
 }
 
 .leng_list.leng_list_active {
-    height: 127px;
-    overflow: visible;
+    height: 165px;
 }
 
 .header-lang:hover {
@@ -1543,26 +1542,22 @@ overflow: visible !important;  */
     height: 49px;
 }
 
-.leng_list_item:nth-child(1) {
+.leng_list_item {
     border-bottom: 1px solid rgba(42, 48, 66, 0.1);
-    padding: 6px 1px 5px 0px;
-    width: 180px;
     margin: auto;
+    width: 180px;
+}
+.leng_list_item:nth-child(4) {
+    border-bottom:none;
+    width: 180px;
 }
 
-.leng_list_item img {
-    margin: 0px -45px 0px -15px;
-}
-
-.leng_list_item:nth-child(1) img {
-    margin: 0px -76px 0px -15px;
-}
 
 .leng_list_item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 15px 10px 18px;
+    padding: 10px 0px 10px 0px;
 }
 
 .leng_list_item p {
@@ -1680,13 +1675,12 @@ overflow: visible !important;  */
     height: auto;
     max-height: 0px;
     overflow: hidden;
-    transition: max-height 0.4s linear;
+    transition: max-height 0.8s linear;
     margin-bottom: -9px;
     margin-top: -9px;
 }
 
 .service_items.service_items_active {
-    overflow: visible;
     max-height: 1000px !important;
 }
 
@@ -2332,7 +2326,6 @@ overflow: visible !important;  */
     background-color: #3B4B5C;
     border-radius: 3px;
 }
-
 .display_flex {
     display: flex;
 }
@@ -2954,11 +2947,17 @@ overflow: visible !important;  */
         width: 330px;
         height: auto;
     }
-    .last_footer_block a, .last_footer_block p {
+    .last_footer_block p {
         font-weight: 300;
         font-size: 10px;
         line-height: 16px;
         color: #09093A;
+    }
+    .last_footer_block a:nth-child(1){
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 18px;
+        color: #FFFFFF;
     }
     .last_footer_block p {
         text-align: center;

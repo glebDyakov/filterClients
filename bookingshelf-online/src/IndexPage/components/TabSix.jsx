@@ -54,7 +54,7 @@ class TabSix extends PureComponent {
                             <img src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt="" />
                             <div className="last_list_name">
                                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                                <p>{currentDay} {moment(time).format('LT')}</p>
+                                <p>{t(`${currentDay}`)}{moment(time).format('LT')}</p>
                             </div>
                         </div>
                         <p className="desktop_visible" style={{
@@ -83,12 +83,11 @@ class TabSix extends PureComponent {
                 <MediaQuery maxWidth={mob}>
                     <div className="service_selection final-screen">
                         <div className="last_footer_block">
-                            <input
-                                className=" book_button"
-
-                                type="submit" value={t('Создать новую запись')} onClick={() => {
-                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
-                                }} />
+                            
+                        <a  href={`/online/${this.props.match.params.company}`} onClick={() => {
+                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
+                }} className="book_button " >{t("Создать новую запись")}</a>
+                            
                             <p>
                                 {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp;
               <a rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
