@@ -1,0 +1,13 @@
+.page-item .page-link {
+  color: #3b4b5c;
+}
+
+.page-item .page-link:focus {
+  box-shadow: none !important;
+}
+
+.page-item.active .page-link {
+  background-color: #3b4b5c;
+  border-color: #3b4b5c;
+}
+/*# sourceMappingURL=Paginator.css.map */

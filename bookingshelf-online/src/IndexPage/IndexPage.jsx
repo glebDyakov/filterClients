@@ -87,6 +87,7 @@ class IndexPage extends PureComponent {
 
         this.props.dispatch(staffActions.getSubcompanies(company));
         this.props.dispatch(staffActions.getInfo(company));
+        this.props.dispatch(staffActions.getInfoSocial());
         if (this.props.staff.isStartMovingVisit) {
             this.setScreen(1)
         }
@@ -190,6 +191,7 @@ class IndexPage extends PureComponent {
             let {company} = this.props.match.params
 
             this.props.dispatch(staffActions.getInfo(company));
+            this.props.dispatch(staffActions.getInfoSocial());
             this.props.dispatch(staffActions.get(company));
             this.props.dispatch(staffActions.getNearestTime(company));
             this.props.dispatch(staffActions.getServices(company));
@@ -288,6 +290,7 @@ class IndexPage extends PureComponent {
 
 
     handleDayClick(day, modifiers = {}) {
+        
         const { isStartMovingVisit } = this.props.staff
         if (modifiers.disabled) {
             return;
@@ -298,10 +301,10 @@ class IndexPage extends PureComponent {
 
         this.setState({
             selectedDay: daySelected ? daySelected.toDate() : this.state.selectedDay,
-            screen: 4
+            // screen: 4
         })
         //if (!isStartMovingVisit) {
-            this.refreshTimetable();
+            // this.refreshTimetable();
         //}
     }
 
@@ -407,6 +410,8 @@ class IndexPage extends PureComponent {
                         selectService={this.selectService}
                         refreshTimetable={this.refreshTimetable}
                         roundDown={this.roundDown}
+                        selectedDay={selectedDay}
+                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
                     />}
                     {screen === 'staff-comments' &&
                     <TabStaffComments
@@ -625,7 +630,7 @@ class IndexPage extends PureComponent {
         const {selectedStaff, staffs}=this.state;
         const {selectedServices, nearestTime} = this.state;
         const { checked } = e.target;
-
+        // 
         if (checked) {
             selectedServices.push(service);
         } else {
