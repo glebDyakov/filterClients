@@ -147,7 +147,7 @@ class TabOne extends PureComponent {
                                         style={{
                                             marginLeft: "3px",
                                             marginTop: "0px"
-                                        }} src={arrow_down} alt="arrou"></img></p>
+                                        }} src={arrow_down} className={openList ? "" : "arrow_rotate"} alt="arrou"></img></p>
                                 </div>
                                 <div className="time-footer">
                                     <p className="time_footer_p" >{t("Дата")}:</p>
@@ -183,7 +183,7 @@ class TabOne extends PureComponent {
                                 <div className="specialist_big">
                                     <div className="service_list_block">
                                         <div className="setvice_list_items">
-                                            <p>Услуги:</p>
+                                            <p>{t("Услуги:")}Услуги:</p>
                                             {selectedServices.map((element, index) =>
                                                 <div key={index} className="setvice_list_item">
                                                     <div className="cansel_btn_small"> </div>
@@ -212,7 +212,7 @@ class TabOne extends PureComponent {
                                     }}>
                                         <p className="time-footer_desctop_p" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
+                                        })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} className="arrow_rotate" alt="arrou"></img></p>
                                         {/* } */}
                                         <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>
@@ -283,7 +283,7 @@ class TabOne extends PureComponent {
 
                 <div>
                     <div className="skip_employee-block">
-                        {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow"></div></p>}
+                        {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
                         {/* {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>
                     <div className="title_block n staff_title">
@@ -325,8 +325,8 @@ class TabOne extends PureComponent {
                                     }
                                     return true
                                 })
-                                .map((staff, idStaff) =>
-                                    <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb'}
+                                .map((staff, idStaff, array) => 
+                                    <li className={(staffId && staffId === staff.staffId && 'selected') + ' nb' + (array.length === 1 && " service_items_grow")}
                                         onClick={(e) => this.handleSelectStaff(e, staff)}
                                         key={idStaff}
                                     >
@@ -345,11 +345,6 @@ class TabOne extends PureComponent {
                                                                 letterSpacing: "0.3px",
                                                             }
                                                         }>{staff.firstName} {staff.lastName ? staff.lastName : ''}</p>
-                                                        {/* <div  onClick={() => this.handleStaffCommentsClick(staff)} className="mobile_block mobile-visible">
-                                                            <div className="staff-comments">
-                                                                <img src={i_icon}
-                                                                /></div>
-                                                        </div> */}
                                                         <div onClick={() => this.handleStaffCommentsClick(staff)} className="mobile_block desktop-visible">
                                                             <div className="staff-comments">
                                                                 <img className="s" src={i_icon}
@@ -404,6 +399,7 @@ class TabOne extends PureComponent {
                                             {/* </span> */}
                                         </span>
                                     </li>
+
                                 )}
                         </ul>
                     </React.Fragment>

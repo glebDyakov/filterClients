@@ -135,7 +135,7 @@ class TabFour extends PureComponent {
                                             style={{
                                                 marginLeft: "3px",
                                                 marginTop: "0px"
-                                            }} src={arrow_down} alt="arrou"></img></p>
+                                            }} src={arrow_down} className={openList ? "" : "arrow_rotate"} alt="arrou"></img></p>
                                     </div>
                                     <div className="time-footer">
                                         <p className="time_footer_p" >{t("Дата")}:</p>
@@ -199,7 +199,7 @@ class TabFour extends PureComponent {
                                     }}>
                                         <p className="time-footer_desctop_p" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
+                                        })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} className="arrow_rotate" alt="arrou"></img></p>
                                         {/* } */}
                                         <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>

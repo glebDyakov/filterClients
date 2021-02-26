@@ -61,6 +61,7 @@
 
 .DayPicker-Caption {
     margin-bottom: 40px;
+   
 }
 
 .DayPicker-Caption div {
@@ -72,7 +73,8 @@
     font-weight: normal;
     font-size: 20px;
     line-height: 27px;
-    text-align: center;
+    text-align: center; 
+    color: var(--color_button);
 }
 
 .DayPicker-Weekday abbr[title] {
@@ -115,7 +117,7 @@
 
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
     color: white;
-    background-color: #3B4B5C;
+    background-color: var(--color_button);
 }
 
 .DayPicker-NavButton:hover {
