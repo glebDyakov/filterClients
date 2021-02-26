@@ -587,8 +587,8 @@ pre code {
 }
 
 .row {
-  display: -ms-flexbox;
-  display: flex;
+  /* display: -ms-flexbox; */
+  /* display: flex; */
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   margin-right: -15px;
@@ -6591,7 +6591,7 @@ button.bg-dark:focus {
 
 .justify-content-between {
   -ms-flex-pack: justify !important;
-  justify-content: space-between !important;
+  /* justify-content: space-between !important; */
 }
 
 .justify-content-around {
@@ -7492,7 +7492,7 @@ button.bg-dark:focus {
   margin-right: 0.5rem !important;
 }
 
-.mb-2,
+
 .my-2 {
   margin-bottom: 0.5rem !important;
 }

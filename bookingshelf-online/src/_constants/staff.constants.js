@@ -44,6 +44,10 @@ export const staffConstants = {
     GET_INFO_SUCCESS: 'GET_INFO_SUCCESS',
     GET_INFO_FAILURE: 'GET_INFO_FAILURE',
 
+    GET_INFO_SOCIAL: 'GET_INFO_SOCIAL',
+    GET_INFO_SOCIAL_SUCCESS: 'GET_INFO_SOCIAL_SUCCESS',
+    GET_INFO_SOCIAL_FAILURE: 'GET_INFO_SOCIAL_FAILURE',
+
     GET_SERVICES: 'GET_SERVICES',
     GET_SERVICES_SUCCESS: 'GET_SERVICES_SUCCESS',
     GET_SERVICES_FAILURE: 'GET_SERVICES_FAILURE',
@@ -79,4 +83,44 @@ export const staffConstants = {
     GET_NEAREST_TIME_FAILURE: 'GET_NEAREST_TIME_FAILURE',
 
     CHANGE_LANG: 'CHANGE_LANG'
+};
+export const requestConstants = {
+    DEFAULT_REQUEST_OPTIONS_GET: {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    },
+    DEFAULT_REQUEST_OPTIONS_DELETE: {
+        method: 'DELETE'
+    },
+    DEFAULT_REQUEST_OPTIONS_PATCH: function (time, staffId, coStaffs) {
+        return {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                coStaffs,
+                appointmentTimeMillis: time,
+                staffId,
+                adminApproved: true,
+                adminMoved: true,
+                approved: true,
+                moved: true,
+                movedOnline: true
+            }),
+            withCredentials: true
+        }
+    },
+    DEFAULT_REQUEST_OPTIONS_POST_JSON: function (params) {
+        return {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(params)
+        }
+    },
+    DEFAULT_REQUEST_OPTIONS_POST: function (params) {
+        return {
+            method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            body: params
+        }
+    },
 };
