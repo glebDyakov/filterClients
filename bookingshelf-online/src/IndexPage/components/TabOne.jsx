@@ -96,7 +96,7 @@ class TabOne extends PureComponent {
     render() {
         const { t, staffId, isLoading, selectedDay, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, getDurationForCurrentStaff } = this.props;
         const { openList } = this.state;
-        const desctop = 710;
+        const desctop = 720;
         const mob = 709;
         let serviceInfo = null;
 

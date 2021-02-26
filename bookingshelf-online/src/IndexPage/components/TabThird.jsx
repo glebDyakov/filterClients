@@ -26,7 +26,7 @@ class TabThird extends PureComponent {
         const { setScreen, setDefaultFlag, refreshTimetable, isStartMovingVisit, selectedDay, selectedStaff, selectedServices, getDurationForCurrentStaff, selectedService, disabledDays, month, handleDayClick, showPrevWeek, showNextWeek, t } = this.props;
         const { openList } = this.state;
 
-        const desctop = 710;
+        const desctop = 720;
         const mob = 709;
         const currentDay = culcDay(selectedDay, "desctop");
         const currentDayMob = culcDay(selectedDay, "mob");
@@ -75,7 +75,7 @@ class TabThird extends PureComponent {
                                     }}>
                                         <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Услуги")}: {selectedServices.length}
+                                        })}>{t("Услуги")}Услуги: {selectedServices.length}
                                             <img style={{
                                                 marginLeft: "7px",
                                                 marginTop: "0px"

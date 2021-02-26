@@ -21,7 +21,7 @@ class TabFour extends PureComponent {
 
         const { t, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
-        const desctop = 710;
+        const desctop = 720;
         const mob = 709;
         const availableTimes = []
 
@@ -131,7 +131,7 @@ class TabFour extends PureComponent {
                                     <div className="time-footer hover" >
                                         <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Услуги")}: {selectedServices.length} <img
+                                        })}>{t("Услуги")}Услуги: {selectedServices.length} <img
                                             style={{
                                                 marginLeft: "3px",
                                                 marginTop: "0px"

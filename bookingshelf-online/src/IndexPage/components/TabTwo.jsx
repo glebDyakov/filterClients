@@ -17,13 +17,54 @@ class TabTwo extends Component {
             catigor: [],
             visibleSearch: false,
         }
+        this.priceText = this.priceText.bind(this);
     }
     startOpenservice = false;
+    priceText(priceFrom, priceTo, currency, white) {
+        const desctop = 720;
+        const mob = 709;
+        let whiteClass = "";
+        white ? whiteClass = "white_text" : whiteClass = "";
+        const { t } = this.props;
+        if (priceFrom !== priceTo) {
+            return (<React.Fragment>
+                <MediaQuery maxWidth={mob}>
+                <div className="price_service">
+                    <div className="price_service_item">
+                        <strong className={whiteClass}>{priceFrom}</strong>
+                        <span className={whiteClass}>{currency}</span>
+                    </div>
+                    <strong className={whiteClass}>-&nbsp;</strong>
+                    <div className="price_service_item">
+                        <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
+                        <span className={whiteClass}>{currency}</span>
+                    </div>
+                </div>
+                    </MediaQuery>
+                <MediaQuery minWidth={desctop}>
+                        <strong className={whiteClass}>{priceFrom}</strong>
+                        <span className={whiteClass}>{currency}</span>
+                    <strong className={whiteClass}>-&nbsp;</strong>
+                        <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
+                        <span className={whiteClass}>{currency}</span>
+                </MediaQuery>
+                
+
+            </React.Fragment>
+            )
+        } else {
+            return (<React.Fragment>
+                <strong className={whiteClass}>{priceFrom}</strong>
+                <span className={whiteClass}>{currency}</span>
+            </React.Fragment>
+            )
+        }
+    }
     render() {
 
         const { selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff, services, selectedService, servicesForStaff, selectService, setDefaultFlag, t } = this.props;
         const { searchValue, openList, catigor, visibleSearch } = this.state;
-        const desctop = 710;
+        const desctop = 720;
         const mob = 709;
         let servicesSum = 0;
 
@@ -445,8 +486,8 @@ class TabTwo extends Component {
                                                                                         className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                     <div className="service-price">
                                                                                         <div className="service-price-text">
-                                                                                            <strong className="white_text">{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                                                                            <span className="white_text">{service.currency}</span>
+
+                                                                                            {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
                                                                                             <input onChange={(e) => selectService(e, service)}
                                                                                                 type="checkbox"
                                                                                                 checked={select} />
@@ -461,8 +502,7 @@ class TabTwo extends Component {
                                                                                     className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                 <div className="service-price">
                                                                                     <div className="service-price-text">
-                                                                                        <strong className="white_text">{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                                                                        <span className="white_text">{service.currency}</span>
+                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
                                                                                         <input onChange={(e) => selectService(e, service)}
                                                                                             type="checkbox"
                                                                                             checked={select} />
@@ -490,8 +530,7 @@ class TabTwo extends Component {
                                                                                         className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                     <div className="service-price">
                                                                                         <div className="service-price-text" >
-                                                                                            <strong >{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                                                                            <span >{service.currency}</span>
+                                                                                            {this.priceText(service.priceFrom, service.priceTo, service.currency, false)}
                                                                                             <input onChange={(e) => selectService(e, service)}
                                                                                                 type="checkbox"
                                                                                                 checked={select} />
@@ -507,8 +546,7 @@ class TabTwo extends Component {
                                                                                     className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                 <div className="service-price">
                                                                                     <div className="service-price-text" >
-                                                                                        <strong >{service.priceFrom}{service.priceFrom !== service.priceTo && " - " + service.priceTo} </strong>
-                                                                                        <span >{service.currency}</span>
+                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, false)}
                                                                                         <input onChange={(e) => selectService(e, service)}
                                                                                             type="checkbox"
                                                                                             checked={select} />
