@@ -1484,6 +1484,7 @@
             .client-not-come,
             .no-client-icon,
             .cash-payment,
+            .insurance-payment,
             .no-cash-payment,
             .super-visit,
             .pen,
@@ -1539,6 +1540,14 @@
 
             .cash-payment {
               background-image: url(../img/icons/cash-payment.svg);
+            }
+
+            .card-payment {
+              background-image: url(../img/icons/no-cash-payment.svg);
+            }
+
+            .insurance-payment {
+              background-image: url(../img/icons/insurance_icon.svg);
             }
 
             .no-cash-payment {
