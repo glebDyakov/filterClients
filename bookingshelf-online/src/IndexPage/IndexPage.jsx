@@ -87,7 +87,7 @@ class IndexPage extends PureComponent {
 
         this.props.dispatch(staffActions.getSubcompanies(company));
         this.props.dispatch(staffActions.getInfo(company));
-        this.props.dispatch(staffActions.getInfoSocial());
+        // this.props.dispatch(staffActions.getInfoSocial());
         if (this.props.staff.isStartMovingVisit) {
             this.setScreen(1)
         }
@@ -191,7 +191,7 @@ class IndexPage extends PureComponent {
             let {company} = this.props.match.params
 
             this.props.dispatch(staffActions.getInfo(company));
-            this.props.dispatch(staffActions.getInfoSocial());
+            // this.props.dispatch(staffActions.getInfoSocial());
             this.props.dispatch(staffActions.get(company));
             this.props.dispatch(staffActions.getNearestTime(company));
             this.props.dispatch(staffActions.getServices(company));

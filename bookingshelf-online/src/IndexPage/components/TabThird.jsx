@@ -79,11 +79,11 @@ class TabThird extends PureComponent {
                                             <img style={{
                                                 marginLeft: "7px",
                                                 marginTop: "0px"
-                                            }} src={arrow_down} alt="arrou"></img></p>
+                                            }} src={arrow_down} className={openList ? "" : "arrow_rotate"} alt="arrou"></img></p>
                                     </div>
                                     <div className="time-footer">
                                         <p className="time_footer_p" >{t("Дата")}:</p>
-                                        <p className="time_footer_p" >&nbsp;{currentDayMob}</p>
+                                        <p className="time_footer_p" >&nbsp;{t(`${currentDayMob}`)}</p>
                                     </div>
                                 </div >
                                 {openList && (
@@ -115,7 +115,7 @@ class TabThird extends PureComponent {
                                     <div className="specialist_big">
                                         <div className="service_list_block">
                                             <div className="setvice_list_items">
-                                                <p>Услуги:</p>
+                                                <p>{t("Услуги:")}</p>
                                                 {selectedServices.map((element) =>
                                                     <div className="setvice_list_item">
                                                         <div className="cansel_btn_small"> </div>
@@ -144,7 +144,7 @@ class TabThird extends PureComponent {
                                         }}>
                                             <p className="time-footer_desctop_p" onClick={event => this.setState({
                                                 openList: !openList,
-                                            })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} alt="arrou"></img></p>
+                                            })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} className="arrow_rotate" alt="arrou"></img></p>
 
                                             <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                             </p>
@@ -153,7 +153,7 @@ class TabThird extends PureComponent {
                                             marginRight: `${margin_right2}`
                                         }}>
                                             <p className="time-footer_desctop_p" >{t("Дата")}:</p>
-                                            <p className="service_footer_price_small_text" >{currentDay}</p>
+                                            <p className="service_footer_price_small_text" >{t(`${currentDay}`)}</p>
                                         </div>
                                         {!!selectedServices.length && <button disabled={!selectedDay} className={!selectedDay ? "next_block disabledField" : "next_block"} onClick={() => {
                                             if (selectedServices.length) {

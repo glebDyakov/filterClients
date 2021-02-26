@@ -6,7 +6,7 @@ import PhoneInput from "../../_components/PhoneInput";
 import { getCookie } from "../../_helpers/cookie";
 import moment from "moment";
 import { withTranslation } from "react-i18next";
-import skip_arrow from "../../../public/img/icons/skip-arrow.svg"
+import skip_arrow from "../../../public/img/icons/skip-arrow-blue.svg"
 
 class TabCreateComment extends PureComponent {
     constructor(props) {
@@ -201,14 +201,16 @@ class TabCreateComment extends PureComponent {
                                             className=" comment_sms_btn_active" onClick={() => this.updateTab('login_tab')}>{t("Вход")}</button>
                                         <button
                                             className="comment_sms_btn" onClick={() => this.updateTab('sms_tab')}>{t("Sms авторизация")}</button>
-                                        <img onClick={() => this.updateTab('sms_tab')} src={skip_arrow} alt="" />
+                                        {/* <img onClick={() => this.updateTab('sms_tab')} src={skip_arrow} alt="" /> */}
                                     </div>) : (
                                         <div className="comment_sms_btn_block">
-                                            <button className="comment_sms_btn_active" onClick={() => this.updateTab('sms_tab')}
-                                            >{t("Sms авторизация")}</button>
                                             <button className="comment_sms_btn" onClick={() => this.updateTab('login_tab')}
                                             >{t("Вход")}</button>
-                                            <img onClick={() => this.updateTab('login_tab')} src={skip_arrow} alt="" />
+                                            <button className="comment_sms_btn_active" onClick={() => this.updateTab('sms_tab')}
+                                            >{t("Sms авторизация")}</button>
+
+
+                                            {/* <img onClick={() => this.updateTab('login_tab')} src={skip_arrow} alt="" /> */}
                                         </div>
                                     )}
 

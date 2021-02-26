@@ -54,7 +54,7 @@ class TabSix extends PureComponent {
                             <img src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt="" />
                             <div className="last_list_name">
                                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                                <p>{currentDay} {moment(time).format('LT')}</p>
+                                <p>{t(`${currentDay}`)}{moment(time).format('LT')}</p>
                             </div>
                         </div>
                         <p className="desktop_visible" style={{
@@ -83,15 +83,14 @@ class TabSix extends PureComponent {
                 <MediaQuery maxWidth={mob}>
                     <div className="service_selection final-screen">
                         <div className="last_footer_block">
-                            <input
-                                className=" book_button"
-
-                                type="submit" value={t('Создать новую запись')} onClick={() => {
+                                <a className="book_button_last" href={`/online/${this.props.match.params.company}`} onClick={() => {
                                     this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
-                                }} />
+                                }}>{t("Создать новую запись")}</a>
+
+
                             <p>
-                                {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp;
-              <a rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
+                                {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
+              <a className="last_footer_block_a" rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
                             </p>
                         </div>
                         <div className="last_list">
@@ -102,7 +101,7 @@ class TabSix extends PureComponent {
                             <div className="title_block staff_title">
                             </div>
 
-                            <div className="final-book">
+                            <div className="final-book finel_color_text">
                                 <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>
                             </div>
 
@@ -166,7 +165,7 @@ class TabSix extends PureComponent {
 
                             </div>
 
-                            <div className="final-book">
+                            <div className="final-book finel_color_text">
                                 <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>
                             </div>
 

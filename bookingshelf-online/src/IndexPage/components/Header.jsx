@@ -115,16 +115,24 @@ class Header extends PureComponent {
                             <img src={arrow_down} alt="arrou"></img>
                             <div className={langList ? "leng_list leng_list_active" : "leng_list"}>
                                 <div className="leng_list_item" onClick={(e) => this.changeLang("ru")}>
-                                    <img src={rus_img} alt="" />
                                     <p>Русский</p>
                                     <div className={currentLang === "ru" ? "leng_btn" : "leng_btn langNotActive"}
                                     ></div>
                                 </div>
                                 <div className="leng_list_item" onClick={(e) => this.changeLang("en")}>
-                                    <img src={eng_img} alt="" />
                                     <p>English</p>
                                     <div></div>
                                     <div className={currentLang === "en" ? "leng_btn" : " leng_btn langNotActive"}></div>
+                                </div>
+                                <div className="leng_list_item" onClick={(e) => this.changeLang("uk")}>
+                                    <p>Український</p>
+                                    <div></div>
+                                    <div className={currentLang === "uk" ? "leng_btn" : " leng_btn langNotActive"}></div>
+                                </div>
+                                <div className="leng_list_item" onClick={(e) => this.changeLang("pl")}>
+                                    <p>Polski</p>
+                                    <div></div>
+                                    <div className={currentLang === "pl" ? "leng_btn" : " leng_btn langNotActive"}></div>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +149,7 @@ class Header extends PureComponent {
                                 <div className="firm-text">
                                     <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{info && ((screen === 0 && info.onlineCompanyHeader) ? info.onlineCompanyHeader : info.companyName)}</p>
                                 </div>
-                                <div className="header-lang" onClick={e => this.openLangList()}>
+                                <div className="header-lang">
                                     <p>{currentTextLeng}</p>
                                     <img src={arrow_down_white} alt="arrou"></img>
                                 </div>
@@ -196,15 +204,23 @@ class Header extends PureComponent {
                                 <img src={arrow_down} alt="arrou"></img>
                                 <div className={langList ? "leng_list leng_list_active" : "leng_list"}>
                                     <div className="leng_list_item" onClick={(e) => this.changeLang("ru")}>
-                                        <img src={rus_img} alt="" />
                                         <p>Русский</p>
                                         <div className={currentLang === "ru" ? "leng_btn" : "leng_btn langNotActive"}></div>
                                     </div>
                                     <div className="leng_list_item" onClick={(e) => this.changeLang("en")}>
-                                        <img src={eng_img} alt="" />
                                         <p>English</p>
                                         <div></div>
                                         <div className={currentLang === "en" ? "leng_btn" : "leng_btn langNotActive"}></div>
+                                    </div>
+                                    <div className="leng_list_item" onClick={(e) => this.changeLang("uk")}>
+                                        <p>Український</p>
+                                        <div></div>
+                                        <div className={currentLang === "uk" ? "leng_btn" : " leng_btn langNotActive"}></div>
+                                    </div>
+                                    <div className="leng_list_item" onClick={(e) => this.changeLang("pl")}>
+                                        <p>Polski</p>
+                                        <div></div>
+                                        <div className={currentLang === "pl" ? "leng_btn" : " leng_btn langNotActive"}></div>
                                     </div>
                                 </div>
                             </div>

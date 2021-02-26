@@ -55,7 +55,7 @@ class TabFive extends PureComponent {
               <img src={selectedStaff.imageBase64 ? "data:image/png;base64," + selectedStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`} alt="" />
               <div className="last_list_name">
                 <span>{selectedStaff.firstName} {selectedStaff.lastName}</span>
-                <p>{currentDay} {moment(time).format('LT')}</p>
+                <p>{t(`${currentDay}`)} {moment(time).format('LT')}</p>
               </div>
             </div>
             <p className="desktop_visible" style={{
@@ -240,8 +240,8 @@ class TabFive extends PureComponent {
                   }
                 }} />
             <p>
-              {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp;
-              <a rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
+              {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
+              <a className="last_footer_block_a" rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
             </p>
           </div>
         </MediaQuery>
@@ -249,9 +249,9 @@ class TabFive extends PureComponent {
         <MediaQuery minWidth={desctop}>
           <div className="specialist">
             <div className="last_footer_block">
-              <p>
-                {t("Нажимая кнопку записаться, вы соглашаетесь с")}&nbsp;
-              <a rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("условиями пользовательского соглашения")}</a>
+              <p >
+                {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
+              <a className="last_footer_block_desc_a" rel="nofollow noopener noreferrer"  href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
               </p>
               <input
               className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " next_block book_button"}
