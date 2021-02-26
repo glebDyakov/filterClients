@@ -3063,6 +3063,11 @@ a.last_footer_block_a {
         margin: auto;
         width: 360px;
     }
+    .next_block-btn_arrow{
+        background-size: 17px;
+        background-position-x: 204px;
+        background-position-y: 21px;
+    }
     .specialist-block {
         display: flex;
         flex-direction: column;
