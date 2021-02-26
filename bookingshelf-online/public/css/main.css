@@ -529,15 +529,16 @@ q:before, q:after {
     border: 0;
 }
 .next_block-btn_arrow{
-    width: 180px;
+    width: 136px;
     height: 34px;
     background: url(../img/icons/skip-arrow-white.svg) no-repeat;
-    background-size: 18px;
+    background-size: 15px;
     left: auto;
     background-position: right center;
-    background-position-x: 124px;
+    background-position-x: 104px;
+    background-position-y: 14px;
     margin: 3px -1px 0px 0px;
-    background: var(--color_button);
+    background-color: var(--color_button);
     border-radius: 3px;
     text-align: center;
     font-size: 13px;
