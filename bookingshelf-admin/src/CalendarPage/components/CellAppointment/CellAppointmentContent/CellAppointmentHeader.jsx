@@ -4,8 +4,17 @@ import moment from 'moment';
 import Popover from '../../../../_components/Popover';
 import { withTranslation } from 'react-i18next';
 import { access } from '../../../../_helpers/access';
+import { PAYMENT_TYPES } from '../../../../_constants';
 
 class CellAppointmentHeader extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.POPOVER_PROPS_BY_TYPE = {
+      [PAYMENT_TYPES.CARD]: { className: 'no-cash-payment', title: this.props.t('Оплата картой'), minWidth: '55px' },
+      [PAYMENT_TYPES.CASH]:  { className: 'cash-payment', title: this.props.t('Оплата наличными'), minWidth: '55px' },
+      [PAYMENT_TYPES.INSURANCE]: { className: 'insurance-payment', title: this.props.t('Оплата по страховке'), minWidth: '55px' },
+    }
+  }
   componentDidUpdate(prevProps) {
     if (this.props.appointment.appointmentTimeMillis !== prevProps.appointment.appointmentTimeMillis || this.props.totalDuration !== prevProps.totalDuration) {
       document.getElementById(`${this.props.appointment.appointmentId}-service-time`).innerHTML = `${moment(this.props.appointment.appointmentTimeMillis, 'x').format('HH:mm')} - ${moment(this.props.appointment.appointmentTimeMillis, 'x').add(this.props.totalDuration, 'seconds').format('HH:mm')}`;
@@ -62,9 +71,7 @@ class CellAppointmentHeader extends React.PureComponent {
 
                 {appointment.hasCoAppointments && <Popover props={{ className: 'super-visit', title: t('Мультивизит') }}/>}
 
-                <Popover props={appointment.cashPayment
-                    ? { className: 'cash-payment', title: t('Оплата наличными'), minWidth: '55px' }
-                    : { className: 'no-cash-payment', title: t('Оплата картой'), minWidth: '55px' }}
+                <Popover props={this.POPOVER_PROPS_BY_TYPE[appointment.paymentType]}
                 />
 
                 {access(15) && !appointment.coappointment && (
