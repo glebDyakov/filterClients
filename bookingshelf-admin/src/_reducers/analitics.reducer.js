@@ -13,6 +13,7 @@ const initialState = {
     recordsArrayChart: [],
     cashPaymentChart: [],
     cardPaymentChart: [],
+    insurancePaymentChart: [],
   },
   staffsAnalyticChart: {
     dateArrayChart: [],
@@ -262,7 +263,9 @@ export function analitics(state = initialState, action) {
       let recordsArrayChart = [];
       const cashPaymentChart = [];
       const cardPaymentChart = [];
+      const insurancePaymentChart = [];
       let dateNormal = '';
+
 
       let length = Object.keys(action.count).length;
 
@@ -271,7 +274,8 @@ export function analitics(state = initialState, action) {
         dateArrayChart.push(dateNormal);
         recordsArrayChart.push(action.count[Object.keys(action.count)[i]].amount);
         cashPaymentChart.push(action.count[Object.keys(action.count)[i]].cashPayment);
-        cardPaymentChart.push(action.count[Object.keys(action.count)[i]].cardPayment);
+        cardPaymentChart.push(action.count[Object.keys(action.count)[i]].plasticPayment);
+        insurancePaymentChart.push(action.count[Object.keys(action.count)[i]].insurancePayment);
       }
 
       return {
@@ -282,6 +286,7 @@ export function analitics(state = initialState, action) {
           recordsArrayChart,
           cashPaymentChart,
           cardPaymentChart,
+          insurancePaymentChart,
         },
       };
     case analiticsConstants.GET_STAFFS_ANALYTICS_CHART_SUCCESS:

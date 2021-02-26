@@ -521,6 +521,7 @@ class Index extends Component {
     const recordsFinancialChart = this.props.analitics.financialAnalyticChart.recordsArrayChart;
     const cashFinancialChart = this.props.analitics.financialAnalyticChart.cashPaymentChart;
     const cardFinancialChart = this.props.analitics.financialAnalyticChart.cardPaymentChart;
+    const insuranceFinancialChart = this.props.analitics.financialAnalyticChart.insurancePaymentChart;
 
 
     const { analitics, staff } = this.props;
@@ -594,6 +595,17 @@ class Index extends Component {
           pointHoverBackgroundColor: '#F1B44C',
           pointHoverBorderColor: '#F1B44C',
           data: cardFinancialChart,
+        },
+        {
+          ...chartOptions,
+          label: t('Сумма страховки'),
+          backgroundColor: '#bb2626',
+          borderColor: '#bb2626',
+          pointBorderColor: '#bb2626',
+          pointBackgroundColor: '#bb2626',
+          pointHoverBackgroundColor: '#bb2626',
+          pointHoverBorderColor: '#bb2626',
+          data: insuranceFinancialChart,
         },
       ],
     };
@@ -1108,7 +1120,12 @@ class Index extends Component {
               <p
                 className="sum">{analitics.financialAnalyticChart.cardPaymentChart.length > 0 && Math.floor(analitics.financialAnalyticChart.cardPaymentChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
             </div>
-
+            <div className="cash-payments">
+              <span className="red-marker"></span>
+              <p className="cash-text">{t('Страховка')}: &nbsp;</p>
+              <p
+                className="sum">{analitics.financialAnalyticChart.insurancePaymentChart.length > 0 && Math.floor(analitics.financialAnalyticChart.insurancePaymentChart.reduce((a, b) => a + b) * 100) / 100} BYN</p>
+            </div>
           </div>
           <div className="chart-inner">
             <div id="container-chart" className="chart" style={{ position: 'relative' }}>

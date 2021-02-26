@@ -10,3 +10,9 @@ export const paymentsConstants = {
   CANCEL_PAYMENT: 'CANCEL_PAYMENT',
 
 };
+
+export const PAYMENT_TYPES = {
+  CASH: 'C',
+  CARD: 'P',
+  INSURANCE: 'I',
+};
