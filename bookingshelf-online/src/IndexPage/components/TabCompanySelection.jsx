@@ -3,6 +3,7 @@ import { staffActions } from "../../_actions";
 import { connect } from 'react-redux';
 import { getFirstScreen } from "../../_helpers/common";
 import { withTranslation } from "react-i18next";
+import skip_arrow from "../../../public/img/icons/skip-arrow-white.svg"
 
 
 class TabCompanySelection extends PureComponent {
@@ -64,7 +65,7 @@ class TabCompanySelection extends PureComponent {
                                     </div>
                                 </div>
 
-                                <button className="desktop_visible next_block-btn_arrow"> {t("Выбрать")}</button>
+                                <button className="desktop_visible next_block-btn_arrow"> {t("Выбрать")}<img src={skip_arrow} alt="skip_arrow"/></button>
 
                             </span>
                             <div className="stars desktop_invisible" >{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
@@ -83,7 +84,7 @@ class TabCompanySelection extends PureComponent {
                                     allowFullScreen>
                                 </iframe>
                             )}
-                            <button className="desktop_invisible next_block-btn_arrow"> {t("Выбрать")}</button>
+                            <button className="desktop_invisible next_block-btn_arrow"> {t("Выбрать")} <img src={skip_arrow} alt="skip_arrow"/> </button>
                         </li>
                     )}
                 </ul>

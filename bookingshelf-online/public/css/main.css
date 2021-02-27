@@ -109,6 +109,7 @@ q:before, q:after {
     height: 100%;
     background-color: rgb(0, 0, 0, 0.3);
     display: flex;
+    display: visible !important;
 }
 
 .modal_window_text {
@@ -232,7 +233,7 @@ q:before, q:after {
 .minus {
     width: 16px;
     height: 2px;
-    background-color: rgba(172, 172, 172, 1);
+    background-color: var(--color_button);
 }
 
 .minus_hover {
@@ -328,7 +329,6 @@ q:before, q:after {
 
 .final-book p {
     font-size: 24px;
-    letter-spacing: 0.4;
     line-height: 30px;
 }
 .finel_color_text p{
@@ -385,7 +385,6 @@ q:before, q:after {
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
-    letter-spacing: 0em;
     text-align: left;
     opacity: 0.4;
     padding-top: 2px;
@@ -531,12 +530,6 @@ q:before, q:after {
 .next_block-btn_arrow{
     width: 136px;
     height: 34px;
-    background: url(../img/icons/skip-arrow-white.svg) no-repeat;
-    background-size: 15px;
-    left: auto;
-    background-position: right center;
-    background-position-x: 104px;
-    background-position-y: 14px;
     margin: 3px -1px 0px 0px;
     background-color: var(--color_button);
     border-radius: 3px;
@@ -545,6 +538,10 @@ q:before, q:after {
     line-height: 18px;
     color: #FFFFFF;
     border: 0;
+}
+.next_block-btn_arrow img{
+    margin-left: 10px;
+    margin-top: -2px;
 }
 button, button:active, button:focus {
     outline: none;
@@ -669,7 +666,14 @@ a {
     z-index: 10;
     max-height: 210px;
 }
-
+.service_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.service_header:hover{
+    cursor: pointer;
+}
 .specialist-block {
     display: flex;
     justify-content: space-between;
@@ -677,6 +681,9 @@ a {
     margin: auto;
     align-items: center;
     min-height: 72px;
+}
+.specialist:hover{
+    cursor: pointer;
 }
 
 .tap-service-icon {
@@ -727,9 +734,9 @@ a {
 }
 
 .service_item p {
-    font-size: 14px;
-    letter-spacing: 0;
+    font-size: 15px;
     display: flex;
+    opacity: 0.7;
 }
 
 .white_text {
@@ -793,6 +800,15 @@ a {
     justify-content: space-between;
     align-items: center;
 }
+.price_service{
+    display: flex;
+flex-direction: column;
+}
+.price_service_item{
+    display: flex;
+    justify-content: space-between;
+    align-items: unset;
+}
 
 .service_footer_price span {
     font-weight: 600;
@@ -805,7 +821,6 @@ a {
     color: white;
     font-size: 13px;
     line-height: 18px;
-    letter-spacing: 0.1px;
     font-weight: 400;
 }
 
@@ -813,7 +828,6 @@ a {
     color: white;
     font-size: 13px;
     line-height: 29px;
-    letter-spacing: 0.1px;
 }
 
 .service_footer_price_text {
@@ -827,7 +841,6 @@ a {
     color: white;
     font-size: 13px;
     line-height: 18px;
-    letter-spacing: 0.1px;
 }
 .service_footer_price_small_text:hover{
     cursor: pointer;
@@ -846,7 +859,7 @@ a {
 }
 
 .runtime {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 20px;
     opacity: 0.7;
     margin-top: -14px;
@@ -929,6 +942,12 @@ a {
     line-height: 40px;
     color: var(--color_button);
 }
+
+.service-price-text p {
+    font-size: 29.3878px;
+    color: var(--color_button);
+}
+
 
 .service-price-text span {
     font-size: 9.79592px;
@@ -1115,7 +1134,9 @@ a {
 .comments_book_button.comments_sub_btn {
     background-position-x: 125px;
 }
-
+.comments_book_button:hover{
+    cursor: pointer;
+}
 .desktop-visible-flex {
     display: flex;
 }
@@ -1124,7 +1145,6 @@ a {
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
-    letter-spacing: 0em;
     text-align: left;
     opacity: 0.4;
 }
@@ -1195,6 +1215,7 @@ a {
 .service_list li, .affiliate li.staff_comment, .service_list li:hover, .affiliate li:hover, .affiliate li.active {
     border: solid 1px rgba(172, 172, 172, 0.2);
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .subsidiary-map {
@@ -1233,7 +1254,7 @@ a {
 
 .service_list_name h3 {
     font-weight: 600;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 27px;
 }
 
@@ -1383,12 +1404,39 @@ a {
     width: 700px;
     margin: auto;
     border: solid 1px rgba(172, 172, 172, 0.2);
-    min-height: 79vh;
+    min-height: 74vh;
     height: auto;
     margin-top: 13px;
     border-radius: 5px;
+    padding-bottom: 80px;
 }
-
+.comments_btn_footer{
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 40%;
+    width: 156px;
+    height: 34px;
+    margin: 3px -1px 0px 0px;
+    background-color: var(--color_button);
+    border-radius: 3px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 18px;
+    color: #FFFFFF;
+    border: 0;
+    align-items: center;
+    display: flex;
+    margin-bottom: 50px;
+    justify-content: center;
+}
+.comments_btn_footer img{
+    margin-left:7px ;
+    margin-top: 2px;
+}
+.comments_btn_footer:hover{
+    cursor: pointer;
+}
 .staff-comments {
     width: 15px;
     height: 15px;
@@ -1410,7 +1458,7 @@ a {
 }
 
 .staff_popup li {
-    box-shadow: 2px 3px 15px 0 rgba(56, 62, 74, 0.08);
+   
     background-color: #ffffff;
     border: solid 1px rgba(172, 172, 172, 0.2);
     width: 340px;
@@ -1551,7 +1599,8 @@ overflow: visible !important;  */
 }
 
 .leng_list.leng_list_active {
-    height: 165px;
+    height: 160px;
+    padding: 5px;
 }
 
 .header-lang:hover {
@@ -1578,7 +1627,6 @@ overflow: visible !important;  */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0px 10px 0px;
 }
 
 .leng_list_item p {
@@ -1716,10 +1764,16 @@ a.last_footer_block_desc_a{
 
 .service_items li {
     width: 340px;
-    height: 179px;
+    min-height: 179px;
     padding: 14px;
 }
+.service-block:hover{
+    cursor: pointer;
+}
 
+.service_items li:hover{
+    cursor: pointer;
+}
 .service_items li:nth-child(2n) {
     margin-left: 20px;
 }
@@ -2534,6 +2588,14 @@ a.last_footer_block_a {
 
 /* ////////////////////////////////////////////////////////////////// */
 
+@media screen and (max-width: 768px) {
+    .container_popups {
+        max-width: 768px;
+    }
+    .title_block{
+        top: 80px;
+    }
+}
 @media screen and (max-width: 709px) {
     .container_popups * {
         font-size: 13px;
@@ -2558,6 +2620,9 @@ a.last_footer_block_a {
         display: flex;
         flex-direction: column;
         padding: 10px;
+    }
+    .affiliate li:hover{
+        cursor: pointer;
     }
     .firm-title {
         width: 60%;
@@ -2799,7 +2864,7 @@ a.last_footer_block_a {
     }
     .service_items li {
         width: 330px;
-        height: 102px;
+        min-height: 102px; 
     }
     .service_items li:nth-child(2n) {
         margin-left: 0px;
@@ -2831,6 +2896,7 @@ a.last_footer_block_a {
     }
     .white_text {
         font-weight: 400;
+        line-height: 18px;
     }
     .dark_blue_text p, .gray_text p {
         font-weight: 400;
@@ -2855,7 +2921,6 @@ a.last_footer_block_a {
     }
     .service-title .modal_title {
         margin-left: -45px;
-        letter-spacing: 0.3px;
     }
     .media_search {
         width: 18px;
@@ -2864,6 +2929,14 @@ a.last_footer_block_a {
     .service-price-text strong {
         font-size: 24px;
         line-height: 33px;
+    }
+    .price_service_item span{
+        margin: -7px -2px 0px 0px;
+    }
+    .price_service strong{
+        font-size: 24px;
+        line-height: 20px;
+        text-align: center;
     }
     .service-price-text span {
         font-size: 10px;
@@ -2879,7 +2952,6 @@ a.last_footer_block_a {
         top: 80px;
     }
     .service_item p {
-        width: 80%;
         font-size: 13px;
         line-height: 18px;
         font-weight: 400;
@@ -3037,7 +3109,6 @@ a.last_footer_block_a {
         font-weight: 300;
         font-size: 13px;
         line-height: 23px;
-        letter-spacing: -0.3;
     }
     .cansel_block {
         display: flex;
@@ -3116,6 +3187,7 @@ a.last_footer_block_a {
     .last_footer_block p{
         color: var(--color_text);
     }
+    
 }
 
 /* ////////////////////////////////////////////// */
@@ -3199,7 +3271,6 @@ a.last_footer_block_a {
     text-align: center;
     font-size: 45px;
     font-weight: bold;
-    letter-spacing: 0;
     font-family: 'helvetica_medium';
     margin-bottom: 100px;
     line-height: 55px;
@@ -3214,7 +3285,6 @@ a.last_footer_block_a {
     border: solid 1px rgba(116, 119, 129, 0.18);
     font-size: 17px;
     font-weight: bold;
-    letter-spacing: -0.2px;
     color: #ffffff;
     width: 100%;
     max-width: 320px;

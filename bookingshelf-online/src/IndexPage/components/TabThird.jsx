@@ -13,8 +13,13 @@ class TabThird extends PureComponent {
         this.state = {
             openList: false,
         }
+        this.openListFunc = this.openListFunc.bind(this);
     }
-
+    openListFunc(){
+        this.setState({
+           openList: !this.state.openList,
+       })
+   }
     componentDidMount() {
         if (this.props.isStartMovingVisit) {
             this.props.refreshTimetable()
@@ -26,7 +31,7 @@ class TabThird extends PureComponent {
         const { setScreen, setDefaultFlag, refreshTimetable, isStartMovingVisit, selectedDay, selectedStaff, selectedServices, getDurationForCurrentStaff, selectedService, disabledDays, month, handleDayClick, showPrevWeek, showNextWeek, t } = this.props;
         const { openList } = this.state;
 
-        const desctop = 710;
+        const desctop = 720;
         const mob = 709;
         const currentDay = culcDay(selectedDay, "desctop");
         const currentDayMob = culcDay(selectedDay, "mob");
@@ -61,7 +66,7 @@ class TabThird extends PureComponent {
             serviceInfo = (
                 <div>
                     <MediaQuery maxWidth={mob}>
-                        <div className="specialist">
+                        <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
 
                                 <div className="supperVisDet service_footer-block">
@@ -75,7 +80,7 @@ class TabThird extends PureComponent {
                                     }}>
                                         <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Услуги")}: {selectedServices.length}
+                                        })}>{t("Услуги")}Услуги: {selectedServices.length}
                                             <img style={{
                                                 marginLeft: "7px",
                                                 marginTop: "0px"
@@ -109,7 +114,7 @@ class TabThird extends PureComponent {
                         </div>
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
-                        <div className="specialist">
+                        <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
                                 {openList ?
                                     <div className="specialist_big">
