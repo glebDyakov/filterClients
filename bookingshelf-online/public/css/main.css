@@ -1560,7 +1560,8 @@ overflow: visible !important;  */
 }
 
 .leng_list.leng_list_active {
-    height: 165px;
+    height: 160px;
+    padding: 5px;
 }
 
 .header-lang:hover {
@@ -1587,7 +1588,6 @@ overflow: visible !important;  */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0px 10px 0px;
 }
 
 .leng_list_item p {

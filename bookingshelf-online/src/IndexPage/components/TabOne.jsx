@@ -20,7 +20,7 @@ class TabOne extends PureComponent {
         this.handleStaffCommentsClick = this.handleStaffCommentsClick.bind(this);
         this.handleSelectStaff = this.handleSelectStaff.bind(this);
     }
-    
+
     componentWillReceiveProps(newProps) {
         const { movingVisit } = newProps
         if (newProps.services && newProps.isStartMovingVisit && movingVisit && (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services))) {
@@ -280,8 +280,8 @@ class TabOne extends PureComponent {
 
                 <div>
                     <div className="skip_employee-block">
-                        {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>} */}
-                        {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>}
+                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
+                        {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>
                     <div className="title_block n staff_title">
                         {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (
