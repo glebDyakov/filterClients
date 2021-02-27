@@ -231,7 +231,7 @@ class TabTwo extends Component {
                                     <div className="specialist_big">
                                         <div className="service_list_block">
                                             <div className="setvice_list_items">
-                                                <p>{t("Услуги:")}Услуги:</p>
+                                                <p>{t("Услуги")}:</p>
                                                 {selectedServices.map((element, index) =>
                                                     <div key={index} className="setvice_list_item">
                                                         <div className="cansel_btn_small"> </div>

@@ -80,7 +80,7 @@ class TabThird extends PureComponent {
                                     }}>
                                         <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Услуги")}Услуги: {selectedServices.length}
+                                        })}>{t("Услуги")}: {selectedServices.length}
                                             <img style={{
                                                 marginLeft: "7px",
                                                 marginTop: "0px"
@@ -120,7 +120,7 @@ class TabThird extends PureComponent {
                                     <div className="specialist_big">
                                         <div className="service_list_block">
                                             <div className="setvice_list_items">
-                                                <p>{t("Услуги:")}</p>
+                                                <p>{t("Услуги")}:</p>
                                                 {selectedServices.map((element) =>
                                                     <div className="setvice_list_item">
                                                         <div className="cansel_btn_small"> </div>
