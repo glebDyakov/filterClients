@@ -1765,7 +1765,7 @@ a.last_footer_block_desc_a{
 .service_items li {
     width: 340px;
     min-height: 179px;
-     min-height: 250px;
+     max-height: 250px;
     padding: 14px;
 }
 .service-block:hover{
