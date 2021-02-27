@@ -5,6 +5,8 @@ import { staffActions } from "../../_actions";
 import moment from "moment";
 import Paginator from "./Paginator";
 import { withTranslation } from "react-i18next";
+import skip_arrow from "../../../public/img/icons/skip-arrow-white.svg"
+
 
 class TabStaffComments extends PureComponent {
     constructor(props) {
@@ -118,6 +120,7 @@ class TabStaffComments extends PureComponent {
                             </ul>
                         </React.Fragment>
                     )}
+                    <div className="comments_btn_footer"  onClick={() => setScreen('staff-create-comment')}>{t("Оставить отзыв")}<img src={skip_arrow} alt="skip_arrow"/></div>
                 </div>
             </div>
         );

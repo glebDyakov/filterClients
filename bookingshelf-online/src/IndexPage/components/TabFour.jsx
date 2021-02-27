@@ -15,8 +15,13 @@ class TabFour extends PureComponent {
             arrayTime: 0,
             openList: false,
         }
+        this.openListFunc = this.openListFunc.bind(this);
     }
-
+    openListFunc(){
+        this.setState({
+           openList: !this.state.openList,
+       })
+   }
     render() {
 
         const { t, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
@@ -119,7 +124,7 @@ class TabFour extends PureComponent {
             serviceInfo = (
                 <div>
                     <MediaQuery maxWidth={mob}>
-                        <div className="specialist">
+                        <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
 
                                 <div className="supperVisDet service_footer-block">
@@ -240,7 +245,7 @@ class TabFour extends PureComponent {
                     </span>
                     <p className="modal_title">{t("Выберите время")}</p>
                 </div>
-                <div className="specialist">
+                <div className="specialist" onClick={event => this.openListFunc()}>
 
                     {serviceInfo}
 

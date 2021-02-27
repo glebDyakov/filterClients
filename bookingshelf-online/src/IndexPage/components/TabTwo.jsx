@@ -18,8 +18,15 @@ class TabTwo extends Component {
             visibleSearch: false,
         }
         this.priceText = this.priceText.bind(this);
+        this.openListFunc = this.openListFunc.bind(this);
     }
     startOpenservice = false;
+
+    openListFunc(){
+         this.setState({
+            openList: !this.state.openList,
+        })
+    }
     priceText(priceFrom, priceTo, currency, white) {
         const desctop = 720;
         const mob = 709;
@@ -29,26 +36,26 @@ class TabTwo extends Component {
         if (priceFrom !== priceTo) {
             return (<React.Fragment>
                 <MediaQuery maxWidth={mob}>
-                <div className="price_service">
-                    <div className="price_service_item">
-                        <strong className={whiteClass}>{priceFrom}</strong>
-                        <span className={whiteClass}>{currency}</span>
+                    <div className="price_service">
+                        <div className="price_service_item">
+                            <strong className={whiteClass}>{priceFrom}</strong>
+                            <span className={whiteClass}>{currency}</span>
+                        </div>
+                        <strong className={whiteClass}>-&nbsp;</strong>
+                        <div className="price_service_item">
+                            <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
+                            <span className={whiteClass}>{currency}</span>
+                        </div>
                     </div>
-                    <strong className={whiteClass}>-&nbsp;</strong>
-                    <div className="price_service_item">
-                        <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
-                        <span className={whiteClass}>{currency}</span>
-                    </div>
-                </div>
-                    </MediaQuery>
-                <MediaQuery minWidth={desctop}>
-                        <strong className={whiteClass}>{priceFrom}</strong>
-                        <span className={whiteClass}>{currency}</span>
-                    <strong className={whiteClass}>-&nbsp;</strong>
-                        <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
-                        <span className={whiteClass}>{currency}</span>
                 </MediaQuery>
-                
+                <MediaQuery minWidth={desctop}>
+                    <strong className={whiteClass}>{priceFrom}</strong>
+                    <span className={whiteClass}>{currency}</span>
+                    <strong className={whiteClass}>-&nbsp;</strong>
+                    <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
+                    <span className={whiteClass}>{currency}</span>
+                </MediaQuery>
+
 
             </React.Fragment>
             )
@@ -178,7 +185,7 @@ class TabTwo extends Component {
             serviceInfo = (
                 <div>
                     <MediaQuery maxWidth={mob}>
-                        <div className="specialist">
+                        <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
                                 <div className="supperVisDet service_footer-block">
                                     <div className="service_footer_price">
@@ -218,7 +225,7 @@ class TabTwo extends Component {
                         </div>
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
-                        <div className="specialist">
+                        <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
                                 {openList ?
                                     <div className="specialist_big">
@@ -301,6 +308,7 @@ class TabTwo extends Component {
                             </div>
                             <img onClick={e => this.setState({
                                 visibleSearch: !visibleSearch,
+                                searchValue:""
                             })} src={mobile_gray_cansel} alt="mobile_gray_cansel" />
                         </div>)
                         : (<div className="title_block service-title">
@@ -430,22 +438,18 @@ class TabTwo extends Component {
                                                 paddingBottom: "9px",
                                                 marginBottom: "18px",
                                             }}>
-                                                <div style={{
-                                                    display: "flex",
-                                                    justifyContent: "space-between",
-                                                    alignItems: "center"
-                                                }}>
+                                                <div onClick={event => {
+                                                    const newArray = catigor;
+                                                    newArray[index] = !newArray[index]
+                                                    this.setState({
+                                                        catigor: newArray.concat()
+                                                    })
+                                                }} className="service_header">
                                                     <div className="service_list_name">
                                                         <h3>{serviceGroup.name}</h3>
                                                     </div>
 
-                                                    <div className="minus_hover" onClick={event => {
-                                                        const newArray = catigor;
-                                                        newArray[index] = !newArray[index]
-                                                        this.setState({
-                                                            catigor: newArray.concat()
-                                                        })
-                                                    }}>
+                                                    <div className="minus_hover" >
                                                         {this.startOpenservice ? (!catigor[index] ?
                                                             <div>
                                                                 <div className="minus"></div>
@@ -472,7 +476,7 @@ class TabTwo extends Component {
                                                                 return <li key={serviceKey}
                                                                     className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (array.length === 1 && " service_items_grow")}
                                                                     style={{
-                                                                        backgroundColor: "rgba(62, 80, 247)"
+                                                                        backgroundColor: "var(--color_button)"
                                                                     }}>
                                                                     <div className="service_item" >
                                                                         <label className="service-block">

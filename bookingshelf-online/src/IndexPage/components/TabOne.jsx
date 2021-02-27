@@ -17,10 +17,15 @@ class TabOne extends PureComponent {
             staff: null,
             openList: false,
         }
+        this.openListFunc = this.openListFunc.bind(this);
         this.handleStaffCommentsClick = this.handleStaffCommentsClick.bind(this);
         this.handleSelectStaff = this.handleSelectStaff.bind(this);
     }
-
+    openListFunc(){
+        this.setState({
+           openList: !this.state.openList,
+       })
+   }
     componentWillReceiveProps(newProps) {
         const { movingVisit } = newProps
         if (newProps.services && newProps.isStartMovingVisit && movingVisit && (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services))) {
@@ -114,7 +119,7 @@ class TabOne extends PureComponent {
         serviceInfo = (
             <div>
                 <MediaQuery maxWidth={mob}>
-                    <div className="specialist">
+                    <div className="specialist" onClick={event => this.openListFunc()}>
                         <div className="specialist-block">
 
                             <div className="supperVisDet service_footer-block">
@@ -160,7 +165,7 @@ class TabOne extends PureComponent {
                     </div>
                 </MediaQuery>
                 <MediaQuery minWidth={desctop}>
-                    <div className="specialist">
+                    <div className="specialist" >
                         <div className="specialist-block">
                             {openList ?
                                 <div className="specialist_big">
@@ -236,50 +241,14 @@ class TabOne extends PureComponent {
                 </div>
             )
         }
+
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
 
 
             <div className="service_selection screen1">
-                {this.state.staff && (
-                    <div className="approveF">
-                        <div className="modal_window_block">
-                            <div className="modal_window_text">
-                                <p className="modal_title">{t("Перенести визит?")}</p>
-                                <img src={cansel} onClick={e => this.setState({ staff: null })} alt="cansel" />
-                            </div>
-                            <div className="modal_window_btn">
-                                <button className="approveFYes" onClick={() => {
-                                    selectStaff(this.state.staff)
-                                    handleMoveVisit()
-                                    setDefaultFlag()
-                                    this.setState({ staff: null })
-                                }}>{t("Да")}
-                                </button>
-                                <div style={{
-                                    height: "38px",
-                                    width: "1px",
-                                    backgroundColor: "rgba(9, 9, 58, 0.1)"
-                                }}></div>
-                                <button className="approveFNo" onClick={() => {
-                                    const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
-                                    selectStaff(activeStaff)
-                                    handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
-                                    this.props.dispatch(staffActions.toggleStartMovingVisit(false))
-                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
-                                    setScreen(6)
-                                    setDefaultFlag()
-                                    this.setState({ staff: null })
-                                }}>{t("Нет")}
-                                </button>
-                            </div>
-
-                        </div>
-
-                    </div>
-                )}
-
                 <div>
                     <div className="skip_employee-block">
+                        {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
                         {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
                         {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>
@@ -401,7 +370,41 @@ class TabOne extends PureComponent {
                 {selectedServices[0] && serviceInfo}
                 {/*  */}
 
-
+                {this.state.staff && (
+                    <div className="approveF">
+                        <div className="modal_window_block">
+                            <div className="modal_window_text">
+                                <p className="modal_title">{t("Перенести визит?")}</p>
+                                <img src={cansel} onClick={e => this.setState({ staff: null })} alt="cansel" />
+                            </div>
+                            <div className="modal_window_btn">
+                                <button className="approveFYes" onClick={() => {
+                                    selectStaff(this.state.staff)
+                                    handleMoveVisit()
+                                    setDefaultFlag()
+                                    this.setState({ staff: null })
+                                }}>{t("Да")}
+                                </button>
+                                <div style={{
+                                    height: "38px",
+                                    width: "1px",
+                                    backgroundColor: "rgba(9, 9, 58, 0.1)"
+                                }}></div>
+                                <button className="approveFNo" onClick={() => {
+                                    const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
+                                    selectStaff(activeStaff)
+                                    handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
+                                    this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
+                                    setScreen(6)
+                                    setDefaultFlag()
+                                    this.setState({ staff: null })
+                                }}>{t("Нет")}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div >
         );
     }

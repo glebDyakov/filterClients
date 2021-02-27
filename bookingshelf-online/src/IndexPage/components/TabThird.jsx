@@ -13,8 +13,13 @@ class TabThird extends PureComponent {
         this.state = {
             openList: false,
         }
+        this.openListFunc = this.openListFunc.bind(this);
     }
-
+    openListFunc(){
+        this.setState({
+           openList: !this.state.openList,
+       })
+   }
     componentDidMount() {
         if (this.props.isStartMovingVisit) {
             this.props.refreshTimetable()
@@ -61,7 +66,7 @@ class TabThird extends PureComponent {
             serviceInfo = (
                 <div>
                     <MediaQuery maxWidth={mob}>
-                        <div className="specialist">
+                        <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
 
                                 <div className="supperVisDet service_footer-block">
@@ -109,7 +114,7 @@ class TabThird extends PureComponent {
                         </div>
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
-                        <div className="specialist">
+                        <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
                                 {openList ?
                                     <div className="specialist_big">
