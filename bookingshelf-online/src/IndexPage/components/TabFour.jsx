@@ -136,7 +136,7 @@ class TabFour extends PureComponent {
                                     <div className="time-footer hover" >
                                         <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Услуги")}Услуги: {selectedServices.length} <img
+                                        })}>{t("Услуги")}:{selectedServices.length} <img
                                             style={{
                                                 marginLeft: "3px",
                                                 marginTop: "0px"
@@ -175,7 +175,7 @@ class TabFour extends PureComponent {
                                 <div className="specialist_big">
                                     <div className="service_list_block">
                                         <div className="setvice_list_items">
-                                            <p>Услуги:</p>
+                                            <p>{t("Услуги")}:</p>
                                             {selectedServices.map((element,index) =>
                                                 <div key={index} className="setvice_list_item">
                                                     <div className="cansel_btn_small"> </div>
