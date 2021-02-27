@@ -328,7 +328,6 @@ q:before, q:after {
 
 .final-book p {
     font-size: 24px;
-    letter-spacing: 0.4;
     line-height: 30px;
 }
 .finel_color_text p{
@@ -385,7 +384,6 @@ q:before, q:after {
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
-    letter-spacing: 0em;
     text-align: left;
     opacity: 0.4;
     padding-top: 2px;
@@ -728,7 +726,6 @@ a {
 
 .service_item p {
     font-size: 13px;
-    letter-spacing: 0;
     display: flex;
     opacity: 0.7;
 }
@@ -815,7 +812,6 @@ flex-direction: column;
     color: white;
     font-size: 13px;
     line-height: 18px;
-    letter-spacing: 0.1px;
     font-weight: 400;
 }
 
@@ -823,7 +819,6 @@ flex-direction: column;
     color: white;
     font-size: 13px;
     line-height: 29px;
-    letter-spacing: 0.1px;
 }
 
 .service_footer_price_text {
@@ -837,7 +832,6 @@ flex-direction: column;
     color: white;
     font-size: 13px;
     line-height: 18px;
-    letter-spacing: 0.1px;
 }
 .service_footer_price_small_text:hover{
     cursor: pointer;
@@ -1140,7 +1134,6 @@ flex-direction: column;
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
-    letter-spacing: 0em;
     text-align: left;
     opacity: 0.4;
 }
@@ -2855,6 +2848,7 @@ a.last_footer_block_a {
     }
     .white_text {
         font-weight: 400;
+        line-height: 18px;
     }
     .dark_blue_text p, .gray_text p {
         font-weight: 400;
@@ -2879,7 +2873,6 @@ a.last_footer_block_a {
     }
     .service-title .modal_title {
         margin-left: -45px;
-        letter-spacing: 0.3px;
     }
     .media_search {
         width: 18px;
@@ -2911,7 +2904,6 @@ a.last_footer_block_a {
         top: 80px;
     }
     .service_item p {
-        width: 80%;
         font-size: 13px;
         line-height: 18px;
         font-weight: 400;
@@ -3069,7 +3061,6 @@ a.last_footer_block_a {
         font-weight: 300;
         font-size: 13px;
         line-height: 23px;
-        letter-spacing: -0.3;
     }
     .cansel_block {
         display: flex;
@@ -3232,7 +3223,6 @@ a.last_footer_block_a {
     text-align: center;
     font-size: 45px;
     font-weight: bold;
-    letter-spacing: 0;
     font-family: 'helvetica_medium';
     margin-bottom: 100px;
     line-height: 55px;
@@ -3247,7 +3237,6 @@ a.last_footer_block_a {
     border: solid 1px rgba(116, 119, 129, 0.18);
     font-size: 17px;
     font-weight: bold;
-    letter-spacing: -0.2px;
     color: #ffffff;
     width: 100%;
     max-width: 320px;
