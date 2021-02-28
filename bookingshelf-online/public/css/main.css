@@ -1790,14 +1790,13 @@ a.last_footer_block_desc_a{
     flex-grow: 1;
 }
 .service_items.service_items_active {
-    max-height: 1000px !important;
+    max-height: 600px !important;
 }
 
 .service_items li {
     width: 340px;
     min-height: 179px;
      max-height: 250px;
-    padding: 14px;
 }
 .service-block:hover{
     cursor: pointer;
@@ -1816,6 +1815,7 @@ a.last_footer_block_desc_a{
     justify-content: space-between;
     height: 100%;
     width: 100%;
+    padding: 14px;
 }
 
 .choise_time {

@@ -497,7 +497,7 @@ class TabTwo extends Component {
                                                                     style={{
                                                                         backgroundColor: "var(--color_button)"
                                                                     }}
-                                                                    onClick={e => selectService({ target: { checked: !select } }, service)}
+                                                                    
                                                                     >
                                                                     <div className="service_item" >
                                                                         <label className="service-block">
@@ -513,9 +513,9 @@ class TabTwo extends Component {
                                                                                         <div className="service-price-text">
 
                                                                                             {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
-                                                                                            {/* <input onChange={(e) => selectService(e, service)}
+                                                                                            <input onChange={(e) => selectService(e, service)}
                                                                                                 type="checkbox"
-                                                                                                checked={select} /> */}
+                                                                                                checked={select} />
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -528,9 +528,9 @@ class TabTwo extends Component {
                                                                                 <div className="service-price">
                                                                                     <div className="service-price-text">
                                                                                          {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
-                                                                                       {/* <input onChange={(e) => selectService(e, service)}
+                                                                                       <input onChange={(e) => selectService(e, service)}
                                                                                             type="checkbox"
-                                                                                            checked={select} /> */}
+                                                                                            checked={select} />
                                                                                     </div>
                                                                                     <button className="next_block-btn white_border "
                                                                                         onClick={e => selectService({ target: { checked: !select } }, service)}
@@ -543,7 +543,7 @@ class TabTwo extends Component {
                                                             } else {
                                                                 return <li key={serviceKey}
                                                                     className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}
-                                                                    onClick={e => selectService({ target: { checked: !select } }, service)}
+                                                                    
                                                                    >
                                                                      
                                                                     <div className="service_item" >
@@ -559,9 +559,9 @@ class TabTwo extends Component {
                                                                                     <div className="service-price">
                                                                                         <div className="service-price-text" >
                                                                                             {this.priceText(service.priceFrom, service.priceTo, service.currency, false)}
-                                                                                            {/* <input onChange={(e) => selectService(e, service)}
+                                                                                            <input onChange={(e) => selectService(e, service)}
                                                                                                 type="checkbox"
-                                                                                                checked={select} /> */}
+                                                                                                checked={select} />
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -575,9 +575,9 @@ class TabTwo extends Component {
                                                                                 <div className="service-price">
                                                                                     <div className="service-price-text" >
                                                                                         {this.priceText(service.priceFrom, service.priceTo, service.currency, false)}
-                                                                                        {/* <input onChange={(e) => selectService(e, service)}
+                                                                                        <input onChange={(e) => selectService(e, service)}
                                                                                             type="checkbox"
-                                                                                            checked={select} /> */}
+                                                                                            checked={select} />
                                                                                     </div>
                                                                                     <button className="next_block-btn "
                                                                                         onClick={e => selectService({ target: { checked: !select } }, service)}
