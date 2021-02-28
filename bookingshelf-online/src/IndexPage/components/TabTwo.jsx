@@ -22,10 +22,12 @@ class TabTwo extends Component {
     }
     startOpenservice = false;
 
-    openListFunc(){
-         this.setState({
-            openList: !this.state.openList,
-        })
+    openListFunc(event) {
+        if (event.target.className !== "cansel_btn_small") {
+            this.setState({ 
+                openList: !this.state.openList,
+            })
+        }
     }
     priceText(priceFrom, priceTo, currency, white) {
         const desctop = 720;
@@ -55,8 +57,6 @@ class TabTwo extends Component {
                     <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
                     <span className={whiteClass}>{currency}</span>
                 </MediaQuery>
-
-
             </React.Fragment>
             )
         } else {
@@ -74,6 +74,22 @@ class TabTwo extends Component {
         const desctop = 720;
         const mob = 709;
         let servicesSum = 0;
+        const imgSvg=(<svg  version = "1.1" id = "Layer_1" xmlns = "http://www.w3.org/2000/svg" xmlns = "http://www.w3.org/1999/xlink" x = "0px" y = "0px"
+        width = "30px" height = "30px" viewBox = "0 0 100 100"  className = "img_svg" enableBackground="new 0 0 100 100" xml = "preserve" >
+            <path fill="#fff" d="M76.482,44.875c-0.407,0-1.44,0.14-2.502,0.47c-0.271-3.613-3.299-6.47-6.98-6.47
+       c-1.68,0-3.223,0.594-4.43,1.584c-0.986-2.673-3.56-4.584-6.57-4.584c-1.751,0-3.552,0.536-5,1.572v-7.268
+       c4.148-2.306,6.965-6.73,6.965-11.804c0-7.444-6.056-13.5-13.5-13.5s-13.5,6.056-13.5,13.5c0,4.994,2.732,9.354,6.775,11.688
+       l0.071,31.554l-5.76-6.045c-1.55-1.551-3.6-2.405-5.772-2.405s-4.223,0.854-5.772,2.405c-3.204,3.203-3.211,8.41-0.072,11.545
+       c0.052,0.059,5.269,5.875,12.712,13.318l1.211,1.215c7.058,7.096,13.152,13.225,25.35,13.225c12.629,0,16.854-6.338,20.1-12.83
+       c3.122-6.244,3.158-30.156,3.158-31.17C82.965,47.678,79.936,44.875,76.482,44.875z M40.716,19.406c0-2.076,0.985-4.516,3.763-4.516
+       c3.268,0,3.521,3.429,3.521,4.484v28c0,0.829,0.672,1.5,1.5,1.5s1.5-0.671,1.5-1.5v-4c0-3.302,2.99-4.5,5-4.5c2.206,0,4,1.794,4,4
+       v5.5c0,0.829,0.672,1.5,1.5,1.5s1.5-0.671,1.5-1.5v-2.5c0-2.206,1.794-4,4-4s4,1.794,4,4v6.5c0,0.828,0.672,1.5,1.5,1.5
+       s1.5-0.672,1.5-1.5v-3.82c0.6-0.292,1.776-0.681,2.482-0.681c1.79,0,3.482,1.458,3.482,3c0,6.716-0.512,25.168-2.842,29.829
+       c-3.056,6.112-6.475,11.172-17.416,11.172c-10.95,0-16.366-5.445-23.223-12.34l-1.217-1.221
+       c-7.381-7.381-12.547-13.141-12.655-13.258c-0.981-0.982-1.521-2.289-1.518-3.679c0.004-1.392,0.548-2.7,1.533-3.685
+       c0.983-0.984,2.28-1.526,3.651-1.526s2.667,0.542,3.625,1.5l8.33,8.742c0.426,0.446,1.079,0.585,1.645,0.357
+       c0.57-0.229,0.942-0.782,0.941-1.396L40.716,19.406z"/>
+    </svg >)
 
         serviceGroups.map((serviceGroup) => {
 
@@ -185,8 +201,10 @@ class TabTwo extends Component {
             serviceInfo = (
                 <div>
                     <MediaQuery maxWidth={mob}>
-                        <div className="specialist" onClick={event => this.openListFunc()}>
+                        <div className="specialist" onClick={event => this.openListFunc(event)}>
+                        
                             <div className="specialist-block">
+                            {imgSvg}
                                 <div className="supperVisDet service_footer-block">
                                     <div className="service_footer_price">
                                         <p className="service_footer_price_text">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
@@ -207,7 +225,7 @@ class TabTwo extends Component {
                                         <div className="setvice_list_items">
                                             {selectedServices.map((element, index) =>
                                                 <div key={index} className="setvice_list_item">
-                                                    <div className="cansel_btn_small"> </div>
+                                                    <div className="cansel_btn_small" onClick={e => selectService({ target: { checked: !selectedServices.some(selectedService => selectedService.serviceId === element.serviceId) } }, element)}> </div>
                                                     <p>{element.name}</p>
                                                 </div>
                                             )}
@@ -225,54 +243,57 @@ class TabTwo extends Component {
                         </div>
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
-                        <div className="specialist" onClick={event => this.openListFunc()}>
-                            <div className="specialist-block">
-                                {openList ?
-                                    <div className="specialist_big">
-                                        <div className="service_list_block">
-                                            <div className="setvice_list_items">
-                                                <p>{t("Услуги")}:</p>
-                                                {selectedServices.map((element, index) =>
-                                                    <div key={index} className="setvice_list_item">
-                                                        <div className="cansel_btn_small"> </div>
-                                                        <p>{element.name}</p>
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div className="cansel_btn_big" onClick={event => this.setState({
-                                                openList: !openList,
-                                            })}> </div>
+                        <div className="specialist" onClick={event => this.openListFunc(event)}>
+                        
+                        <div className="specialist-block">
+                        {imgSvg}
+                            {openList ?
+                                <div className="specialist_big">
+                                    <div className="service_list_block">
+                                        <div className="setvice_list_items">
+                                            <p className="text_underline">{selectedStaff.firstName} {selectedStaff.lastName ? selectedStaff.lastName : ''}</p>
+                                            <p>{t("Услуги")}:</p>
+                                            {selectedServices.map((element, index) =>
+                                                <div key={index} className="setvice_list_item">
+                                                    <div className="cansel_btn_small" onClick={e => selectService({ target: { checked: !selectedServices.some(selectedService => selectedService.serviceId === element.serviceId) } }, element)}> </div>
+                                                    <p>{element.name}</p>
+                                                </div>
+                                            )}
                                         </div>
-                                    </div>
-                                    :
-                                    <div className="supperVisDet service_footer-block">
-                                        <div className="service_footer_price">
-                                            <p style={{
-                                                color: 'white',
-                                                fontSize: `${sizeWords}`,
-                                                lineHeight: "49px",
-                                            }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                                            <span>{selectedServices[0] && selectedServices[0].currency}</span>
-                                        </div>
-                                        <p className="service_footer_price_small_text" style={{
-                                            paddingLeft: `${padding_left}`,
-                                        }} onClick={event => this.setState({
+                                        <div className="cansel_btn_big" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} className="arrow_rotate" alt="arrou"></img></p>
-                                        <p className="service_footer_price_small_text" style={{
-                                            paddingRight: `${padding_right}`,
-                                        }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
-                                        </p>
-                                        {!!selectedServices.length && <button className="next_block" onClick={() => {
-                                            if (selectedServices.length) {
-                                                setScreen(3);
-                                            }
-                                            refreshTimetable();
-                                        }}>
-                                            <span className="title_block_text">{t("Продолжить")}</span></button>}
-                                    </div >
-                                }
-                            </div>
+                                        })}> </div>
+                                    </div>
+                                </div>
+                                :
+                                <div className="supperVisDet service_footer-block">
+                                    <div className="service_footer_price">
+                                        <p style={{
+                                            color: 'white',
+                                            fontSize: `${sizeWords}`,
+                                            lineHeight: "49px",
+                                        }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
+                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                    </div>
+                                    <p className="service_footer_price_small_text" style={{
+                                        paddingLeft: `${padding_left}`,
+                                    }} onClick={event => this.setState({
+                                        openList: !openList,
+                                    })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} className="arrow_rotate" alt="arrou"></img></p>
+                                    <p className="service_footer_price_small_text" style={{
+                                        paddingRight: `${padding_right}`,
+                                    }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                    </p>
+                                    {!!selectedServices.length && <button className="next_block" onClick={() => {
+                                        if (selectedServices.length) {
+                                            setScreen(3);
+                                        }
+                                        refreshTimetable();
+                                    }}>
+                                        <span className="title_block_text">{t("Продолжить")}</span></button>}
+                                </div >
+                            }
+                        </div>
                         </div>
                     </MediaQuery>
                 </div >
@@ -308,7 +329,7 @@ class TabTwo extends Component {
                             </div>
                             <img onClick={e => this.setState({
                                 visibleSearch: !visibleSearch,
-                                searchValue:""
+                                searchValue: ""
                             })} src={mobile_gray_cansel} alt="mobile_gray_cansel" />
                         </div>)
                         : (<div className="title_block service-title">
@@ -435,8 +456,6 @@ class TabTwo extends Component {
                                         <ul className="service_list" key={index}>
                                             <div style={{
                                                 borderBottom: "1px solid rgba(172, 172, 172, 0.2)",
-                                                paddingBottom: "9px",
-                                                marginBottom: "18px",
                                             }}>
                                                 <div onClick={event => {
                                                     const newArray = catigor;
@@ -477,7 +496,9 @@ class TabTwo extends Component {
                                                                     className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (array.length === 1 && " service_items_grow")}
                                                                     style={{
                                                                         backgroundColor: "var(--color_button)"
-                                                                    }}>
+                                                                    }}
+                                                                    
+                                                                    >
                                                                     <div className="service_item" >
                                                                         <label className="service-block">
                                                                             <MediaQuery maxWidth={mob}>
@@ -506,8 +527,8 @@ class TabTwo extends Component {
                                                                                     className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                 <div className="service-price">
                                                                                     <div className="service-price-text">
-                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
-                                                                                        <input onChange={(e) => selectService(e, service)}
+                                                                                         {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
+                                                                                       <input onChange={(e) => selectService(e, service)}
                                                                                             type="checkbox"
                                                                                             checked={select} />
                                                                                     </div>
@@ -521,7 +542,10 @@ class TabTwo extends Component {
                                                                 </li>
                                                             } else {
                                                                 return <li key={serviceKey}
-                                                                    className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}>
+                                                                    className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}
+                                                                    
+                                                                   >
+                                                                     
                                                                     <div className="service_item" >
                                                                         <label className="service-block">
                                                                             <MediaQuery maxWidth={mob}>
