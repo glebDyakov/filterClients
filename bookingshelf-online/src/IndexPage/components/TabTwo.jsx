@@ -30,8 +30,8 @@ class TabTwo extends Component {
         }
     }
     priceText(priceFrom, priceTo, currency, white) {
-        const desctop = 720;
-        const mob = 709;
+        const desctop = 600;
+        const mob = 599;
         let whiteClass = "";
         white ? whiteClass = "white_text" : whiteClass = "";
         const { t } = this.props;
@@ -71,8 +71,8 @@ class TabTwo extends Component {
 
         const { selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff, services, selectedService, servicesForStaff, selectService, setDefaultFlag, t } = this.props;
         const { searchValue, openList, catigor, visibleSearch } = this.state;
-        const desctop = 720;
-        const mob = 709;
+        const desctop = 600;
+        const mob = 599;
         let servicesSum = 0;
         const imgSvg=(<svg  version = "1.1" id = "Layer_1" xmlns = "http://www.w3.org/2000/svg" xmlns = "http://www.w3.org/1999/xlink" x = "0px" y = "0px"
         width = "30px" height = "30px" viewBox = "0 0 100 100"  className = "img_svg" enableBackground="new 0 0 100 100" xml = "preserve" >
@@ -193,7 +193,7 @@ class TabTwo extends Component {
                 padding_right = "0px";
             }
             else if (priceFrom100 > 1 || priceTo100 > 1) {
-                sizeWords = "32px"
+                sizeWords = "25px"
                 padding_left = "0px";
                 padding_right = "0px";
             }

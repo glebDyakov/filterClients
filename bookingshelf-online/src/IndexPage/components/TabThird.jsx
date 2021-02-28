@@ -49,8 +49,8 @@ class TabThird extends PureComponent {
         let currentDay = culcDay(selectedDay, "desctop");
         let currentDayMob = culcDay(selectedDay, "mob");
 
-        const desctop = 720;
-        const mob = 709;
+        const desctop = 600;
+        const mob = 599;
 
         let serviceInfo = null
         if (selectedService.serviceId) {

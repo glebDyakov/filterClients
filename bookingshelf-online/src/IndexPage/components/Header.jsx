@@ -87,8 +87,8 @@ class Header extends PureComponent {
         const { info, screen, selectedSubcompany } = this.props;
         const { burger, mobile, currentLang, langList } = this.state
         const currentTextLeng = this.props.i18n.language.toUpperCase();
-        const desctop = 710;
-        const mob = 709;
+        const desctop = 600;
+        const mob = 599;
 
         const hiddenMenu = mobile ? "hidden" : "visible";
         return (

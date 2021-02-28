@@ -26,8 +26,8 @@ class TabFour extends PureComponent {
 
         const { t, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
-        const desctop = 720;
-        const mob = 709;
+        const desctop = 600;
+        const mob = 599;
         const availableTimes = []
         const imgSvg = (<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="30px" height="30px" viewBox="0 0 100 100" className="img_svg" enableBackground="new 0 0 100 100" xml="preserve" >

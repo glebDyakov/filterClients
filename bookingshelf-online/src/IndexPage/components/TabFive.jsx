@@ -26,8 +26,8 @@ class TabFive extends PureComponent {
     const classBool = (!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false))
     console.log(classBool)
     const { enteredCode } = this.state;
-    const desctop = 720;
-    const mob = 709;
+    const desctop = 600;
+    const mob = 599;
     const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
     if (!clientActivationId) {
       $('.phones_country').css({ display: 'flex' })
