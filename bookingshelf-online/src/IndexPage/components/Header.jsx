@@ -10,8 +10,6 @@ import arrow_down from "../../../public/img/arrow_down.png";
 import arrow_down_white from "../../../public/img/icons/arrow_down_white.svg";
 import burger_close from "../../../public/img/icons/burger-close.svg";
 import burger_open from "../../../public/img/icons/burger-open.svg";
-import rus_img from "../../../public/img/icons/rus.jpg";
-import eng_img from "../../../public/img/icons/eng.jpg";
 import telephone_btn from "../../../public/img/icons/telephone_btn.svg";
 import MediaQuery from 'react-responsive'
 import { withTranslation } from "react-i18next";
