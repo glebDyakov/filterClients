@@ -29,8 +29,8 @@ class TabThird extends PureComponent {
 
         const { setScreen, setDefaultFlag, refreshTimetable, isStartMovingVisit, selectedDay, selectedStaff, selectedServices, getDurationForCurrentStaff, selectedService, disabledDays, month, handleDayClick, showPrevWeek, showNextWeek, t } = this.props;
         const { openList } = this.state;
-        const imgSvg=(<svg  version = "1.1" id = "Layer_1" xmlns = "http://www.w3.org/2000/svg" xmlns = "http://www.w3.org/1999/xlink" x = "0px" y = "0px"
-        width = "30px" height = "30px" viewBox = "0 0 100 100"  className = "img_svg" enableBackground="new 0 0 100 100" xml = "preserve" >
+        const imgSvg = (<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="30px" height="30px" viewBox="0 0 100 100" className="img_svg" enableBackground="new 0 0 100 100" xml="preserve" >
             <path fill="#fff" d="M76.482,44.875c-0.407,0-1.44,0.14-2.502,0.47c-0.271-3.613-3.299-6.47-6.98-6.47
        c-1.68,0-3.223,0.594-4.43,1.584c-0.986-2.673-3.56-4.584-6.57-4.584c-1.751,0-3.552,0.536-5,1.572v-7.268
        c4.148-2.306,6.965-6.73,6.965-11.804c0-7.444-6.056-13.5-13.5-13.5s-13.5,6.056-13.5,13.5c0,4.994,2.732,9.354,6.775,11.688
@@ -44,11 +44,14 @@ class TabThird extends PureComponent {
        c-7.381-7.381-12.547-13.141-12.655-13.258c-0.981-0.982-1.521-2.289-1.518-3.679c0.004-1.392,0.548-2.7,1.533-3.685
        c0.983-0.984,2.28-1.526,3.651-1.526s2.667,0.542,3.625,1.5l8.33,8.742c0.426,0.446,1.079,0.585,1.645,0.357
        c0.57-0.229,0.942-0.782,0.941-1.396L40.716,19.406z"/>
-    </svg >)
+        </svg >)
+
+        let currentDay = culcDay(selectedDay, "desctop");
+        let currentDayMob = culcDay(selectedDay, "mob");
+
         const desctop = 720;
         const mob = 709;
-        const currentDay = culcDay(selectedDay, "desctop");
-        const currentDayMob = culcDay(selectedDay, "mob");
+
         let serviceInfo = null
         if (selectedService.serviceId) {
             let priceFrom = 0;
@@ -82,7 +85,7 @@ class TabThird extends PureComponent {
                     <MediaQuery maxWidth={mob}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
-                            {imgSvg}
+                                {imgSvg}
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
@@ -131,9 +134,9 @@ class TabThird extends PureComponent {
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
-                     
-                            <div className="specialist-block">  
-                            {imgSvg}
+
+                            <div className="specialist-block">
+                                {imgSvg}
                                 {openList ?
                                     <div className="specialist_big">
                                         <div className="service_list_block">
