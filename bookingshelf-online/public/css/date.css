@@ -190,8 +190,27 @@
     background-color: rgba(38, 78, 134, 0.09) !important;
     outline: none;
 } */
+@media screen and (max-width: 620px) {
+    .DayPicker-Week {
+        font-size: 24px;
+    }
+    .DayPicker-Weekdays,
+    .DayPicker-Body{
+        width:590px;
+        margin-left: 0;
+    }
+}
 
-@media screen and (max-width: 709px) {
+@media screen and (max-width: 520px) {
+    .DayPicker-Day, .DayPicker-Weekday abbr[title] {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+    .DayPicker-Week {
+        height: 30px;
+    }
+@media screen and (max-width: 400px) {
     .calendar_modal {
         width: 330px;
         margin-top: -14px;
@@ -238,20 +257,6 @@ top: -1px;
     }
 }
 
-/*
-@media screen and (max-width: 620px) {
-    .DayPicker-Week {
-        font-size: 24px;
-    }
-}
 
-@media screen and (max-width: 520px) {
-    .DayPicker-Day, .DayPicker-Weekday abbr[title] {
-        width: 30px;
-        height: 30px;
-        font-size: 16px;
-    }
-    .DayPicker-Week {
-        height: 30px;
-    }
-} */
+
+}
