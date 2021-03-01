@@ -198,7 +198,7 @@ class TabCreateComment extends PureComponent {
                                 {tab === 'login_tab' ? (
                                     <div className="comment_sms_btn_block">
                                         <button
-                                            className=" comment_sms_btn_active" onClick={() => this.updateTab('login_tab')}>{t("Вход")}</button>
+                                            className="comment_sms_btn_active" onClick={() => this.updateTab('login_tab')}>{t("Вход")}</button>
                                         <button
                                             className="comment_sms_btn" onClick={() => this.updateTab('sms_tab')}>{t("Sms авторизация")}</button>
                                         {/* <img onClick={() => this.updateTab('sms_tab')} src={skip_arrow} alt="" /> */}
