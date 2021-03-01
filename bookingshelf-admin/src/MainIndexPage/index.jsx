@@ -7,6 +7,8 @@ import 'react-bootstrap-timezone-picker/dist/react-bootstrap-timezone-picker.min
 import { access } from '../_helpers/access';
 import ReactPhoneInput from 'react-phone-input-2';
 import {withTranslation} from "react-i18next";
+import { VISITS_STORAGE_DURATIONS } from '../_constants';
+import ConfirmModal from '../_components/modals/ConfirmModal';
 
 
 class Index extends Component {
@@ -215,12 +217,32 @@ class Index extends Component {
     this.setState({ sound: e.target.checked });
   }
 
+  onVisitStorageDurationChange = ({target: {value}}, index)  => {
+    this.setState({
+      confirmModal: {value, index},
+    })
+  }
+
+  onDurationSubmit = () => {
+    const { subcompanies, confirmModal } = this.state;
+    const newSubcompanies = subcompanies;
+    newSubcompanies[confirmModal.index]["appointmentStoragePeriod"] = +confirmModal.value;
+
+    this.setState({ ...this.state, subcompanies: newSubcompanies, confirmModal: false });
+  }
+
 
   render() {
-    const { adding, submitted, isLoading, saved, status, company, isAvatarOpened, subcompanies } = this.state;
+    const { adding, submitted, isLoading, saved, status, company, isAvatarOpened, subcompanies, confirmModal } = this.state;
     const {t} = this.props;
     return (
       <div className="settings-page-container">
+        {confirmModal && 
+        <ConfirmModal
+          title="Вы уверены, что хотите изменить срок хранения истории визитов?" 
+          submitHandler={() => this.onDurationSubmit(confirmModal)}
+          closeHandler={() => this.setState({ confirmModal: false })}
+          />}
         {isLoading &&
           <div className="loader loader-company">
             <img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/>
@@ -409,6 +431,19 @@ class Index extends Component {
                       <span className="company_counter">{subcompany.companyAddress1.length}/40</span>
                     </div>
 
+                    <p>{t("Срок хранения истории визитов")}</p>
+                    <div className="check-box-group2 form-control">
+                    <select
+                    className="custom-select"
+                    placeholder="По умолчанию"
+                    value={subcompany.appointmentStoragePeriod}
+                    onChange={(e) => this.onVisitStorageDurationChange(e, i)}
+                    name="appointmentStoragePeriod"
+                  >
+                    {VISITS_STORAGE_DURATIONS.map(({ name, value }) => <option value={value} key={name}>{t(name)}</option>)}
+                  </select>
+                    </div>
+
                     <div className="buttons-container-setting d-none d-md-flex">
                       {(adding && (i === subcompanies.length - 1))
                         ? null
@@ -558,7 +593,7 @@ class Index extends Component {
                             </div>
                           </label>
                         </div>
-                      </div>
+                      </div>                 
                     </div>
 
                     {saved === i && status === 'saved.settings' &&
