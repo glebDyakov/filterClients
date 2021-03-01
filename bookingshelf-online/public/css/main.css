@@ -1781,21 +1781,19 @@ a.last_footer_block_desc_a{
     height: auto;
     max-height: 0px;
     overflow: hidden;
-    transition: max-height 0.8s linear;
+    transition: max-height 1s linear;
     /* margin-bottom: -9px;
     margin-top: -9px; */
 }
 .service_items_grow{
     flex-grow: 1;
 }
-.service_items.service_items_active {
-    max-height: 700px !important;
-}
 
 .service_items li {
     width: 340px;
     min-height: 179px;
-     max-height: 250px;
+     /* max-height: 250px; */
+     overflow: hidden;
 }
 .service-block:hover{
     cursor: pointer;
