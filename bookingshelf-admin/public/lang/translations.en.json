@@ -848,5 +848,12 @@
   "Количество дней по рабочему графику.": "The number of days according to the work schedule.",
   "от товара": "from products",
   "Новое": "New",
-  "компании": "company"
+  "компании": "company",
+  "По умолчанию": "By default",
+  "2 года": "2 years",
+  "1 год": "1 year",
+  "1 месяц": "1 month",
+  "1 неделя": "1 week",
+  "1 день": "1 day",
+  "Вы уверены, что хотите изменить срок хранения истории визитов?": "Are you sure you want to change the retention period of your session history?"
 }

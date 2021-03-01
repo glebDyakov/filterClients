@@ -33,3 +33,39 @@ export const companyConstants = {
   GET_MOVED_APPOINMENTS_MARKER_INCR: 'GET_MOVED_APPOINMENTS_MARKER_INCR',
   GET_NEW_APPOINMENTS_MARKER_DECR: 'GET_NEW_APPOINMENTS_MARKER_DECR',
 };
+
+export const VISITS_STORAGE_DURATIONS = [
+  {
+    name: 'По умолчанию',
+    value: 0,
+  },
+  {
+    name: '2 года',
+    value: 365 * 2,
+  },
+  {
+    name: '1 год',
+    value: 365,
+  },
+  {
+    name: '6 месяцев',
+    value: 183,
+  },
+  {
+    name: '3 месяца',
+    value: 91,
+  },
+  {
+    name: '1 месяц',
+    value: 30,
+  },
+  ,
+  {
+    name: '1 неделя',
+    value: 7,
+  },
+  {
+    name: '1 день',
+    value: 1,
+  },
+]

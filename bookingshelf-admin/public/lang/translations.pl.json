@@ -828,7 +828,14 @@
   "Товаров продано": "Przedmioty sprzedane",
   "Выручка": "Dochód",
   "Новое": "Nowy",
-  "компании": "firma"
+  "компании": "firma",
+  "По умолчанию": "Domyślnie",
+  "2 года": "2 lata",
+  "1 год": "1 rok",
+  "1 месяц": "1 miesiąc",
+  "1 неделя": "1 tydzień",
+  "1 день": "1 dzień",
+  "Вы уверены, что хотите изменить срок хранения истории визитов?": "Czy na pewno chcesz zmienić okres przechowywania historii wizyt?"
 }
 
 

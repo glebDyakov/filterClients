@@ -21,3 +21,4 @@ export * from './InfoProduct';
 export * from './ExpenditureProduct';
 export * from './StorehouseProduct';
 export * from './AddStoreHouse';
+export * from './ConfirmModal';
