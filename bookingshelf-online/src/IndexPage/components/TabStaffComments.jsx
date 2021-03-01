@@ -6,7 +6,7 @@ import moment from "moment";
 import Paginator from "./Paginator";
 import { withTranslation } from "react-i18next";
 import skip_arrow from "../../../public/img/icons/skip-arrow-white.svg"
-
+import MediaQuery from 'react-responsive'
 
 class TabStaffComments extends PureComponent {
     constructor(props) {
@@ -34,6 +34,9 @@ class TabStaffComments extends PureComponent {
 
     render() {
         const { staffComments, staffCommentsStaff, staffCommentsTotalPages, setScreen, isLoading, t } = this.props;
+        const desctop = 600;
+        const mob = 599;
+
         return (
             <div className="service_selection">
                 <div className="title_block n data_title">
@@ -48,49 +51,92 @@ class TabStaffComments extends PureComponent {
                         <React.Fragment>
                             <div className="staff_popup staff_popup_large">
                                 <div className="staff_popup_item">
-                                    <div className="img_container">
+                                    <MediaQuery maxWidth={mob}>
+                                        <div className="img_container">
 
-                                        <span className="staff_popup_name">
-                                            <img
-                                                src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                                alt="" />
-                                            <p>
-                                                {staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}
-                                            </p>
+                                            <span className="staff_popup_name">
+                                                <img
+                                                    src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    alt="" />
 
-                                        </span>
-                                        {staffCommentsStaff.rating !== 0 ? (
-                                            <div className="comments_rating">
-                                                <p>{t("Усредненный рейтинг:")}Усредненный рейтинг:</p>
-                                                <div className="display_flex">
-                                                    <StarRatings
-                                                        rating={staffCommentsStaff.rating}
-                                                        starHoverColor={'#ff9500'}
-                                                        starRatedColor={'#ff9500'}
-                                                        starDimension="20px"
-                                                        starSpacing="3px"
-                                                    />
-                                                    <p className="rating_text">
-                                                        &nbsp;{staffCommentsStaff.rating}
-                                                    </p>
-                                                </div>
 
-                                            </div>
-                                        ) : (
+                                            </span>
+                                            {staffCommentsStaff.rating !== 0 ? (
                                                 <div className="comments_rating">
-                                                    <p>{t("Рейтинг отсутствует")}</p>
+                                                    <p>
+                                                        {staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}
+                                                    </p>
+                                                    <div className="display_flex">
+                                                        <StarRatings
+                                                            rating={staffCommentsStaff.rating}
+                                                            starHoverColor={'#ff9500'}
+                                                            starRatedColor={'#ff9500'}
+                                                            starDimension="20px"
+                                                            starSpacing="3px"
+                                                        />
+                                                        <p className="rating_text">
+                                                            &nbsp;{staffCommentsStaff.rating}
+                                                        </p>
+                                                    </div>
+
                                                 </div>
-                                            )
-                                        }
+                                            ) : (
+                                                    <div className="comments_rating">
+                                                        <p>
+                                                            {staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}
+                                                        </p>
+                                                        <p>{t("Рейтинг отсутствует")}</p>
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                    </MediaQuery>
+                                    <MediaQuery minWidth={desctop}>
+                                        <div className="img_container">
+
+                                            <span className="staff_popup_name">
+                                                <img
+                                                    src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    alt="" />
+                                                <p>
+                                                    {staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}
+                                                </p>
+
+                                            </span>
+                                            {staffCommentsStaff.rating !== 0 ? (
+                                                <div className="comments_rating">
+                                                    <p>{t("Усредненный рейтинг")}:</p>
+                                                    <div className="display_flex">
+                                                        <StarRatings
+                                                            rating={staffCommentsStaff.rating}
+                                                            starHoverColor={'#ff9500'}
+                                                            starRatedColor={'#ff9500'}
+                                                            starDimension="20px"
+                                                            starSpacing="3px"
+                                                        />
+                                                        <p className="rating_text">
+                                                            &nbsp;{staffCommentsStaff.rating}
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+                                            ) : (
+                                                    <div className="comments_rating">
+                                                        <p>{t("Рейтинг отсутствует")}</p>
+                                                    </div>
+                                                )
+                                            }
 
 
-                                    </div>
+                                        </div>
+                                    </MediaQuery>
+
 
                                 </div>
                             </div>
                             <ul >
                                 {staffComments && staffComments.length > 0
-                                    ? staffComments.map((staff,index) =>
+                                    ? staffComments.map((staff, index) =>
                                         <li key={index} className="staff_popup_comment">
                                             <p >{staff.clientName}</p>
                                             <div className="display_flex">
@@ -108,7 +154,7 @@ class TabStaffComments extends PureComponent {
                                             </span>
                                         </li>)
                                     : (
-                                        <div  className="final-book">
+                                        <div className="final-book">
                                             <p >
                                                 {t('Нет ни одного отзыва')}
                                             </p>
@@ -120,7 +166,7 @@ class TabStaffComments extends PureComponent {
                             </ul>
                         </React.Fragment>
                     )}
-                    <div className="comments_btn_footer"  onClick={() => setScreen('staff-create-comment')}>{t("Оставить отзыв")}<img src={skip_arrow} alt="skip_arrow"/></div>
+                    <div className="comments_btn_footer" onClick={() => setScreen('staff-create-comment')}>{t("Оставить отзыв")}<img src={skip_arrow} alt="skip_arrow" /></div>
                 </div>
             </div>
         );

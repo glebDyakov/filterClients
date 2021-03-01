@@ -54,6 +54,9 @@
         width: 15px;
         height: 15px;
     }
+    .comments_btn_footer{
+        left: 38%;
+    }
     .entry_form-item:nth-child(2n){
         margin-left: 0px;
     }
@@ -61,9 +64,8 @@
         width: 584px;
     }
     .mobile-icon-wrapper.mobile_active,
-    .regist_block,
+    .staff_popup_comment,
     .create_comments,
-    .comments .staff_popup_large,
     .comments,
     .final-screen-block,
     .last_footer_block,
@@ -75,9 +77,14 @@
     .calendar_modal,
     .service_list_block,
     .specialist-block,
-    .staff_popup,
     .skip_employee-block {
         width: 590px;
+    }
+    .staff_popup_comment{
+        padding-left: 10px;
+    }
+    .staff_popup{
+        width: 98%;
     }
     .service_items.service_items_active {
         max-height: 1000px !important;
@@ -122,6 +129,10 @@
     }
     .affiliate li:hover {
         cursor: pointer;
+    }
+    .service_header{
+
+        padding: 13px 0px 10px;
     }
     .firm-title {
         width: 60%;
@@ -185,21 +196,25 @@
     .burger_menu_btn_off {
         margin: 3px -6px 0px 0px;
     }
-    .comments .staff_popup_large {
-        width: 330px;
-    }
     .burger_menu.active {
         transform: translatey(31%);
     }
     .comments {
         width: 330px;
+        border: 0;
     }
     .create_comments {
         width: 330px;
-        padding: 7px;
+        padding: 7px 0px;
+        border: 0;
+        margin-top: -20px;
     }
-    .regist_block {
-        width: 330px;
+    .create_comments .staff_popup{
+        border-bottom: 1px solid rgba(9, 9, 58, 0.1);
+    padding-bottom: 15px;
+    }
+    .comment_sms_btn_block {
+        margin-top: 14px;
     }
     .burger_menu .firm-text p {
         font-weight: 600;
@@ -297,6 +312,7 @@
     }
     .img_container {
         margin-top: 5px;
+        justify-content: flex-start;
     }
     .affiliate_item {
         margin-bottom: 10px;
@@ -365,7 +381,6 @@
     }
     .service_items li {
         width: 330px;
-        min-height: 102px;
         /* max-height: 170px; */
     }
     .service_items li:nth-child(2n) {
@@ -374,6 +389,7 @@
     .service-block {
         justify-content: space-between;
         flex-direction: row;
+        padding: 10px;
     }
     .service_half_block {
         display: flex;
@@ -474,7 +490,7 @@
     }
     .service_list_name {
         max-width: 328px;
-        margin-bottom: 15px;
+        margin-bottom: -4px;
     }
     .runtime {
         margin-top: -5px;
@@ -530,8 +546,8 @@
         width: 330px;
         font-weight: 400;
     }
-    .react-tel-input .form-control {
-        width: 330px !important;
+    .entry_form-item .react-tel-input .form-control {
+        width: 330px ;
     }
     .staff_popup_comment {
         width: 330px;
@@ -541,9 +557,11 @@
     }
     .regist_block span {
         width: 290px;
+        margin-top: 14px;
+    margin-bottom: 29px;
     }
     .regist_block .tel {
-        width: 290px;
+        width: 316px;
     }
     .book_button {
         color: #fff;
@@ -560,6 +578,10 @@
         align-items: center;
         justify-content: center;
         border: 0;
+    }
+    .regist_block{
+        margin-top: 18px;
+    margin-left: 0px;
     }
     .book_button_last {
         color: #fff;
@@ -696,5 +718,18 @@
     }
     .last_footer_block p {
         color: var(--color_text);
+    }
+    .comments .staff_popup_large{
+        padding: 0px 0px 10px 0px;
+    }
+    .comments_btn_footer {
+        left: 29%;
+    }
+    .comment_sms_btn_active {
+        border: 0;
+        background-color: white;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 25px;
     }
 }
