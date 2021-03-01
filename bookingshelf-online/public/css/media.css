@@ -22,6 +22,12 @@
         max-width: 590px;
         padding: 0px 5px;
     }
+    .service_footer_price_small_text{
+        font-size: 11px;
+    }
+    .next_block{
+        width: 155px;
+    }
     .modal_menu {
         width: 590px;
         padding: 0px 5px;
@@ -54,6 +60,7 @@
     .service_list {
         width: 584px;
     }
+    .mobile-icon-wrapper.mobile_active,
     .regist_block,
     .create_comments,
     .comments .staff_popup_large,
@@ -317,9 +324,6 @@
     .desktop_visible {
         display: none;
     }
-    .affiliate {
-        margin-top: -2px;
-    }
     .staff_popup {
         flex-direction: column;
         width: 330px;
@@ -332,7 +336,7 @@
     .skip_employee-block {
         width: 330px;
         height: 52px;
-        margin-top: -8px;
+
         margin-bottom: 15px;
         padding-right: 6px;
     }
@@ -363,6 +367,8 @@
         width: 330px;
         min-height: 102px;
         max-height: 170px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
     }
     .service_items li:nth-child(2n) {
         margin-left: 0px;
@@ -432,6 +438,9 @@
     .price_service_item span {
         margin: -7px -2px 0px 0px;
     }
+    .service_item {
+        height: 100%;
+    }
     .price_service strong {
         font-size: 24px;
         line-height: 20px;
@@ -485,7 +494,6 @@
     .choise_time {
         width: 330px;
         padding-top: 22px;
-        padding-top: 2px;
     }
     .choise_time span {
         font-size: 12px;
@@ -509,7 +517,7 @@
     }
     .last_list {
         width: 330px;
-        margin-top: -3px;
+        /* margin-top: -3px; */
         padding: 14px 20px 9px 14px;
     }
     .last_list_services {
