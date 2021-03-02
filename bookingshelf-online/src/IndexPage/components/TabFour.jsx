@@ -195,8 +195,8 @@ class TabFour extends PureComponent {
                                         </div>
                                     </div>
                                 )}
-                                {!!selectedServices.length && <button disabled={!this.state.arrayTime} className={this.state.arrayTime.length > 1 ? "next_block" : "next_block disabledField"} onClick={() => this.rescheduleVisit()}>
-                                    <span className="title_block_text">{t("Продолжить")}</span></button>}
+                                {!!selectedServices.length && <button disabled={!this.state.arrayTime} className={this.state.arrayTime ? "next_block" : "next_block disabledField"} onClick={() => this.rescheduleVisit()}>
+                                        <span className="title_block_text">{t("Продолжить")}</span></button>}
                             </div>
                         </div>
                     </MediaQuery>
