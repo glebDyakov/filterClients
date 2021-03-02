@@ -7,6 +7,7 @@ import { staffActions } from "../../_actions";
 import { withTranslation } from "react-i18next";
 import Footer from "./Footer";
 import MediaQuery from 'react-responsive'
+import cansel from "../../../public/img/icons/cansel_black.svg";
 class TabSix extends PureComponent {
     constructor(props) {
         super(props);
@@ -83,9 +84,9 @@ class TabSix extends PureComponent {
                 <MediaQuery maxWidth={mob}>
                     <div className="service_selection final-screen">
                         <div className="last_footer_block">
-                                <a className="book_button_last" href={`/online/${this.props.match.params.company}`} onClick={() => {
-                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
-                                }}>{t("Создать новую запись")}</a><p>
+                            <a className="book_button_last" href={`/online/${this.props.match.params.company}`} onClick={() => {
+                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
+                            }}>{t("Создать новую запись")}</a><p>
                                 {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
               <a className="last_footer_block_a" rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
                             </p>
@@ -120,19 +121,32 @@ class TabSix extends PureComponent {
                                 <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
                             </div>
                             {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
-                                <button className="approveFYes" onClick={() => {
-                                    const resultAppointments = (movingVisit && movingVisit.length > 0) ? movingVisit : newAppointments
-                                    if (resultAppointments.length) {
-                                        if (resultAppointments[0] && resultAppointments[0].customId) {
-                                            _delete(resultAppointments[0].customId)
-                                        }
-                                        this.props.dispatch(staffActions.toggleStartMovingVisit(false, []));
-                                        this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
-                                    }
-                                }}>Да
-                    </button>
-                                <button className="approveFNo" onClick={() => this.setterApproveF()}>{t("Нет")}
-                                </button>
+                                <div className="modal_window_block">
+                                    <div className="modal_window_text">
+                                        <p className="modal_title">{t("Перенести визит")}?</p>
+                                        <img src={cansel}  onClick={() => this.setterApproveF()} alt="cansel" />
+                                    </div>
+                                    <div className="modal_window_btn">
+                                        <button className="approveFYes" onClick={() => {
+                                            const resultAppointments = (movingVisit && movingVisit.length > 0) ? movingVisit : newAppointments
+                                            if (resultAppointments.length) {
+                                                if (resultAppointments[0] && resultAppointments[0].customId) {
+                                                    _delete(resultAppointments[0].customId)
+                                                }
+                                                this.props.dispatch(staffActions.toggleStartMovingVisit(false, []));
+                                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
+                                            }
+                                        }}>{t("Да")}
+                                        </button>
+                                        <div style={{
+                                            height: "38px",
+                                            width: "1px",
+                                            backgroundColor: "rgba(9, 9, 58, 0.1)"
+                                        }}></div>
+                                        <button className="approveFNo" onClick={() => this.setterApproveF()}>{t("Нет")}
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             }
 
@@ -184,21 +198,35 @@ class TabSix extends PureComponent {
                                 <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
                             </div>
                             {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
-                                <button className="approveFYes" onClick={() => {
-                                    const resultAppointments = (movingVisit && movingVisit.length > 0) ? movingVisit : newAppointments
-                                    if (resultAppointments.length) {
-                                        if (resultAppointments[0] && resultAppointments[0].customId) {
-                                            _delete(resultAppointments[0].customId)
-                                        }
-                                        this.props.dispatch(staffActions.toggleStartMovingVisit(false, []));
-                                        this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
-                                    }
-                                }}>Да
-                    </button>
-                                <button className="approveFNo" onClick={() => this.setterApproveF()}>{t("Нет")}
-                                </button>
+                                <div className="modal_window_block">
+                                    <div className="modal_window_text">
+                                        <p className="modal_title">{t("Перенести визит")}?</p>
+                                        <img src={cansel}  onClick={() => this.setterApproveF()} alt="cansel" />
+                                    </div>
+                                    <div className="modal_window_btn">
+                                        <button className="approveFYes" onClick={() => {
+                                            const resultAppointments = (movingVisit && movingVisit.length > 0) ? movingVisit : newAppointments
+                                            if (resultAppointments.length) {
+                                                if (resultAppointments[0] && resultAppointments[0].customId) {
+                                                    _delete(resultAppointments[0].customId)
+                                                }
+                                                this.props.dispatch(staffActions.toggleStartMovingVisit(false, []));
+                                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
+                                            }
+                                        }}>{t("Да")}
+                                        </button>
+                                        <div style={{
+                                            height: "38px",
+                                            width: "1px",
+                                            backgroundColor: "rgba(9, 9, 58, 0.1)"
+                                        }}></div>
+                                        <button className="approveFNo" onClick={() => this.setterApproveF()}>{t("Нет")}
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             }
+
                             {/*<input type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>*/}
                             {/*{allVisits && <ClientDetails />}*/}
                             {/*<p className="skip_employee"  onClick={() => {*/}

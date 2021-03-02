@@ -147,10 +147,6 @@ class Header extends PureComponent {
                                 <div className="firm-text">
                                     <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{info && ((screen === 0 && info.onlineCompanyHeader) ? info.onlineCompanyHeader : info.companyName)}</p>
                                 </div>
-                                <div className="header-lang">
-                                    <p>{currentTextLeng}</p>
-                                    <img src={arrow_down_white} alt="arrou"></img>
-                                </div>
                                 <div className="burger_menu_btn_on" onClick={(event) => this.changeBurger()}>
                                     <img src={burger_open} alt="telephone" />
                                 </div>
