@@ -402,7 +402,7 @@ class TabOne extends PureComponent {
                     <div className="approveF">
                         <div className="modal_window_block">
                             <div className="modal_window_text">
-                                <p className="modal_title">{t("Перенести визит?")}</p>
+                                <p className="modal_title">{t("Перенести визит")}?</p>
                                 <img src={cansel} onClick={e => this.setState({ staff: null })} alt="cansel" />
                             </div>
                             <div className="modal_window_btn">

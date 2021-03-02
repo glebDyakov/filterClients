@@ -187,7 +187,7 @@
         margin: 3px -6px 0px 0px;
     }
     .burger_menu.active {
-        transform: translatey(31%);
+        transform: translatey(29%);
     }
     .comments {
         width: 330px;
@@ -235,8 +235,8 @@
         display: flex;
         justify-content: space-between;
         width: auto;
-        margin-top: 32px;
-        margin-bottom: -6px;
+        margin-top: 10px;
+        margin-bottom: -4px;
     }
     .adress-text-wrapper img {
         margin-left: 15px;
@@ -254,7 +254,7 @@
         display: flex;
         justify-content: space-between;
         width: 35%;
-        margin-top: 42px;
+        /* margin-top: 42px; */
         border: 0;
     }
     /*  */
@@ -551,9 +551,9 @@
         width: 316px;
     }
     .book_button {
-        color: var(--color_button);
+        color: var(--color_text);
         width: 330px;
-        background: url(../img/icons/skip-arrow-blue.svg) no-repeat;
+        background: url(../img/icons/skip-arrow.svg) no-repeat;
         background-size: 16px;
         background-color: #fff;
         left: auto;
@@ -571,9 +571,9 @@
         margin-left: 0px;
     }
     .book_button_last {
-        color: var(--color_button);
+        color: var(--color_text);
         width: 330px;
-        background: url(../img/icons/skip-arrow-blue.svg) no-repeat;
+        background: url(../img/icons/skip-arrow.svg) no-repeat;
         background-size: 16px;
         background-color: #fff;
         left: auto;
@@ -731,6 +731,9 @@
         font-weight: 600;
         font-size: 18px;
         line-height: 25px;
+    }
+    .time-footer{
+        margin: 0;
     }
     .service_grow{
         flex-grow: 0.7;

@@ -245,15 +245,15 @@
     }
     .arrow-right{
         right: 16px;
-    top: 14px;
+    top: 0px;
     }
     .DayPicker-Day--today{
         width: 31px;
     height: 31px;
     }
     .arrow-left{
-left: 16px;
-top: -1px;
+        left: 16px;
+        top: -14px;
     }
 }
 
