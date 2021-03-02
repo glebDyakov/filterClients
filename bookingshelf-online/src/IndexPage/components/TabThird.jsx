@@ -113,7 +113,7 @@ class TabThird extends PureComponent {
                                     </div>
                                     <div className="time-footer">
                                         <p className="time_footer_p" >{t("Дата")}:</p>
-                                        <p className="time_footer_p" >&nbsp;{t(`${currentDay}`)}</p>
+                                        <p className="time_footer_p" >{t(`${currentDay}`)}</p>
                                     </div>
                                 </div >
                                 {openList && (
@@ -151,8 +151,8 @@ class TabThird extends PureComponent {
                                             <div className="setvice_list_items">
                                                 <p className="text_underline">{selectedStaff.firstName} {selectedStaff.lastName ? selectedStaff.lastName : ''}</p>
                                                 <p>{t("Услуги")}:</p>
-                                                {selectedServices.map((element) =>
-                                                    <div className="setvice_list_item">
+                                                {selectedServices.map((element,index) =>
+                                                    <div key={index} className="setvice_list_item">
                                                         <div className="service_circle">
                                                             <div className="service_circle_center"></div>
                                                         </div>

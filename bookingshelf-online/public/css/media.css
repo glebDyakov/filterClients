@@ -43,8 +43,8 @@
         margin-right: 5px;
         font-weight: 400;
     }
-    .price_footer_service_half p p{
-       margin-right: 5px;
+    .price_footer_service_half p p {
+        margin-right: 5px;
     }
     .service_list_block {
         padding: 10px 0px 5px;
@@ -715,8 +715,7 @@
         left: 101px;
         top: 87px;
     }
-    a.last_footer_block_a,
-    .last_footer_block p {
+    a.last_footer_block_a, .last_footer_block p {
         color: #fff;
     }
     .comments .staff_popup_large {
@@ -732,13 +731,16 @@
         font-size: 18px;
         line-height: 25px;
     }
-    .time-footer{
+    .time-footer {
         margin: 0;
     }
-    .service_grow{
+    .service_grow {
         flex-grow: 0.7;
     }
-    .service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5{
+    .service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5 {
         margin-bottom: 140px;
+    }
+    .service_selection.screen5 {
+        height: 100%;
     }
 }

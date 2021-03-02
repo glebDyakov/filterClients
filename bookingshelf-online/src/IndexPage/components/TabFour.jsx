@@ -72,6 +72,7 @@ class TabFour extends PureComponent {
                                     markup: (
                                         <div key={arrayTime} onClick={() => {
                                             if (isStartMovingVisit && !flagAllStaffs) {
+                                                
                                                 this.setState({ arrayTime })
                                             } else {
                                                 setTime(arrayTime, false)
@@ -165,7 +166,7 @@ class TabFour extends PureComponent {
                                     </div>
                                     <div className="time-footer">
                                         <p className="time_footer_p" >{t("Дата")}:</p>
-                                        <p className="time_footer_p" >&nbsp;{t(`${currentDay}`)}</p>
+                                        <p className="time_footer_p" >{t(`${currentDay}`)}</p>
                                     </div>
                                 </div >
                                 {openList && (

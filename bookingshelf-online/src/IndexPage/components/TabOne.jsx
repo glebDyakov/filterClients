@@ -162,7 +162,7 @@ class TabOne extends PureComponent {
                                 </div>
                                 <div className="time-footer">
                                     <p className="time_footer_p" >{t("Дата")}:</p>
-                                    <p className="time_footer_p" >&nbsp;{currentDay}</p>
+                                    <p className="time_footer_p" >{currentDay}</p>
                                 </div>
                             </div >
                             {openList && (

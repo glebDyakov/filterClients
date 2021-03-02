@@ -1632,7 +1632,7 @@ input[type="search"]::-moz-placeholder {
     font-size: 13px;
     line-height: 18px;
     color: var(--color_text);
-    opacity: 0.5;
+    /* opacity: 0.5; */
     font-weight: 400;
 }
 
@@ -2193,7 +2193,7 @@ a.last_footer_block_desc_a {
     font-weight: normal;
     font-size: 13px;
     line-height: 18px;
-    opacity: 0.5;
+    /* opacity: 0.5; */
 }
 
 .entry_form-item textarea {
