@@ -23,11 +23,11 @@ class TabFive extends PureComponent {
 
     const { setScreen, info, changeBackToRandomStaff, backToRandomStaff, selectedTime: time, refreshTimetable, selectedStaff, serviceId, selectedDay, selectedServices, selectedTime, getDurationForCurrentStaff,
       group, handleChange, isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone, setterEmail, handleSave, clientActivationId, enteredCodeError, t } = this.props;
-    const classBool = (!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false))
-    console.log(classBool)
+
     const { enteredCode } = this.state;
     const desctop = 600;
     const mob = 599;
+    
     const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
     if (!clientActivationId) {
       $('.phones_country').css({ display: 'flex' })
