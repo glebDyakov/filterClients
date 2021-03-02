@@ -216,8 +216,9 @@
         margin-top: -14px;
     }
     .DayPicker-Body, .DayPicker-Weekdays {
-        width: 359px;
-    margin-left: -14px;
+        
+    width: 343px;
+    margin-left: -6px;
     }
     .DayPicker-Caption div {
         height: 54px;
@@ -249,7 +250,6 @@
     .DayPicker-Day--today{
         width: 31px;
     height: 31px;
-    margin: 0px 8px;
     }
     .arrow-left{
 left: 16px;

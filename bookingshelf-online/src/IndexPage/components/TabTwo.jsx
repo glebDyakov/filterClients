@@ -28,7 +28,7 @@ class TabTwo extends Component {
             })
         }
     }
-    priceText(priceFrom, priceTo, currency, white) {
+    priceText(priceFrom, priceTo, currency, white, footer) {
         const desctop = 600;
         const mob = 599;
 
@@ -36,35 +36,88 @@ class TabTwo extends Component {
         white ? whiteClass = "white_text" : whiteClass = "";
         const { t } = this.props;
         if (priceFrom !== priceTo) {
-            return (<React.Fragment>
-                <MediaQuery maxWidth={mob}>
-                    <div className="price_service">
-                        <div className="price_service_item">
-                            <strong className={whiteClass}>{priceFrom}</strong>
+            if (footer) {
+                return (<React.Fragment>
+                    <MediaQuery maxWidth={mob}>
+                        <React.Fragment>
+                            <div className="price_footer_service_item">
+                                <div className="price_footer_service_half">
+                                    <p><p>{t("от")}</p>{priceFrom}</p>
+                                    <span >{currency}</span>
+                                </div>
+                            </div>
+                            <div className="price_footer_service_item">
+                                <div className="price_footer_service_half">
+                                    <p><p>{t("до")}</p>{priceTo} </p>
+                                    <span >{currency}</span>
+                                </div>
+                            </div>
+                        </React.Fragment>
+
+                    </MediaQuery>
+                    <MediaQuery minWidth={desctop}>
+                        <div className="price_service_half">
+                            <strong className={whiteClass}><p className={whiteClass}>{t("от")}</p>{priceFrom}</strong>
                             <span className={whiteClass}>{currency}</span>
                         </div>
-                        <strong className={whiteClass}>-&nbsp;</strong>
-                        <div className="price_service_item">
-                            <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
+                        <div className="price_service_half">
+                            <strong className={whiteClass}><p className={whiteClass}>{t("до")}</p>{priceTo} </strong>
                             <span className={whiteClass}>{currency}</span>
+                        </div>
+                    </MediaQuery>
+                </React.Fragment>
+                )
+            } else {
+                return (<React.Fragment>
+                    <MediaQuery maxWidth={mob}>
+                        <div className="price_service">
+                            <div className="price_service_item">
+                                <div className="price_service_half">
+                                    <strong className={whiteClass}><p className={whiteClass}>{t("от")}</p>{priceFrom}</strong>
+                                    <span className={whiteClass}>{currency}</span>
+                                </div>
+                            </div>
+                            <div className="price_service_item">
+                                <div className="price_service_half">
+                                    <strong className={whiteClass}><p className={whiteClass}>{t("до")}</p>{priceTo} </strong>
+                                    <span className={whiteClass}>{currency}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </MediaQuery>
+                    <MediaQuery minWidth={desctop}>
+                        <div className="price_service_half">
+                            <strong className={whiteClass}><p className={whiteClass}>{t("от")}</p>{priceFrom}</strong>
+                            <span className={whiteClass}>{currency}</span>
+                        </div>
+                        <div className="price_service_half">
+                            <strong className={whiteClass}><p className={whiteClass}>{t("до")}</p>{priceTo} </strong>
+                            <span className={whiteClass}>{currency}</span>
+                        </div>
+                    </MediaQuery>
+                </React.Fragment>
+                )
+            }
+
+        } else {
+            if (footer) {
+                return (<React.Fragment>
+                    <div className="price_footer_service_item">
+                        <div className="price_footer_service_half">
+                            <p>{priceFrom}</p>
+                            <span >{currency}</span>
                         </div>
                     </div>
-                </MediaQuery>
-                <MediaQuery minWidth={desctop}>
+                </React.Fragment>
+                )
+            } else {
+                return (<React.Fragment>
                     <strong className={whiteClass}>{priceFrom}</strong>
                     <span className={whiteClass}>{currency}</span>
-                    <strong className={whiteClass}>-&nbsp;</strong>
-                    <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
-                    <span className={whiteClass}>{currency}</span>
-                </MediaQuery>
-            </React.Fragment>
-            )
-        } else {
-            return (<React.Fragment>
-                <strong className={whiteClass}>{priceFrom}</strong>
-                <span className={whiteClass}>{currency}</span>
-            </React.Fragment>
-            )
+                </React.Fragment>
+                )
+            }
+
         }
     }
     render() {
@@ -195,17 +248,18 @@ class TabTwo extends Component {
                                 {imgSvg}
                                 <div className="supperVisDet service_footer-block">
                                     <div className="service_footer_price">
-                                        <p className="service_footer_price_text">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                        {this.priceText(priceFrom, priceTo, selectedServices[0] && selectedServices[0].currency, false, true)}
                                     </div>
-                                    <p className="service_footer_price_small_text" style={{
-                                        fontWeight: "400",
-                                        paddingLeft: `${padding_left}`,
-                                    }} onClick={event => this.setState({
-                                        openList: !openList,
-                                    })}>{t("Услуги")}: {selectedServices.length}
 
-                                    </p>
+                                    <div className="time-footer hover service_grow">
+                                        <p className="time_footer_p" onClick={event => this.setState({
+                                            openList: !openList,
+                                        })}>{t("Услуги")}: {selectedServices.length}
+                                        </p>
+                                        <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        </p>
+
+                                    </div>
                                 </div >
                                 {openList && (
 
@@ -442,7 +496,7 @@ class TabTwo extends Component {
                                     }
 
                                     heightService = String((finalServices.length / coff) * defaultHeight);
-                                    transit=(finalServices.length*0.1)+0.2;
+                                    transit = (finalServices.length * 0.1) + 0.2;
 
                                     return condition && finalServices && finalServices.length > 0 && (
                                         <ul className="service_list" key={index}>
@@ -477,8 +531,8 @@ class TabTwo extends Component {
                                                 </div>
 
                                                 <div className="service_items"
-                                                    style={this.startOpenservice 
-                                                        ?(catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", transition: `max-height ${transit}s linear ` })
+                                                    style={this.startOpenservice
+                                                        ? (catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", transition: `max-height ${transit}s linear ` })
                                                         : (!catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", transition: `max-height ${transit}s linear ` })}
                                                 >
                                                     {finalServices
@@ -506,7 +560,7 @@ class TabTwo extends Component {
                                                                                     <div className="service-price">
                                                                                         <div className="service-price-text">
 
-                                                                                            {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
+                                                                                            {this.priceText(service.priceFrom, service.priceTo, service.currency, true, false)}
                                                                                             <input onChange={(e) => selectService(e, service)}
                                                                                                 type="checkbox"
                                                                                                 checked={select} />
@@ -521,7 +575,7 @@ class TabTwo extends Component {
                                                                                     className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                 <div className="service-price">
                                                                                     <div className="service-price-text">
-                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
+                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, true, false)}
                                                                                         <input onChange={(e) => selectService(e, service)}
                                                                                             type="checkbox"
                                                                                             checked={select} />
@@ -551,7 +605,7 @@ class TabTwo extends Component {
                                                                                         className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                     <div className="service-price">
                                                                                         <div className="service-price-text" >
-                                                                                            {this.priceText(service.priceFrom, service.priceTo, service.currency, false)}
+                                                                                            {this.priceText(service.priceFrom, service.priceTo, service.currency, false, false)}
                                                                                             <input onChange={(e) => selectService(e, service)}
                                                                                                 type="checkbox"
                                                                                                 checked={select} />
@@ -567,7 +621,7 @@ class TabTwo extends Component {
                                                                                     className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                 <div className="service-price">
                                                                                     <div className="service-price-text" >
-                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, false)}
+                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, false, false)}
                                                                                         <input onChange={(e) => selectService(e, service)}
                                                                                             type="checkbox"
                                                                                             checked={select} />

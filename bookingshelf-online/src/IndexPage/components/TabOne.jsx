@@ -9,7 +9,7 @@ import cansel from "../../../public/img/icons/cansel_black.svg";
 import { compose } from 'redux';
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
-import {imgSvg} from "../../_helpers/svg"
+import { imgSvg } from "../../_helpers/svg"
 class TabOne extends PureComponent {
     constructor(props) {
         super(props)
@@ -86,11 +86,10 @@ class TabOne extends PureComponent {
         const { openList } = this.state;
         const desctop = 600;
         const mob = 599;
-        
+
         let serviceInfo = null;
 
         const currentDay = culcDay(selectedDay, "desctop");
-        const currentDayMob = culcDay(selectedDay, "mob");
 
         let sizeWords = "36px";
         let margin_right = "22px";
@@ -123,21 +122,47 @@ class TabOne extends PureComponent {
                     <div className="specialist" onClick={event => this.openListFunc()}>
 
                         <div className="specialist-block">
-                            {imgSvg}
+                        {imgSvg}
                             <div className="supperVisDet service_footer-block">
 
                                 <div className="service_footer_price">
-                                    <p className="service_footer_price_text">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                                    <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                    {priceFrom === priceTo
+                                        ? (<React.Fragment>
+                                            <div className="price_footer_service_item">
+                                                <div className="price_footer_service_half">
+                                                    <p>{priceFrom}</p>
+                                                    <span >{selectedServices[0] && selectedServices[0].currency}</span>
+                                                </div>
+                                            </div>
+                                        </React.Fragment>)
+                                        : (<React.Fragment>
+                                            <div className="price_footer_service_item">
+                                                <div className="price_footer_service_half">
+                                                    <p><p>{t("от")}</p>{priceFrom}</p>
+                                                    <span >{selectedServices[0] && selectedServices[0].currency}</span>
+                                                </div>
+                                            </div>
+                                            <div className="price_footer_service_item">
+                                                <div className="price_footer_service_half">
+                                                    <p><p>{t("до")}</p>{priceTo} </p>
+                                                    <span >{selectedServices[0] && selectedServices[0].currency}</span>
+                                                </div>
+                                            </div>
+                                        </React.Fragment>)
+                                    }
                                 </div>
+                               
                                 <div className="time-footer hover">
                                     <p className="time_footer_p" onClick={event => this.setState({
                                         openList: !openList,
                                     })}>{t("Услуги")}: {selectedServices.length} </p>
+                                     <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        </p>
+                                    
                                 </div>
                                 <div className="time-footer">
                                     <p className="time_footer_p" >{t("Дата")}:</p>
-                                    <p className="time_footer_p" >&nbsp;{currentDayMob}</p>
+                                    <p className="time_footer_p" >&nbsp;{currentDay}</p>
                                 </div>
                             </div >
                             {openList && (
@@ -167,6 +192,7 @@ class TabOne extends PureComponent {
                 <MediaQuery minWidth={desctop}>
                     <div className="specialist" >
                         <div className="specialist-block">
+                        {imgSvg}
                             {openList ?
                                 <div className="specialist_big">
                                     <div className="service_list_block">
