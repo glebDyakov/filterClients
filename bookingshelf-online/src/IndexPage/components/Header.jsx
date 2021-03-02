@@ -89,7 +89,6 @@ class Header extends PureComponent {
         const currentTextLeng = this.props.i18n.language.toUpperCase();
         const desctop = 600;
         const mob = 599;
-
         const hiddenMenu = mobile ? "hidden" : "visible";
         return (
             <div className="modal_menu"
@@ -221,11 +220,22 @@ class Header extends PureComponent {
                             <div className="separation"></div>
                             <div className="mobile-icon-block">
                                 <div className={mobile ? "mobile-icon-wrapper mobile_active" : "mobile-icon-wrapper"}>
-                                    <div>
-                                        <p>{selectedSubcompany.companyPhone1}</p>
-                                        <p>{selectedSubcompany.companyPhone2}</p>
-                                        <p>{selectedSubcompany.companyPhone3}</p>
-                                    </div>
+                                    {selectedSubcompany.companyPhone1 ? (
+                                        <div className="text-phones">
+                                            <p>{selectedSubcompany.companyPhone1}</p>
+                                            <p>{selectedSubcompany.companyPhone2}</p>
+                                            <p>{selectedSubcompany.companyPhone3}</p>
+                                        </div>
+                                    )
+                                        :
+                                        (
+                                            <div className="text-phones">
+                                                <p>{info.companyPhone1}</p>
+                                                <p>{info.companyPhone2}</p>
+                                                <p>{info.companyPhone3}</p>
+                                            </div>
+                                        )
+                                    }
 
                                     <img src={telephone_btn} onClick={e => this.setState({
                                         mobile: !mobile

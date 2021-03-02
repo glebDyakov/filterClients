@@ -12,24 +12,36 @@ class TabFour extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            arrayTime: 0,
+            arrayTime: "",
             openList: false,
+            chekTime: "",
+            checkReschedule: false
         }
         this.openListFunc = this.openListFunc.bind(this);
+        this.rescheduleVisit = this.rescheduleVisit.bind(this);
     }
     openListFunc() {
         this.setState({
             openList: !this.state.openList,
         })
     }
+    rescheduleVisit() {
+        if (this.props.movedVisitSuccess !== undefined) {
+            this.setState({
+                checkReschedule: true
+            })
+        } else {
+            this.props.setTime(this.state.arrayTime, false)
+        }
+
+    }
     render() {
 
-        const { t, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
+        const { t, flagAllStaffs, serviceIntervalOn, movedVisitSuccess, getDurationForCurrentStaff, movingVisit, selectedTime: time, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
         const desctop = 600;
         const mob = 599;
         const availableTimes = []
-
         const currentDay = culcDay(selectedDay, "desctop");
 
         let interval = 15;
@@ -72,13 +84,13 @@ class TabFour extends PureComponent {
                                     markup: (
                                         <div key={arrayTime} onClick={() => {
                                             if (isStartMovingVisit && !flagAllStaffs) {
-                                                
+
                                                 this.setState({ arrayTime })
                                             } else {
-                                                setTime(arrayTime, false)
+                                                this.setState({ arrayTime })
                                             }
                                         }}>
-                                            <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
+                                            <span className={arrayTime === this.state.arrayTime ? "time_color" : ""}>{moment(arrayTime, 'x').format('HH:mm')}</span>
                                         </div>
                                     )
                                 })
@@ -127,7 +139,7 @@ class TabFour extends PureComponent {
                         <div className="specialist" onClick={event => this.openListFunc()}>
 
                             <div className="specialist-block">
-                            {imgSvg}
+                                {imgSvg}
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
@@ -156,12 +168,12 @@ class TabFour extends PureComponent {
                                             </React.Fragment>)
                                         }
                                     </div>
-                                   
+
                                     <div className="time-footer hover" >
                                         <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Услуги")}: {selectedServices.length} </p>
-                                          <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>
                                     </div>
                                     <div className="time-footer">
@@ -183,12 +195,7 @@ class TabFour extends PureComponent {
                                         </div>
                                     </div>
                                 )}
-                                {!!selectedServices.length && <button className="next_block" onClick={() => {
-                                    if (selectedServices.length) {
-                                        setScreen(3);
-                                    }
-                                    refreshTimetable();
-                                }}>
+                                {!!selectedServices.length && <button disabled={!this.state.arrayTime} className={this.state.arrayTime.length > 1 ? "next_block" : "next_block disabledField"} onClick={() => this.rescheduleVisit()}>
                                     <span className="title_block_text">{t("Продолжить")}</span></button>}
                             </div>
                         </div>
@@ -243,12 +250,7 @@ class TabFour extends PureComponent {
                                         <p className="time-footer_desctop_p" >{t("Дата")}:</p>
                                         <p className="service_footer_price_small_text" >{t(`${currentDay}`)}</p>
                                     </div>
-                                    {!!selectedServices.length && <button className="next_block" onClick={() => {
-                                        if (selectedServices.length) {
-                                            setScreen(4);
-                                        }
-                                        refreshTimetable();
-                                    }}>
+                                    {!!selectedServices.length && <button disabled={!this.state.arrayTime} className={this.state.arrayTime ? "next_block" : "next_block disabledField"} onClick={() => this.rescheduleVisit()}>
                                         <span className="title_block_text">{t("Продолжить")}</span></button>}
                                 </div >
                             }
@@ -280,7 +282,7 @@ class TabFour extends PureComponent {
                 </div>
 
 
-                {this.state.arrayTime ?
+                {this.state.checkReschedule ?
                     (<div className="approveF">
                         <div className="modal_window_block">
                             <div className="modal_window_text">
@@ -312,7 +314,6 @@ class TabFour extends PureComponent {
                             </div>
                         </div>
                     </div>) : ""
-
                 }
 
                 <div className="choise_time">

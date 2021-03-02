@@ -170,7 +170,7 @@
     }
     /* burger */
     .burger_menu {
-        width: 360px;
+        width: 100%;
         position: fixed;
         transform: translateY(-130%);
         transition: 0.5s;
@@ -179,6 +179,10 @@
         flex-direction: column;
         padding: 20px 15px 15px;
         margin-left: -20px;
+        margin: auto;
+        left: 0;
+        align-items: center;
+        top: -44px;
     }
     .burger_menu_btn_off img, .burger_menu_btn_on img:hover {
         cursor: pointer;
@@ -612,7 +616,7 @@
         width: 243px;
     }
     .footer_modal {
-        width: 360px;
+        width: 100%;
         margin: auto;
     }
     .final-screen {
