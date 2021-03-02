@@ -168,6 +168,10 @@
     .regist_block_sms_p span {
         color: red;
     }
+    .container_popups,
+    .service_selection_wrapper{
+        overscroll-behavior: none;
+    }
     /* burger */
     .burger_menu {
         width: 100%;
@@ -181,8 +185,6 @@
         margin-left: -20px;
         margin: auto;
         left: 0;
-        align-items: center;
-        top: -44px;
     }
     .burger_menu_btn_off img, .burger_menu_btn_on img:hover {
         cursor: pointer;
@@ -747,6 +749,5 @@
     .service_selection.screen5 {
         height: 100vh;
         overscroll-behavior: none;
-        margin-bottom: 0;
     }
 }
