@@ -288,7 +288,7 @@ class TabFour extends PureComponent {
                             <div className="modal_window_text">
                                 <p className="modal_title">{t("Перенести визит")}?</p>
                                 <img src={cansel} onClick={e => this.setState({
-                                    arrayTime: 0,
+                                    checkReschedule: false,
                                 })} alt="cansel" />
                             </div>
                             <div className="modal_window_btn">

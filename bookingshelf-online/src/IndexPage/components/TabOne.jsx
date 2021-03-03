@@ -62,8 +62,11 @@ class TabOne extends PureComponent {
         updatedState.selectedStaff = staffs.find(item => item.staffId === selectedStaffFromTimetable.staffId);
         forceUpdateStaff(updatedState.selectedStaff)
         if (isStartMovingVisit) {
+           
             this.setState({ staff: updatedState.selectedStaff })
+            setScreen(3);
         } else {
+         
             setScreen(5);
         }
     }
@@ -272,7 +275,6 @@ class TabOne extends PureComponent {
 
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
 
-
             <div className="service_selection screen1">
                 <div>
                     <div className="skip_employee-block">
@@ -398,7 +400,7 @@ class TabOne extends PureComponent {
                 {selectedServices[0] && serviceInfo}
                 {/*  */}
 
-                {this.state.staff && (
+                {/* {this.state.staff && (
                     <div className="approveF">
                         <div className="modal_window_block">
                             <div className="modal_window_text">
@@ -432,7 +434,7 @@ class TabOne extends PureComponent {
                             </div>
                         </div>
                     </div>
-                )}
+                )} */}
             </div >
         );
     }

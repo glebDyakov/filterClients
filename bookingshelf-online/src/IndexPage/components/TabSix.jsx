@@ -34,8 +34,6 @@ class TabSix extends PureComponent {
         const { selectedStaff, selectedService, selectedServices, selectedDay, selectedTime: time, selectedTime, newAppointments, getDurationForCurrentStaff,
             info, _delete, _move, movedVisitSuccess, movingVisit, t } = this.props;
         const { approveF } = this.state;
-        console.log(movingVisit)
-        console.log(movedVisitSuccess)
         const desctop = 600;
         const mob = 599;
         const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
