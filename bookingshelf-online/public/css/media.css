@@ -606,6 +606,8 @@
         z-index: 20;
         padding: 10px;
         height: auto;
+        margin: auto;
+    left: 0;
     }
     .last_footer_block p {
         font-weight: 300;
@@ -624,12 +626,16 @@
     .final-screen {
         display: flex;
         flex-direction: column-reverse;
+        margin-top: -50px;
     }
     .final-screen-block {
         width: 360px;
         padding: 15px;
         border: 0;
         margin-top: -19px;
+    }
+    .choise_time div:nth-child(7n) {
+        margin-right: 23px;
     }
     .final-book p {
         font-weight: 600;
@@ -748,6 +754,6 @@
     }
     .service_selection.screen5 {
         height: 100vh;
-        overscroll-behavior: none;
+        margin-bottom: 0;
     }
 }

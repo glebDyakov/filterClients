@@ -500,9 +500,7 @@ class TabTwo extends Component {
 
                                     return condition && finalServices && finalServices.length > 0 && (
                                         <ul className="service_list" key={index}>
-                                            <div style={{
-                                                borderBottom: "1px solid rgba(172, 172, 172, 0.2)",
-                                            }}>
+                                            <div>
                                                 <div onClick={event => {
                                                     const newArray = catigor;
                                                     newArray[index] = !newArray[index]
@@ -532,8 +530,8 @@ class TabTwo extends Component {
 
                                                 <div className="service_items"
                                                     style={this.startOpenservice
-                                                        ? (catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", transition: `max-height ${transit}s linear ` })
-                                                        : (!catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", transition: `max-height ${transit}s linear ` })}
+                                                        ? (catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })
+                                                        : (!catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })}
                                                 >
                                                     {finalServices
                                                         .map((service, serviceKey, array) => {

@@ -34,8 +34,6 @@ class TabSix extends PureComponent {
         const { selectedStaff, selectedService, selectedServices, selectedDay, selectedTime: time, selectedTime, newAppointments, getDurationForCurrentStaff,
             info, _delete, _move, movedVisitSuccess, movingVisit, t } = this.props;
         const { approveF } = this.state;
-        console.log(movingVisit)
-        console.log(movedVisitSuccess)
         const desctop = 600;
         const mob = 599;
         const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
@@ -98,8 +96,8 @@ class TabSix extends PureComponent {
                         </div>
                         <div className="final-screen-block">
 
-                            <div className="title_block staff_title">
-                            </div>
+                            {/* <div className="title_block staff_title">
+                            </div> */}
 
                             <div className="final-book finel_color_text">
                                 <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>
@@ -202,7 +200,7 @@ class TabSix extends PureComponent {
                             {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
                                 <div className="modal_window_block">
                                     <div className="modal_window_text">
-                                        <p className="modal_title">{t("Перенести визит")}?</p>
+                                        <p className="modal_title">{t("Отменить визит")}?</p>
                                         <img src={cansel}  onClick={() => this.setterApproveF()} alt="cansel" />
                                     </div>
                                     <div className="modal_window_btn">
