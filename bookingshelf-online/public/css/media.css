@@ -171,6 +171,7 @@
     .container_popups,
     .service_selection_wrapper{
         overscroll-behavior: none;
+        height: 100%;
     }
     /* burger */
     .burger_menu {
@@ -751,9 +752,10 @@
     }
     .service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5 {
         margin-bottom: 140px;
+        overscroll-behavior: none;
     }
     .service_selection.screen5 {
-        height: 100vh;
+        height: 100%;
         margin-bottom: 0;
     }
 }

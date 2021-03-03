@@ -94,15 +94,15 @@ class TabOne extends PureComponent {
 
         const currentDay = culcDay(selectedDay, "desctop");
 
-        let sizeWords = "36px";
+        let sizeWords = "28px";
         let margin_right = "22px";
         let priceFrom = 0;
         let priceTo = 0;
         let duration = 0;
         selectedServices.forEach((service) => {
-            priceFrom += parseInt(service.priceFrom)
-            priceTo += parseInt(service.priceTo)
-            duration += parseInt(getDurationForCurrentStaff(service))
+            priceFrom += Number(service.priceFrom)
+            priceTo += Number(service.priceTo)
+            duration += Number(getDurationForCurrentStaff(service))
         })
 
         const priceFrom100 = priceFrom / 100;
@@ -111,11 +111,11 @@ class TabOne extends PureComponent {
         const priceTo1000 = priceTo / 1000;
 
         if (priceFrom1000 > 1 || priceTo1000 > 1) {
-            sizeWords = "24px"
+            sizeWords = "22px"
             margin_right = "0px";
         }
         else if (priceFrom100 > 1 || priceTo100 > 1) {
-            sizeWords = "32px"
+            sizeWords = "25px"
             margin_right = "0px";
         }
 
