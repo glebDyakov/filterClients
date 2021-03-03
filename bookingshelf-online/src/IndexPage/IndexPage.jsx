@@ -514,6 +514,7 @@ class IndexPage extends PureComponent {
                         selectedService={selectedService}
                         selectedServices={selectedServices}
                         selectedDay={selectedDay}
+                        movedVisitSuccess={movedVisitSuccess}
                         timetableAvailable={timetableAvailable}
                         setScreen={this.setScreen}
                         refreshTimetable={this.refreshTimetable}

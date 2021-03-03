@@ -22,10 +22,10 @@
         max-width: 590px;
         padding: 0px 5px;
     }
-    .service_footer_price_small_text{
+    .service_footer_price_small_text {
         font-size: 11px;
     }
-    .next_block{
+    .next_block {
         width: 155px;
     }
     .modal_menu {
@@ -35,8 +35,16 @@
     .affiliate li {
         max-width: 590px;
     }
-    .service_footer_price p {
-        font-size: 22px;
+    .price_footer_service_half p {
+        color: #fff;
+        font-size: 13px;
+        line-height: 18px;
+        display: flex;
+        margin-right: 5px;
+        font-weight: 400;
+    }
+    .price_footer_service_half p p {
+        margin-right: 5px;
     }
     .service_list_block {
         padding: 10px 0px 5px;
@@ -48,52 +56,43 @@
         margin-right: 52px;
     }
     .img_svg {
-        position: absolute;
-        left: 9%;
-        bottom: 8px;
-        width: 15px;
-        height: 15px;
+        position: relative;
+        width: 19px;
+        height: 21px;
+        left: 0;
     }
-    .entry_form-item:nth-child(2n){
+    .comments_btn_footer {
+        left: 38%;
+    }
+    .entry_form-item:nth-child(2n) {
         margin-left: 0px;
     }
     .service_list {
         width: 584px;
     }
-    .mobile-icon-wrapper.mobile_active,
-    .regist_block,
-    .create_comments,
-    .comments .staff_popup_large,
-    .comments,
-    .final-screen-block,
-    .last_footer_block,
-    .entry_form,
-    .last_list,
-    .choise_time,
-    .DayPicker-Weekdays,
-    .DayPicker-Body,
-    .calendar_modal,
-    .service_list_block,
-    .specialist-block,
-    .staff_popup,
-    .skip_employee-block {
+    .mobile-icon-wrapper.mobile_active, .staff_popup_comment, .create_comments, .comments, .final-screen-block, .last_footer_block, .entry_form, .last_list, .choise_time, .DayPicker-Weekdays, .DayPicker-Body, .calendar_modal, .service_list_block, .specialist-block, .skip_employee-block {
         width: 590px;
+    }
+    .staff_popup_comment {
+        padding-left: 10px;
+    }
+    .staff_popup {
+        width: 98%;
     }
     .service_items.service_items_active {
         max-height: 1000px !important;
     }
-    .service_items li,
-    .staff_popup li {
+    .service_items li, .staff_popup li {
         width: 287px;
     }
     .leng_list {
         left: 333px;
     }
-    .service_items li:nth-child(2n),
-    .staff_popup li:nth-child(2n) {
+    .service_items li:nth-child(2n), .staff_popup li:nth-child(2n) {
         margin-left: 10px;
     }
 }
+
 @media screen and (max-width: 599px) {
     .container_popups * {
         font-size: 13px;
@@ -122,6 +121,9 @@
     }
     .affiliate li:hover {
         cursor: pointer;
+    }
+    .service_header {
+        padding: 13px 0px 10px;
     }
     .firm-title {
         width: 60%;
@@ -166,9 +168,13 @@
     .regist_block_sms_p span {
         color: red;
     }
+    .container_popups,
+    .service_selection_wrapper{
+        overscroll-behavior: none;
+    }
     /* burger */
     .burger_menu {
-        width: 360px;
+        width: 100%;
         position: fixed;
         transform: translateY(-130%);
         transition: 0.5s;
@@ -176,30 +182,35 @@
         display: flex;
         flex-direction: column;
         padding: 20px 15px 15px;
-        margin-left: -15px;
+        margin-left: -20px;
+        margin: auto;
+        left: 0;
     }
-    .burger_menu_btn_off img,
-    .burger_menu_btn_on img:hover {
+    .burger_menu_btn_off img, .burger_menu_btn_on img:hover {
         cursor: pointer;
     }
     .burger_menu_btn_off {
         margin: 3px -6px 0px 0px;
     }
-    .comments .staff_popup_large {
-        width: 330px;
-    }
     .burger_menu.active {
-        transform: translatey(31%);
+        transform: translatey(22%);
     }
     .comments {
         width: 330px;
+        border: 0;
     }
     .create_comments {
         width: 330px;
-        padding: 7px;
+        padding: 7px 0px;
+        border: 0;
+        margin-top: -20px;
     }
-    .regist_block {
-        width: 330px;
+    .create_comments .staff_popup {
+        border-bottom: 1px solid rgba(9, 9, 58, 0.1);
+        padding-bottom: 15px;
+    }
+    .comment_sms_btn_block {
+        margin-top: 14px;
     }
     .burger_menu .firm-text p {
         font-weight: 600;
@@ -224,14 +235,14 @@
         margin-left: 7px;
     }
     .burger_menu_btn_on {
-        margin-left: 49px;
+        margin-left: 70px;
     }
     .burger_menu .firm-icons {
         display: flex;
         justify-content: space-between;
         width: auto;
-        margin-top: 32px;
-        margin-bottom: -6px;
+        margin-top: 10px;
+        margin-bottom: -4px;
     }
     .adress-text-wrapper img {
         margin-left: 15px;
@@ -249,7 +260,7 @@
         display: flex;
         justify-content: space-between;
         width: 35%;
-        margin-top: 42px;
+        /* margin-top: 42px; */
         border: 0;
     }
     /*  */
@@ -272,10 +283,6 @@
     .approveFYes {
         width: 90px;
     }
-    .img_svg {
-        bottom: 20%;
-        visibility: hidden;
-    }
     .approveFNo {
         width: 90px;
     }
@@ -297,6 +304,7 @@
     }
     .img_container {
         margin-top: 5px;
+        justify-content: flex-start;
     }
     .affiliate_item {
         margin-bottom: 10px;
@@ -336,7 +344,6 @@
     .skip_employee-block {
         width: 330px;
         height: 52px;
-
         margin-bottom: 15px;
         padding-right: 6px;
     }
@@ -365,7 +372,6 @@
     }
     .service_items li {
         width: 330px;
-        min-height: 102px;
         /* max-height: 170px; */
     }
     .service_items li:nth-child(2n) {
@@ -374,6 +380,7 @@
     .service-block {
         justify-content: space-between;
         flex-direction: row;
+        padding: 10px;
     }
     .service_half_block {
         display: flex;
@@ -400,8 +407,7 @@
         font-weight: 400;
         line-height: 18px;
     }
-    .dark_blue_text p,
-    .gray_text p {
+    .dark_blue_text p, .gray_text p {
         font-weight: 400;
     }
     .runtime strong {
@@ -435,6 +441,11 @@
     }
     .price_service_item span {
         margin: -7px -2px 0px 0px;
+        display: flex;
+        justify-content: center;
+    }
+    .price_service_half {
+        margin-top: 7px;
     }
     .price_service strong {
         font-size: 24px;
@@ -474,7 +485,7 @@
     }
     .service_list_name {
         max-width: 328px;
-        margin-bottom: 15px;
+        margin-bottom: -4px;
     }
     .runtime {
         margin-top: -5px;
@@ -524,14 +535,12 @@
     .entry_form-item:nth-child(2n) {
         margin-left: 0px;
     }
-    .screen5 input[type="text"],
-    input[type="search"],
-    .screen5 textarea {
+    .screen5 input[type="text"], input[type="search"], .screen5 textarea {
         width: 330px;
         font-weight: 400;
     }
-    .react-tel-input .form-control {
-        width: 330px !important;
+    .entry_form-item .react-tel-input .form-control {
+        width: 330px;
     }
     .staff_popup_comment {
         width: 330px;
@@ -541,16 +550,18 @@
     }
     .regist_block span {
         width: 290px;
+        margin-top: 14px;
+        margin-bottom: 29px;
     }
     .regist_block .tel {
-        width: 290px;
+        width: 316px;
     }
     .book_button {
-        color: #fff;
+        color: var(--color_text);
         width: 330px;
-        background: url(../img/icons/skip-arrow-white.svg) no-repeat;
+        background: url(../img/icons/skip-arrow.svg) no-repeat;
         background-size: 16px;
-        background-color: var(--color_button);
+        background-color: #fff;
         left: auto;
         background-position: right center;
         background-position-x: 201px;
@@ -561,12 +572,16 @@
         justify-content: center;
         border: 0;
     }
+    .regist_block {
+        margin-top: 18px;
+        margin-left: 0px;
+    }
     .book_button_last {
-        color: #fff;
+        color: var(--color_text);
         width: 330px;
-        background: url(../img/icons/skip-arrow-white.svg) no-repeat;
+        background: url(../img/icons/skip-arrow.svg) no-repeat;
         background-size: 16px;
-        background-color: var(--color_button);
+        background-color: #fff;
         left: auto;
         background-position: right center;
         background-position-x: 246px;
@@ -584,7 +599,12 @@
     .last_footer_block {
         justify-content: center;
         flex-direction: column;
-        width: 330px;
+        width: 100%;
+        position: fixed;
+        background-color: var(--color_button);
+        bottom: 0;
+        z-index: 20;
+        padding: 10px;
         height: auto;
     }
     .last_footer_block p {
@@ -594,12 +614,11 @@
     }
     .last_footer_block p {
         text-align: center;
-        margin-top: 15px;
         margin-right: 0px;
         width: 243px;
     }
     .footer_modal {
-        width: 360px;
+        width: 100%;
         margin: auto;
     }
     .final-screen {
@@ -656,7 +675,7 @@
         display: flex;
         flex-direction: column;
         width: 360px;
-        padding: 15px 15px 10px;
+        padding: 1px 15px 10px;
     }
     .service_footer-block {
         width: 360px;
@@ -674,11 +693,19 @@
     .service_footer-block p img:hover {
         cursor: pointer;
     }
-    .time-footer {
-        flex-direction: row;
-    }
     .service_footer_price span {
         font-weight: 400;
+    }
+    .service_footer_price div {
+        display: flex;
+        flex-direction: row;
+    }
+    .service_footer_price_small_text {
+        font-weight: 400;
+    }
+    .service_footer_price {
+        display: flex;
+        flex-direction: column;
     }
     .header-lang {
         margin: 4px -15px 0px -3px;
@@ -694,7 +721,33 @@
         left: 101px;
         top: 87px;
     }
-    .last_footer_block p {
-        color: var(--color_text);
+    a.last_footer_block_a, .last_footer_block p {
+        color: #fff;
+    }
+    .comments .staff_popup_large {
+        padding: 0px 0px 10px 0px;
+    }
+    .comments_btn_footer {
+        left: 29%;
+    }
+    .comment_sms_btn_active {
+        border: 0;
+        background-color: white;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 25px;
+    }
+    .time-footer {
+        margin: 0;
+    }
+    .service_grow {
+        flex-grow: 0.7;
+    }
+    .service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5 {
+        margin-bottom: 140px;
+    }
+    .service_selection.screen5 {
+        height: 100vh;
+        overscroll-behavior: none;
     }
 }

@@ -3,10 +3,9 @@ import moment from 'moment'
 import DayPicker from "react-day-picker";
 import MomentLocaleUtils from 'react-day-picker/moment';
 import { withTranslation } from "react-i18next";
-import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
-import {imgSvg} from "../../_helpers/svg"
+import { imgSvg } from "../../_helpers/svg"
 class TabThird extends PureComponent {
     constructor(props) {
         super(props);
@@ -30,10 +29,9 @@ class TabThird extends PureComponent {
 
         const { setScreen, setDefaultFlag, refreshTimetable, isStartMovingVisit, selectedDay, selectedStaff, selectedServices, getDurationForCurrentStaff, selectedService, disabledDays, month, handleDayClick, showPrevWeek, showNextWeek, t } = this.props;
         const { openList } = this.state;
-      
+
 
         let currentDay = culcDay(selectedDay, "desctop");
-        let currentDayMob = culcDay(selectedDay, "mob");
 
         const desctop = 600;
         const mob = 599;
@@ -71,12 +69,36 @@ class TabThird extends PureComponent {
                     <MediaQuery maxWidth={mob}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
-                                {imgSvg}
+                            {imgSvg}
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
-                                        <p className="time_footer_p">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                        {priceFrom === priceTo
+                                            ? (<React.Fragment>
+                                                <div className="price_footer_service_item">
+                                                    <div className="price_footer_service_half">
+                                                        <p>{priceFrom}</p>
+                                                        <span >{selectedServices[0] && selectedServices[0].currency}</span>
+                                                    </div>
+                                                </div>
+                                            </React.Fragment>)
+                                            : (<React.Fragment>
+                                                <div className="price_footer_service_item">
+                                                    <div className="price_footer_service_half">
+                                                        <p><p>{t("от")}</p>{priceFrom}</p>
+                                                        <span >{selectedServices[0] && selectedServices[0].currency}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="price_footer_service_item">
+                                                    <div className="price_footer_service_half">
+                                                        <p><p>{t("до")}</p>{priceTo} </p>
+                                                        <span >{selectedServices[0] && selectedServices[0].currency}</span>
+                                                    </div>
+                                                </div>
+                                            </React.Fragment>)
+                                        }
+
+                                       
                                     </div>
                                     <div className="time-footer hover" style={{
                                         // marginRight: `${margin_right}`
@@ -84,14 +106,14 @@ class TabThird extends PureComponent {
                                         <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Услуги")}: {selectedServices.length}
-                                            <img style={{
-                                                marginLeft: "7px",
-                                                marginTop: "0px"
-                                            }} src={arrow_down} className={openList ? "" : "arrow_rotate"} alt="arrou"></img></p>
+                                        </p>
+                                        <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        </p>
+
                                     </div>
                                     <div className="time-footer">
                                         <p className="time_footer_p" >{t("Дата")}:</p>
-                                        <p className="time_footer_p" >&nbsp;{t(`${currentDayMob}`)}</p>
+                                        <p className="time_footer_p" >{t(`${currentDay}`)}</p>
                                     </div>
                                 </div >
                                 {openList && (
@@ -129,8 +151,8 @@ class TabThird extends PureComponent {
                                             <div className="setvice_list_items">
                                                 <p className="text_underline">{selectedStaff.firstName} {selectedStaff.lastName ? selectedStaff.lastName : ''}</p>
                                                 <p>{t("Услуги")}:</p>
-                                                {selectedServices.map((element) =>
-                                                    <div className="setvice_list_item">
+                                                {selectedServices.map((element,index) =>
+                                                    <div key={index} className="setvice_list_item">
                                                         <div className="service_circle">
                                                             <div className="service_circle_center"></div>
                                                         </div>
@@ -159,7 +181,7 @@ class TabThird extends PureComponent {
                                         }}>
                                             <p className="time-footer_desctop_p" onClick={event => this.setState({
                                                 openList: !openList,
-                                            })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} className="arrow_rotate" alt="arrou"></img></p>
+                                            })}>{t("Выбрано услуг")}: {selectedServices.length} </p>
 
                                             <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                             </p>

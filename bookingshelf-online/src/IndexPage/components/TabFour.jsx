@@ -4,35 +4,45 @@ import moment from 'moment'
 import DayPicker from "react-day-picker";
 import { staffActions } from "../../_actions";
 import { withTranslation } from "react-i18next";
-import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
 import MediaQuery from 'react-responsive'
 import cansel from "../../../public/img/icons/cansel_black.svg";
 import { culcDay } from "../../_helpers/data-calc"
-import {imgSvg} from "../../_helpers/svg"
+import { imgSvg } from "../../_helpers/svg"
 class TabFour extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            arrayTime: 0,
+            arrayTime: "",
             openList: false,
+            chekTime: "",
+            checkReschedule: false
         }
         this.openListFunc = this.openListFunc.bind(this);
+        this.rescheduleVisit = this.rescheduleVisit.bind(this);
     }
     openListFunc() {
         this.setState({
             openList: !this.state.openList,
         })
     }
+    rescheduleVisit() {
+        if (this.props.movedVisitSuccess !== undefined) {
+            this.setState({
+                checkReschedule: true
+            })
+        } else {
+            this.props.setTime(this.state.arrayTime, false)
+        }
+
+    }
     render() {
 
-        const { t, flagAllStaffs, serviceIntervalOn, getDurationForCurrentStaff, movingVisit, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
+        const { t, flagAllStaffs, serviceIntervalOn, movedVisitSuccess, getDurationForCurrentStaff, movingVisit, selectedTime: time, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
         const desctop = 600;
         const mob = 599;
         const availableTimes = []
-        
         const currentDay = culcDay(selectedDay, "desctop");
-        const currentDayMob = culcDay(selectedDay, "mob");
 
         let interval = 15;
         if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
@@ -74,12 +84,13 @@ class TabFour extends PureComponent {
                                     markup: (
                                         <div key={arrayTime} onClick={() => {
                                             if (isStartMovingVisit && !flagAllStaffs) {
+
                                                 this.setState({ arrayTime })
                                             } else {
-                                                setTime(arrayTime, false)
+                                                this.setState({ arrayTime })
                                             }
                                         }}>
-                                            <span>{moment(arrayTime, 'x').format('HH:mm')}</span>
+                                            <span className={arrayTime === this.state.arrayTime ? "time_color" : ""}>{moment(arrayTime, 'x').format('HH:mm')}</span>
                                         </div>
                                     )
                                 })
@@ -132,21 +143,42 @@ class TabFour extends PureComponent {
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
-                                        <p className='time_footer_p' >{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                        {priceFrom === priceTo
+                                            ? (<React.Fragment>
+                                                <div className="price_footer_service_item">
+                                                    <div className="price_footer_service_half">
+                                                        <p>{priceFrom}</p>
+                                                        <span >{selectedServices[0] && selectedServices[0].currency}</span>
+                                                    </div>
+                                                </div>
+                                            </React.Fragment>)
+                                            : (<React.Fragment>
+                                                <div className="price_footer_service_item">
+                                                    <div className="price_footer_service_half">
+                                                        <p><p>{t("от")}</p>{priceFrom}</p>
+                                                        <span >{selectedServices[0] && selectedServices[0].currency}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="price_footer_service_item">
+                                                    <div className="price_footer_service_half">
+                                                        <p><p>{t("до")}</p>{priceTo} </p>
+                                                        <span >{selectedServices[0] && selectedServices[0].currency}</span>
+                                                    </div>
+                                                </div>
+                                            </React.Fragment>)
+                                        }
                                     </div>
+
                                     <div className="time-footer hover" >
                                         <p className="time_footer_p" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Услуги")}:{selectedServices.length} <img
-                                            style={{
-                                                marginLeft: "3px",
-                                                marginTop: "0px"
-                                            }} src={arrow_down} className={openList ? "" : "arrow_rotate"} alt="arrou"></img></p>
+                                        })}>{t("Услуги")}: {selectedServices.length} </p>
+                                        <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        </p>
                                     </div>
                                     <div className="time-footer">
                                         <p className="time_footer_p" >{t("Дата")}:</p>
-                                        <p className="time_footer_p" >&nbsp;{t(`${currentDayMob}`)}</p>
+                                        <p className="time_footer_p" >{t(`${currentDay}`)}</p>
                                     </div>
                                 </div >
                                 {openList && (
@@ -163,19 +195,14 @@ class TabFour extends PureComponent {
                                         </div>
                                     </div>
                                 )}
-                                {!!selectedServices.length && <button className="next_block" onClick={() => {
-                                    if (selectedServices.length) {
-                                        setScreen(3);
-                                    }
-                                    refreshTimetable();
-                                }}>
-                                    <span className="title_block_text">{t("Продолжить")}</span></button>}
+                                {!!selectedServices.length && <button disabled={!this.state.arrayTime} className={this.state.arrayTime ? "next_block" : "next_block disabledField"} onClick={() => this.rescheduleVisit()}>
+                                        <span className="title_block_text">{t("Продолжить")}</span></button>}
                             </div>
                         </div>
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
                         <div className="specialist-block">
-                        {imgSvg}
+                            {imgSvg}
                             {openList ?
                                 <div className="specialist_big">
                                     <div className="service_list_block">
@@ -212,7 +239,7 @@ class TabFour extends PureComponent {
                                     }}>
                                         <p className="time-footer_desctop_p" onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} className="arrow_rotate" alt="arrou"></img></p>
+                                        })}>{t("Выбрано услуг")}: {selectedServices.length}</p>
                                         {/* } */}
                                         <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>
@@ -223,12 +250,7 @@ class TabFour extends PureComponent {
                                         <p className="time-footer_desctop_p" >{t("Дата")}:</p>
                                         <p className="service_footer_price_small_text" >{t(`${currentDay}`)}</p>
                                     </div>
-                                    {!!selectedServices.length && <button className="next_block" onClick={() => {
-                                        if (selectedServices.length) {
-                                            setScreen(4);
-                                        }
-                                        refreshTimetable();
-                                    }}>
+                                    {!!selectedServices.length && <button disabled={!this.state.arrayTime} className={this.state.arrayTime ? "next_block" : "next_block disabledField"} onClick={() => this.rescheduleVisit()}>
                                         <span className="title_block_text">{t("Продолжить")}</span></button>}
                                 </div >
                             }
@@ -260,11 +282,11 @@ class TabFour extends PureComponent {
                 </div>
 
 
-                {this.state.arrayTime ?
+                {this.state.checkReschedule ?
                     (<div className="approveF">
                         <div className="modal_window_block">
                             <div className="modal_window_text">
-                                <p className="modal_title">{t("Перенести визит?")}</p>
+                                <p className="modal_title">{t("Перенести визит")}?</p>
                                 <img src={cansel} onClick={e => this.setState({
                                     arrayTime: 0,
                                 })} alt="cansel" />
@@ -292,7 +314,6 @@ class TabFour extends PureComponent {
                             </div>
                         </div>
                     </div>) : ""
-
                 }
 
                 <div className="choise_time">

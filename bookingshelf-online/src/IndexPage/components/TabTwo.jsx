@@ -5,10 +5,8 @@ import { staffActions } from "../../_actions";
 import { withTranslation } from "react-i18next";
 import search_icon from "../../../public/img/icons/header-search.svg";
 import mobile_gray_cansel from "../../../public/img/icons/mobile_gray_cansel.svg"
-import arrow_down_white from "../../../public/img/icons/arrow_down_white.svg";
 import MediaQuery from 'react-responsive'
-import arrow_down from "../../../public/img/icons/arrow_down_white.svg";
-import {imgSvg} from "../../_helpers/svg"
+import { imgSvg } from "../../_helpers/svg"
 class TabTwo extends Component {
     constructor(props) {
         super(props);
@@ -30,43 +28,96 @@ class TabTwo extends Component {
             })
         }
     }
-    priceText(priceFrom, priceTo, currency, white) {
+    priceText(priceFrom, priceTo, currency, white, footer) {
         const desctop = 600;
         const mob = 599;
-        
+
         let whiteClass = "";
         white ? whiteClass = "white_text" : whiteClass = "";
         const { t } = this.props;
         if (priceFrom !== priceTo) {
-            return (<React.Fragment>
-                <MediaQuery maxWidth={mob}>
-                    <div className="price_service">
-                        <div className="price_service_item">
-                            <strong className={whiteClass}>{priceFrom}</strong>
+            if (footer) {
+                return (<React.Fragment>
+                    <MediaQuery maxWidth={mob}>
+                        <React.Fragment>
+                            <div className="price_footer_service_item">
+                                <div className="price_footer_service_half">
+                                    <p><p>{t("от")}</p>{priceFrom}</p>
+                                    <span >{currency}</span>
+                                </div>
+                            </div>
+                            <div className="price_footer_service_item">
+                                <div className="price_footer_service_half">
+                                    <p><p>{t("до")}</p>{priceTo} </p>
+                                    <span >{currency}</span>
+                                </div>
+                            </div>
+                        </React.Fragment>
+
+                    </MediaQuery>
+                    <MediaQuery minWidth={desctop}>
+                        <div className="price_service_half">
+                            <strong className={whiteClass}><p className={whiteClass}>{t("от")}</p>{priceFrom}</strong>
                             <span className={whiteClass}>{currency}</span>
                         </div>
-                        <strong className={whiteClass}>-&nbsp;</strong>
-                        <div className="price_service_item">
-                            <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
+                        <div className="price_service_half">
+                            <strong className={whiteClass}><p className={whiteClass}>{t("до")}</p>{priceTo} </strong>
                             <span className={whiteClass}>{currency}</span>
+                        </div>
+                    </MediaQuery>
+                </React.Fragment>
+                )
+            } else {
+                return (<React.Fragment>
+                    <MediaQuery maxWidth={mob}>
+                        <div className="price_service">
+                            <div className="price_service_item">
+                                <div className="price_service_half">
+                                    <strong className={whiteClass}><p className={whiteClass}>{t("от")}</p>{priceFrom}</strong>
+                                    <span className={whiteClass}>{currency}</span>
+                                </div>
+                            </div>
+                            <div className="price_service_item">
+                                <div className="price_service_half">
+                                    <strong className={whiteClass}><p className={whiteClass}>{t("до")}</p>{priceTo} </strong>
+                                    <span className={whiteClass}>{currency}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </MediaQuery>
+                    <MediaQuery minWidth={desctop}>
+                        <div className="price_service_half">
+                            <strong className={whiteClass}><p className={whiteClass}>{t("от")}</p>{priceFrom}</strong>
+                            <span className={whiteClass}>{currency}</span>
+                        </div>
+                        <div className="price_service_half">
+                            <strong className={whiteClass}><p className={whiteClass}>{t("до")}</p>{priceTo} </strong>
+                            <span className={whiteClass}>{currency}</span>
+                        </div>
+                    </MediaQuery>
+                </React.Fragment>
+                )
+            }
+
+        } else {
+            if (footer) {
+                return (<React.Fragment>
+                    <div className="price_footer_service_item">
+                        <div className="price_footer_service_half">
+                            <p>{priceFrom}</p>
+                            <span >{currency}</span>
                         </div>
                     </div>
-                </MediaQuery>
-                <MediaQuery minWidth={desctop}>
+                </React.Fragment>
+                )
+            } else {
+                return (<React.Fragment>
                     <strong className={whiteClass}>{priceFrom}</strong>
                     <span className={whiteClass}>{currency}</span>
-                    <strong className={whiteClass}>-&nbsp;</strong>
-                    <strong className={whiteClass}>{priceFrom !== priceTo && priceTo} </strong>
-                    <span className={whiteClass}>{currency}</span>
-                </MediaQuery>
-            </React.Fragment>
-            )
-        } else {
-            return (<React.Fragment>
-                <strong className={whiteClass}>{priceFrom}</strong>
-                <span className={whiteClass}>{currency}</span>
-            </React.Fragment>
-            )
+                </React.Fragment>
+                )
+            }
+
         }
     }
     render() {
@@ -75,7 +126,10 @@ class TabTwo extends Component {
         const { searchValue, openList, catigor, visibleSearch } = this.state;
         const desctop = 600;
         const mob = 599;
+        const coff = 1.3;
+        const defaultHeight = 200;
         let heightService = "0";
+        let transit;
         let servicesSum = 0;
 
         serviceGroups.map((serviceGroup) => {
@@ -194,17 +248,18 @@ class TabTwo extends Component {
                                 {imgSvg}
                                 <div className="supperVisDet service_footer-block">
                                     <div className="service_footer_price">
-                                        <p className="service_footer_price_text">{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
-                                        <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                                        {this.priceText(priceFrom, priceTo, selectedServices[0] && selectedServices[0].currency, false, true)}
                                     </div>
-                                    <p className="service_footer_price_small_text" style={{
-                                        fontWeight: "400",
-                                        paddingLeft: `${padding_left}`,
-                                    }} onClick={event => this.setState({
-                                        openList: !openList,
-                                    })}>{t("Услуги")}: {selectedServices.length}
-                                        <img alt="arrow_down_white" className={openList ? "" : "arrow_rotate"} src={arrow_down_white}></img>
-                                    </p>
+
+                                    <div className="time-footer hover service_grow">
+                                        <p className="time_footer_p" onClick={event => this.setState({
+                                            openList: !openList,
+                                        })}>{t("Услуги")}: {selectedServices.length}
+                                        </p>
+                                        <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        </p>
+
+                                    </div>
                                 </div >
                                 {openList && (
 
@@ -266,7 +321,7 @@ class TabTwo extends Component {
                                             paddingLeft: `${padding_left}`,
                                         }} onClick={event => this.setState({
                                             openList: !openList,
-                                        })}>{t("Выбрано услуг")}: {selectedServices.length} <img src={arrow_down} className="arrow_rotate" alt="arrou"></img></p>
+                                        })}>{t("Выбрано услуг")}: {selectedServices.length}</p>
                                         <p className="service_footer_price_small_text" style={{
                                             paddingRight: `${padding_right}`,
                                         }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
@@ -439,8 +494,10 @@ class TabTwo extends Component {
                                     if (condition && info && finalServices && finalServices.length > 0) {
                                         finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
                                     }
-                                    heightService = String((finalServices.length / 1.5) * 200);
-                                    console.log(finalServices)
+
+                                    heightService = String((finalServices.length / coff) * defaultHeight);
+                                    transit = (finalServices.length * 0.1) + 0.2;
+
                                     return condition && finalServices && finalServices.length > 0 && (
                                         <ul className="service_list" key={index}>
                                             <div style={{
@@ -473,118 +530,116 @@ class TabTwo extends Component {
                                                     </div>
                                                 </div>
 
-                                                <div
-                                                    // className={this.startOpenservice ? (catigor[index] ? "service_items service_items_active" : "service_items") : (!catigor[index] ? "service_items service_items_active" : "service_items")}
-                                                    className="service_items"
-                                                    style={this.startOpenservice ? (catigor[index] ?  { maxHeight: `${heightService}` } :  { maxHeight:"0px" }) : (!catigor[index] ? { maxHeight: `${heightService}` } :  { maxHeight:"0px" })}
-                                                    // style={this.startOpenservice ? (!catigor[index] && { maxHeight: `${heightService}` }) : (catigor[index] && { maxHeight: `${heightService}` })}
+                                                <div className="service_items"
+                                                    style={this.startOpenservice
+                                                        ? (catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", transition: `max-height ${transit}s linear ` })
+                                                        : (!catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", transition: `max-height ${transit}s linear ` })}
                                                 >
                                                     {finalServices
-                                                    .map((service, serviceKey, array) => {
-                                                        const select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
+                                                        .map((service, serviceKey, array) => {
+                                                            const select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
 
-                                                        if (select) {
-                                                            return <li key={serviceKey}
-                                                                className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (array.length === 1 && " service_items_grow")}
-                                                                style={{
-                                                                    backgroundColor: "var(--color_button)"
-                                                                }}
+                                                            if (select) {
+                                                                return <li key={serviceKey}
+                                                                    className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (array.length === 1 && " service_items_grow")}
+                                                                    style={{
+                                                                        backgroundColor: "var(--color_button)"
+                                                                    }}
 
-                                                            >
-                                                                <div className="service_item" >
-                                                                    <label className="service-block">
-                                                                        <MediaQuery maxWidth={mob}>
-                                                                            <div className="service_half_block">
+                                                                >
+                                                                    <div className="service_item" >
+                                                                        <label className="service-block">
+                                                                            <MediaQuery maxWidth={mob}>
+                                                                                <div className="service_half_block">
+                                                                                    <p className="white_text" >{service.name}</p>
+                                                                                    <span className="white_text" >{service.details}</span>
+                                                                                </div>
+                                                                                <div className="service_half_block">
+                                                                                    <span
+                                                                                        className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                                    <div className="service-price">
+                                                                                        <div className="service-price-text">
+
+                                                                                            {this.priceText(service.priceFrom, service.priceTo, service.currency, true, false)}
+                                                                                            <input onChange={(e) => selectService(e, service)}
+                                                                                                type="checkbox"
+                                                                                                checked={select} />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </MediaQuery>
+                                                                            <MediaQuery minWidth={desctop}>
                                                                                 <p className="white_text" >{service.name}</p>
-                                                                                <span className="white_text" >{service.details}</span>
-                                                                            </div>
-                                                                            <div className="service_half_block">
+                                                                                <span className="runtime white_text" >{service.details}</span>
                                                                                 <span
                                                                                     className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                 <div className="service-price">
                                                                                     <div className="service-price-text">
-
-                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
+                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, true, false)}
                                                                                         <input onChange={(e) => selectService(e, service)}
                                                                                             type="checkbox"
                                                                                             checked={select} />
                                                                                     </div>
+                                                                                    <button className="next_block-btn white_border "
+                                                                                        onClick={e => selectService({ target: { checked: !select } }, service)}
+                                                                                    >  {t("Выбрано")}</button>
                                                                                 </div>
-                                                                            </div>
-                                                                        </MediaQuery>
-                                                                        <MediaQuery minWidth={desctop}>
-                                                                            <p className="white_text" >{service.name}</p>
-                                                                            <span className="runtime white_text" >{service.details}</span>
-                                                                            <span
-                                                                                className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
-                                                                            <div className="service-price">
-                                                                                <div className="service-price-text">
-                                                                                    {this.priceText(service.priceFrom, service.priceTo, service.currency, true)}
-                                                                                    <input onChange={(e) => selectService(e, service)}
-                                                                                        type="checkbox"
-                                                                                        checked={select} />
+                                                                            </MediaQuery>
+                                                                        </label>
+                                                                    </div>
+                                                                </li>
+                                                            } else {
+                                                                return <li key={serviceKey}
+                                                                    className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}
+
+                                                                >
+                                                                    <div className="service_item" >
+                                                                        <label className="service-block">
+                                                                            <MediaQuery maxWidth={mob}>
+                                                                                <div className="service_half_block">
+                                                                                    <p >{service.name}</p>
+                                                                                    <span  ><p >{service.details}</p></span>
                                                                                 </div>
-                                                                                <button className="next_block-btn white_border "
-                                                                                    onClick={e => selectService({ target: { checked: !select } }, service)}
-                                                                                >  {t("Выбрано")}</button>
-                                                                            </div>
-                                                                        </MediaQuery>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
-                                                        } else {
-                                                            return <li key={serviceKey}
-                                                                className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}
+                                                                                <div className="service_half_block">
+                                                                                    <span
+                                                                                        className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                                    <div className="service-price">
+                                                                                        <div className="service-price-text" >
+                                                                                            {this.priceText(service.priceFrom, service.priceTo, service.currency, false, false)}
+                                                                                            <input onChange={(e) => selectService(e, service)}
+                                                                                                type="checkbox"
+                                                                                                checked={select} />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
 
-                                                            >
-
-                                                                <div className="service_item" >
-                                                                    <label className="service-block">
-                                                                        <MediaQuery maxWidth={mob}>
-                                                                            <div className="service_half_block">
+                                                                            </MediaQuery>
+                                                                            <MediaQuery minWidth={desctop}>
                                                                                 <p >{service.name}</p>
-                                                                                <span  ><p >{service.details}</p></span>
-                                                                            </div>
-                                                                            <div className="service_half_block">
+                                                                                <span className="runtime" >{service.details}</span>
                                                                                 <span
                                                                                     className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                 <div className="service-price">
                                                                                     <div className="service-price-text" >
-                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, false)}
+                                                                                        {this.priceText(service.priceFrom, service.priceTo, service.currency, false, false)}
                                                                                         <input onChange={(e) => selectService(e, service)}
                                                                                             type="checkbox"
                                                                                             checked={select} />
                                                                                     </div>
+                                                                                    <button className="next_block-btn "
+                                                                                        onClick={e => selectService({ target: { checked: !select } }, service)}
+                                                                                    > {t("Выбрать")}</button>
                                                                                 </div>
-                                                                            </div>
+                                                                            </MediaQuery>
+                                                                        </label>
+                                                                    </div>
+                                                                </li>
+                                                            }
 
-                                                                        </MediaQuery>
-                                                                        <MediaQuery minWidth={desctop}>
-                                                                            <p >{service.name}</p>
-                                                                            <span className="runtime" >{service.details}</span>
-                                                                            <span
-                                                                                className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
-                                                                            <div className="service-price">
-                                                                                <div className="service-price-text" >
-                                                                                    {this.priceText(service.priceFrom, service.priceTo, service.currency, false)}
-                                                                                    <input onChange={(e) => selectService(e, service)}
-                                                                                        type="checkbox"
-                                                                                        checked={select} />
-                                                                                </div>
-                                                                                <button className="next_block-btn "
-                                                                                    onClick={e => selectService({ target: { checked: !select } }, service)}
-                                                                                > {t("Выбрать")}</button>
-                                                                            </div>
-                                                                        </MediaQuery>
-                                                                    </label>
-                                                                </div>
-                                                            </li>
                                                         }
 
-                                                    }
-
-                                                    )}
-                                            </div>
+                                                        )}
+                                                </div>
                                             </div>
                                         </ul>
                                     )
@@ -592,23 +647,23 @@ class TabTwo extends Component {
                                 }
                             </div>
                         </React.Fragment>
-        ) : (!isLoading &&
-            <div className="final-book">
-                <p>{t("Нет доступных услуг")}</p>
-            </div>
-        )
-    }
+                    ) : (!isLoading &&
+                        <div className="final-book">
+                            <p>{t("Нет доступных услуг")}</p>
+                        </div>
+                        )
+                }
 
                 {
-    !!selectedServices.length &&
-        <div className="button_block" onClick={() => {
-            if (selectedServices.length) {
-                setScreen(3);
-            }
-            refreshTimetable();
-        }}>
-        </div>
-}
+                    !!selectedServices.length &&
+                    <div className="button_block" onClick={() => {
+                        if (selectedServices.length) {
+                            setScreen(3);
+                        }
+                        refreshTimetable();
+                    }}>
+                    </div>
+                }
 
             </div >
         );
