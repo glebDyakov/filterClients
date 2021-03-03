@@ -98,8 +98,8 @@ class TabSix extends PureComponent {
                         </div>
                         <div className="final-screen-block">
 
-                            <div className="title_block staff_title">
-                            </div>
+                            {/* <div className="title_block staff_title">
+                            </div> */}
 
                             <div className="final-book finel_color_text">
                                 <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>

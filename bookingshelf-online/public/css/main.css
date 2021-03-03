@@ -1816,7 +1816,13 @@ a.last_footer_block_desc_a {
     width: 700px;
     margin: auto;
 }
-
+input:not([type=checkbox]):not([type=radio]),
+textarea, 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 .service_items {
     display: flex;
     flex-wrap: wrap;
@@ -1824,8 +1830,6 @@ a.last_footer_block_desc_a {
     height: auto;
     max-height: 0px;
     overflow: hidden;
-    /* margin-bottom: -9px;
-    margin-top: -9px; */
 }
 
 .service_items_grow {
@@ -1834,7 +1838,6 @@ a.last_footer_block_desc_a {
 
 .service_items li {
     width: 340px;
-    /* max-height: 250px; */
     overflow: hidden;
 }
 
