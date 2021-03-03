@@ -202,7 +202,7 @@ class TabSix extends PureComponent {
                             {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
                                 <div className="modal_window_block">
                                     <div className="modal_window_text">
-                                        <p className="modal_title">{t("Перенести визит")}?</p>
+                                        <p className="modal_title">{t("Отменить визит")}?</p>
                                         <img src={cansel}  onClick={() => this.setterApproveF()} alt="cansel" />
                                     </div>
                                     <div className="modal_window_btn">
