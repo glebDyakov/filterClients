@@ -323,14 +323,13 @@ class NewStaff extends React.Component {
 
                                               </div>
                                               <Avatar
-                                                height={117}
-                                                width={191}
-                                                cropRadius="100%"
+                                                height={180}
+                                                width={260}
+                                                // cropRadius="100%"
                                                 label=""
                                                 key={staff.staffId}
                                                 onCrop={this.onCrop}
                                                 onClose={this.onClose}
-
                                               />
                                             </div>
                                           </label>
