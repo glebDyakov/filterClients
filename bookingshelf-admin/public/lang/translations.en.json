@@ -855,5 +855,6 @@
   "1 месяц": "1 month",
   "1 неделя": "1 week",
   "1 день": "1 day",
-  "Вы уверены, что хотите изменить срок хранения истории визитов?": "Are you sure you want to change the retention period of your session history?"
+  "Вы уверены, что хотите изменить срок хранения истории визитов?": "Are you sure you want to change the retention period of your session history?",
+  "Срок хранения истории визитов": "Session history retention period"
 }
