@@ -13,6 +13,7 @@
 .chose_button{
     flex-wrap: wrap;
     display: flex;
+    max-width: 384px;
 
     .button-color{
         width: 19%;
@@ -56,7 +57,7 @@
         }
         &.active{
             text-decoration: none;
-            box-shadow: 2px 2px 4px 0 rgba(188, 191, 205, 0.4);
+            // box-shadow: 2px 2px 4px 0 rgba(188, 191, 205, 0.4);
         }
         &.color39434F{
             color: #39434F;
@@ -124,6 +125,79 @@
                 background-color: #7A7A7A;
             }
         }
+        &.color6A7187{
+            color: #6A7187;
+            span{
+                background-color: #6A7187;
+            }
+        }
+        &.colorCBC8C2{
+            color: #CBC8C2;
+            span{
+                background-color: #CBC8C2;
+            }
+        }
+        &.color3B4B5C{
+            color: #3B4B5C;
+            span{
+                background-color: #3B4B5C;
+            }
+        }
+        &.color2A3042{
+            color: #2A3042;
+            span{
+                background-color: #2A3042;
+            }
+        }
+        &.color5B7465{
+            color: #5B7465;
+            span{
+                background-color: #5B7465;
+            }
+        }
+        &.colorA1B6D1{
+            color: #A1B6D1;
+            span{
+                background-color: #A1B6D1;
+            }
+        }
+        &.colorB3AAD7{
+            color: #B3AAD7;
+            span{
+                background-color: #B3AAD7;
+            }
+        }
+        &.color9B9889{
+            color: #9B9889;
+            span{
+                background-color: #9B9889;
+            }
+        }
+        &.color991212{
+            color: #991212;
+            span{
+                background-color: #991212;
+            }
+        }
+        &.colorF7B83E{
+            color: #F7B83E;
+            span{
+                background-color: #F7B83E;
+            }
+        }
+        &.colorC959A3{
+            color: #C959A3;
+            span{
+                background-color: #C959A3;
+            }
+        }
+        &.color3E50F7{
+            color: #3E50F7;
+            span{
+                background-color: #3E50F7;
+            }
+        }
+
     }
 }
 .form-button{
@@ -273,6 +347,66 @@ strong{
 .color23D2CC {
     --border: rgba(35, 210, 204, 0.8);
     --color: rgba(35, 210, 204, 1); }
+
+.color6A7187 {
+    --border: #6A7187;
+    --color: #6A7187;
+}
+
+.colorCBC8C2 {
+    --border: #CBC8C2;
+    --color: #CBC8C2;
+}
+
+.color3B4B5C {
+    --border: #3B4B5C;
+    --color: #3B4B5C;
+}
+
+.color2A3042 {
+    --border: #2A3042;
+    --color: #2A3042;
+}
+
+.color5B7465 {
+    --border: #5B7465;
+    --color: #5B7465;
+}
+
+.colorA1B6D1 {
+    --border: #A1B6D1;
+    --color: #A1B6D1;
+}
+
+.colorB3AAD7 {
+    --border: #B3AAD7;
+    --color: #B3AAD7;
+}
+
+.color9B9889 {
+    --border: #9B9889;
+    --color: #9B9889;
+}
+
+.color991212 {
+    --border: #991212;
+    --color: #991212;
+}
+
+.colorF7B83E {
+    --border: #F7B83E;
+    --color: #F7B83E;
+}
+
+.colorC959A3 {
+    --border: #C959A3;
+    --color: #C959A3;
+}
+
+.color3E50F7 {
+    --border: #3E50F7;
+    --color: #3E50F7;
+}
 
 .but button {
     border: 0px;
@@ -865,37 +999,27 @@ strong{
             }
         }
         .chose_button .button-color{
-            height: 0;
-            width: 140px;
+            height: 40px;
+            width: 40px;
             padding-top: 40px;
-            border-radius: 30px;
+            border-radius: 50%;
             margin-right: 24px;
             margin-bottom: 26px;
             justify-content: flex-start;
-            @media  (max-width: $tablet-width){
-                margin-right: 10px;
-                width: 59px;
-                height: 50px;
-            }
             span{
                 height: 40px;
                 border-radius: 30px;
-                @media  (max-width: $tablet-width){
-                    height: 50px;
-                    border-radius: 5px;
-                }
-
             }
             &.active::after{
                 position: absolute;
                 content: '';
-                background: url("../img/icons/selected-button.svg");
-                width: 13px;
-                height: 13px;
-                background-size: cover;
-                top: 32%;
-                left: 50%;
-                transform: translateX(-50%);
+                width: 48px;
+                height: 48px;
+                border: 2px solid;
+                border-color: unset;
+                border-radius: 50%;
+                left: -5px;
+                top: -4px;
             }
         }
         .sub-title.position-button{
