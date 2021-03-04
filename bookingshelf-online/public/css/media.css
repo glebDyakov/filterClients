@@ -763,11 +763,6 @@
         max-height: calc(100% - 30px);
         overflow-y: auto;
     }
-    .service_selection.screen7 {
-        margin-bottom: 140px;
-        max-height: calc(100% - 30px);
-        overflow-y: auto;
-    }
     .service_selection.screen4 {
         margin-bottom: 140px;
         max-height: calc(100% - 130px);
