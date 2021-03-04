@@ -64,7 +64,7 @@ class TabOne extends PureComponent {
         if (isStartMovingVisit) {
            
             this.setState({ staff: updatedState.selectedStaff })
-            setScreen(3);
+           
         } else {
          
             setScreen(5);
@@ -273,13 +273,13 @@ class TabOne extends PureComponent {
             )
         }
 
-        return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
+        return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) ? (
 
-            <div className="service_selection screen1">
+            <div className="service_selection screen0">
                 <div>
                     <div className="skip_employee-block">
                         {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
-                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
+                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue"></div></p>}
                         {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>
                     <div className="title_block n staff_title">
@@ -400,7 +400,7 @@ class TabOne extends PureComponent {
                 {selectedServices[0] && serviceInfo}
                 {/*  */}
 
-                {/* {this.state.staff && (
+                {this.state.staff && (
                     <div className="approveF">
                         <div className="modal_window_block">
                             <div className="modal_window_text">
@@ -434,9 +434,9 @@ class TabOne extends PureComponent {
                             </div>
                         </div>
                     </div>
-                )} */}
+                )}
             </div >
-        );
+        ):(<div>PIDORT</div>)
     }
 }
 export default connect()(withTranslation("common")(TabOne));

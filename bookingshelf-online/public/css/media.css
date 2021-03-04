@@ -102,18 +102,6 @@
         width: 100%;
         height: 100%;
     }
-    /* .service_selection.screen1>div {
-        max-height: calc(100% - 30px);
-        overflow-y: auto;
-    }
-    .service_selection.screen1>.affiliate {
-        max-height: calc(100% - 40px);
-        overflow-y: auto;
-    }
-    .service_selection.screen1>.service_list_items {
-        max-height: calc(100% - 50px);
-        overflow-y: auto;
-    } */
     .service_selection.screen1>.calendar_modal {
         max-height: 100%;
         overflow-y: initial;
@@ -184,9 +172,11 @@
     .regist_block_sms_p span {
         color: red;
     }
+    .container_popups {
+        overflow: hidden;
+    }
     .container_popups, .service_selection_wrapper {
         height: 100%;
-        /* overflow: hidden; */
     }
     /* burger */
     .burger_menu {
@@ -768,17 +758,17 @@
     .service_grow {
         flex-grow: 0.7;
     }
-    .service_selection.screen0, .service_selection.screen1, .service_selection.screen4, .service_selection.screen5 {
+    .service_selection.screen0, .service_selection.screen1{
         margin-bottom: 140px;
         max-height: calc(100% - 30px);
         overflow-y: auto;
     }
-    .service_selection.screen4{
+    .service_selection.screen4 {
         margin-bottom: 140px;
         max-height: calc(100% - 130px);
         overflow-y: auto;
     }
-    .service_selection.screen2{
+    .service_selection.screen2 {
         margin-bottom: 140px;
         max-height: calc(100% - 130px);
         overflow-y: auto;
@@ -787,4 +777,5 @@
         max-height: calc(100% - 90px);
         overflow-y: auto;
     }
+    
 }
