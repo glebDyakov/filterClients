@@ -270,61 +270,62 @@ class TabFour extends PureComponent {
 
         return (
             <div className="service_selection screen4">
+                <div className="service_selection_block_four">
+
+                    <div className="title_block staff_title">
+                        <span className="prev_block" onClick={() => {
+                            setScreen(3);
+                            //if (!isStartMovingVisit) {
+                            refreshTimetable()
+                            //}
+                        }}><span className="title_block_text">{t("Назад")}</span>
+                        </span>
+                        <p className="modal_title">{t("Выберите время")}</p>
+                    </div>
+                    <div className="specialist" onClick={event => this.openListFunc(event)}>
+
+                        {serviceInfo}
+
+                    </div>
 
 
-                <div className="title_block staff_title">
-                    <span className="prev_block" onClick={() => {
-                        setScreen(3);
-                        //if (!isStartMovingVisit) {
-                        refreshTimetable()
-                        //}
-                    }}><span className="title_block_text">{t("Назад")}</span>
-                    </span>
-                    <p className="modal_title">{t("Выберите время")}</p>
-                </div>
-                <div className="specialist" onClick={event => this.openListFunc(event)}>
-
-                    {serviceInfo}
-
-                </div>
-
-
-                {this.state.checkReschedule ?
-                    (<div className="approveF">
-                        <div className="modal_window_block">
-                            <div className="modal_window_text">
-                                <p className="modal_title">{t("Перенести визит")}?</p>
-                                <img src={cansel} onClick={e => this.setState({
-                                    checkReschedule: false,
-                                })} alt="cansel" />
+                    {this.state.checkReschedule ?
+                        (<div className="approveF">
+                            <div className="modal_window_block">
+                                <div className="modal_window_text">
+                                    <p className="modal_title">{t("Перенести визит")}?</p>
+                                    <img src={cansel} onClick={e => this.setState({
+                                        checkReschedule: false,
+                                    })} alt="cansel" />
+                                </div>
+                                <div className="modal_window_btn">
+                                    <button className="approveFYes" onClick={() => {
+                                        setTime(this.state.arrayTime, true)
+                                        this.setState({ arrayTime: 0 })
+                                    }}>{t("Да")}
+                                    </button>
+                                    <div style={{
+                                        height: "38px",
+                                        width: "1px",
+                                        backgroundColor: "rgba(9, 9, 58, 0.1)"
+                                    }}></div>
+                                    <button className="approveFNo" onClick={() => {
+                                        const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
+                                        selectStaff(activeStaff)
+                                        handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
+                                        this.props.dispatch(staffActions.toggleStartMovingVisit(false))
+                                        this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
+                                        setScreen(6)
+                                    }}>{t("Нет")}
+                                    </button>
+                                </div>
                             </div>
-                            <div className="modal_window_btn">
-                                <button className="approveFYes" onClick={() => {
-                                    setTime(this.state.arrayTime, true)
-                                    this.setState({ arrayTime: 0 })
-                                }}>{t("Да")}
-                                </button>
-                                <div style={{
-                                    height: "38px",
-                                    width: "1px",
-                                    backgroundColor: "rgba(9, 9, 58, 0.1)"
-                                }}></div>
-                                <button className="approveFNo" onClick={() => {
-                                    const activeStaff = staffs.find(staff => staff.staffId === (movingVisit && movingVisit[0] && movingVisit[0].staffId))
-                                    selectStaff(activeStaff)
-                                    handleDayClick(movingVisit && movingVisit[0] && movingVisit[0].appointmentTimeMillis)
-                                    this.props.dispatch(staffActions.toggleStartMovingVisit(false))
-                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(true))
-                                    setScreen(6)
-                                }}>{t("Нет")}
-                                </button>
-                            </div>
-                        </div>
-                    </div>) : ""
-                }
+                        </div>) : ""
+                    }
 
-                <div className="choise_time">
-                    {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
+                    <div className="choise_time">
+                        {availableTimes.sort((a, b) => a.time.localeCompare(b.time)).map(availableTime => availableTime.markup)}
+                    </div>
                 </div>
             </div>
         );

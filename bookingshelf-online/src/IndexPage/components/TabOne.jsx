@@ -276,7 +276,7 @@ class TabOne extends PureComponent {
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
 
             <div className="service_selection screen1">
-                <div>
+                <div className="service_selection_block_one">
                     <div className="skip_employee-block">
                         {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
                         {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue"></div></p>}
