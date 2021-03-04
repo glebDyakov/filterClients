@@ -29,12 +29,13 @@ class TabFour extends PureComponent {
 
     }
     rescheduleVisit() {
-        if (this.props.movedVisitSuccess !== undefined) {
+        const { movedVisitSuccess, setTime, flagAllStaffs } = this.props;
+        if (movedVisitSuccess !== undefined && !flagAllStaffs) {
             this.setState({
                 checkReschedule: true
             })
         } else {
-            this.props.setTime(this.state.arrayTime, false)
+            setTime(this.state.arrayTime, false)
         }
 
     }
@@ -90,10 +91,10 @@ class TabFour extends PureComponent {
                                     markup: (
                                         <div key={arrayTime} onClick={() => {
                                             if (isStartMovingVisit && !flagAllStaffs) {
-
                                                 this.setState({ arrayTime })
                                             } else {
                                                 this.setState({ arrayTime })
+                                                // setTime(arrayTime, false)
                                             }
                                         }}>
                                             <span className={arrayTime === this.state.arrayTime ? "time_color" : ""}>{moment(arrayTime, 'x').format('HH:mm')}</span>

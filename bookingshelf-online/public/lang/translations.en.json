@@ -867,9 +867,12 @@
   "Создать новую запись": "Create a new entry",
   "Название услуги, категории": "Service name, category",
   "от товара": "from products",
+  "от": "from",
+  "до": "before",
   "Новое": "New",
   "Неправильный Email": "Invalid Email",
   "Усредненный рейтинг":"Average rating",
+  "Пропустить выбор сотрудника": "Skip employee selection",
   "компании": "company"
 
 }
