@@ -27,10 +27,10 @@ function initializeJs() {
         //         $(this).parent().parent('.service_selection').next('.service_selection').fadeIn(100);
         //     }
         // });
-        $(".skip_employee").click(function () {
-            $('.service_selection').fadeOut(0);
-            $('.screen2').fadeIn(100);
-        });
+        // $(".skip_employee").click(function () {
+        //     $('.service_selection').fadeOut(0);
+        //     $('.screen2').fadeIn(100);
+        // });
         $(".prev_block3").click(function () {
             $('.service_selection').fadeOut(0);
             $(this).parent('.title_block').parent('.service_selection').prev('.service_selection').fadeIn(100);

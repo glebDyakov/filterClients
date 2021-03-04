@@ -12,15 +12,7 @@
     width: 100%;
 }
 
-/* .DayPicker-Caption>div {
-    font-family: 'helvetica_medium';
-    font-size: 26px;
-    font-weight: bold;
-    letter-spacing: -0.2px;
-    text-align: center;
-    padding: 10px 0 0;
-    text-transform: capitalize;
-} */
+
 
 .DayPicker-Weekdays {
     display: flex;
@@ -186,10 +178,7 @@
     border: 1.5px solid #3B4B5C;
 }
 
-/* .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover, .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):focus {
-    background-color: rgba(38, 78, 134, 0.09) !important;
-    outline: none;
-} */
+
 @media screen and (max-width: 620px) {
     .DayPicker-Week {
         font-size: 24px;
