@@ -340,7 +340,7 @@ class TabTwo extends Component {
             )
         }
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
-            <div className="service_selection screen1">
+            <div className="service_selection screen2">
 
                 <MediaQuery maxWidth={mob}>
                     {visibleSearch ?
@@ -492,9 +492,11 @@ class TabTwo extends Component {
                                     if (condition && info && finalServices && finalServices.length > 0) {
                                         finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
                                     }
+                                    if (finalServices) {
+                                        heightService = String((finalServices.length / coff) * defaultHeight);
+                                        transit = (finalServices.length * 0.1) + 0.2;
+                                    }
 
-                                    heightService = String((finalServices.length / coff) * defaultHeight);
-                                    transit = (finalServices.length * 0.1) + 0.2;
 
                                     return condition && finalServices && finalServices.length > 0 && (
                                         <ul className="service_list" key={index}>

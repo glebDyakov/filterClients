@@ -208,7 +208,7 @@ class TabThird extends PureComponent {
             )
         }
         return (
-            <div className="service_selection screen1">
+            <div className="service_selection screen3">
                 <div className="title_block data_title">
                     <span className="prev_block" onClick={() => {
                         setScreen(isStartMovingVisit ? 1 : 2);

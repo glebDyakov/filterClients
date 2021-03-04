@@ -20,10 +20,13 @@ class TabFour extends PureComponent {
         this.openListFunc = this.openListFunc.bind(this);
         this.rescheduleVisit = this.rescheduleVisit.bind(this);
     }
-    openListFunc() {
-        this.setState({
-            openList: !this.state.openList,
-        })
+    openListFunc(event) {
+        if (event.target !== "title_block_text") {
+            this.setState({
+                openList: !this.state.openList,
+            })
+        }
+
     }
     rescheduleVisit() {
         if (this.props.movedVisitSuccess !== undefined) {
@@ -43,7 +46,10 @@ class TabFour extends PureComponent {
         const mob = 599;
         const availableTimes = []
         const currentDay = culcDay(selectedDay, "desctop");
-
+        let currentTimeText = "";
+        if (moment(this.state.arrayTime).format('LT') !== "Invalid date") {
+            currentTimeText = moment(this.state.arrayTime).format('LT');
+        }
         let interval = 15;
         if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
             interval = 0
@@ -136,7 +142,7 @@ class TabFour extends PureComponent {
             serviceInfo = (
                 <div>
                     <MediaQuery maxWidth={mob}>
-                        <div className="specialist" onClick={event => this.openListFunc()}>
+                        <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
                                 {imgSvg}
@@ -178,7 +184,7 @@ class TabFour extends PureComponent {
                                     </div>
                                     <div className="time-footer">
                                         <p className="time_footer_p" >{t("Дата")}:</p>
-                                        <p className="time_footer_p" >{t(`${currentDay}`)}</p>
+                                        <p className="time_footer_p" >{t(`${currentDay}`)} {currentTimeText}</p>
                                     </div>
                                 </div >
                                 {openList && (
@@ -196,7 +202,7 @@ class TabFour extends PureComponent {
                                     </div>
                                 )}
                                 {!!selectedServices.length && <button disabled={!this.state.arrayTime} className={this.state.arrayTime ? "next_block" : "next_block disabledField"} onClick={() => this.rescheduleVisit()}>
-                                        <span className="title_block_text">{t("Продолжить")}</span></button>}
+                                    <span className="title_block_text">{t("Продолжить")}</span></button>}
                             </div>
                         </div>
                     </MediaQuery>
@@ -248,7 +254,7 @@ class TabFour extends PureComponent {
                                         marginRight: `${margin_right2}`
                                     }}>
                                         <p className="time-footer_desctop_p" >{t("Дата")}:</p>
-                                        <p className="service_footer_price_small_text" >{t(`${currentDay}`)}</p>
+                                        <p className="service_footer_price_small_text" >{t(`${currentDay}`)} {currentTimeText}</p>
                                     </div>
                                     {!!selectedServices.length && <button disabled={!this.state.arrayTime} className={this.state.arrayTime ? "next_block" : "next_block disabledField"} onClick={() => this.rescheduleVisit()}>
                                         <span className="title_block_text">{t("Продолжить")}</span></button>}
@@ -262,7 +268,7 @@ class TabFour extends PureComponent {
         }
 
         return (
-            <div className="service_selection screen1">
+            <div className="service_selection screen4">
 
 
                 <div className="title_block staff_title">
@@ -275,7 +281,7 @@ class TabFour extends PureComponent {
                     </span>
                     <p className="modal_title">{t("Выберите время")}</p>
                 </div>
-                <div className="specialist" onClick={event => this.openListFunc()}>
+                <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                     {serviceInfo}
 
