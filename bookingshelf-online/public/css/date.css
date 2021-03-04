@@ -234,7 +234,6 @@
     }
     .arrow-right{
         right: 16px;
-    top: 0px;
     }
     .DayPicker-Day--today{
         width: 31px;
@@ -242,7 +241,6 @@
     }
     .arrow-left{
         left: 16px;
-        top: -14px;
     }
 }
 

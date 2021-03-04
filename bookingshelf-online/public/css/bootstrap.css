@@ -8437,10 +8437,5 @@ a.text-dark:hover, a.text-dark:focus {
   }
 }
 
-@media screen and (max-width: 599px) {
-  html, body {
-    overflow-y: hidden;
-  }
-}
 
 /*# sourceMappingURL=bootstrap.css.map */
