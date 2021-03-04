@@ -1711,7 +1711,7 @@ a.last_footer_block_desc_a {
 
 .service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5{
     height: auto;
-    overflow: auto;
+    /* overflow: auto; */
     position: relative;
     margin-bottom: 80px;
 }
