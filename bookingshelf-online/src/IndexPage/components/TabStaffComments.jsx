@@ -38,7 +38,7 @@ class TabStaffComments extends PureComponent {
         const mob = 599;
 
         return (
-            <div className="service_selection">
+            <div className="service_selection screen1">
                 <div className="title_block n data_title">
                     <span className="prev_block" onClick={() => {
                         setScreen(1);

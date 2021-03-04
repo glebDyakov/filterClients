@@ -31,7 +31,6 @@ class TabTwo extends Component {
     priceText(priceFrom, priceTo, currency, white, footer) {
         const desctop = 600;
         const mob = 599;
-
         let whiteClass = "";
         white ? whiteClass = "white_text" : whiteClass = "";
         const { t } = this.props;
@@ -212,15 +211,15 @@ class TabTwo extends Component {
         let serviceInfo = null;
         let padding_left = "21px";
         let padding_right = "39px";
-        let sizeWords = "36px";
+        let sizeWords = "28px";
         if (selectedService.serviceId) {
             let priceFrom = 0;
             let priceTo = 0;
             let duration = 0;
             selectedServices.forEach((service) => {
-                priceFrom += parseInt(service.priceFrom)
-                priceTo += parseInt(service.priceTo)
-                duration += parseInt(getDurationForCurrentStaff(service))
+                priceFrom += Number(service.priceFrom)
+                priceTo += Number(service.priceTo)
+                duration += Number(getDurationForCurrentStaff(service))
             })
 
             const priceFrom100 = priceFrom / 100;
@@ -229,7 +228,7 @@ class TabTwo extends Component {
             const priceTo1000 = priceTo / 1000;
 
             if (priceFrom1000 > 1 || priceTo1000 > 1) {
-                sizeWords = "24px"
+                sizeWords = "22px"
                 padding_left = "0px";
                 padding_right = "0px";
             }
@@ -238,7 +237,6 @@ class TabTwo extends Component {
                 padding_left = "0px";
                 padding_right = "0px";
             }
-
             serviceInfo = (
                 <div>
                     <MediaQuery maxWidth={mob}>
@@ -342,7 +340,7 @@ class TabTwo extends Component {
             )
         }
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
-            <div className="service_selection screen1">
+            <div className="service_selection screen2">
 
                 <MediaQuery maxWidth={mob}>
                     {visibleSearch ?
@@ -494,9 +492,11 @@ class TabTwo extends Component {
                                     if (condition && info && finalServices && finalServices.length > 0) {
                                         finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
                                     }
+                                    if (finalServices) {
+                                        heightService = String((finalServices.length / coff) * defaultHeight);
+                                        transit = (finalServices.length * 0.1) + 0.2;
+                                    }
 
-                                    heightService = String((finalServices.length / coff) * defaultHeight);
-                                    transit = (finalServices.length * 0.1) + 0.2;
 
                                     return condition && finalServices && finalServices.length > 0 && (
                                         <ul className="service_list" key={index}>

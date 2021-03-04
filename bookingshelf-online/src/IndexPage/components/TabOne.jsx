@@ -62,11 +62,11 @@ class TabOne extends PureComponent {
         updatedState.selectedStaff = staffs.find(item => item.staffId === selectedStaffFromTimetable.staffId);
         forceUpdateStaff(updatedState.selectedStaff)
         if (isStartMovingVisit) {
-           
+
             this.setState({ staff: updatedState.selectedStaff })
-            setScreen(3);
+
         } else {
-         
+
             setScreen(5);
         }
     }
@@ -125,7 +125,7 @@ class TabOne extends PureComponent {
                     <div className="specialist" onClick={event => this.openListFunc()}>
 
                         <div className="specialist-block">
-                        {imgSvg}
+                            {imgSvg}
                             <div className="supperVisDet service_footer-block">
 
                                 <div className="service_footer_price">
@@ -154,14 +154,14 @@ class TabOne extends PureComponent {
                                         </React.Fragment>)
                                     }
                                 </div>
-                               
+
                                 <div className="time-footer hover">
                                     <p className="time_footer_p" onClick={event => this.setState({
                                         openList: !openList,
                                     })}>{t("Услуги")}: {selectedServices.length} </p>
-                                     <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
-                                        </p>
-                                    
+                                    <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                    </p>
+
                                 </div>
                                 <div className="time-footer">
                                     <p className="time_footer_p" >{t("Дата")}:</p>
@@ -195,7 +195,7 @@ class TabOne extends PureComponent {
                 <MediaQuery minWidth={desctop}>
                     <div className="specialist" >
                         <div className="specialist-block">
-                        {imgSvg}
+                            {imgSvg}
                             {openList ?
                                 <div className="specialist_big">
                                     <div className="service_list_block">
@@ -279,7 +279,7 @@ class TabOne extends PureComponent {
                 <div>
                     <div className="skip_employee-block">
                         {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
-                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
+                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue"></div></p>}
                         {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>
                     <div className="title_block n staff_title">
@@ -400,7 +400,7 @@ class TabOne extends PureComponent {
                 {selectedServices[0] && serviceInfo}
                 {/*  */}
 
-                {/* {this.state.staff && (
+                {this.state.staff && (
                     <div className="approveF">
                         <div className="modal_window_block">
                             <div className="modal_window_text">
@@ -434,7 +434,7 @@ class TabOne extends PureComponent {
                             </div>
                         </div>
                     </div>
-                )} */}
+                )}
             </div >
         );
     }

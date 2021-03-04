@@ -141,7 +141,7 @@ class TabCreateComment extends PureComponent {
         const { group, timeExpires, tab, isValidSendPasswordPhone, sendPasswordPhone, loginPhone, loginPassword, isValidLoginPhone } = this.state;
 
         return (
-            <div className="service_selection">
+            <div className="service_selection screen1">
                 <div className="title_block n data_title">
                     <span className="prev_block" onClick={() => {
                         setScreen('staff-comments');

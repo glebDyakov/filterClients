@@ -43,9 +43,9 @@ class TabSix extends PureComponent {
             let priceTo = 0;
             let duration = 0;
             selectedServices.forEach((service) => {
-                priceFrom += parseInt(service.priceFrom)
-                priceTo += parseInt(service.priceTo)
-                duration += parseInt(getDurationForCurrentStaff(service))
+                priceFrom += Number(service.priceFrom)
+                priceTo += Number(service.priceTo)
+                duration += Number(getDurationForCurrentStaff(service))
             })
 
             serviceInfo = (

@@ -42,25 +42,25 @@ class TabThird extends PureComponent {
             let priceTo = 0;
             let duration = 0;
             selectedServices.forEach((service) => {
-                priceFrom += parseInt(service.priceFrom)
-                priceTo += parseInt(service.priceTo)
-                duration += parseInt(getDurationForCurrentStaff(service))
+                priceFrom += Number(service.priceFrom)
+                priceTo += Number(service.priceTo)
+                duration += Number(getDurationForCurrentStaff(service))
             })
             let margin_right2 = "53px";
             let margin_right1 = "25px";
-            let sizeWords = "36px";
+            let sizeWords = "28px";
             const priceFrom100 = priceFrom / 100;
             const priceTo100 = priceTo / 100;
             const priceFrom1000 = priceFrom / 1000;
             const priceTo1000 = priceTo / 1000;
 
             if (priceFrom1000 > 1 || priceTo1000 > 1) {
-                sizeWords = "24px"
+                sizeWords = "22px"
                 margin_right1 = "0px";
                 margin_right2 = "0px";
             }
             else if (priceFrom100 > 1 || priceTo100 > 1) {
-                sizeWords = "32px"
+                sizeWords = "25px"
                 margin_right1 = "0px";
                 margin_right2 = "0px";
             }
@@ -208,7 +208,7 @@ class TabThird extends PureComponent {
             )
         }
         return (
-            <div className="service_selection screen1">
+            <div className="service_selection screen3">
                 <div className="title_block data_title">
                     <span className="prev_block" onClick={() => {
                         setScreen(isStartMovingVisit ? 1 : 2);
