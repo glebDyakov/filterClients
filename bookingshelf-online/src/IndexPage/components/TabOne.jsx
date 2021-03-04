@@ -62,11 +62,11 @@ class TabOne extends PureComponent {
         updatedState.selectedStaff = staffs.find(item => item.staffId === selectedStaffFromTimetable.staffId);
         forceUpdateStaff(updatedState.selectedStaff)
         if (isStartMovingVisit) {
-           
+
             this.setState({ staff: updatedState.selectedStaff })
-           
+
         } else {
-         
+
             setScreen(5);
         }
     }
@@ -125,7 +125,7 @@ class TabOne extends PureComponent {
                     <div className="specialist" onClick={event => this.openListFunc()}>
 
                         <div className="specialist-block">
-                        {imgSvg}
+                            {imgSvg}
                             <div className="supperVisDet service_footer-block">
 
                                 <div className="service_footer_price">
@@ -154,14 +154,14 @@ class TabOne extends PureComponent {
                                         </React.Fragment>)
                                     }
                                 </div>
-                               
+
                                 <div className="time-footer hover">
                                     <p className="time_footer_p" onClick={event => this.setState({
                                         openList: !openList,
                                     })}>{t("Услуги")}: {selectedServices.length} </p>
-                                     <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
-                                        </p>
-                                    
+                                    <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                    </p>
+
                                 </div>
                                 <div className="time-footer">
                                     <p className="time_footer_p" >{t("Дата")}:</p>
@@ -195,7 +195,7 @@ class TabOne extends PureComponent {
                 <MediaQuery minWidth={desctop}>
                     <div className="specialist" >
                         <div className="specialist-block">
-                        {imgSvg}
+                            {imgSvg}
                             {openList ?
                                 <div className="specialist_big">
                                     <div className="service_list_block">
@@ -273,9 +273,9 @@ class TabOne extends PureComponent {
             )
         }
 
-        return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) ? (
+        return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
 
-            <div className="service_selection screen0">
+            <div className="service_selection screen1">
                 <div>
                     <div className="skip_employee-block">
                         {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
@@ -436,7 +436,7 @@ class TabOne extends PureComponent {
                     </div>
                 )}
             </div >
-        ):(<div>PIDORT</div>)
+        );
     }
 }
 export default connect()(withTranslation("common")(TabOne));
