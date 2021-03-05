@@ -69,7 +69,7 @@ class TabThird extends PureComponent {
                     <MediaQuery maxWidth={mob}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
-                            {imgSvg}
+                                {imgSvg}
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
@@ -98,7 +98,7 @@ class TabThird extends PureComponent {
                                             </React.Fragment>)
                                         }
 
-                                       
+
                                     </div>
                                     <div className="time-footer hover" style={{
                                         // marginRight: `${margin_right}`
@@ -151,7 +151,7 @@ class TabThird extends PureComponent {
                                             <div className="setvice_list_items">
                                                 <p className="text_underline">{selectedStaff.firstName} {selectedStaff.lastName ? selectedStaff.lastName : ''}</p>
                                                 <p>{t("Услуги")}:</p>
-                                                {selectedServices.map((element,index) =>
+                                                {selectedServices.map((element, index) =>
                                                     <div key={index} className="setvice_list_item">
                                                         <div className="service_circle">
                                                             <div className="service_circle_center"></div>
@@ -209,38 +209,38 @@ class TabThird extends PureComponent {
         }
         return (
             <div className="service_selection screen3">
-                <div className="title_block data_title">
-                    <span className="prev_block" onClick={() => {
-                        setScreen(isStartMovingVisit ? 1 : 2);
-                        if (isStartMovingVisit) {
-                            setDefaultFlag()
+                <div className="service_selection_block_third">
+                    <div className="title_block data_title">
+                        <span className="prev_block" onClick={() => {
+                            setScreen(isStartMovingVisit ? 1 : 2);
+                            if (isStartMovingVisit) {
+                                setDefaultFlag()
+                            }
                         }
-                    }
-                    }><span className="title_block_text">{t("Назад")}</span>
-                    </span>
-                    <p className="modal_title">{t("Выберите дату")}</p>
-                </div>
-                {serviceInfo}
-                <div className="calendar_modal">
-                    {parseInt(moment(month).utc().format('x')) > parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={showPrevWeek} />}
-                    <span className="arrow-right" onClick={showNextWeek} />
-
-                    <DayPicker
-                        selectedDays={selectedDay}
-                        disabledDays={disabledDays}
-                        month={new Date(moment(month).format('YYYY-MM'))}
-                        onDayClick={handleDayClick}
-                        localeUtils={MomentLocaleUtils}
-                        locale={this.props.i18n.language.toLowerCase()}
-
-                    />
-                    <div className="calendar_mark">
-                        <span className="dark_blue_text"><span className="round"></span><p>{t("Запись есть")}</p></span>
-                        <span className="gray_text"><span className="round"></span><p>{t("Записи нет")}</p></span>
+                        }><span className="title_block_text">{t("Назад")}</span>
+                        </span>
+                        <p className="modal_title">{t("Выберите дату")}</p>
                     </div>
-                    <span className="clear"></span>
+                    {serviceInfo}
+                    <div className="calendar_modal">
+                        {parseInt(moment(month).utc().format('x')) > parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={showPrevWeek} />}
+                        <span className="arrow-right" onClick={showNextWeek} />
 
+                        <DayPicker
+                            selectedDays={selectedDay}
+                            disabledDays={disabledDays}
+                            month={new Date(moment(month).format('YYYY-MM'))}
+                            onDayClick={handleDayClick}
+                            localeUtils={MomentLocaleUtils}
+                            locale={this.props.i18n.language.toLowerCase()}
 
+                        />
+                        <div className="calendar_mark">
+                            <span className="dark_blue_text"><span className="round"></span><p>{t("Запись есть")}</p></span>
+                            <span className="gray_text"><span className="round"></span><p>{t("Записи нет")}</p></span>
+                        </div>
+                        <span className="clear"></span>
+                    </div>
                 </div>
             </div>
         );
