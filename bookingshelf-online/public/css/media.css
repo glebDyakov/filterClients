@@ -112,6 +112,9 @@
     }
     .container_popups {
         padding-top: 130px;
+        padding-bottom: 10px;
+        height: 100%;
+        min-height: 480px;
         overflow: hidden;
     }
     .container_popups {
@@ -829,6 +832,7 @@
     .service_selection.screen5,
     .final-screen {
         overflow: hidden;
+        margin-bottom: 10px;
     }
     .title_block .prev_block, .title_block .next_block,
     .staff_title .prev_block{
