@@ -155,6 +155,12 @@
     .firm-title {
         width: 60%;
     }
+    .last_list_price{
+        flex-wrap: wrap;
+    }
+    .setvice_list_items{
+        max-height: 137px;
+    }
     .firm-icons {
         justify-content: space-between;
         width: 93px;

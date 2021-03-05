@@ -79,7 +79,7 @@ class TabSix extends PureComponent {
                         <p>{t("Итого")}:</p>
                         <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
-                        {newAppointments && newAppointments[0] && priceFrom===priceTo && !!newAppointments[0].discountPercent && <span>&nbsp;({Math.round(totalAmount * 100) / 100} {newAppointments[0].currency})</span>}
+                        {newAppointments && newAppointments[0]  && !!newAppointments[0].discountPercent && <span>&nbsp;({Math.round(totalAmount * 100) / 100} {newAppointments[0].currency})</span>}
                     </div>
                     {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
                                 <p className="final-book_hz_hz">{t("Ваша персональная скидка составит")}: {newAppointments[0].discountPercent}%</p>
