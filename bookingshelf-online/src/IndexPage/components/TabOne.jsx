@@ -89,7 +89,10 @@ class TabOne extends PureComponent {
         const { openList } = this.state;
         const desctop = 600;
         const mob = 599;
-
+        let currentTimeText = "";
+        if (moment(time).format('LT') !== "Invalid date") {
+            currentTimeText = moment(time).format('LT');
+        }
         let serviceInfo = null;
 
         const currentDay = culcDay(selectedDay, "desctop");
@@ -100,9 +103,9 @@ class TabOne extends PureComponent {
         let priceTo = 0;
         let duration = 0;
         selectedServices.forEach((service) => {
-            priceFrom += parseInt(service.priceFrom)
-            priceTo += parseInt(service.priceTo)
-            duration += parseInt(getDurationForCurrentStaff(service))
+            priceFrom += Number(service.priceFrom)
+            priceTo += Number(service.priceTo)
+            duration += Number(getDurationForCurrentStaff(service))
         })
 
         const priceFrom100 = priceFrom / 100;
@@ -166,6 +169,7 @@ class TabOne extends PureComponent {
                                 <div className="time-footer">
                                     <p className="time_footer_p" >{t("Дата")}:</p>
                                     <p className="time_footer_p" >{currentDay}</p>
+                                    <p className="time_footer_p" >{currentTimeText}</p>
                                 </div>
                             </div >
                             {openList && (

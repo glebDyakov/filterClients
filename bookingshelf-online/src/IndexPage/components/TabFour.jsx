@@ -185,7 +185,8 @@ class TabFour extends PureComponent {
                                     </div>
                                     <div className="time-footer">
                                         <p className="time_footer_p" >{t("Дата")}:</p>
-                                        <p className="time_footer_p" >{t(`${currentDay}`)} {currentTimeText}</p>
+                                        <p className="time_footer_p" >{t(`${currentDay}`)} </p>
+                                        <p className="time_footer_p" >{currentTimeText}</p>
                                     </div>
                                 </div >
                                 {openList && (
