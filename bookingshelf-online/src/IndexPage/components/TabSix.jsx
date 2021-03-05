@@ -42,12 +42,15 @@ class TabSix extends PureComponent {
             let priceFrom = 0;
             let priceTo = 0;
             let duration = 0;
+            let totalAmount = 0
             selectedServices.forEach((service) => {
                 priceFrom += Number(service.priceFrom)
                 priceTo += Number(service.priceTo)
                 duration += Number(getDurationForCurrentStaff(service))
             })
-
+            newAppointments && newAppointments[0] && newAppointments[0].discountPercent && newAppointments.forEach(( appointment => {
+                totalAmount += appointment.totalAmount;
+            }))
             serviceInfo = (
                 <div className="last_list_block">
                     <div className="last_list_caption">
@@ -75,7 +78,11 @@ class TabSix extends PureComponent {
                         <p>{t("Итого")}:</p>
                         <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                        {newAppointments && newAppointments[0]  && !!newAppointments[0].discountPercent && <span>&nbsp;({Math.round(totalAmount * 100) / 100} {newAppointments[0].currency})</span>}
                     </div>
+                    {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
+                                <p className="final-book_hz_hz">{t("Ваша персональная скидка составит")}: {newAppointments[0].discountPercent}%</p>
+                            }
                 </div >
             )
         }
@@ -85,14 +92,13 @@ class TabSix extends PureComponent {
                     <div className="service_selection final-screen">
                         <div className="service_selection_block_six">
                             <div className="last_footer_block">
-                                <a className="book_button_last" href={`/online/${this.props.match.params.company}`} onClick={() => {
+                                <a className="book_button_last" href={`/${this.props.match.params.company}`} onClick={() => {
                                     this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                                 }}>{t("Создать новую запись")}</a><p>
                                     {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
               <a className="last_footer_block_a" rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
                                 </p>
                             </div>
-                           
                             <div className="final-screen-block">
 
                                 <div className="final-book finel_color_text">
@@ -103,9 +109,7 @@ class TabSix extends PureComponent {
 
                                 {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
 
-                                {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
-                                    <p className="final-book_hz_hz">{t("Ваша персональная скидка составит")}: {newAppointments[0].discountPercent}%</p>
-                                }
+                                
                                 <div className=" cansel_block">
                                     {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) &&
                                         <input type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
@@ -119,7 +123,7 @@ class TabSix extends PureComponent {
                                 {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
                                     <div className="modal_window_block">
                                         <div className="modal_window_text">
-                                            <p className="modal_title">{t("Перенести визит")}?</p>
+                                            <p className="modal_title">{t("Отменить визит")}?</p>
                                             <img src={cansel} onClick={() => this.setterApproveF()} alt="cansel" />
                                         </div>
                                         <div className="modal_window_btn">
@@ -164,18 +168,12 @@ class TabSix extends PureComponent {
 
                             <div className="title_block staff_title">
 
-                                <span className="prev_block" onClick={() => {
-                                    setScreen(3);
-                                    //if (!isStartMovingVisit) {
-                                    refreshTimetable()
-                                    //}
-                                }}><span className="title_block_text"><a rel="nofollow" href={`/online/${this.props.match.params.company}`} onClick={() => {
+                                <span className="prev_block"><span className="title_block_text"><a rel="nofollow" href={`/${this.props.match.params.company}`} onClick={() => {
                                     this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                                 }} className="title_block_text" >{t("Создать новую запись")}</a></span>
                                 </span>
 
                             </div>
-
                             <div className="final-book finel_color_text">
                                 <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>
                             </div>
@@ -184,9 +182,7 @@ class TabSix extends PureComponent {
 
                             {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
 
-                            {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
-                                <p className="final-book_hz_hz">{t("Ваша персональная скидка составит")}: {newAppointments[0].discountPercent}%</p>
-                            }
+                           
                             <div className=" cansel_block">
                                 {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) &&
                                     <input type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {

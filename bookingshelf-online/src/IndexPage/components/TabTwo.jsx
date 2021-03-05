@@ -18,9 +18,52 @@ class TabTwo extends Component {
         }
         this.priceText = this.priceText.bind(this);
         this.openListFunc = this.openListFunc.bind(this);
+        this.openCatigor = this.openCatigor.bind(this);
+        this.searchOpen = this.searchOpen.bind(this);
     }
     startOpenservice = false;
 
+    canselMobSearch() {
+        if (this.state.visibleSearch) {
+            const newArray = [];
+
+            for (let i = 0; i < this.props.serviceGroups.length; i++) {
+                newArray.push(false)
+            }
+            this.setState({
+                visibleSearch: !this.state.visibleSearch,
+                searchValue: "",
+                catigor: newArray.concat()
+            })
+        }else{
+          this.setState({
+            visibleSearch: !this.state.visibleSearch,
+            searchValue: ""
+        })  
+        }
+        
+    }
+    searchOpen(e) {
+        const newArray = [];
+
+        for (let i = 0; i < this.props.serviceGroups.length; i++) {
+            if (e.target.value != "") {
+                newArray.push(true)
+            }
+            else {
+                newArray.push(false)
+            }
+        }
+
+        this.setState({ searchValue: e.target.value, catigor: newArray.concat() })
+    }
+    openCatigor(index) {
+        const newArray = this.state.catigor;
+        newArray[index] = !newArray[index]
+        this.setState({
+            catigor: newArray.concat()
+        })
+    }
     openListFunc(event) {
         if (event.target.className !== "cansel_btn_small") {
             this.setState({
@@ -131,7 +174,7 @@ class TabTwo extends Component {
         let transit;
         let servicesSum = 0;
 
-        serviceGroups.map((serviceGroup) => {
+        serviceGroups.map((serviceGroup, index) => {
 
             const { services } = serviceGroup
             const condition =
@@ -150,13 +193,7 @@ class TabTwo extends Component {
                 finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
             }
 
-            if (searchValue && searchValue.length > 0) {
-                finalServices = finalServices && finalServices.filter(service =>
-                    service.name.toLowerCase().includes(this.search.value.toLowerCase())
-                    || service.details.toLowerCase().includes(this.search.value.toLowerCase())
-                    || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
-                )
-            }
+
 
             if (condition && info && finalServices && finalServices.length > 0) {
                 finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
@@ -170,6 +207,13 @@ class TabTwo extends Component {
                     this.startOpenservice = false;
                 }
             }
+            if (searchValue && searchValue.length > 0) {
+                finalServices = finalServices && finalServices.filter(service =>
+                    service.name.toLowerCase().includes(this.search.value.toLowerCase())
+                    || service.details.toLowerCase().includes(this.search.value.toLowerCase())
+                    || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
+                )
+            }
         })
 
 
@@ -177,7 +221,7 @@ class TabTwo extends Component {
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
                 <div className="online-zapis-off">
-                    {t("Онлайн-запись отключена...")}
+                    <p>{t("Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.")}</p>
                     {(subcompanies.length > 1) && (
                         <button onClick={() => {
                             setScreen(0)
@@ -185,8 +229,8 @@ class TabTwo extends Component {
                             const { company } = match.params;
                             const url = company.includes('_') ? company.split('_')[0] : company
                             history.push(`/${url}`)
-                        }} style={{ marginTop: '4px', marginBottom: '20px' }}
-                            className="book_button">{t("На страницу выбора филиалов")}</button>
+                        }}
+                            className="online_zapis_off_btn">{t("На страницу выбора филиалов")}</button>
                     )}
                 </div>
             )
@@ -211,7 +255,7 @@ class TabTwo extends Component {
         let serviceInfo = null;
         let padding_left = "21px";
         let padding_right = "39px";
-        let sizeWords = "28px";
+        let sizeWords = "25px";
         if (selectedService.serviceId) {
             let priceFrom = 0;
             let priceTo = 0;
@@ -364,13 +408,10 @@ class TabTwo extends Component {
                                         }} type="search"
                                             placeholder={t("Название услуги, категории")}
                                             aria-label="Search" ref={input => this.search = input}
-                                            onChange={(e) => this.setState({ searchValue: e.target.value })} />
+                                            onChange={(e) => this.searchOpen(e)} />
                                     </div>
                                 </div>
-                                <img onClick={e => this.setState({
-                                    visibleSearch: !visibleSearch,
-                                    searchValue: ""
-                                })} src={mobile_gray_cansel} alt="mobile_gray_cansel" />
+                                <img onClick={e =>this.canselMobSearch() } src={mobile_gray_cansel} alt="mobile_gray_cansel" />
                             </div>)
                             : (<div className="title_block service-title">
                                 {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) &&
@@ -448,7 +489,7 @@ class TabTwo extends Component {
                                     }} type="search"
                                         placeholder={t("Название услуги, категории")}
                                         aria-label="Search" ref={input => this.search = input}
-                                        onChange={(e) => this.setState({ searchValue: e.target.value })} />
+                                        onChange={(e) => this.searchOpen(e)} />
                                 </div>
                             </div>
                         </div>
@@ -498,16 +539,11 @@ class TabTwo extends Component {
                                         }
 
 
+
                                         return condition && finalServices && finalServices.length > 0 && (
                                             <ul className="service_list" key={index}>
                                                 <div>
-                                                    <div onClick={event => {
-                                                        const newArray = catigor;
-                                                        newArray[index] = !newArray[index]
-                                                        this.setState({
-                                                            catigor: newArray.concat()
-                                                        })
-                                                    }} className="service_header">
+                                                    <div onClick={event => this.openCatigor(index)} className="service_header">
                                                         <div className="service_list_name">
                                                             <h3>{serviceGroup.name}</h3>
                                                         </div>

@@ -520,15 +520,15 @@ q:before, q:after {
     margin-left: 10px;
     margin-top: -2px;
 }
-
-button, button:active, button:focus {
-    outline: none;
-}
-
 .next_block-btn_arrow:hover {
     cursor: pointer;
     opacity: 0.9;
 }
+button, button:active, button:focus {
+    outline: none;
+}
+
+
 
 .black-fone.runtime_back {
     background-color: rgba(255, 255, 255, 0.07);
@@ -604,10 +604,32 @@ a {
 
 .online-zapis-off {
     text-align: center;
-    font-size: 18px !important;
+    font-size: 18px;
     margin: 25vh 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-
+.online_zapis_off_btn{
+    width: 300px;
+    height: 60px;
+    margin: 15px -1px 0px 0px;
+    background-color: var(--color_button);
+    border-radius: 3px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 18px;
+    color: #FFFFFF;
+    border: 0;
+}
+.online_zapis_off_btn img {
+    margin-left: 10px;
+    margin-top: -2px;
+}
+.online_zapis_off_btn:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
 .service_selection.screen0 {
     display: block;
 }
@@ -880,7 +902,7 @@ a {
     font-size: 16px;
     line-height: 22px;
     color: #FFFFFF;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 .setvice_list_items {
@@ -1329,9 +1351,9 @@ a {
 }
 
 .final-book_hz_hz {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 8px;
+    font-size: 12px;
+    margin-top: 5px;
+    color:var(--color_button);
 }
 
 .star-container {
@@ -1709,14 +1731,23 @@ a.last_footer_block_desc_a {
     padding-top: 152px;
     overflow: hidden;
 }
-
-.service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5{
+.submit_screen_text{
+width: 100%;
+padding: 0px 10px;
+}
+.submit_screen_text p{
+text-align: center;
+}
+.service_selection.screen0,.service_selection.submit_screen, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5{
     height: auto;
-    overflow: auto;
     position: relative;
     margin-bottom: 80px;
 }
-
+.submit_screen{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
 .footer_modal {
     position: fixed;
     display: flex;
@@ -2314,9 +2345,9 @@ select {
 }
 
 .last_list_price span {
-    margin: 0px 0px 15px 6px;
-    font-size: 10px;
-    line-height: 13px;
+    font-size: 20px;
+    line-height: 27px;
+    color: var(--color_button);
 }
 
 .last_list {
