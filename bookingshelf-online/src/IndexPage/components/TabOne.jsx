@@ -263,7 +263,7 @@ class TabOne extends PureComponent {
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
                 <div className="online-zapis-off">
-                    {t("Онлайн-запись отключена")}
+                   <p>{t("Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.")}</p> 
                     {(subcompanies.length > 1) && (
                         <button onClick={() => {
                             setScreen(0)
@@ -271,7 +271,7 @@ class TabOne extends PureComponent {
                             const { company } = match.params;
                             const url = company.includes('_') ? company.split('_')[0] : company
                             history.push(`/${url}`)
-                        }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">{t("На страницу выбора филиалов")}</button>
+                        }}  className="online_zapis_off_btn">{t("На страницу выбора филиалов")}</button>
                     )}
                 </div>
             )

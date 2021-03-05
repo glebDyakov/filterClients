@@ -90,6 +90,10 @@
     .staff_popup {
         width: 98%;
     }
+    .specialist {
+        margin: auto;
+        width: 100%;
+    }
     .service_items.service_items_active {
         max-height: 1000px !important;
     }
@@ -285,7 +289,7 @@
     }
     /*  */
     .modal_window_text .modal_title {
-        padding: 0px 53px 35px 76px;
+        padding: 0px 45px 35px 70px;
     }
     .final-screen-block span p {
         width: 320px;
@@ -700,7 +704,7 @@
     }
     .specialist {
         margin: auto;
-        width: 360px;
+        width: 100%;
     }
     .next_block-btn_arrow {
         background-size: 17px;
@@ -782,6 +786,7 @@
     .service_grow {
         flex-grow: 0.7;
     }
+    .service_selection.submit_screen,
     .service_selection_block_six,
     .service_selection_block_five,
     .service_selection_block_four,
