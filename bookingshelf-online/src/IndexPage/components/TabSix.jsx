@@ -51,7 +51,6 @@ class TabSix extends PureComponent {
             newAppointments && newAppointments[0] && newAppointments[0].discountPercent && newAppointments.forEach(( appointment => {
                 totalAmount += appointment.totalAmount;
             }))
-            console.log(newAppointments)
             serviceInfo = (
                 <div className="last_list_block">
                     <div className="last_list_caption">
