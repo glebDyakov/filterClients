@@ -74,6 +74,10 @@ class TabSix extends PureComponent {
                             </p>
                         ))}
                     </div>
+                    <p className="desktop_invisible" style={{
+                            fontSize: "13px",
+                            marginRight: "32px",
+                        }}>{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</p>
                     <div className="last_list_price">
                         <p>{t("Итого")}:</p>
                         <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
@@ -92,12 +96,15 @@ class TabSix extends PureComponent {
                     <div className="service_selection final-screen">
                         <div className="service_selection_block_six">
                             <div className="last_footer_block">
-                                <a className="book_button_last" href={`/${this.props.match.params.company}`} onClick={() => {
+                                <a className="book_button_last" href={`/online/${this.props.match.params.company}`} onClick={() => {
                                     this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                                 }}>{t("Создать новую запись")}</a><p>
                                     {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
               <a className="last_footer_block_a" rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
                                 </p>
+                            </div>
+                            <div className="last_list">
+                                {serviceInfo}
                             </div>
                             <div className="final-screen-block">
 
@@ -107,7 +114,7 @@ class TabSix extends PureComponent {
 
                                 <span><p>{t("Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.")}</p></span>
 
-                                {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
+                             
 
                                 
                                 <div className=" cansel_block">
@@ -120,6 +127,7 @@ class TabSix extends PureComponent {
                                     }
                                     <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
                                 </div>
+                                {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
                                 {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
                                     <div className="modal_window_block">
                                         <div className="modal_window_text">
@@ -151,9 +159,7 @@ class TabSix extends PureComponent {
                                 }
 
                             </div>
-                            <div className="last_list">
-                                {serviceInfo}
-                            </div>
+                            
                             <Footer />
                         </div >
 
@@ -168,7 +174,7 @@ class TabSix extends PureComponent {
 
                             <div className="title_block staff_title">
 
-                                <span className="prev_block"><span className="title_block_text"><a rel="nofollow" href={`/${this.props.match.params.company}`} onClick={() => {
+                                <span className="prev_block"><span className="title_block_text"><a rel="nofollow" href={`/online/${this.props.match.params.company}`} onClick={() => {
                                     this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                                 }} className="title_block_text" >{t("Создать новую запись")}</a></span>
                                 </span>
@@ -180,7 +186,7 @@ class TabSix extends PureComponent {
 
                             <span><p>{t("Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.")}</p></span>
 
-                            {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
+                            
 
                            
                             <div className=" cansel_block">
@@ -193,6 +199,7 @@ class TabSix extends PureComponent {
                                 }
                                 <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
                             </div>
+                            {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
                             {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
                                 <div className="modal_window_block">
                                     <div className="modal_window_text">

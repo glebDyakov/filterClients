@@ -610,6 +610,9 @@ a {
     flex-direction: column;
     align-items: center;
 }
+.online-zapis-off p{
+    text-align: center;
+}
 .online_zapis_off_btn{
     width: 300px;
     height: 60px;
