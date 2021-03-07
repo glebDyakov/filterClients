@@ -127,7 +127,7 @@ class TabSix extends PureComponent {
                                     }
                                     <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
                                 </div>
-                                {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
+                                {info && info.appointmentMessage && <p className="final-book_hz">{t(`${info.appointmentMessage}`)}</p>}
                                 {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
                                     <div className="modal_window_block">
                                         <div className="modal_window_text">
@@ -199,7 +199,7 @@ class TabSix extends PureComponent {
                                 }
                                 <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
                             </div>
-                            {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
+                            {info && info.appointmentMessage && <p className="final-book_hz">{t(`${info.appointmentMessage}`)}</p>}
                             {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
                                 <div className="modal_window_block">
                                     <div className="modal_window_text">
