@@ -42,12 +42,15 @@ class TabSix extends PureComponent {
             let priceFrom = 0;
             let priceTo = 0;
             let duration = 0;
+            let totalAmount = 0
             selectedServices.forEach((service) => {
                 priceFrom += Number(service.priceFrom)
                 priceTo += Number(service.priceTo)
                 duration += Number(getDurationForCurrentStaff(service))
             })
-
+            newAppointments && newAppointments[0] && newAppointments[0].discountPercent && newAppointments.forEach(( appointment => {
+                totalAmount += appointment.totalAmount;
+            }))
             serviceInfo = (
                 <div className="last_list_block">
                     <div className="last_list_caption">
@@ -71,11 +74,19 @@ class TabSix extends PureComponent {
                             </p>
                         ))}
                     </div>
+                    <p className="desktop_invisible" style={{
+                            fontSize: "13px",
+                            marginRight: "32px",
+                        }}>{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</p>
                     <div className="last_list_price">
                         <p>{t("Итого")}:</p>
                         <p>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
+                        {newAppointments && newAppointments[0]  && !!newAppointments[0].discountPercent && <span>&nbsp;({Math.round(totalAmount * 100) / 100} {newAppointments[0].currency})</span>}
                     </div>
+                    {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
+                                <p className="final-book_hz_hz">{t("Ваша персональная скидка составит")}: {newAppointments[0].discountPercent}%</p>
+                            }
                 </div >
             )
         }
@@ -83,77 +94,76 @@ class TabSix extends PureComponent {
             <React.Fragment>
                 <MediaQuery maxWidth={mob}>
                     <div className="service_selection final-screen">
-                        <div className="last_footer_block">
-                            <a className="book_button_last" href={`/online/${this.props.match.params.company}`} onClick={() => {
-                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
-                            }}>{t("Создать новую запись")}</a><p>
-                                {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
+                        <div className="service_selection_block_six">
+                            <div className="last_footer_block">
+                                <a className="book_button_last" href={`/online/${this.props.match.params.company}`} onClick={() => {
+                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
+                                }}>{t("Создать новую запись")}</a><p>
+                                    {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
               <a className="last_footer_block_a" rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
-                            </p>
-                        </div>
-                        <div className="last_list">
-                            {serviceInfo}
-                        </div>
-                        <div className="final-screen-block">
-
-                            {/* <div className="title_block staff_title">
-                            </div> */}
-
-                            <div className="final-book finel_color_text">
-                                <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>
+                                </p>
                             </div>
-
-                            <span><p>{t("Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.")}</p></span>
-
-                            {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
-
-                            {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
-                                <p className="final-book_hz_hz">{t("Ваша персональная скидка составит")}: {newAppointments[0].discountPercent}%</p>
-                            }
-                            <div className=" cansel_block">
-                                {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) &&
-                                    <input type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
-                                        const clientId = (!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit[0].clientId : newAppointments[0].clientId;
-                                        this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, 1))
-                                        _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))
-                                    }} />
-                                }
-                                <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
+                            <div className="last_list">
+                                {serviceInfo}
                             </div>
-                            {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
-                                <div className="modal_window_block">
-                                    <div className="modal_window_text">
-                                        <p className="modal_title">{t("Перенести визит")}?</p>
-                                        <img src={cansel}  onClick={() => this.setterApproveF()} alt="cansel" />
-                                    </div>
-                                    <div className="modal_window_btn">
-                                        <button className="approveFYes" onClick={() => {
-                                            const resultAppointments = (movingVisit && movingVisit.length > 0) ? movingVisit : newAppointments
-                                            if (resultAppointments.length) {
-                                                if (resultAppointments[0] && resultAppointments[0].customId) {
-                                                    _delete(resultAppointments[0].customId)
+                            <div className="final-screen-block">
+
+                                <div className="final-book finel_color_text">
+                                    <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>
+                                </div>
+
+                                <span><p>{t("Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.")}</p></span>
+
+                             
+
+                                
+                                <div className=" cansel_block">
+                                    {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) &&
+                                        <input type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
+                                            const clientId = (!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit[0].clientId : newAppointments[0].clientId;
+                                            this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, 1))
+                                            _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))
+                                        }} />
+                                    }
+                                    <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
+                                </div>
+                                {info && info.appointmentMessage && <p className="final-book_hz">{t(`${info.appointmentMessage}`)}</p>}
+                                {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
+                                    <div className="modal_window_block">
+                                        <div className="modal_window_text">
+                                            <p className="modal_title">{t("Отменить визит")}?</p>
+                                            <img src={cansel} onClick={() => this.setterApproveF()} alt="cansel" />
+                                        </div>
+                                        <div className="modal_window_btn">
+                                            <button className="approveFYes" onClick={() => {
+                                                const resultAppointments = (movingVisit && movingVisit.length > 0) ? movingVisit : newAppointments
+                                                if (resultAppointments.length) {
+                                                    if (resultAppointments[0] && resultAppointments[0].customId) {
+                                                        _delete(resultAppointments[0].customId)
+                                                    }
+                                                    this.props.dispatch(staffActions.toggleStartMovingVisit(false, []));
+                                                    this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                                                 }
-                                                this.props.dispatch(staffActions.toggleStartMovingVisit(false, []));
-                                                this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
-                                            }
-                                        }}>{t("Да")}
-                                        </button>
-                                        <div style={{
-                                            height: "38px",
-                                            width: "1px",
-                                            backgroundColor: "rgba(9, 9, 58, 0.1)"
-                                        }}></div>
-                                        <button className="approveFNo" onClick={() => this.setterApproveF()}>{t("Нет")}
-                                        </button>
+                                            }}>{t("Да")}
+                                            </button>
+                                            <div style={{
+                                                height: "38px",
+                                                width: "1px",
+                                                backgroundColor: "rgba(9, 9, 58, 0.1)"
+                                            }}></div>
+                                            <button className="approveFNo" onClick={() => this.setterApproveF()}>{t("Нет")}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                                }
+
                             </div>
-                            }
+                            
+                            <Footer />
+                        </div >
 
-                        </div>
-
-                        <Footer />
-                    </div >
+                    </div>
                 </MediaQuery>
                 <MediaQuery minWidth={desctop}>
                     <div className="service_selection final-screen">
@@ -164,29 +174,21 @@ class TabSix extends PureComponent {
 
                             <div className="title_block staff_title">
 
-                                <span className="prev_block" onClick={() => {
-                                    setScreen(3);
-                                    //if (!isStartMovingVisit) {
-                                    refreshTimetable()
-                                    //}
-                                }}><span className="title_block_text"><a rel="nofollow" href={`/online/${this.props.match.params.company}`} onClick={() => {
+                                <span className="prev_block"><span className="title_block_text"><a rel="nofollow" href={`/online/${this.props.match.params.company}`} onClick={() => {
                                     this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                                 }} className="title_block_text" >{t("Создать новую запись")}</a></span>
                                 </span>
 
                             </div>
-
                             <div className="final-book finel_color_text">
                                 <p>{t("Запись успешно")} {movedVisitSuccess ? t('перенесена') : t('создана')}</p>
                             </div>
 
                             <span><p>{t("Цены указаны на основе прайс-листа. Окончательная стоимость формируется на месте оказания услуги.")}</p></span>
 
-                            {info && info.appointmentMessage && <p className="final-book_hz">{info.appointmentMessage}</p>}
+                            
 
-                            {newAppointments && newAppointments[0] && !!newAppointments[0].discountPercent &&
-                                <p className="final-book_hz_hz">{t("Ваша персональная скидка составит")}: {newAppointments[0].discountPercent}%</p>
-                            }
+                           
                             <div className=" cansel_block">
                                 {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) &&
                                     <input type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
@@ -197,11 +199,12 @@ class TabSix extends PureComponent {
                                 }
                                 <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
                             </div>
+                            {info && info.appointmentMessage && <p className="final-book_hz">{t(`${info.appointmentMessage}`)}</p>}
                             {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
                                 <div className="modal_window_block">
                                     <div className="modal_window_text">
                                         <p className="modal_title">{t("Отменить визит")}?</p>
-                                        <img src={cansel}  onClick={() => this.setterApproveF()} alt="cansel" />
+                                        <img src={cansel} onClick={() => this.setterApproveF()} alt="cansel" />
                                     </div>
                                     <div className="modal_window_btn">
                                         <button className="approveFYes" onClick={() => {
@@ -226,17 +229,9 @@ class TabSix extends PureComponent {
                                 </div>
                             </div>
                             }
-
-                            {/*<input type="submit" className="all-visits" value="Все визиты" onClick={() => this.toggleAllVisits()}/>*/}
-                            {/*{allVisits && <ClientDetails />}*/}
-                            {/*<p className="skip_employee"  onClick={() => {*/}
-                            {/*    setScreen(2);*/}
-                            {/*    refreshTimetable();*/}
-                            {/*    setDefaultFlag();*/}
-                            {/*}}> Создать запись</p>*/}
                         </div>
                         <Footer />
-                    </div >
+                    </div>
                 </MediaQuery>
             </React.Fragment>
         );

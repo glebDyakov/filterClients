@@ -43,7 +43,7 @@ class TabCompanySelection extends PureComponent {
                 <div className="title_block n affiliate_title" >
                     <p className="modal_title" >{t("Выберите филиал")}</p>
                 </div>
-                <ul className={` affiliate`}>
+                <ul className={`affiliate`}>
                     {subcompanies.sort((a, b) => a.companyId - b.companyId).map((subcompany, i) =>
                         <li className={(staffId && staffId === subcompany.companyId && 'selected') + ' nb active'}
                             onClick={() => {

@@ -8435,12 +8435,29 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6;
   }
+  
+}
+@media screen and (max-width: 720px) {
+    html, body {
+  position: fixed;
 }
 
-@media screen and (max-width: 599px) {
-  html, body {
-    overflow-y: hidden;
-  }
+html, body {
+  position: relative;
+  overflow: hidden;
 }
+
+body {
+  position: fixed;
+  overflow: hidden;
+}
+
+body {
+  position: fixed;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+  }
 
 /*# sourceMappingURL=bootstrap.css.map */

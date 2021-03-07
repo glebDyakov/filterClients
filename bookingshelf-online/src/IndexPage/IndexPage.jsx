@@ -24,6 +24,8 @@ import TabCreateComment from "./components/TabCreateComment";
 import { getFirstScreen } from "../_helpers/common";
 import {withTranslation} from "react-i18next";
 
+import skip_arrow from "../../public/img/icons/skip-arrow-white.svg"
+
 class IndexPage extends PureComponent {
     constructor(props) {
         super(props);
@@ -350,7 +352,7 @@ class IndexPage extends PureComponent {
             </div>
         } else if (error) {
             content =  <div className="online-zapis-off">
-                {t(error)}
+                {t(`${error}`)}
                 {(error.startsWith("Онлайн-запись отключена") && subcompanies.length > 1) && (
                     <button onClick={() => {
                         this.setScreen(0)
@@ -358,7 +360,7 @@ class IndexPage extends PureComponent {
                         let {company} = match.params;
                         let url = company.includes('_') ? company.split('_')[0] : company
                         history.push(`/${url}`)
-                    }} style={{ marginTop: '4px', marginBottom: '20px' }} className="book_button">{t("На страницу выбора филиалов")}</button>
+                    }} className="online_zapis_off_btn">{t("На страницу выбора филиалов")}<img src={skip_arrow} alt="skip_arrow"/></button>
                 )}
             </div>
         } else {
@@ -581,6 +583,7 @@ class IndexPage extends PureComponent {
                     />}
                     {screen === 7 &&
                     <TabCanceled
+                    selectedSubcompany={selectedSubcompany}
                         setScreen={this.setScreen}
                     />
                     }
