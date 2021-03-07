@@ -7,6 +7,7 @@ import search_icon from "../../../public/img/icons/header-search.svg";
 import mobile_gray_cansel from "../../../public/img/icons/mobile_gray_cansel.svg"
 import MediaQuery from 'react-responsive'
 import { imgSvg } from "../../_helpers/svg"
+import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants'
 class TabTwo extends Component {
     constructor(props) {
         super(props);
@@ -626,6 +627,7 @@ class TabTwo extends Component {
                                                                                     </div>
                                                                                     <button className="next_block-btn "
                                                                                         onClick={e => selectService({ target: { checked: !select } }, service)}
+                                                                                        style={{ backgroundColor: BUTTON_COLORS_BY_NUMBER[info.buttonColor] || undefined, }}
                                                                                     > {t("Выбрать")}</button>
                                                                                 </div>
                                                                             </MediaQuery>

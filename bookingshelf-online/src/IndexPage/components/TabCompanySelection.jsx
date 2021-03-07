@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getFirstScreen } from "../../_helpers/common";
 import { withTranslation } from "react-i18next";
 import skip_arrow from "../../../public/img/icons/skip-arrow-white.svg"
+import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants';
 
 
 class TabCompanySelection extends PureComponent {
@@ -37,7 +38,6 @@ class TabCompanySelection extends PureComponent {
     render() {
 
         const { subcompanies, selectedSubcompany, history, selectSubcompany, staffId, staffs, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, t } = this.props;
-
         return (
             <div className="service_selection screen1">
                 <div className="title_block n affiliate_title" >
@@ -65,7 +65,9 @@ class TabCompanySelection extends PureComponent {
                                     </div>
                                 </div>
 
-                                <button className="desktop_visible next_block-btn_arrow"> {t("Выбрать")}<img src={skip_arrow} alt="skip_arrow"/></button>
+                                <button className="desktop_visible next_block-btn_arrow" style={{ backgroundColor: BUTTON_COLORS_BY_NUMBER[info.buttonColor] || undefined, }}> 
+                                    {t("Выбрать")}<img src={skip_arrow} alt="skip_arrow"/>
+                                </button>
 
                             </span>
                             <div className="stars desktop_invisible" >{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
@@ -84,7 +86,7 @@ class TabCompanySelection extends PureComponent {
                                     allowFullScreen>
                                 </iframe>
                             )}
-                            <button className="desktop_invisible next_block-btn_arrow"> {t("Выбрать")} <img src={skip_arrow} alt="skip_arrow"/> </button>
+                            <button className="desktop_invisible next_block-btn_arrow" style={{ backgroundColor: BUTTON_COLORS_BY_NUMBER[info.buttonColor] || undefined, }}> {t("Выбрать")} <img src={skip_arrow} alt="skip_arrow"/> </button>
                         </li>
                     )}
                 </ul>
