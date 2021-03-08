@@ -20,7 +20,7 @@ class CreatedService extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if ( JSON.stringify(this.props) !== JSON.stringify(newProps)) {
+    if ( JSON.stringify(this.props.services) !== JSON.stringify(newProps.services)) {
       this.setState({ ...this.state, services: newProps.services });
     }
   }
@@ -85,7 +85,7 @@ class CreatedService extends React.Component {
   newGroup(e) {
     this.setState({ ...this.state, service: null });
 
-    this.props.newServiceGroup(null, true, e);
+    this.props.newServiceGroup(null, false, e);
   }
 
   newService(e) {

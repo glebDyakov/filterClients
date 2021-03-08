@@ -115,6 +115,7 @@
   "Беларусь": "Białoruś",
   "Украина": "Ukraina",
   "Россия": "Rosja",
+  "Казахстан": "Kazachstan",
   "Улица": "Ulica",
   "Введите улицу": "Podaj ulicę",
   "Город": "Miasto",
@@ -360,6 +361,7 @@
   "Стоимость визитов": "Koszt wizyt",
   "Сумма наличными": "Kwota gotówką",
   "Сумма безналичными": "Kwota bezgotówkowa",
+  "Сумма страховки": "Kwota ubezpieczenia",
   "Сегодня": "Dziś",
   "Вчера": "Wczoraj",
   "Неделя": "Tydzień",
@@ -383,6 +385,7 @@
   "Сумма": "Suma",
   "Наличный расчет": "Płatność w gotówce",
   "Безналичный расчет": "Płatność bezgotówkowa",
+  "Страховка": "Ubezpieczenie",
   "Желаете ли вы хранить статистику?": "Czy chcesz przechowywać statystyki?",
   "12 недель": "12 tygodni",
   "31 дней": "31 dni",
@@ -394,6 +397,7 @@
   "Мультивизит": "Multiwizyta",
   "Оплата наличными": "Płatność gotówką",
   "Оплата картой": "Płatność kartą",
+  "Оплата по страховке": "Zapłata za ubezpieczenie",
   "Отменить встречу": "Anuluj spotkanie",
   "Запись": "Rezerwacja",
   "Клиент подтвержден": "Klient został potwierdzony",
@@ -570,7 +574,7 @@
   "Стили кнопок": "Style przycisków",
   "Чтобы установить кнопку онлайн-записи на сайт, выберите цвет и форму кнопки, скопируйте код и поместите на сайт": "Aby umieścić przycisk rezerwacji online na witrynie, wybierz kolor i kształt przycisku, skopiuj kod i umieść go na stronie.",
   "Форма кнопки": "Kształt przycisku",
-  "Выберите цвет": "Wybierz kolor",
+  "Выберите цвет виджета": "Wybierz kolor widgetu",
   "Расположение кнопки": "Lokalizacja przycisku",
   "Слева": "W lewo",
   "Справа": "W prawo",
@@ -824,7 +828,15 @@
   "Товаров продано": "Przedmioty sprzedane",
   "Выручка": "Dochód",
   "Новое": "Nowy",
-  "компании": "firma"
+  "компании": "firma",
+  "По умолчанию": "Domyślnie",
+  "2 года": "2 lata",
+  "1 год": "1 rok",
+  "1 месяц": "1 miesiąc",
+  "1 неделя": "1 tydzień",
+  "1 день": "1 dzień",
+  "Вы уверены, что хотите изменить срок хранения истории визитов?": "Czy na pewno chcesz zmienić okres przechowywania historii wizyt?",
+  "Срок хранения истории визитов": "Okres przechowywania historii wizyt"
 }
 
 

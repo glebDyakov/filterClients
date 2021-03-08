@@ -92,7 +92,7 @@ function updateSubcompanySMS_EMAIL(params, id) {
   };
 
   function success(notification) {
-    return notification;
+    return { type: notificationConstants.UPDATE_SUBCOMPANY_SUCCESS, notification };
   }
 }
 

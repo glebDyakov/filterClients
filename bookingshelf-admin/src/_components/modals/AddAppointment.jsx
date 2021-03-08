@@ -564,6 +564,30 @@ class AddAppointment extends React.Component {
             (i) => visitFreeMinutes.some((freeMinute) => freeMinute === i)
           );
         })
+        .map((service) => {
+          const startTime =
+            parseInt(appointment[index].appointmentTimeMillis) +
+            (extraDuration ? appointment[index].duration * 1000 : 0);
+
+          const durationForCurrentStaff = this.getDurationForCurrentStaff(
+            service
+          );
+          const endTime = startTime + durationForCurrentStaff * 1000;
+
+          const isAvailable = isAvailableTime(
+            startTime,
+            endTime,
+            user,
+            appointmentsFromProps,
+            reservedTimeFromProps,
+            staff,
+            (i) => visitFreeMinutes.some((freeMinute) => freeMinute === i)
+          );
+          return {
+            ...service,
+            grey: !isAvailable
+          };
+        })
         .filter((service) => {
           if (index > 0) {
             return (
@@ -1103,6 +1127,7 @@ class AddAppointment extends React.Component {
         servicesWithGroups.map((item) => {
           return item.services
             .sort((a, b) => a.sortOrder - b.sortOrder)
+            .sort((a, b) => a.grey - b.grey)
             .map((service, key) => {
               const durationForCurrentStaff = this.getDurationForCurrentStaff(
                 service
@@ -1128,7 +1153,7 @@ class AddAppointment extends React.Component {
                       <span
                         className={service.color && service.color.toLowerCase()}
                       >
-                        <span className="items-color">
+                        <span className="items-color" style={service.grey ? { opacity: '0.4'} : {}}>
                           <span className="name-service">
                             {service.name} <br />
                             <span>{service.details}</span>
