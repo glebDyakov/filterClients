@@ -10,6 +10,9 @@ import { compose } from 'redux';
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
 import { imgSvg } from "../../_helpers/svg"
+import {skip_arrow} from "../../../public/img/icons/skip-arrow-blue.svg"
+import { ARROW } from '../../_constants/svg.constants';
+
 class TabOne extends PureComponent {
     constructor(props) {
         super(props)
@@ -283,7 +286,7 @@ class TabOne extends PureComponent {
                 <div className="service_selection_block_one">
                     <div className="skip_employee-block">
                         {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
-                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue"></div></p>}
+                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue">{ARROW}</div></p>}
                         {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>
                     <div className="title_block n staff_title">

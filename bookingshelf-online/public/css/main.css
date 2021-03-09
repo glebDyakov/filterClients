@@ -1790,8 +1790,16 @@ text-align: center;
     margin-top: 2px;
     width: 16px;
     height: 12px;
-    background-image: url(../img/icons/skip-arrow-blue.svg);
-    background-repeat: no-repeat;
+    /* background-image: url(../img/icons/skip-arrow-blue.svg); */
+    /* background-repeat: no-repeat; */
+}
+
+.skip-arrow-blue svg {
+    fill: var(--color_button);
+}
+
+.skip-arrow-blue svg path {
+    fill: var(--color_button);
 }
 
 .skip_employee {
