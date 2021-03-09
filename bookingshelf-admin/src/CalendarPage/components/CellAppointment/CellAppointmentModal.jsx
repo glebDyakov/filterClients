@@ -4,6 +4,7 @@ import { appointmentActions, calendarActions } from '../../../_actions';
 import { access } from '../../../_helpers/access';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import { PAYMENT_TYPES } from '../../../_constants';
 
 const CellAppointmentModal = (props) => {
   const {
@@ -184,13 +185,15 @@ const CellAppointmentModal = (props) => {
               {t('Безналичный расчет')}
               <input
                 className="form-check-input" type="checkbox"
-                checked={!appointment.cashPayment}
+                checked={appointment.paymentType  === PAYMENT_TYPES.CARD}
                 onChange={() => {
+                  console.log(currentAppointments);
+                  console.log(appointment);
                   const cashPayment = !currentAppointments[0].cashPayment;
                   const params = currentAppointments.map((item) => {
                     return {
                       ...item,
-                      cashPayment: cashPayment,
+                      paymentType : PAYMENT_TYPES.CARD,
                     };
                   });
                   dispatch(calendarActions.editAppointment2(
@@ -208,13 +211,12 @@ const CellAppointmentModal = (props) => {
               {t('Наличный расчет')}
               <input
                 className="form-check-input" type="checkbox"
-                checked={appointment.cashPayment}
+                checked={appointment.paymentType  === PAYMENT_TYPES.CASH}
                 onChange={() => {
-                  const cashPayment = !currentAppointments[0].cashPayment;
                   const params = currentAppointments.map((item) => {
                     return {
                       ...item,
-                      cashPayment: cashPayment,
+                      paymentType: PAYMENT_TYPES.CASH,
                     };
                   });
                   dispatch(calendarActions.editAppointment2(
@@ -223,6 +225,30 @@ const CellAppointmentModal = (props) => {
                   ));
                 }}
                 // checked={!booking.bookingCode.includes('left')} onChange={() => this.setBookingCode('right', true)}
+              />
+              <span className="check-box-circle"/>
+            </label>
+          </div>
+          <div style={{ position: 'relative' }} className="check-box">
+            <label>
+              {t('Страховка')}
+              <input
+                className="form-check-input" type="checkbox"
+                checked={appointment.paymentType  === PAYMENT_TYPES.INSURANCE}
+                onChange={() => {
+                  const cashPayment = !currentAppointments[0].cashPayment;
+                  const params = currentAppointments.map((item) => {
+                    return {
+                      ...item,
+                      paymentType: PAYMENT_TYPES.INSURANCE,
+                    };
+                  });
+                  dispatch(calendarActions.editAppointment2(
+                    JSON.stringify(params),
+                    currentAppointments[0].appointmentId,
+                  ));
+                }}
+                // onChange={() => this.setBookingCode('left', true)}
               />
               <span className="check-box-circle"/>
             </label>
