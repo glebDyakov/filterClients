@@ -28,7 +28,7 @@ class Index extends Component {
       messageCopyModalOpen: false,
     };
 
-    this.buttonColors = ['6A7187', 'CBC8C2', '3B4B5C', '2A3042', '5B7465', 'A1B6D1', 'B3AAD7', '9B9889', '991212', 'F7B83E', 'C959A3', '3E50F7']
+    this.buttonColors = ['6A7187', '747474', '3B4B5C', '2A3042', '5B7465', '728399', 'A490F1', '7D785F', '991212', 'F7B83E', 'C959A3', '3E50F7']
 
     this.handleChange = this.handleChange.bind(this);
     this.handleStepChange = this.handleStepChange.bind(this);
@@ -434,7 +434,7 @@ class Index extends Component {
               <div className="col-xl-8 content-pages-bg main-tab">
                 <p className="title mb-3">{t("Стили кнопок")}</p>
                 <p className="text">
-                  {t("Чтобы установить кнопку онлайн-записи на сайт, выберите цвет и форму кнопки, скопируйте код и поместите на сайт")}
+                  {t("Чтобы установить кнопку онлайн-записи на сайт, выберите цвет виджета, скопируйте код и поместите на сайт.")}
                 </p>
 
                 <hr/>
