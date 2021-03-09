@@ -57,7 +57,7 @@ class Header extends PureComponent {
 
         document.head.append(newStyles)
         newStyles.innerHTML = ":root {" +
-            "--color_button: " + BUTTON_COLORS_BY_NUMBER[newColor] + ";" +
+            "--color_button: #" + BUTTON_COLORS_BY_NUMBER[newColor] + ";" +
             " --color_text: #09093A;" +
             "}"
         this.setState({
