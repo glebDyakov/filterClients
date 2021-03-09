@@ -52,13 +52,9 @@ class Header extends PureComponent {
         })
     }
     changeColor() {
-        var newStyles = document.createElement('style')
-        let newColor;
-        if (this.props.selectedSubcompany) {
-            newColor = this.props.selectedSubcompany.buttonColor;
-        } else {
-            newColor = this.props.info.buttonColor;
-        }
+        const newStyles = document.createElement('style')
+        const newColor = this.props.selectedSubcompany ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
+
         document.head.append(newStyles)
         newStyles.innerHTML = ":root {" +
             "--color_button: " + BUTTON_COLORS_BY_NUMBER[newColor] + ";" +
@@ -101,6 +97,12 @@ class Header extends PureComponent {
         this.changeColor();
         document.addEventListener('click', this.outsideClickListener);
     }
+    componentDidUpdate() {
+        if (this.state.curentColor !== this.props.selectedSubcompany.buttonColor) {
+            this.changeColor();
+        }
+      
+    }
     componentWillUnmount() {
         document.removeEventListener('click', this.outsideClickListener);
     }
@@ -111,10 +113,6 @@ class Header extends PureComponent {
         const desctop = 600;
         const mob = 599;
         const hiddenMenu = mobile ? "hidden" : "visible";
-
-        if (selectedSubcompany !== undefined && curentColor !== selectedSubcompany.buttonColor) {
-            this.changeColor();
-        }
         return (
             <div className="modal_menu"
                 style={{
