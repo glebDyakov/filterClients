@@ -6,7 +6,7 @@ import { withTranslation } from "react-i18next";
 import search_icon from "../../../public/img/icons/header-search.svg";
 import mobile_gray_cansel from "../../../public/img/icons/mobile_gray_cansel.svg"
 import MediaQuery from 'react-responsive'
-import { svg_cursor } from '../../_constants/svg.constants';
+import { CURSOR_ICON } from '../../_constants/svg.constants';
 import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants'
 class TabTwo extends Component {
     constructor(props) {
@@ -282,7 +282,7 @@ class TabTwo extends Component {
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
-                                {svg_cursor}
+                                {CURSOR_ICON}
                                 <div className="supperVisDet service_footer-block">
                                     <div className="service_footer_price">
                                         {this.priceText(priceFrom, priceTo, selectedServices[0] && selectedServices[0].currency, false, true)}
@@ -325,7 +325,7 @@ class TabTwo extends Component {
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
-                                {svg_cursor}
+                                {CURSOR_ICON}
                                 {openList ?
                                     <div className="specialist_big">
                                         <div className="service_list_block">

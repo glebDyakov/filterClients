@@ -9,7 +9,7 @@ import cansel from "../../../public/img/icons/cansel_black.svg";
 import { compose } from 'redux';
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
-import { ARROW,svg_cursor } from '../../_constants/svg.constants';
+import { ARROW_ICON,CURSOR_ICON } from '../../_constants/svg.constants';
 
 class TabOne extends PureComponent {
     constructor(props) {
@@ -126,7 +126,7 @@ class TabOne extends PureComponent {
                     <div className="specialist" onClick={event => this.openListFunc()}>
 
                         <div className="specialist-block">
-                            {svg_cursor}
+                            {CURSOR_ICON}
                             <div className="supperVisDet service_footer-block">
 
                                 <div className="service_footer_price">
@@ -197,7 +197,7 @@ class TabOne extends PureComponent {
                 <MediaQuery minWidth={desctop}>
                     <div className="specialist" >
                         <div className="specialist-block">
-                            {svg_cursor}
+                            {CURSOR_ICON}
                             {openList ?
                                 <div className="specialist_big">
                                     <div className="service_list_block">
@@ -277,7 +277,7 @@ class TabOne extends PureComponent {
                 <div className="service_selection_block_one">
                     <div className="skip_employee-block">
                         {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
-                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue">{ARROW}</div></p>}
+                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue">{ARROW_ICON}</div></p>}
 
                         {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>

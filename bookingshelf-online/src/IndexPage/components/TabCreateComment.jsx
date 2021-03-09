@@ -7,7 +7,7 @@ import { getCookie } from "../../_helpers/cookie";
 import moment from "moment";
 import { withTranslation } from "react-i18next";
 import skip_arrow from "../../../public/img/icons/skip-arrow-blue.svg"
-import { ARROW} from '../../_constants/svg.constants';
+import { ARROW_ICON} from '../../_constants/svg.constants';
 class TabCreateComment extends PureComponent {
     constructor(props) {
         super(props);
@@ -227,7 +227,7 @@ class TabCreateComment extends PureComponent {
 
                                                     <p>{t("Персональный пароль")}</p>
                                                     <input className="tel" type="text" placeholder={t("Введите пароль")} name="loginPassword" onChange={this.handleChange} value={loginPassword} />
-                                                    <span> {t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку")} <a onClick={() => this.updateTab('sms_tab')}>{t("SMS авторизации")}</a>{ARROW} </span>
+                                                    <span> {t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку")} <a onClick={() => this.updateTab('sms_tab')}>{t("SMS авторизации")}</a>{ARROW_ICON} </span>
                                                     {clientLoginMessage && (
                                                         <p className="regist_block_login_p">
                                                             <img src={`${process.env.CONTEXT}public/img/client-verification.svg`}

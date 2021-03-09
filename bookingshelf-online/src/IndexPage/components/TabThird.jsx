@@ -5,7 +5,7 @@ import MomentLocaleUtils from 'react-day-picker/moment';
 import { withTranslation } from "react-i18next";
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
-import { svg_cursor } from '../../_constants/svg.constants';
+import { CURSOR_ICON } from '../../_constants/svg.constants';
 class TabThird extends PureComponent {
     constructor(props) {
         super(props);
@@ -64,7 +64,7 @@ class TabThird extends PureComponent {
                     <MediaQuery maxWidth={mob}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
-                                {svg_cursor}
+                                {CURSOR_ICON}
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
@@ -137,7 +137,7 @@ class TabThird extends PureComponent {
                         <div className="specialist" onClick={event => this.openListFunc()}>
 
                             <div className="specialist-block">
-                                {svg_cursor}
+                                {CURSOR_ICON}
                                 {openList ?
                                     <div className="specialist_big">
                                         <div className="service_list_block">

@@ -7,7 +7,7 @@ import { withTranslation } from "react-i18next";
 import MediaQuery from 'react-responsive'
 import cansel from "../../../public/img/icons/cansel_black.svg";
 import { culcDay } from "../../_helpers/data-calc"
-import { svg_cursor } from '../../_constants/svg.constants';
+import { CURSOR_ICON } from '../../_constants/svg.constants';
 class TabFour extends PureComponent {
     constructor(props) {
         super(props)
@@ -140,7 +140,7 @@ class TabFour extends PureComponent {
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
-                                {svg_cursor}
+                                {CURSOR_ICON}
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
@@ -204,7 +204,7 @@ class TabFour extends PureComponent {
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
                         <div className="specialist-block">
-                            {svg_cursor}
+                            {CURSOR_ICON}
                             {openList ?
                                 <div className="specialist_big">
                                     <div className="service_list_block">

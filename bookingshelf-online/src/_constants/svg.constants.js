@@ -1,10 +1,10 @@
 import React from 'react';
 
-export const ARROW = <svg width="16" height="10" fill="#fff" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg" >
+export const ARROW_ICON = <svg width="16" height="10" fill="#fff" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg" >
     <path d="M15.4243 5.42427C15.6586 5.18995 15.6586 4.81005 15.4243 4.57574L11.6059 0.75736C11.3716 0.523046 10.9917 0.523046 10.7574 0.75736C10.523 0.991675 10.523 1.37157 10.7574 1.60589L14.1515 5L10.7574 8.39411C10.523 8.62843 10.523 9.00833 10.7574 9.24264C10.9917 9.47696 11.3716 9.47696 11.6059 9.24264L15.4243 5.42427ZM-5.24537e-08 5.6L15 5.6L15 4.4L5.24537e-08 4.4L-5.24537e-08 5.6Z" fill="var(--color_button)" />
 </svg>
 
-export const svg_cursor = <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xlink" x="0px" y="0px"
+export const CURSOR_ICON = <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xlink" x="0px" y="0px"
     width="30px" height="30px" viewBox="0 0 100 100" className="img_svg" enableBackground="new 0 0 100 100" xml="preserve" >
     <path fill="#fff" d="M76.482,44.875c-0.407,0-1.44,0.14-2.502,0.47c-0.271-3.613-3.299-6.47-6.98-6.47
        c-1.68,0-3.223,0.594-4.43,1.584c-0.986-2.673-3.56-4.584-6.57-4.584c-1.751,0-3.552,0.536-5,1.572v-7.268
