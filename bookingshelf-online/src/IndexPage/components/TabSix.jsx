@@ -8,6 +8,7 @@ import { withTranslation } from "react-i18next";
 import Footer from "./Footer";
 import MediaQuery from 'react-responsive'
 import cansel from "../../../public/img/icons/cansel_black.svg";
+import { ARROW } from '../../_constants/svg.constants';
 class TabSix extends PureComponent {
     constructor(props) {
         super(props);
@@ -119,13 +120,13 @@ class TabSix extends PureComponent {
                                 
                                 <div className=" cansel_block">
                                     {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) &&
-                                        <input type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
+                                        <button className="cansel-visit" onClick={() => {
                                             const clientId = (!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit[0].clientId : newAppointments[0].clientId;
                                             this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, 1))
                                             _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))
-                                        }} />
+                                        }} >{t("Перенести визит")}{ARROW}</button>
                                     }
-                                    <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
+                                    <button className="cansel-visit" onClick={() => this.onCancelVisit()} >{t("Отменить визит")}{ARROW}</button>
                                 </div>
                                 {info && info.appointmentMessage && <p className="final-book_hz">{t(`${info.appointmentMessage}`)}</p>}
                                 {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">
@@ -191,13 +192,13 @@ class TabSix extends PureComponent {
                            
                             <div className=" cansel_block">
                                 {!(movingVisit && movingVisit[0] && movingVisit[0].coStaffs && movingVisit[0].coStaffs.length > 0) &&
-                                    <input type="submit" className="cansel-visit" value={t("Перенести визит")} onClick={() => {
+                                    <button className="cansel-visit" onClick={() => {
                                         const clientId = (!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit[0].clientId : newAppointments[0].clientId;
                                         this.props.dispatch(staffActions.getClientAppointments(this.props.match.params.company, clientId, 1))
                                         _move((!(newAppointments && newAppointments[0]) && movingVisit) ? movingVisit : newAppointments.sort((a, b) => a.appointmentId - b.appointmentId))
-                                    }} />
+                                    }} >{t("Перенести визит")}{ARROW}</button>
                                 }
-                                <input type="submit" className="cansel-visit" value={t("Отменить визит")} onClick={() => this.onCancelVisit()} />
+                                <button className="cansel-visit"  onClick={() => this.onCancelVisit()} >{t("Отменить визит")}{ARROW}</button>
                             </div>
                             {info && info.appointmentMessage && <p className="final-book_hz">{t(`${info.appointmentMessage}`)}</p>}
                             {approveF && <div ref={(el) => { this.approvedButtons = el; }} className="approveF">

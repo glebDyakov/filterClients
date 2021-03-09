@@ -1792,8 +1792,6 @@ text-align: center;
     margin-top: 2px;
     width: 16px;
     height: 12px;
-    /* background-image: url(../img/icons/skip-arrow-blue.svg); */
-    /* background-repeat: no-repeat; */
 }
 
 .skip-arrow-blue svg {
@@ -2402,13 +2400,10 @@ a.last_footer_block_a {
 }
 
 .cansel-visit {
-    background: url(../img/icons/skip-arrow-blue.svg) no-repeat;
-    background-size: 14px;
-    left: auto;
-    background-position: right center;
     width: 176px;
     height: 42px;
     border-radius: 3px;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2416,11 +2411,10 @@ a.last_footer_block_a {
     font-size: 14px;
     color: var(--color_button);
     line-height: 19px;
-    padding: 0px 0px 2px 0px;
-    background-position-x: 158px;
-    background-position-y: 17px;
 }
-
+.cansel-visit svg{
+    margin-left: 10px;
+}
 .cansel-visit:hover {
     cursor: pointer;
 }
@@ -2473,6 +2467,9 @@ a.last_footer_block_a {
 
 .regist_block .phones_country {
     margin-bottom: 20px;
+}
+.regist_block span svg{
+    margin-left: 10px;
 }
 
 .comments_book_button {

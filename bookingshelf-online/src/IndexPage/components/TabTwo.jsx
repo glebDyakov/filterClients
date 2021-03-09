@@ -6,7 +6,7 @@ import { withTranslation } from "react-i18next";
 import search_icon from "../../../public/img/icons/header-search.svg";
 import mobile_gray_cansel from "../../../public/img/icons/mobile_gray_cansel.svg"
 import MediaQuery from 'react-responsive'
-import { imgSvg } from "../../_helpers/svg"
+import { svg_cursor } from '../../_constants/svg.constants';
 import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants'
 class TabTwo extends Component {
     constructor(props) {
@@ -254,9 +254,7 @@ class TabTwo extends Component {
 
 
         let serviceInfo = null;
-        let padding_left = "21px";
-        let padding_right = "39px";
-        let sizeWords = "25px";
+        let sizeWords = "23px";
         if (selectedService.serviceId) {
             let priceFrom = 0;
             let priceTo = 0;
@@ -273,14 +271,10 @@ class TabTwo extends Component {
             const priceTo1000 = priceTo / 1000;
 
             if (priceFrom1000 > 1 || priceTo1000 > 1) {
-                sizeWords = "22px"
-                padding_left = "0px";
-                padding_right = "0px";
+                sizeWords = "20px"
             }
             else if (priceFrom100 > 1 || priceTo100 > 1) {
-                sizeWords = "25px"
-                padding_left = "0px";
-                padding_right = "0px";
+                sizeWords = "22px"
             }
             serviceInfo = (
                 <div>
@@ -288,7 +282,7 @@ class TabTwo extends Component {
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
-                                {imgSvg}
+                                {svg_cursor}
                                 <div className="supperVisDet service_footer-block">
                                     <div className="service_footer_price">
                                         {this.priceText(priceFrom, priceTo, selectedServices[0] && selectedServices[0].currency, false, true)}
@@ -331,7 +325,7 @@ class TabTwo extends Component {
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
-                                {imgSvg}
+                                {svg_cursor}
                                 {openList ?
                                     <div className="specialist_big">
                                         <div className="service_list_block">
@@ -360,14 +354,10 @@ class TabTwo extends Component {
                                             }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                             <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                         </div>
-                                        <p className="service_footer_price_small_text" style={{
-                                            paddingLeft: `${padding_left}`,
-                                        }} onClick={event => this.setState({
+                                        <p className="service_footer_price_small_text"  onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Выбрано услуг")}: {selectedServices.length}</p>
-                                        <p className="service_footer_price_small_text" style={{
-                                            paddingRight: `${padding_right}`,
-                                        }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        <p className="service_footer_price_small_text"  >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>
                                         {!!selectedServices.length && <button className="next_block" onClick={() => {
                                             if (selectedServices.length) {
