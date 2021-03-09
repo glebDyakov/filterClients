@@ -9,7 +9,8 @@ import cansel from "../../../public/img/icons/cansel_black.svg";
 import { compose } from 'redux';
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
-import { imgSvg } from "../../_helpers/svg"
+import { ARROW_ICON,CURSOR_ICON } from '../../_constants/svg.constants';
+
 class TabOne extends PureComponent {
     constructor(props) {
         super(props)
@@ -97,8 +98,7 @@ class TabOne extends PureComponent {
 
         const currentDay = culcDay(selectedDay, "desctop");
 
-        let sizeWords = "36px";
-        let margin_right = "22px";
+        let sizeWords = "23px";
         let priceFrom = 0;
         let priceTo = 0;
         let duration = 0;
@@ -114,12 +114,10 @@ class TabOne extends PureComponent {
         const priceTo1000 = priceTo / 1000;
 
         if (priceFrom1000 > 1 || priceTo1000 > 1) {
-            sizeWords = "24px"
-            margin_right = "0px";
+            sizeWords = "20px"
         }
         else if (priceFrom100 > 1 || priceTo100 > 1) {
-            sizeWords = "32px"
-            margin_right = "0px";
+            sizeWords = "22px"
         }
 
         serviceInfo = (
@@ -128,7 +126,7 @@ class TabOne extends PureComponent {
                     <div className="specialist" onClick={event => this.openListFunc()}>
 
                         <div className="specialist-block">
-                            {imgSvg}
+                            {CURSOR_ICON}
                             <div className="supperVisDet service_footer-block">
 
                                 <div className="service_footer_price">
@@ -199,7 +197,7 @@ class TabOne extends PureComponent {
                 <MediaQuery minWidth={desctop}>
                     <div className="specialist" >
                         <div className="specialist-block">
-                            {imgSvg}
+                            {CURSOR_ICON}
                             {openList ?
                                 <div className="specialist_big">
                                     <div className="service_list_block">
@@ -230,9 +228,7 @@ class TabOne extends PureComponent {
                                         }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                     </div>
-                                    <div className="time-footer hover" style={{
-                                        marginRight: `${margin_right}`
-                                    }}>
+                                    <div className="time-footer hover" >
                                         <p className="time-footer_desctop_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Выбрано услуг")}: {selectedServices.length}</p>
@@ -240,9 +236,7 @@ class TabOne extends PureComponent {
                                         <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>
                                     </div>
-                                    <div className="time-footer" style={{
-                                        marginRight: `${margin_right}`
-                                    }}>
+                                    <div className="time-footer" >
                                         <p className="time-footer_desctop_p" >{t("Дата")}:</p>
                                         <p className="service_footer_price_small_text" >{currentDay} {moment(time).format('LT')}</p>
                                     </div>
@@ -283,7 +277,8 @@ class TabOne extends PureComponent {
                 <div className="service_selection_block_one">
                     <div className="skip_employee-block">
                         {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
-                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue"></div></p>}
+                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue">{ARROW_ICON}</div></p>}
+
                         {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>
                     <div className="title_block n staff_title">

@@ -9,12 +9,9 @@ html, body, h1, html h2, h3, h4, h5, h6, html p, ol, ul, li, pre, code, address,
     font-size: 100%;
     font-weight: normal;
 }
-
-:root {
-    --color_text: #09093A;
-    --color_button: #3E50F7;
+.svg_arrow path{ 
+    fill: var(--color_button);
 }
-
 html label {
     display: inline;
 }
@@ -1032,6 +1029,7 @@ a {
 .calendar_modal {
     width: 700px;
     margin: auto;
+    position: relative;
 }
 
 .calendar_modal th {
@@ -1794,8 +1792,14 @@ text-align: center;
     margin-top: 2px;
     width: 16px;
     height: 12px;
-    background-image: url(../img/icons/skip-arrow-blue.svg);
-    background-repeat: no-repeat;
+}
+
+.skip-arrow-blue svg {
+    fill: var(--color_button);
+}
+
+.skip-arrow-blue svg path {
+    fill: var(--color_button);
 }
 
 .skip_employee {
@@ -2396,13 +2400,10 @@ a.last_footer_block_a {
 }
 
 .cansel-visit {
-    background: url(../img/icons/skip-arrow-blue.svg) no-repeat;
-    background-size: 14px;
-    left: auto;
-    background-position: right center;
     width: 176px;
     height: 42px;
     border-radius: 3px;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2410,11 +2411,10 @@ a.last_footer_block_a {
     font-size: 14px;
     color: var(--color_button);
     line-height: 19px;
-    padding: 0px 0px 2px 0px;
-    background-position-x: 158px;
-    background-position-y: 17px;
 }
-
+.cansel-visit svg{
+    margin-left: 10px;
+}
 .cansel-visit:hover {
     cursor: pointer;
 }
@@ -2467,6 +2467,9 @@ a.last_footer_block_a {
 
 .regist_block .phones_country {
     margin-bottom: 20px;
+}
+.regist_block span svg{
+    margin-left: 10px;
 }
 
 .comments_book_button {
