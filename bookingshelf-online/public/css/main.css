@@ -10,11 +10,6 @@ html, body, h1, html h2, h3, h4, h5, h6, html p, ol, ul, li, pre, code, address,
     font-weight: normal;
 }
 
-:root {
-    --color_text: #09093A;
-    --color_button: #3E50F7;
-}
-
 html label {
     display: inline;
 }
@@ -1032,6 +1027,7 @@ a {
 .calendar_modal {
     width: 700px;
     margin: auto;
+    position: relative;
 }
 
 .calendar_modal th {

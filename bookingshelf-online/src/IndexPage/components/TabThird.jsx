@@ -221,7 +221,7 @@ class TabThird extends PureComponent {
                         </span>
                         <p className="modal_title">{t("Выберите дату")}</p>
                     </div>
-                    {serviceInfo}
+                    
                     <div className="calendar_modal">
                         {parseInt(moment(month).utc().format('x')) > parseInt(moment().utc().format('x')) && <span className="arrow-left" onClick={showPrevWeek} />}
                         <span className="arrow-right" onClick={showNextWeek} />
@@ -241,6 +241,7 @@ class TabThird extends PureComponent {
                         </div>
                         <span className="clear"></span>
                     </div>
+                    {serviceInfo}
                 </div>
             </div>
         );
