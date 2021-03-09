@@ -13,6 +13,7 @@ import burger_open from "../../../public/img/icons/burger-open.svg";
 import telephone_btn from "../../../public/img/icons/telephone_btn.svg";
 import MediaQuery from 'react-responsive'
 import { withTranslation } from "react-i18next";
+import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants';
 // import { findSourceMap } from 'module';
 
 class Header extends PureComponent {
@@ -24,11 +25,13 @@ class Header extends PureComponent {
             mobile: false,
             currentLang: this.props.i18n.language,
             langList: false,
+            curentColor: "3752783"
         };
         this.changeBurger = this.changeBurger.bind(this);
         this.openLangList = this.openLangList.bind(this);
         this.changeLang = this.changeLang.bind(this);
         this.outsideClickListener = this.outsideClickListener.bind(this);
+        this.changeColor = this.changeColor.bind(this);
     }
     changeLang(lang) {
         const { i18n } = this.props;
@@ -46,6 +49,19 @@ class Header extends PureComponent {
     openLangList() {
         this.setState({
             langList: !this.state.langList,
+        })
+    }
+    changeColor() {
+        const newStyles = document.createElement('style')
+        const newColor = this.props.selectedSubcompany ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
+
+        document.head.append(newStyles)
+        newStyles.innerHTML = ":root {" +
+            "--color_button: #" + BUTTON_COLORS_BY_NUMBER[newColor] + ";" +
+            " --color_text: #09093A;" +
+            "}"
+        this.setState({
+            curentColor: newColor,
         })
     }
     outsideClickListener(event) {
@@ -78,14 +94,21 @@ class Header extends PureComponent {
 
     }
     componentDidMount() {
-        document.addEventListener('click', this.outsideClickListener)
+        this.changeColor();
+        document.addEventListener('click', this.outsideClickListener);
+    }
+    componentDidUpdate() {
+        if (this.state.curentColor !== this.props.selectedSubcompany.buttonColor) {
+            this.changeColor();
+        }
+      
     }
     componentWillUnmount() {
-        document.removeEventListener('click', this.outsideClickListener)
+        document.removeEventListener('click', this.outsideClickListener);
     }
     render() {
         const { info, screen, selectedSubcompany } = this.props;
-        const { burger, mobile, currentLang, langList } = this.state
+        const { burger, mobile, currentLang, langList, curentColor } = this.state
         const currentTextLeng = this.props.i18n.language.toUpperCase();
         const desctop = 600;
         const mob = 599;
