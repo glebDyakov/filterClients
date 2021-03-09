@@ -13,6 +13,7 @@ export const companyService = {
   getBookingInfo,
   getNewAppointments,
   updateCompany,
+  updateCompanySocialNetworks,
 };
 
 function add(params) {
@@ -66,6 +67,22 @@ function updateSubcompany(params) {
   };
 
   return fetch(`${origin}${config.apiUrl}/subcompanies/${params.companyId}`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function updateCompanySocialNetworks(params, id) {
+  const requestOptions = {
+    method: 'PUT',
+    body: JSON.stringify(params),
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+  };
+
+  return fetch(`${origin}${config.apiUrl}/socialnetwork`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 

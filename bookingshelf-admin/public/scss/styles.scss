@@ -794,8 +794,11 @@ input {
       }
     }
 
-    .company_input {
-      border: none !important;
+
+    &.error {
+     .company_input {
+       border: 1px solid #b80202;
+     } 
     }
 
   }

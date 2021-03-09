@@ -18,6 +18,7 @@ export const companyActions = {
   getMovedAppointmentsCountMarkerIncrement,
   getAppointmentsCountMarkerDecrement,
   changeTheme,
+  updateCompanySocialNetworks,
 };
 
 function add(companyInfo) {
@@ -120,6 +121,27 @@ function updateSubcompany(companyInfo) {
     return { type: companyConstants.UPDATE_SUBCOMPANY_SUCCESS, company };
   }
 }
+
+function updateCompanySocialNetworks(data, id) {
+  return (dispatch) => {
+    companyService.updateCompanySocialNetworks(data, id)
+      .then(
+        (company) => {
+          dispatch(success(company));
+          dispatch(companyActions.get());
+        },
+        (error) => {
+          // dispatch(failure(error.toString()));
+          dispatch(alertActions.error(error.toString()));
+        },
+      );
+  };
+
+  function success(company) {
+    return { type: companyConstants.UPDATE_SUBCOMPANY_SOCIAL_NETWORK_SUCCESS, company };
+  }
+}
+
 function switchSubcompany(companyInfo) {
   const menu = JSON.parse(localStorage.getItem('user')).menu;
   const profile = JSON.parse(localStorage.getItem('user')).profile;

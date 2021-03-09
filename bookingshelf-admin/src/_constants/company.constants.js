@@ -1,3 +1,5 @@
+import { FACEBOOK_LINK_REGEX, INSTAGRAM_LINK_REGEX, TIKTOK_LINK_REGEX } from "./regex.constants";
+
 export const companyConstants = {
   UPDATE_SAVED: 'UPDATE_SAVED',
 
@@ -9,6 +11,7 @@ export const companyConstants = {
 
   ADD_SUBCOMPANY_SUCCESS: 'ADD_SUBCOMPANY_SUCCESS',
   UPDATE_SUBCOMPANY_SUCCESS: 'UPDATE_SUBCOMPANY_SUCCESS',
+  UPDATE_SUBCOMPANY_SOCIAL_NETWORK_SUCCESS: 'UPDATE_SUBCOMPANY_SOCIAL_NETWORK_SUCCESS',
   SWITCH_SUBCOMPANY_SUCCESS: 'SWITCH_SUBCOMPANY_SUCCESS',
 
   UPDATE_COMPANY_SETTINGS_REQUEST: 'UPDATE_COMPANY_SETTINGS_REQUEST',
@@ -68,4 +71,40 @@ export const VISITS_STORAGE_DURATIONS = [
     name: '1 день',
     value: 1,
   },
-]
+];
+
+export const SOCIAL_NETWORKS = {
+  TIKTOK: 'tiktok',
+  INSTAGRAM: 'instagram',
+  FACEBOOK: 'facebook',
+};
+
+export const COMPANY_SOCIAL_NETWORKS = [
+  {
+    name: SOCIAL_NETWORKS.TIKTOK,
+    displayingName: 'Tik tok',
+    regex: TIKTOK_LINK_REGEX,
+  },
+  {
+    name: SOCIAL_NETWORKS.INSTAGRAM,
+    displayingName: 'Instagram',
+    regex: INSTAGRAM_LINK_REGEX,
+  },
+  {
+    name: SOCIAL_NETWORKS.FACEBOOK,
+    displayingName: 'Facebook',
+    regex: FACEBOOK_LINK_REGEX,
+  },
+];
+
+export const SOCIAL_NETWORK_ENUM = {
+  [SOCIAL_NETWORKS.INSTAGRAM]: 1,
+  [SOCIAL_NETWORKS.FACEBOOK]: 2,
+  [SOCIAL_NETWORKS.TIKTOK]: 4,
+};
+
+export const SOCIAL_NETWORK_MAP = {
+  [SOCIAL_NETWORKS.INSTAGRAM]: 'Instagram',
+  [SOCIAL_NETWORKS.FACEBOOK]: 'Facebook',
+  [SOCIAL_NETWORKS.TIKTOK]: 'Tiktok',
+};
