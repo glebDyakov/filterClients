@@ -946,8 +946,8 @@ a {
 }
 
 .cansel_btn_small {
-    width: 9px;
-    height: 9px;
+    width: 30px;
+    height: 8px;
     background-image: url(../img/icons/cancel-white.svg);
     margin-right: 10px;
     background-repeat: no-repeat;
