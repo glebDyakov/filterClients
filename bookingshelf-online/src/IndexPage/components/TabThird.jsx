@@ -80,13 +80,14 @@ class TabThird extends PureComponent {
                                             : (<React.Fragment>
                                                 <div className="price_footer_service_item">
                                                     <div className="price_footer_service_half">
-                                                        <p><p>{t("от")}</p>{priceFrom}</p>
+                                                        <p>{priceFrom}</p>
                                                         <span >{selectedServices[0] && selectedServices[0].currency}</span>
                                                     </div>
                                                 </div>
+                                                <p>-&nbsp;</p>
                                                 <div className="price_footer_service_item">
                                                     <div className="price_footer_service_half">
-                                                        <p><p>{t("до")}</p>{priceTo} </p>
+                                                        <p>{priceTo} </p>
                                                         <span >{selectedServices[0] && selectedServices[0].currency}</span>
                                                     </div>
                                                 </div>
