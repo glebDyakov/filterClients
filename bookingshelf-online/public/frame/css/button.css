@@ -2,42 +2,61 @@
   --border: rgba(57, 67, 79, 0.8);
   --color: rgba(57, 67, 79, 1); }
 
-.colorEA3E3E {
-  --border: rgba(234, 62, 62, 0.8);
-  --color: rgba(234, 62, 62, 1); }
+.color6A7187 {
+  --border: #6A7187;
+  --color: #6A7187; }
 
-.color2f84 {
-  --border: rgba(0, 47, 132, 0.8);
-  --color: rgba(0, 47, 132, 1); }
+.color747474 {
+  --border: #747474;
+  --color: #747474; }
 
-.colorA300B7 {
-  --border: rgba(163, 0, 183, 0.8);
-  --color: rgba(163, 0, 183, 1); }
+.color3B4B5C {
+  --border: #3B4B5C;
+  --color: #3B4B5C; }
 
-.color14A736 {
-  --border: rgba(20, 167, 54, 0.8);
-  --color: rgba(20, 167, 54, 1); }
+.color2A3042 {
+  --border: #2A3042;
+  --color: #2A3042; }
 
-.colorFEC81D {
-  --border: rgba(254, 200, 29, 0.8);
-  --color: rgba(254, 200, 29, 1); }
+.color5B7465 {
+  --border: #5B7465;
+  --color: #5B7465; }
+
+.color728399 {
+  --border: #728399;
+  --color: #728399; }
 
 .color0 {
   --border: rgba(0, 0, 0, 0.8);
   --color: rgba(0, 0, 0, 1); }
 
-.color5B88A8 {
-  --border: rgba(91, 136, 168, 0.8);
-  --color: rgba(91, 136, 168, 1); }
+.colorA490F1 {
+  --border: #A490F1;
+  --color: #A490F1; }
 
 .color7A7A7A {
-  --border: rgba(122, 122, 122, 0.8);
-  --color: rgba(122, 122, 122, 1); }
+  --border: #7A7A7A;
+  --color: #7A7A7A; }
 
-.color23D2CC {
-  --border: rgba(35, 210, 204, 0.8);
-  --color: rgba(35, 210, 204, 1); }
- 
+.color7D785F {
+  --border: #7D785F;
+  --color: #7D785F; }
+
+  .color991212 {
+    --border: #991212;
+    --color: #991212; }
+
+    .colorF7B83E {
+      --border: #F7B83E;
+      --color: #F7B83E; }
+
+      .colorC959A3 {
+        --border: #C959A3;
+        --color: #C959A3; }
+
+        .color3E50F7 {
+          --border: #3E50F7;
+          --color: #3E50F7; }
 .left {
   left: 20px !important;
   right: unset !important;

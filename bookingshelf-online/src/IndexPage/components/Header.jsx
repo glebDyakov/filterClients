@@ -105,6 +105,13 @@ class Header extends PureComponent {
     componentWillUnmount() {
         document.removeEventListener('click', this.outsideClickListener);
     }
+
+    getSocialLink = (social) => {
+        const link = this.props.info.companySocialNetworks.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social).companyUrl;
+        console.log(link);
+        return `https://${link}`;
+    } 
+
     render() {
         const { info, screen, selectedSubcompany } = this.props;
         const { burger, mobile, currentLang, langList, curentColor } = this.state
@@ -186,10 +193,10 @@ class Header extends PureComponent {
 
                                 <div className="adress-phones">
                                     <div className="adress-text-wrapper">
-                                        <img src={tiktok_white} alt='tiktok' />
-                                        <img src={facebook_white} alt='facebook' />
-                                        <img src={instagram_white} alt='instagram' />
-                                    </div>
+                                        <a href={this.getSocialLink('tiktok')} rel="external" target="_blank"><img src={tiktok_white} alt='tiktok' /></a>
+                                        <a href={this.getSocialLink('facebook')} rel="external" target="_blank"><img src={facebook_white} alt='facebook' /></a>
+                                        <a href={this.getSocialLink('instagram')} rel="external" target="_blank"><img src={instagram_white} alt='instagram' /></a>
+                                    </div>dsf
                                 </div>
 
 
@@ -215,9 +222,9 @@ class Header extends PureComponent {
                                 <div className="adress-phones">
                                     <span className="adress-icon" />
                                     <div className="adress-text-wrapper">
-                                        <img src={tiktok} alt='tiktok' />
-                                        <img src={facebook} alt='facebook' />
-                                        <img src={instagram} alt='instagram' />
+                                        <a href={this.getSocialLink('tiktok')} rel="external" target="_blank"><img src={tiktok} alt='tiktok' /></a>
+                                        <a href={this.getSocialLink('facebook')} rel="external" target="_blank"><img src={facebook} alt='facebook' /></a>
+                                        <a href={this.getSocialLink('instagram')} rel="external" target="_blank"><img src={instagram} alt='instagram' /></a>
                                     </div>
                                 </div>}
                             <div className="header-lang" onClick={e => this.openLangList()}>

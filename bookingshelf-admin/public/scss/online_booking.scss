@@ -131,10 +131,10 @@
                 background-color: #6A7187;
             }
         }
-        &.colorCBC8C2{
-            color: #CBC8C2;
+        &.color747474{
+            color: #747474;
             span{
-                background-color: #CBC8C2;
+                background-color: #747474;
             }
         }
         &.color3B4B5C{
@@ -155,22 +155,22 @@
                 background-color: #5B7465;
             }
         }
-        &.colorA1B6D1{
-            color: #A1B6D1;
+        &.color728399{
+            color: #728399;
             span{
-                background-color: #A1B6D1;
+                background-color: #728399;
             }
         }
-        &.colorB3AAD7{
-            color: #B3AAD7;
+        &.colora490f1{
+            color: #a490f1;
             span{
-                background-color: #B3AAD7;
+                background-color: #a490f1;
             }
         }
-        &.color9B9889{
-            color: #9B9889;
+        &.color7D785F{
+            color: #7D785F;
             span{
-                background-color: #9B9889;
+                background-color: #7D785F;
             }
         }
         &.color991212{
@@ -353,9 +353,9 @@ strong{
     --color: #6A7187;
 }
 
-.colorCBC8C2 {
-    --border: #CBC8C2;
-    --color: #CBC8C2;
+.color747474 {
+    --border: #747474;
+    --color: #747474;
 }
 
 .color3B4B5C {
@@ -373,19 +373,19 @@ strong{
     --color: #5B7465;
 }
 
-.colorA1B6D1 {
-    --border: #A1B6D1;
-    --color: #A1B6D1;
+.color728399 {
+    --border: #728399;
+    --color: #728399;
 }
 
-.colorB3AAD7 {
-    --border: #B3AAD7;
-    --color: #B3AAD7;
+.colora490f1 {
+    --border: #a490f1;
+    --color: #a490f1;
 }
 
-.color9B9889 {
-    --border: #9B9889;
-    --color: #9B9889;
+.color7D785F {
+    --border: #7D785F;
+    --color: #7D785F;
 }
 
 .color991212 {
@@ -708,6 +708,30 @@ strong{
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 100%;
+
+    .social-wrap {
+        .form-control {
+            position: relative;
+            margin-bottom: 10px;
+            padding: 0;
+            border: none;
+        }
+
+        .company_counter {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.7;
+        }
+
+        .error {
+            .company_input {
+                border: 1px solid #b80202;
+            }
+        }
+    }
+    
     p {
         color: #495057;
         font-weight: 300;

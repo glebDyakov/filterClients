@@ -13,6 +13,8 @@ export const companyService = {
   getBookingInfo,
   getNewAppointments,
   updateCompany,
+  updateCompanySocialNetworks,
+  getSubcompanySocialNetworks,
 };
 
 function add(params) {
@@ -66,6 +68,22 @@ function updateSubcompany(params) {
   };
 
   return fetch(`${origin}${config.apiUrl}/subcompanies/${params.companyId}`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function updateCompanySocialNetworks(params, id) {
+  const requestOptions = {
+    method: 'PUT',
+    body: JSON.stringify(params),
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+  };
+
+  return fetch(`${origin}${config.apiUrl}/socialnetwork`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
@@ -147,6 +165,21 @@ function getSubcompanies() {
   };
 
   return fetch(`${origin}${config.apiUrl}/subcompanies`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function getSubcompanySocialNetworks() {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}${config.apiUrl}/socialnetwork`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 
