@@ -11,6 +11,7 @@ import { access } from '../_helpers/access';
 
 import '../../public/scss/online_booking.scss';
 import {withTranslation} from "react-i18next";
+import SocialNetworks from './socialNetworks';
 
 class Index extends Component {
   constructor(props) {
@@ -652,8 +653,10 @@ class Index extends Component {
                   <p onClick={(e) => this.copyToClipboard(e, 'textArea')}
                     className="copy-code">{t("Скопировать код")}</p>
                 </div>
+              <SocialNetworks t={t} companyId={company?.settings?.companyId || null} />
               </div>
             </div>
+
             {this.state.messageCopyModalOpen &&
               <div className="message-is-sent-wrapper">
                 <div className="message-is-sent-modal">

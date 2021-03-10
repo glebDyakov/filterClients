@@ -14,6 +14,7 @@ export const companyService = {
   getNewAppointments,
   updateCompany,
   updateCompanySocialNetworks,
+  getSubcompanySocialNetworks,
 };
 
 function add(params) {
@@ -164,6 +165,21 @@ function getSubcompanies() {
   };
 
   return fetch(`${origin}${config.apiUrl}/subcompanies`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions));
+}
+
+function getSubcompanySocialNetworks() {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}${config.apiUrl}/socialnetwork`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
 }
 

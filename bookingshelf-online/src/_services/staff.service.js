@@ -35,8 +35,8 @@ function getServices(id) {
 function getInfo(id) {
     return fetch(`${origin}${config.apiUrl}/${id}`, requestConstants.DEFAULT_REQUEST_OPTIONS_GET).then(handleResponse);
 }
-function getInfoSocial() {
-    return fetch(`${origin}${config.apiUrl}/socialnetwork`, requestConstants.DEFAULT_REQUEST_OPTIONS_GET).then(handleResponse);
+function getInfoSocial(id) {
+    return fetch(`${origin}${config.apiUrl}/${id}/socialnetwork`, requestConstants.DEFAULT_REQUEST_OPTIONS_GET).then(handleResponse);
 }
 
 function getStaffComments(companyId, staffId, pageNum = 1) {
