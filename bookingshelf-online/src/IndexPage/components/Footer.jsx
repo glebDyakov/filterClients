@@ -19,7 +19,7 @@ class Footer extends PureComponent {
         const { t } = this.props;
         return (
             <div className="footer_modal d-flex justify-content-between align-items-center px-2">
-                <a rel="nofollow" target="_blank" href="https://online-zapis.com" >{t("Программа онлайн записи Online-zapis.com")}</a>
+                <a rel="nofollow" target="_blank" href="https://online-zapis.com" >{t("Программа онлайн записи")}</a>
             </div>
         );
     }
