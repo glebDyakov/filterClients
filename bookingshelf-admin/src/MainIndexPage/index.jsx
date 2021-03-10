@@ -9,7 +9,6 @@ import ReactPhoneInput from 'react-phone-input-2';
 import {withTranslation} from "react-i18next";
 import { COMPANY_SOCIAL_NETWORKS, SOCIAL_NETWORK_MAP, VISITS_STORAGE_DURATIONS } from '../_constants';
 import ConfirmModal from '../_components/modals/ConfirmModal';
-import SocialNetworks from './socialNetworks';
 import SubCompany from './subCompany';
 
 
@@ -180,9 +179,8 @@ class Index extends Component {
 
       body.companyPhone3 = body.companyPhone3.length === 1 ? '' : `${body.companyPhone3}`;
       body.companyPhone3 = body.companyPhone3.startsWith('+') ? body.companyPhone3 : `+${body.companyPhone3}`;
-      const socials = COMPANY_SOCIAL_NETWORKS.map(({ name }) => ({ socialNetwork: SOCIAL_NETWORK_MAP[name], companyUrl: body[name] || '', companyId: body.companyId }))
 
-      await Promise.all([dispatch(companyActions.updateCompanySocialNetworks(socials, body.companyId)), dispatch(companyActions.updateSubcompany(body))]);
+      await Promise.all([dispatch(companyActions.updateSubcompany(body))]);
     }
     dispatch(notificationActions.updateSubcompanySMS_EMAIL(
       JSON.stringify({ template: subcompany.template }), subcompany.companyId),

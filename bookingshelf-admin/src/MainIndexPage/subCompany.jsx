@@ -7,7 +7,6 @@ import ReactPhoneInput from 'react-phone-input-2';
 import { withTranslation } from 'react-i18next';
 import { VISITS_STORAGE_DURATIONS } from '../_constants';
 import ConfirmModal from '../_components/modals/ConfirmModal';
-import SocialNetworks from './socialNetworks';
 
 const SubCompany = ({
   subcompany,
@@ -24,8 +23,6 @@ const SubCompany = ({
   isAvatarOpened,
   submitted,
 }) => {
-  const [errors, setErrors] = useState({});
-
   return (
     <form key={`settings-page_subcompanies-item-${i}`} className="content retreats company_fields" name="form">
       <h3>
@@ -160,7 +157,7 @@ const SubCompany = ({
                 type="button"
                 className={(saved === i && (status === 'saved.settings' || submitted) && 'disabledField') + ' button'}
                 onClick={(e) => {
-                  if (saved !== i && (status !== 'saved.settings' || !submitted) && !Object.values(errors).filter((value) => value).length) {
+                  if (saved !== i && (status !== 'saved.settings' || !submitted)) {
                     handleSubmit(e, subcompany, i);
                   }
                 }}
@@ -242,7 +239,6 @@ const SubCompany = ({
             />
             <span className="company_counter">{subcompany.city.length}/40</span>
           </div>
-          <SocialNetworks t={t} handleChange={handleChange} subcompany={subcompany} i={i} errors={errors} setErrors={setErrors} />
         </div>
 
         <div className="col-sm-4">
@@ -296,7 +292,7 @@ const SubCompany = ({
               </div>
             </div>
           </div>
-          
+
           {saved === i && status === 'saved.settings' && <p className="alert-success p-1 rounded pl-3 mb-2">{t('Настройки сохранены')}</p>}
         </div>
 
@@ -306,7 +302,7 @@ const SubCompany = ({
               type="button"
               className={(saved === i && (status === 'saved.settings' || submitted) && 'disabledField') + ' button'}
               onClick={(e) => {
-                if (saved !== i && (status !== 'saved.settings' || !submitted || !Object.keys(errors).filter((value) => value).length)) {
+                if (saved !== i && (status !== 'saved.settings' || !submitted)) {
                   handleSubmit(e, subcompany, i);
                 }
               }}
