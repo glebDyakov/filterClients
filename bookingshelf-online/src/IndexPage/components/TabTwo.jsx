@@ -6,7 +6,7 @@ import { withTranslation } from "react-i18next";
 import search_icon from "../../../public/img/icons/header-search.svg";
 import mobile_gray_cansel from "../../../public/img/icons/mobile_gray_cansel.svg"
 import MediaQuery from 'react-responsive'
-import { imgSvg } from "../../_helpers/svg"
+import { CURSOR_ICON } from '../../_constants/svg.constants';
 import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants'
 class TabTwo extends Component {
     constructor(props) {
@@ -36,13 +36,13 @@ class TabTwo extends Component {
                 searchValue: "",
                 catigor: newArray.concat()
             })
-        }else{
-          this.setState({
-            visibleSearch: !this.state.visibleSearch,
-            searchValue: ""
-        })  
+        } else {
+            this.setState({
+                visibleSearch: !this.state.visibleSearch,
+                searchValue: ""
+            })
         }
-        
+
     }
     searchOpen(e) {
         const newArray = [];
@@ -85,13 +85,14 @@ class TabTwo extends Component {
                         <React.Fragment>
                             <div className="price_footer_service_item">
                                 <div className="price_footer_service_half">
-                                    <p><p>{t("от")}</p>{priceFrom}</p>
+                                    <strong>{priceFrom}</strong>
                                     <span >{currency}</span>
                                 </div>
                             </div>
+                            <p>-&nbsp;</p>
                             <div className="price_footer_service_item">
                                 <div className="price_footer_service_half">
-                                    <p><p>{t("до")}</p>{priceTo} </p>
+                                    <strong>{priceTo} </strong>
                                     <span >{currency}</span>
                                 </div>
                             </div>
@@ -100,11 +101,12 @@ class TabTwo extends Component {
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
                         <div className="price_service_half">
-                            <strong className={whiteClass}><p className={whiteClass}>{t("от")}</p>{priceFrom}</strong>
+                            <strong className={whiteClass}>{priceFrom}</strong>
                             <span className={whiteClass}>{currency}</span>
                         </div>
+                        <p>-&nbsp;</p>
                         <div className="price_service_half">
-                            <strong className={whiteClass}><p className={whiteClass}>{t("до")}</p>{priceTo} </strong>
+                            <strong className={whiteClass}>{priceTo} </strong>
                             <span className={whiteClass}>{currency}</span>
                         </div>
                     </MediaQuery>
@@ -116,13 +118,15 @@ class TabTwo extends Component {
                         <div className="price_service">
                             <div className="price_service_item">
                                 <div className="price_service_half">
-                                    <strong className={whiteClass}><p className={whiteClass}>{t("от")}</p>{priceFrom}</strong>
+                                    <strong className={whiteClass}>{priceFrom}</strong>
                                     <span className={whiteClass}>{currency}</span>
                                 </div>
                             </div>
+
+                            <p className={whiteClass}>-&nbsp;</p>
                             <div className="price_service_item">
                                 <div className="price_service_half">
-                                    <strong className={whiteClass}><p className={whiteClass}>{t("до")}</p>{priceTo} </strong>
+                                    <strong className={whiteClass}>{priceTo} </strong>
                                     <span className={whiteClass}>{currency}</span>
                                 </div>
                             </div>
@@ -130,11 +134,12 @@ class TabTwo extends Component {
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
                         <div className="price_service_half">
-                            <strong className={whiteClass}><p className={whiteClass}>{t("от")}</p>{priceFrom}</strong>
+                            <strong className={whiteClass}>{priceFrom}</strong>
                             <span className={whiteClass}>{currency}</span>
                         </div>
+                        <p className={whiteClass}>-&nbsp;</p>
                         <div className="price_service_half">
-                            <strong className={whiteClass}><p className={whiteClass}>{t("до")}</p>{priceTo} </strong>
+                            <strong className={whiteClass}>{priceTo} </strong>
                             <span className={whiteClass}>{currency}</span>
                         </div>
                     </MediaQuery>
@@ -155,8 +160,10 @@ class TabTwo extends Component {
                 )
             } else {
                 return (<React.Fragment>
-                    <strong className={whiteClass}>{priceFrom}</strong>
-                    <span className={whiteClass}>{currency}</span>
+                    <div className="price_service_half">
+                        <strong className={whiteClass}>{priceFrom}</strong>
+                        <span className={whiteClass}>{currency}</span>
+                    </div>
                 </React.Fragment>
                 )
             }
@@ -169,9 +176,9 @@ class TabTwo extends Component {
         const { searchValue, openList, catigor, visibleSearch } = this.state;
         const desctop = 600;
         const mob = 599;
-        const coff = 1.3;
-        const defaultHeight = 200;
+        const defaultHeight = 310;
         let heightService = "0";
+        let heightServiceMob = "0";
         let transit;
         let servicesSum = 0;
 
@@ -254,9 +261,7 @@ class TabTwo extends Component {
 
 
         let serviceInfo = null;
-        let padding_left = "21px";
-        let padding_right = "39px";
-        let sizeWords = "25px";
+        let sizeWords = "23px";
         if (selectedService.serviceId) {
             let priceFrom = 0;
             let priceTo = 0;
@@ -273,14 +278,10 @@ class TabTwo extends Component {
             const priceTo1000 = priceTo / 1000;
 
             if (priceFrom1000 > 1 || priceTo1000 > 1) {
-                sizeWords = "22px"
-                padding_left = "0px";
-                padding_right = "0px";
+                sizeWords = "20px"
             }
             else if (priceFrom100 > 1 || priceTo100 > 1) {
-                sizeWords = "25px"
-                padding_left = "0px";
-                padding_right = "0px";
+                sizeWords = "22px"
             }
             serviceInfo = (
                 <div>
@@ -288,7 +289,7 @@ class TabTwo extends Component {
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
-                                {imgSvg}
+                                {CURSOR_ICON}
                                 <div className="supperVisDet service_footer-block">
                                     <div className="service_footer_price">
                                         {this.priceText(priceFrom, priceTo, selectedServices[0] && selectedServices[0].currency, false, true)}
@@ -331,7 +332,7 @@ class TabTwo extends Component {
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
-                                {imgSvg}
+                                {CURSOR_ICON}
                                 {openList ?
                                     <div className="specialist_big">
                                         <div className="service_list_block">
@@ -360,14 +361,10 @@ class TabTwo extends Component {
                                             }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                             <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                         </div>
-                                        <p className="service_footer_price_small_text" style={{
-                                            paddingLeft: `${padding_left}`,
-                                        }} onClick={event => this.setState({
+                                        <p className="service_footer_price_small_text" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Выбрано услуг")}: {selectedServices.length}</p>
-                                        <p className="service_footer_price_small_text" style={{
-                                            paddingRight: `${padding_right}`,
-                                        }} >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
+                                        <p className="service_footer_price_small_text"  >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>
                                         {!!selectedServices.length && <button className="next_block" onClick={() => {
                                             if (selectedServices.length) {
@@ -412,7 +409,7 @@ class TabTwo extends Component {
                                             onChange={(e) => this.searchOpen(e)} />
                                     </div>
                                 </div>
-                                <img onClick={e =>this.canselMobSearch() } src={mobile_gray_cansel} alt="mobile_gray_cansel" />
+                                <img onClick={e => this.canselMobSearch()} src={mobile_gray_cansel} alt="mobile_gray_cansel" />
                             </div>)
                             : (<div className="title_block service-title">
                                 {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) &&
@@ -504,7 +501,7 @@ class TabTwo extends Component {
                         isServiceList ? serviceGroups.length > 0 && (
                             <React.Fragment>
                                 <div className="service_list_items">
-                                    {serviceGroups.map((serviceGroup, index) => {
+                                    {serviceGroups.map((serviceGroup, index, array) => {
 
                                         const { services } = serviceGroup
                                         const condition =
@@ -530,13 +527,14 @@ class TabTwo extends Component {
                                                 || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
                                             )
                                         }
-                                        // heightService
+
                                         if (condition && info && finalServices && finalServices.length > 0) {
                                             finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
                                         }
                                         if (finalServices) {
-                                            heightService = String((finalServices.length / coff) * defaultHeight);
-                                            transit = (finalServices.length * 0.1) + 0.2;
+                                            heightService = String(Math.ceil(finalServices.length / 2) * defaultHeight);
+                                            heightServiceMob=String(finalServices.length * defaultHeight);
+                                            transit = (finalServices.length * 0.1) + 0.3;
                                         }
 
 
@@ -560,31 +558,29 @@ class TabTwo extends Component {
                                                                     <div className="minus"></div>
                                                                     <div className="minus minus_rotate"></div>
                                                                 </div> : <div>
-                                                                        <div className="minus"></div>
-                                                                    </div>)}
+                                                                    <div className="minus"></div>
+                                                                </div>)}
                                                         </div>
                                                     </div>
+                                                    <MediaQuery maxWidth={mob}>
+                                                        <div className="service_items"
+                                                            style={this.startOpenservice
+                                                                ? (catigor[index] ? { maxHeight: `${heightServiceMob}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })
+                                                                : (!catigor[index] ? { maxHeight: `${heightServiceMob}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })}
+                                                        >
+                                                            {finalServices
+                                                                .map((service, serviceKey) => {
+                                                                    const select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
 
-                                                    <div className="service_items"
-                                                        style={this.startOpenservice
-                                                            ? (catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })
-                                                            : (!catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })}
-                                                    >
-                                                        {finalServices
-                                                            .map((service, serviceKey, array) => {
-                                                                const select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
-
-                                                                if (select) {
-                                                                    return <li key={serviceKey}
-                                                                        className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (array.length === 1 && " service_items_grow")}
-                                                                        style={{
-                                                                            backgroundColor: "var(--color_button)"
-                                                                        }}
-
-                                                                    >
-                                                                        <div className="service_item" >
-                                                                            <label className="service-block">
-                                                                                <MediaQuery maxWidth={mob}>
+                                                                    if (select) {
+                                                                        return <li key={serviceKey}
+                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (array.length === 1 && " service_items_grow")}
+                                                                            style={{
+                                                                                backgroundColor: "var(--color_button)"
+                                                                            }}
+                                                                        >
+                                                                            <div className="service_item" >
+                                                                                <label className="service-block">
                                                                                     <div className="service_half_block">
                                                                                         <p className="white_text" >{service.name}</p>
                                                                                         <span className="white_text" >{service.details}</span>
@@ -593,7 +589,7 @@ class TabTwo extends Component {
                                                                                         <span
                                                                                             className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                         <div className="service-price">
-                                                                                            <div className="service-price-text">
+                                                                                            <div className={String(service.priceFrom).length > 4 ? "service-price-text service-price-text_column" : "service-price-text"}>
 
                                                                                                 {this.priceText(service.priceFrom, service.priceTo, service.currency, true, false)}
                                                                                                 <input onChange={(e) => selectService(e, service)}
@@ -602,14 +598,72 @@ class TabTwo extends Component {
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </MediaQuery>
-                                                                                <MediaQuery minWidth={desctop}>
-                                                                                    <p className="white_text" >{service.name}</p>
+
+
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                    } else {
+                                                                        return <li key={serviceKey}
+                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}
+                                                                        >
+                                                                            <div className="service_item" >
+                                                                                <label className="service-block">
+                                                                                    <div className="service_half_block">
+                                                                                        <p >{service.name}</p>
+                                                                                        <span  ><p >{service.details}</p></span>
+                                                                                    </div>
+                                                                                    <div className="service_half_block">
+                                                                                        <span
+                                                                                            className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                                        <div className="service-price">
+                                                                                            <div className={String(service.priceFrom).length > 4 ? "service-price-text service-price-text_column" : "service-price-text"}>
+                                                                                                {this.priceText(service.priceFrom, service.priceTo, service.currency, false, false)}
+                                                                                                <input onChange={(e) => selectService(e, service)}
+                                                                                                    type="checkbox"
+                                                                                                    checked={select} />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
+                                                                }
+                                                                )}
+                                                        </div>
+                                                    </MediaQuery>
+                                                    <MediaQuery minWidth={desctop}>
+                                                        <div className="service_items"
+                                                            style={this.startOpenservice
+                                                                ? (catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })
+                                                                : (!catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })}
+                                                        >
+                                                            {finalServices
+                                                                .map((service, serviceKey) => {
+                                                                    const select = selectedServices.some(selectedService => selectedService.serviceId === service.serviceId);
+
+                                                                    if (select) {
+                                                                        return <li key={serviceKey}
+                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (array.length === 1 && " service_items_grow")}
+                                                                            style={{
+                                                                                backgroundColor: "var(--color_button)"
+                                                                            }}
+                                                                        >
+                                                                            <div className="service_item" >
+                                                                                <label className="service-block">
+                                                                                    <div className="name_service_block">
+                                                                                        <div className="name_service_text">
+                                                                                            <p className="white_text">{service.name}</p>
+
+                                                                                        </div>
+                                                                                        <span
+                                                                                            className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+                                                                                    </div>
                                                                                     <span className="runtime white_text" >{service.details}</span>
-                                                                                    <span
-                                                                                        className="runtime black-fone runtime_back" ><strong className="white_text">{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
+
                                                                                     <div className="service-price">
-                                                                                        <div className="service-price-text">
+                                                                                        <div className={String(service.priceFrom).length > 4 ? "service-price-text service-price-text_column" : "service-price-text"}>
                                                                                             {this.priceText(service.priceFrom, service.priceTo, service.currency, true, false)}
                                                                                             <input onChange={(e) => selectService(e, service)}
                                                                                                 type="checkbox"
@@ -619,43 +673,27 @@ class TabTwo extends Component {
                                                                                             onClick={e => selectService({ target: { checked: !select } }, service)}
                                                                                         >  {t("Выбрано")}</button>
                                                                                     </div>
-                                                                                </MediaQuery>
-                                                                            </label>
-                                                                        </div>
-                                                                    </li>
-                                                                } else {
-                                                                    return <li key={serviceKey}
-                                                                        className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}
 
-                                                                    >
-                                                                        <div className="service_item" >
-                                                                            <label className="service-block">
-                                                                                <MediaQuery maxWidth={mob}>
-                                                                                    <div className="service_half_block">
-                                                                                        <p >{service.name}</p>
-                                                                                        <span  ><p >{service.details}</p></span>
-                                                                                    </div>
-                                                                                    <div className="service_half_block">
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                    } else {
+                                                                        return <li key={serviceKey}
+                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}
+                                                                        >
+                                                                            <div className="service_item" >
+                                                                                <label className="service-block">
+
+                                                                                    <div className="name_service_block">
+                                                                                        <div className="name_service_text">
+                                                                                            <p >{service.name}</p>
+                                                                                        </div>
                                                                                         <span
                                                                                             className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
-                                                                                        <div className="service-price">
-                                                                                            <div className="service-price-text" >
-                                                                                                {this.priceText(service.priceFrom, service.priceTo, service.currency, false, false)}
-                                                                                                <input onChange={(e) => selectService(e, service)}
-                                                                                                    type="checkbox"
-                                                                                                    checked={select} />
-                                                                                            </div>
-                                                                                        </div>
                                                                                     </div>
-
-                                                                                </MediaQuery>
-                                                                                <MediaQuery minWidth={desctop}>
-                                                                                    <p >{service.name}</p>
                                                                                     <span className="runtime" >{service.details}</span>
-                                                                                    <span
-                                                                                        className="runtime black-fone" ><strong >{moment.duration(parseInt(getDurationForCurrentStaff(service)), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}</strong></span>
                                                                                     <div className="service-price">
-                                                                                        <div className="service-price-text" >
+                                                                                        <div className={String(service.priceFrom).length > 4 ? "service-price-text service-price-text_column" : "service-price-text"}>
                                                                                             {this.priceText(service.priceFrom, service.priceTo, service.currency, false, false)}
                                                                                             <input onChange={(e) => selectService(e, service)}
                                                                                                 type="checkbox"
@@ -666,16 +704,15 @@ class TabTwo extends Component {
                                                                                             style={{ backgroundColor: BUTTON_COLORS_BY_NUMBER[info.buttonColor] || undefined, }}
                                                                                         > {t("Выбрать")}</button>
                                                                                     </div>
-                                                                                </MediaQuery>
-                                                                            </label>
-                                                                        </div>
-                                                                    </li>
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                    }
                                                                 }
+                                                                )}
+                                                        </div>
+                                                    </MediaQuery>
 
-                                                            }
-
-                                                            )}
-                                                    </div>
                                                 </div>
                                             </ul>
                                         )
@@ -687,7 +724,7 @@ class TabTwo extends Component {
                             <div className="final-book">
                                 <p>{t("Нет доступных услуг")}</p>
                             </div>
-                            )
+                        )
                     }
 
                     {

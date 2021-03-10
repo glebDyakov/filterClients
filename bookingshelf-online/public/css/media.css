@@ -35,6 +35,8 @@
     .affiliate li {
         max-width: 590px;
     }
+    .service_footer_price p,
+    .price_footer_service_half strong,
     .price_footer_service_half p {
         color: #fff;
         font-size: 13px;
@@ -43,8 +45,8 @@
         margin-right: 5px;
         font-weight: 400;
     }
-    .price_footer_service_half p p {
-        margin-right: 5px;
+    .price_footer_service_item p{
+        margin-left: 0;
     }
     .service_list_block {
         padding: 10px 0px 5px;
@@ -145,7 +147,7 @@
         margin-top: 17px;
     }
     .service_selection_block_two {
-        max-height: calc(100% - 50px);
+        max-height: calc(100% - 120px);
     }
 
     .service_selection_block_one {
@@ -539,6 +541,8 @@
         display: flex;
         justify-content: center;
     }
+    
+
     .price_service_half {
         margin-top: 7px;
     }
@@ -816,10 +820,7 @@
     .service_footer_price {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-    }
-    .header-lang {
-        margin: 4px -15px 0px -3px;
+        align-items: center;
     }
     .header-lang p {
         font-size: 14px;
@@ -898,6 +899,15 @@
         max-height: calc(100% - 50px);
         margin-bottom: 0;
     }
+    .setvice_list_item p{
+        width: 300px;
+    }
+    .cansel_btn_small{
+        width: 10px;
+        height: 10px;
+        margin-right: 10px;
+        background-size: 10px;
+    }
     .service_selection.screen0,
     .service_selection.screen1,
     .service_selection.screen2,
@@ -911,5 +921,12 @@
     .title_block .prev_block, .title_block .next_block,
     .staff_title .prev_block{
          margin-top: 1px;
+    }
+    .price_service p{
+        font-size: 24px;
+        line-height: 20px;
+    }
+    .price_service{
+        align-items: center;
     }
 }

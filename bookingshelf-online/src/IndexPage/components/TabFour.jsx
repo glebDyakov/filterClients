@@ -7,7 +7,7 @@ import { withTranslation } from "react-i18next";
 import MediaQuery from 'react-responsive'
 import cansel from "../../../public/img/icons/cansel_black.svg";
 import { culcDay } from "../../_helpers/data-calc"
-import { imgSvg } from "../../_helpers/svg"
+import { CURSOR_ICON } from '../../_constants/svg.constants';
 class TabFour extends PureComponent {
     constructor(props) {
         super(props)
@@ -122,23 +122,17 @@ class TabFour extends PureComponent {
                 duration += Number(getDurationForCurrentStaff(service))
             })
 
-            let margin_right1 = "25px";
-            let margin_right2 = "53px";
-            let sizeWords = "28px";
+            let sizeWords = "23px";
             const priceFrom100 = priceFrom / 100;
             const priceTo100 = priceTo / 100;
             const priceFrom1000 = priceFrom / 1000;
             const priceTo1000 = priceTo / 1000;
 
             if (priceFrom1000 > 1 || priceTo1000 > 1) {
-                sizeWords = "22px"
-                margin_right1 = "0px";
-                margin_right2 = "0px";
+                sizeWords = "20px"
             }
             else if (priceFrom100 > 1 || priceTo100 > 1) {
-                sizeWords = "25px"
-                margin_right1 = "0px";
-                margin_right2 = "0px";
+                sizeWords = "22px"
             }
             serviceInfo = (
                 <div>
@@ -146,7 +140,7 @@ class TabFour extends PureComponent {
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
-                                {imgSvg}
+                                {CURSOR_ICON}
                                 <div className="supperVisDet service_footer-block">
 
                                     <div className="service_footer_price">
@@ -162,13 +156,14 @@ class TabFour extends PureComponent {
                                             : (<React.Fragment>
                                                 <div className="price_footer_service_item">
                                                     <div className="price_footer_service_half">
-                                                        <p><p>{t("от")}</p>{priceFrom}</p>
+                                                        <p>{priceFrom}</p>
                                                         <span >{selectedServices[0] && selectedServices[0].currency}</span>
                                                     </div>
                                                 </div>
+                                                <p>-&nbsp;</p>
                                                 <div className="price_footer_service_item">
                                                     <div className="price_footer_service_half">
-                                                        <p><p>{t("до")}</p>{priceTo} </p>
+                                                        <p>{priceTo} </p>
                                                         <span >{selectedServices[0] && selectedServices[0].currency}</span>
                                                     </div>
                                                 </div>
@@ -210,7 +205,7 @@ class TabFour extends PureComponent {
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
                         <div className="specialist-block">
-                            {imgSvg}
+                            {CURSOR_ICON}
                             {openList ?
                                 <div className="specialist_big">
                                     <div className="service_list_block">
@@ -242,9 +237,7 @@ class TabFour extends PureComponent {
                                         }}>{priceFrom}{priceFrom !== priceTo && " - " + priceTo}&nbsp;</p>
                                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                     </div>
-                                    <div className="time-footer hover" style={{
-                                        marginRight: `${margin_right1}`
-                                    }}>
+                                    <div className="time-footer hover" >
                                         <p className="time-footer_desctop_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Выбрано услуг")}: {selectedServices.length}</p>
@@ -252,9 +245,7 @@ class TabFour extends PureComponent {
                                         <p className="service_footer_price_small_text" >{t("Длительность")}: {moment.duration(parseInt(duration), "seconds").format(`h[ ${t("ч")}] m[ ${t("минут")}]`)}
                                         </p>
                                     </div>
-                                    <div className="time-footer" style={{
-                                        marginRight: `${margin_right2}`
-                                    }}>
+                                    <div className="time-footer" >
                                         <p className="time-footer_desctop_p" >{t("Дата")}:</p>
                                         <p className="service_footer_price_small_text" >{t(`${currentDay}`)} {currentTimeText}</p>
                                     </div>

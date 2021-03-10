@@ -65,7 +65,7 @@ class TabCompanySelection extends PureComponent {
                                     </div>
                                 </div>
 
-                                <button className="desktop_visible next_block-btn_arrow" style={{ backgroundColor: BUTTON_COLORS_BY_NUMBER[info.buttonColor] || undefined, }}> 
+                                <button className="desktop_visible next_block-btn_arrow" > 
                                     {t("Выбрать")}<img src={skip_arrow} alt="skip_arrow"/>
                                 </button>
 
@@ -86,7 +86,7 @@ class TabCompanySelection extends PureComponent {
                                     allowFullScreen>
                                 </iframe>
                             )}
-                            <button className="desktop_invisible next_block-btn_arrow" style={{ backgroundColor: BUTTON_COLORS_BY_NUMBER[info.buttonColor] || undefined, }}> {t("Выбрать")} <img src={skip_arrow} alt="skip_arrow"/> </button>
+                            <button className="desktop_invisible next_block-btn_arrow" > {t("Выбрать")} <img src={skip_arrow} alt="skip_arrow"/> </button>
                         </li>
                     )}
                 </ul>

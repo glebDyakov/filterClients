@@ -7,7 +7,7 @@ import { getCookie } from "../../_helpers/cookie";
 import moment from "moment";
 import { withTranslation } from "react-i18next";
 import skip_arrow from "../../../public/img/icons/skip-arrow-blue.svg"
-
+import { ARROW_ICON} from '../../_constants/svg.constants';
 class TabCreateComment extends PureComponent {
     constructor(props) {
         super(props);
@@ -201,16 +201,13 @@ class TabCreateComment extends PureComponent {
                                             className="comment_sms_btn_active" onClick={() => this.updateTab('login_tab')}>{t("Вход")}</button>
                                         <button
                                             className="comment_sms_btn" onClick={() => this.updateTab('sms_tab')}>{t("Sms авторизация")}</button>
-                                        {/* <img onClick={() => this.updateTab('sms_tab')} src={skip_arrow} alt="" /> */}
+                                      
                                     </div>) : (
                                         <div className="comment_sms_btn_block">
                                             <button className="comment_sms_btn" onClick={() => this.updateTab('login_tab')}
                                             >{t("Вход")}</button>
                                             <button className="comment_sms_btn_active" onClick={() => this.updateTab('sms_tab')}
                                             >{t("Sms авторизация")}</button>
-
-
-                                            {/* <img onClick={() => this.updateTab('login_tab')} src={skip_arrow} alt="" /> */}
                                         </div>
                                     )}
 
@@ -230,7 +227,7 @@ class TabCreateComment extends PureComponent {
 
                                                     <p>{t("Персональный пароль")}</p>
                                                     <input className="tel" type="text" placeholder={t("Введите пароль")} name="loginPassword" onChange={this.handleChange} value={loginPassword} />
-                                                    <span> {t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку")} <a onClick={() => this.updateTab('sms_tab')}>{t("SMS авторизации")}</a><img src={skip_arrow} alt="" /> </span>
+                                                    <span> {t("Введите ваш персональный пароль. Если у вас нет пароля или вы забыли пароль, перейдите во вкладку")} <a onClick={() => this.updateTab('sms_tab')}>{t("SMS авторизации")}</a>{ARROW_ICON} </span>
                                                     {clientLoginMessage && (
                                                         <p className="regist_block_login_p">
                                                             <img src={`${process.env.CONTEXT}public/img/client-verification.svg`}
