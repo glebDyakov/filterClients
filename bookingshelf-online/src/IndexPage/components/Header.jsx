@@ -55,7 +55,7 @@ class Header extends PureComponent {
         const newStyles = document.createElement('style')
         const newColor = this.props.selectedSubcompany ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
 
-       
+
         document.head.append(newStyles)
         newStyles.innerHTML = ":root {" +
             "--color_button: #" + `${BUTTON_COLORS_BY_NUMBER[newColor] || DEFAULT_BUTTON_COLOR}` + ";" +
@@ -114,6 +114,8 @@ class Header extends PureComponent {
         const desctop = 600;
         const mob = 599;
         const hiddenMenu = mobile ? "hidden" : "visible";
+        const currentSelectedSubcompany = selectedSubcompany.bookingPage ? selectedSubcompany : info;
+
         return (
             <div className="modal_menu"
                 style={{
@@ -123,12 +125,12 @@ class Header extends PureComponent {
 
                     <MediaQuery maxWidth={mob}>
                         <div className="firm-title">
-                            <img className="logo" src={info.imageBase64
-                                ? "data:image/png;base64," + info.imageBase64
+                            <img className="logo" src={currentSelectedSubcompany.imageBase64
+                                ? "data:image/png;base64," + currentSelectedSubcompany.imageBase64
                                 : `${process.env.CONTEXT}public/img/image.png`}
                             />
                             <div className="firm-text">
-                                <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{info && ((screen === 0 && info.onlineCompanyHeader) ? info.onlineCompanyHeader : info.companyName)}</p>
+                                <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{currentSelectedSubcompany && ((screen === 0 && currentSelectedSubcompany.onlineCompanyHeader) ? currentSelectedSubcompany.onlineCompanyHeader : currentSelectedSubcompany.companyName)}</p>
                             </div>
                         </div>
                         <div className="header-lang" onClick={e => this.openLangList()}>
@@ -157,32 +159,32 @@ class Header extends PureComponent {
                                 </div>
                             </div>
                         </div>
+                        {selectedSubcompany.bookingPage &&
                         <div className="burger_menu_btn_off" onClick={(event) => this.changeBurger()}>
                             <img src={burger_close} alt="telephone" />
-                        </div>
+                        </div>}
 
                         <div className={!burger ? "burger_menu" : "burger_menu active"}>
                             <div className="burger-title">
-                                <img className="logo" src={info.imageBase64
-                                    ? "data:image/png;base64," + info.imageBase64
+                                <img className="logo" src={currentSelectedSubcompany.imageBase64
+                                    ? "data:image/png;base64," + currentSelectedSubcompany.imageBase64
                                     : `${process.env.CONTEXT}public/img/image.png`}
                                 />
                                 <div className="firm-text">
-                                    <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{info && ((screen === 0 && info.onlineCompanyHeader) ? info.onlineCompanyHeader : info.companyName)}</p>
+                                    <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{currentSelectedSubcompany && ((screen === 0 && currentSelectedSubcompany.onlineCompanyHeader) ? currentSelectedSubcompany.onlineCompanyHeader : currentSelectedSubcompany.companyName)}</p>
                                 </div>
                                 <div className="burger_menu_btn_on" onClick={(event) => this.changeBurger()}>
                                     <img src={burger_open} alt="telephone" />
                                 </div>
                             </div>
-                            <p className="adress-text"> {info && `${info.city ? (info.city + ', ') : ''}${info["companyAddress" + info.defaultAddress]}`}</p>
+                            <p className="adress-text"> {currentSelectedSubcompany && `${currentSelectedSubcompany.city ? (currentSelectedSubcompany.city + ', ') : ''}${currentSelectedSubcompany["companyAddress" + currentSelectedSubcompany.defaultAddress]}`}</p>
                             <div className="firm-icons">
-                                {selectedSubcompany.companyPhone1 && (
-                                    <div className="text-phones">
-                                        <p>{selectedSubcompany.companyPhone1}</p>
-                                        <p>{selectedSubcompany.companyPhone2}</p>
-                                        <p>{selectedSubcompany.companyPhone3}</p>
-                                    </div>
-                                )}
+
+                                <div className="text-phones">
+                                    <p>{currentSelectedSubcompany.companyPhone1}</p>
+                                    <p>{currentSelectedSubcompany.companyPhone2}</p>
+                                    <p>{currentSelectedSubcompany.companyPhone3}</p>
+                                </div>
 
                                 <div className="adress-phones">
                                     <div className="adress-text-wrapper">
@@ -198,24 +200,28 @@ class Header extends PureComponent {
                     </MediaQuery>
                     <MediaQuery minWidth={desctop}>
                         <div className="firm-title">
-                            <img className="logo" src={info.imageBase64
-                                ? "data:image/png;base64," + info.imageBase64
+                            <img className="logo" src={currentSelectedSubcompany.imageBase64
+                                ? "data:image/png;base64," + currentSelectedSubcompany.imageBase64
                                 : `${process.env.CONTEXT}public/img/image.png`}
                             />
                             <div className="firm-text">
-                                <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>{info && ((screen === 0 && info.onlineCompanyHeader) ? info.onlineCompanyHeader : info.companyName)}</p>
-                                <p className="adress-text"> {info && `${info.city ? (info.city + ', ') : ''}${info["companyAddress" + info.defaultAddress]}`}</p>
+                                <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>
+                                    {currentSelectedSubcompany && ((screen === 0 && currentSelectedSubcompany.onlineCompanyHeader)
+                                        ? currentSelectedSubcompany.onlineCompanyHeader : currentSelectedSubcompany.companyName)}</p>
+                                {selectedSubcompany.bookingPage && <p className="adress-text"> {currentSelectedSubcompany && `${currentSelectedSubcompany.city
+                                    ? (currentSelectedSubcompany.city + ', ') : ''}${currentSelectedSubcompany["companyAddress" + currentSelectedSubcompany.defaultAddress]}`}</p>}
                             </div>
                         </div>
-                        <div className="firm-icons">
-                            <div className="adress-phones">
-                                <span className="adress-icon" />
-                                <div className="adress-text-wrapper">
-                                    <img src={tiktok} alt='tiktok' />
-                                    <img src={facebook} alt='facebook' />
-                                    <img src={instagram} alt='instagram' />
-                                </div>
-                            </div>
+                        <div className={selectedSubcompany.bookingPage ? "firm-icons" : "firm-icons firm-icons_only_lang"}>
+                            {selectedSubcompany.bookingPage &&
+                                <div className="adress-phones">
+                                    <span className="adress-icon" />
+                                    <div className="adress-text-wrapper">
+                                        <img src={tiktok} alt='tiktok' />
+                                        <img src={facebook} alt='facebook' />
+                                        <img src={instagram} alt='instagram' />
+                                    </div>
+                                </div>}
                             <div className="header-lang" onClick={e => this.openLangList()}>
                                 <p>{currentTextLeng}</p>
                                 <img src={arrow_down} alt="arrou"></img>
@@ -241,25 +247,15 @@ class Header extends PureComponent {
                                     </div>
                                 </div>
                             </div>
-                            <div className="separation"></div>
-                            <div className="mobile-icon-block">
+                            {selectedSubcompany.bookingPage && <div className="separation"></div>}
+                            {selectedSubcompany.bookingPage && <div className="mobile-icon-block">
                                 <div className={mobile ? "mobile-icon-wrapper mobile_active" : "mobile-icon-wrapper"}>
-                                    {selectedSubcompany.companyPhone1 ? (
-                                        <div className="text-phones">
-                                            <p>{selectedSubcompany.companyPhone1}</p>
-                                            <p>{selectedSubcompany.companyPhone2}</p>
-                                            <p>{selectedSubcompany.companyPhone3}</p>
-                                        </div>
-                                    )
-                                        :
-                                        (
-                                            <div className="text-phones">
-                                                <p>{info.companyPhone1}</p>
-                                                <p>{info.companyPhone2}</p>
-                                                <p>{info.companyPhone3}</p>
-                                            </div>
-                                        )
-                                    }
+
+                                    <div className="text-phones">
+                                        <p>{currentSelectedSubcompany.companyPhone1}</p>
+                                        <p>{currentSelectedSubcompany.companyPhone2}</p>
+                                        <p>{currentSelectedSubcompany.companyPhone3}</p>
+                                    </div>
 
                                     <img src={telephone_btn} onClick={e => this.setState({
                                         mobile: !mobile
@@ -268,7 +264,7 @@ class Header extends PureComponent {
                                 <img src={telephone} onClick={e => this.setState({
                                     mobile: !mobile
                                 })} alt="telephone" />
-                            </div>
+                            </div>}
                         </div>
                     </MediaQuery>
 

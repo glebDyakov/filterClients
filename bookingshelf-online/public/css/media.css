@@ -35,6 +35,8 @@
     .affiliate li {
         max-width: 590px;
     }
+    .service_footer_price p,
+    .price_footer_service_half strong,
     .price_footer_service_half p {
         color: #fff;
         font-size: 13px;
@@ -43,8 +45,11 @@
         margin-right: 5px;
         font-weight: 400;
     }
-    .price_footer_service_half p p {
-        margin-right: 5px;
+    .service_footer_price p{
+        line-height: 8px;
+    }
+    .price_footer_service_item p{
+        margin-left: 0;
     }
     .service_list_block {
         padding: 10px 0px 5px;
@@ -539,6 +544,8 @@
         display: flex;
         justify-content: center;
     }
+    
+
     .price_service_half {
         margin-top: 7px;
     }
@@ -816,10 +823,7 @@
     .service_footer_price {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-    }
-    .header-lang {
-        margin: 4px -15px 0px -3px;
+        align-items: center;
     }
     .header-lang p {
         font-size: 14px;
@@ -911,5 +915,12 @@
     .title_block .prev_block, .title_block .next_block,
     .staff_title .prev_block{
          margin-top: 1px;
+    }
+    .price_service p{
+        font-size: 24px;
+        line-height: 20px;
+    }
+    .price_service{
+        align-items: center;
     }
 }
