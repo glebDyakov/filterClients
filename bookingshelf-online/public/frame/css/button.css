@@ -1,58 +1,43 @@
 .color39434F {
   --border: rgba(57, 67, 79, 0.8);
-  --color: rgba(57, 67, 79, 1);
-}
+  --color: rgba(57, 67, 79, 1); }
 
 .colorEA3E3E {
   --border: rgba(234, 62, 62, 0.8);
-  --color: rgba(234, 62, 62, 1);
-}
+  --color: rgba(234, 62, 62, 1); }
 
 .color2f84 {
   --border: rgba(0, 47, 132, 0.8);
-  --color: rgba(0, 47, 132, 1);
-}
+  --color: rgba(0, 47, 132, 1); }
 
 .colorA300B7 {
   --border: rgba(163, 0, 183, 0.8);
-  --color: rgba(163, 0, 183, 1);
-}
+  --color: rgba(163, 0, 183, 1); }
 
 .color14A736 {
   --border: rgba(20, 167, 54, 0.8);
-  --color: rgba(20, 167, 54, 1);
-}
+  --color: rgba(20, 167, 54, 1); }
 
 .colorFEC81D {
   --border: rgba(254, 200, 29, 0.8);
-  --color: rgba(254, 200, 29, 1);
-}
+  --color: rgba(254, 200, 29, 1); }
 
 .color0 {
   --border: rgba(0, 0, 0, 0.8);
-  --color: rgba(0, 0, 0, 1);
-}
+  --color: rgba(0, 0, 0, 1); }
 
 .color5B88A8 {
   --border: rgba(91, 136, 168, 0.8);
-  --color: rgba(91, 136, 168, 1);
-}
+  --color: rgba(91, 136, 168, 1); }
 
 .color7A7A7A {
   --border: rgba(122, 122, 122, 0.8);
-  --color: rgba(122, 122, 122, 1);
-}
-
-.color3752783 {
-  --border: rgba(122, 122, 122, 0.8);
-  --color: rgba(122, 122, 122, 1);
-}
+  --color: rgba(122, 122, 122, 1); }
 
 .color23D2CC {
   --border: rgba(35, 210, 204, 0.8);
-  --color: rgba(35, 210, 204, 1);
-}
-
+  --color: rgba(35, 210, 204, 1); }
+ 
 .left {
   left: 20px !important;
   right: unset !important;
@@ -69,8 +54,7 @@
   z-index: 999902;
   height: 100%;
 }
-
-#popup-shadow {
+#popup-shadow{
   z-index: 999901;
   display: none;
   position: fixed;
@@ -80,8 +64,7 @@
   background: rgba(51, 51, 51, 0.5);
   height: 100%;
 }
-
-.closer-modal {
+.closer-modal{
   display: none;
   width: 35px;
   height: 35px;
@@ -97,8 +80,7 @@
   z-index: 999903;
   right: 634px;
 }
-
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 620px){
   #online-booking {
     right: 0;
   }
@@ -108,8 +90,7 @@
     top: 2px;
   }
 }
-
-.closer-modal:hover {
+.closer-modal:hover{
   opacity: 0.7;
 }
 
@@ -117,5 +98,6 @@
   cursor: pointer;
   opacity: 0.7;
 }
+
 
 /*# sourceMappingURL=color.css.map */

@@ -7,7 +7,6 @@ import tiktok_white from "../../../public/img/icons/header-tiktok-white.svg";
 import instagram_white from "../../../public/img/icons/header-instagram-white.svg";
 import facebook_white from "../../../public/img/icons/header-facebook-white.svg";
 import arrow_down from "../../../public/img/arrow_down.png";
-import arrow_down_white from "../../../public/img/icons/arrow_down_white.svg";
 import burger_close from "../../../public/img/icons/burger-close.svg";
 import burger_open from "../../../public/img/icons/burger-open.svg";
 import telephone_btn from "../../../public/img/icons/telephone_btn.svg";
@@ -159,9 +158,9 @@ class Header extends PureComponent {
                             </div>
                         </div>
                         {selectedSubcompany.bookingPage &&
-                            <div className="burger_menu_btn_off" onClick={(event) => this.changeBurger()}>
-                                <img src={burger_close} alt="telephone" />
-                            </div>}
+                        <div className="burger_menu_btn_off" onClick={(event) => this.changeBurger()}>
+                            <img src={burger_close} alt="telephone" />
+                        </div>}
 
                         <div className={!burger ? "burger_menu" : "burger_menu active"}>
                             <div className="burger-title">
