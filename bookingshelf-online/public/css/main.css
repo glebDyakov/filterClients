@@ -939,6 +939,7 @@ a {
     margin-top: auto;
     margin-bottom: auto;
     background-image: url(../img/icons/cancel-white.svg);
+    background-repeat: no-repeat;
 }
 
 .cansel_btn_big:hover {
@@ -952,7 +953,9 @@ a {
     margin-right: 10px;
     background-repeat: no-repeat;
 }
-
+.setvice_list_item p{
+    width: 90%;
+}
 .img_svg {
     position: absolute;
     left: 9%;
