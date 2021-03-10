@@ -13,7 +13,7 @@ import burger_open from "../../../public/img/icons/burger-open.svg";
 import telephone_btn from "../../../public/img/icons/telephone_btn.svg";
 import MediaQuery from 'react-responsive'
 import { withTranslation } from "react-i18next";
-import { BUTTON_COLORS_BY_NUMBER, DEFAULT_BUTTON_COLOR } from '../../_constants/styles.constants';
+import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants';
 // import { findSourceMap } from 'module';
 
 class Header extends PureComponent {
@@ -53,12 +53,11 @@ class Header extends PureComponent {
     }
     changeColor() {
         const newStyles = document.createElement('style')
-        const newColor = this.props.selectedSubcompany ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
-
+        const newColor = this.props.selectedSubcompany.bookingPage ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
 
         document.head.append(newStyles)
         newStyles.innerHTML = ":root {" +
-            "--color_button: #" + `${BUTTON_COLORS_BY_NUMBER[newColor] || DEFAULT_BUTTON_COLOR}` + ";" +
+            "--color_button: #" + BUTTON_COLORS_BY_NUMBER[newColor] + ";" +
             " --color_text: #09093A;" +
             "}"
         this.setState({
@@ -160,9 +159,9 @@ class Header extends PureComponent {
                             </div>
                         </div>
                         {selectedSubcompany.bookingPage &&
-                        <div className="burger_menu_btn_off" onClick={(event) => this.changeBurger()}>
-                            <img src={burger_close} alt="telephone" />
-                        </div>}
+                            <div className="burger_menu_btn_off" onClick={(event) => this.changeBurger()}>
+                                <img src={burger_close} alt="telephone" />
+                            </div>}
 
                         <div className={!burger ? "burger_menu" : "burger_menu active"}>
                             <div className="burger-title">
