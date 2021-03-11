@@ -24,6 +24,8 @@ import TabCreateComment from "./components/TabCreateComment";
 import { getFirstScreen } from "../_helpers/common";
 import {withTranslation} from "react-i18next";
 
+import Blob from './components/Blob';
+
 import skip_arrow from "../../public/img/icons/skip-arrow-white.svg"
 
 class IndexPage extends PureComponent {
@@ -189,6 +191,7 @@ class IndexPage extends PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
         initializeJs()
+       
         if ((prevState.screen === 0) && (this.state.screen === 1 || this.state.screen === 2)) {
             let {company} = this.props.match.params
 
@@ -601,6 +604,7 @@ class IndexPage extends PureComponent {
                 <meta property="og:description" content={description} />
                 <meta name="twitter:description" content={description} />
             </Helmet>}
+           <Blob screen={screen}/>
             <div className="container_popups">
 
                 {info && <Header selectedSubcompany={selectedSubcompany} screen={screen} info={info}/>}

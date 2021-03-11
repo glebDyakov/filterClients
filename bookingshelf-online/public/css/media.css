@@ -35,9 +35,7 @@
     .affiliate li {
         max-width: 590px;
     }
-    .service_footer_price p,
-    .price_footer_service_half strong,
-    .price_footer_service_half p {
+    .service_footer_price p, .price_footer_service_half strong, .price_footer_service_half p {
         color: #fff;
         font-size: 13px;
         line-height: 18px;
@@ -45,7 +43,7 @@
         margin-right: 5px;
         font-weight: 400;
     }
-    .price_footer_service_item p{
+    .price_footer_service_item p {
         margin-left: 0;
     }
     .service_list_block {
@@ -69,21 +67,7 @@
     .service_list {
         width: 584px;
     }
-    .mobile-icon-wrapper.mobile_active,
-    .staff_popup_comment,
-    .create_comments,
-    .comments,
-    .final-screen-block,
-    .last_footer_block,
-    .entry_form,
-    .last_list,
-    .choise_time,
-    .DayPicker-Weekdays,
-    .DayPicker-Body,
-    .calendar_modal,
-    .service_list_block,
-    .specialist-block,
-    .skip_employee-block {
+    .mobile-icon-wrapper.mobile_active, .staff_popup_comment, .create_comments, .comments, .final-screen-block, .last_footer_block, .entry_form, .last_list, .choise_time, .DayPicker-Weekdays, .DayPicker-Body, .calendar_modal, .service_list_block, .specialist-block, .skip_employee-block {
         width: 590px;
     }
     .staff_popup_comment {
@@ -99,38 +83,28 @@
     .service_items.service_items_active {
         max-height: 1000px !important;
     }
-    .service_items li,
-    .staff_popup li {
+    .service_items li, .staff_popup li {
         width: 287px;
     }
     .leng_list {
         left: 333px;
     }
-    .service_items li:nth-child(2n),
-    .staff_popup li:nth-child(2n) {
+    .service_items li:nth-child(2n), .staff_popup li:nth-child(2n) {
         margin-left: 10px;
     }
-
     .choise_time div:nth-child(7n) {
         margin-right: 52px;
     }
-    .service_selection.submit_screen,
-    .service_selection_block_six,
-    .service_selection_block_five,
-    .service_selection_block_four,
-    .service_selection_block_third,
-    .service_selection_block_two,
-    .service_selection_block_one,
-    .affiliate {
+    .service_selection.submit_screen, .service_selection_block_six, .service_selection_block_five, .service_selection_block_four, .service_selection_block_third, .service_selection_block_two, .service_selection_block_one, .affiliate {
         overflow-y: auto;
         margin-bottom: 0;
         margin-top: 13px;
     }
-    .comments{
+    .comments {
         overflow-y: auto;
-    margin-bottom: 0;
-    margin-top: 13px;
-    max-height: calc(100% - 50px);
+        margin-bottom: 0;
+        margin-top: 13px;
+        max-height: calc(100% - 50px);
     }
     .service_selection_block_six {
         max-height: calc(100% - 70px);
@@ -149,7 +123,6 @@
     .service_selection_block_two {
         max-height: calc(100% - 120px);
     }
-
     .service_selection_block_one {
         max-height: calc(100% - 50px);
     }
@@ -157,20 +130,14 @@
         max-height: calc(100% - 50px);
         margin-bottom: 0;
     }
-    .service_selection.screen0,
-    .service_selection.screen1,
-    .service_selection.screen2,
-    .service_selection.screen3,
-    .service_selection.screen4,
-    .service_selection.screen5,
-    .final-screen {
+    .service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5, .final-screen {
         overflow: hidden;
         margin-bottom: 10px;
     }
-    .choise_time div:not(:nth-child(6n)){
+    .choise_time div:not(:nth-child(6n)) {
         margin-right: 54px;
     }
-    .choise_time div:nth-child(6n){
+    .choise_time div:nth-child(6n) {
         margin-right: 0px;
     }
 }
@@ -190,7 +157,7 @@
         max-width: 400px;
         width: 100%;
     }
-    .service_selection.screen1 > .calendar_modal {
+    .service_selection.screen1>.calendar_modal {
         max-height: 100%;
         overflow-y: initial;
     }
@@ -220,10 +187,10 @@
     .firm-title {
         width: 60%;
     }
-    .last_list_price{
+    .last_list_price {
         flex-wrap: wrap;
     }
-    .setvice_list_items{
+    .setvice_list_items {
         max-height: 137px;
     }
     .firm-icons {
@@ -280,8 +247,7 @@
         margin: auto;
         left: 0;
     }
-    .burger_menu_btn_off img,
-    .burger_menu_btn_on img:hover {
+    .burger_menu_btn_off img, .burger_menu_btn_on img:hover {
         cursor: pointer;
     }
     .burger_menu_btn_off {
@@ -477,6 +443,7 @@
         justify-content: space-between;
         flex-direction: row;
         padding: 10px;
+        height: auto;
     }
     .service_half_block {
         display: flex;
@@ -503,8 +470,7 @@
         font-weight: 400;
         line-height: 18px;
     }
-    .dark_blue_text p,
-    .gray_text p {
+    .dark_blue_text p, .gray_text p {
         font-weight: 400;
     }
     .runtime strong {
@@ -541,8 +507,6 @@
         display: flex;
         justify-content: center;
     }
-    
-
     .price_service_half {
         margin-top: 7px;
     }
@@ -637,9 +601,7 @@
     .entry_form-item:nth-child(2n) {
         margin-left: 0px;
     }
-    .screen5 input[type="text"],
-    input[type="search"],
-    .screen5 textarea {
+    .screen5 input[type="text"], input[type="search"], .screen5 textarea {
         width: 330px;
         font-weight: 400;
     }
@@ -731,8 +693,8 @@
         display: flex;
         flex-direction: column;
         margin-top: -40px;
-    height: 100%;
-    width: 100%;
+        height: 100%;
+        width: 100%;
     }
     .final-screen-block {
         width: 330px;
@@ -833,8 +795,7 @@
         left: 101px;
         top: 87px;
     }
-    a.last_footer_block_a,
-    .last_footer_block p {
+    a.last_footer_block_a, .last_footer_block p {
         color: #fff;
     }
     .comments .staff_popup_large {
@@ -856,23 +817,16 @@
     .service_grow {
         flex-grow: 0.7;
     }
-    .service_selection.submit_screen,
-    .service_selection_block_six,
-    .service_selection_block_five,
-    .service_selection_block_four,
-    .service_selection_block_third,
-    .service_selection_block_two,
-    .service_selection_block_one,
-    .affiliate {
+    .service_selection.submit_screen, .service_selection_block_six, .service_selection_block_five, .service_selection_block_four, .service_selection_block_third, .service_selection_block_two, .service_selection_block_one, .affiliate {
         overflow-y: auto;
         margin-bottom: 0;
         margin-top: 13px;
     }
-    .comments{
+    .comments {
         overflow-y: auto;
-    margin-bottom: 0;
-    margin-top: 13px;
-    max-height: calc(100% - 50px);
+        margin-bottom: 0;
+        margin-top: 13px;
+        max-height: calc(100% - 50px);
     }
     .service_selection_block_six {
         max-height: calc(100% - 70px);
@@ -891,7 +845,6 @@
     .service_selection_block_two {
         max-height: calc(100% - 140px);
     }
-
     .service_selection_block_one {
         max-height: calc(100% - 50px);
     }
@@ -899,34 +852,27 @@
         max-height: calc(100% - 50px);
         margin-bottom: 0;
     }
-    .setvice_list_item p{
+    .setvice_list_item p {
         width: 300px;
     }
-    .cansel_btn_small{
+    .cansel_btn_small {
         width: 10px;
         height: 10px;
         margin-right: 10px;
         background-size: 10px;
     }
-    .service_selection.screen0,
-    .service_selection.screen1,
-    .service_selection.screen2,
-    .service_selection.screen3,
-    .service_selection.screen4,
-    .service_selection.screen5,
-    .final-screen {
+    .service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5, .final-screen {
         overflow: hidden;
         margin-bottom: 10px;
     }
-    .title_block .prev_block, .title_block .next_block,
-    .staff_title .prev_block{
-         margin-top: 1px;
+    .title_block .prev_block, .title_block .next_block, .staff_title .prev_block {
+        margin-top: 1px;
     }
-    .price_service p{
+    .price_service p {
         font-size: 24px;
         line-height: 20px;
     }
-    .price_service{
+    .price_service {
         align-items: center;
     }
 }
