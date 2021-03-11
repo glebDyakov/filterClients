@@ -120,7 +120,8 @@ class Header extends PureComponent {
         const mob = 599;
         const hiddenMenu = mobile ? "hidden" : "visible";
         const currentSelectedSubcompany = selectedSubcompany.bookingPage ? selectedSubcompany : info;
-
+console.log(info)
+console.log(selectedSubcompany)
         return (
             <div className="modal_menu"
                 style={{
