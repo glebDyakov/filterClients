@@ -65,8 +65,8 @@ class TabCompanySelection extends PureComponent {
                                     </div>
                                 </div>
 
-                                <button className="desktop_visible next_block-btn_arrow" > 
-                                    {t("Выбрать")}<img src={skip_arrow} alt="skip_arrow"/>
+                                <button className="desktop_visible next_block-btn_arrow" >
+                                    {t("Выбрать")}<img src={skip_arrow} alt="skip_arrow" />
                                 </button>
 
                             </span>
@@ -86,7 +86,7 @@ class TabCompanySelection extends PureComponent {
                                     allowFullScreen>
                                 </iframe>
                             )}
-                            <button className="desktop_invisible next_block-btn_arrow" > {t("Выбрать")} <img src={skip_arrow} alt="skip_arrow"/> </button>
+                            <button className="desktop_invisible next_block-btn_arrow" > {t("Выбрать")} <img src={skip_arrow} alt="skip_arrow" /> </button>
                         </li>
                     )}
                 </ul>

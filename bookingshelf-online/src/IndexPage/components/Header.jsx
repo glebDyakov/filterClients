@@ -97,6 +97,7 @@ class Header extends PureComponent {
         document.addEventListener('click', this.outsideClickListener);
     }
     componentDidUpdate() {
+       
         if (this.state.curentColor !== this.props.selectedSubcompany.buttonColor) {
             this.changeColor();
         }

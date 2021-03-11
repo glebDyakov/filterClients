@@ -189,6 +189,7 @@ class IndexPage extends PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
         initializeJs()
+        shapeJs()
         if ((prevState.screen === 0) && (this.state.screen === 1 || this.state.screen === 2)) {
             let {company} = this.props.match.params
 
@@ -601,6 +602,19 @@ class IndexPage extends PureComponent {
                 <meta property="og:description" content={description} />
                 <meta name="twitter:description" content={description} />
             </Helmet>}
+            <svg id="blob"  xmlns="http://www.w3.org/2000/svg" version="1.1" filter="url(#goo)">
+                            <defs>
+                                <filter id="goo">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
+                                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></feColorMatrix>
+                                    <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
+                                </filter>
+                            </defs>
+                            <circle class="blob" fill="#ed16aa" cx="50%" cy="50%" r="60" id="Circle1"></circle>
+                            <circle class="blob" fill="#ed16aa" cx="50%" cy="50%" r="60" id="Circle2"></circle>
+                            <circle class="blob" fill="#ed16aa" cx="50%" cy="50%" r="60" id="Circle3"></circle>
+                            <circle class="blob" fill="#ed16aa" cx="50%" cy="50%" r="60" id="Circle4"></circle>
+                        </svg>
             <div className="container_popups">
 
                 {info && <Header selectedSubcompany={selectedSubcompany} screen={screen} info={info}/>}
