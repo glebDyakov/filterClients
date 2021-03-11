@@ -97,7 +97,7 @@ class Header extends PureComponent {
         document.addEventListener('click', this.outsideClickListener);
     }
     componentDidUpdate() {
-       
+
         if (this.state.curentColor !== this.props.selectedSubcompany.buttonColor) {
             this.changeColor();
         }
@@ -110,7 +110,7 @@ class Header extends PureComponent {
     getSocialLink = (social) => {
         const link = this.props.selectedSubcompany.companySocialNetworks?.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social)?.companyUrl || '';
         return link ? `https://${link}` : null;
-    } 
+    }
 
     render() {
         const { info, screen, selectedSubcompany } = this.props;
@@ -120,6 +120,7 @@ class Header extends PureComponent {
         const mob = 599;
         const hiddenMenu = mobile ? "hidden" : "visible";
         const currentSelectedSubcompany = selectedSubcompany.bookingPage ? selectedSubcompany : info;
+
         return (
             <div className="modal_menu"
                 style={{
@@ -163,10 +164,10 @@ class Header extends PureComponent {
                                 </div>
                             </div>
                         </div>
-                        {selectedSubcompany.bookingPage &&
-                        <div className="burger_menu_btn_off" onClick={(event) => this.changeBurger()}>
-                            <img src={burger_close} alt="telephone" />
-                        </div>}
+                        {screen !== 0 &&
+                            <div className="burger_menu_btn_off" onClick={(event) => this.changeBurger()}>
+                                <img src={burger_close} alt="telephone" />
+                            </div>}
 
                         <div className={!burger ? "burger_menu" : "burger_menu active"}>
                             <div className="burger-title">
@@ -195,7 +196,7 @@ class Header extends PureComponent {
                                         <a href={this.getSocialLink('tiktok')} rel="external" target="_blank"><img src={tiktok_white} alt='tiktok' /></a>
                                         <a href={this.getSocialLink('facebook')} rel="external" target="_blank"><img src={facebook_white} alt='facebook' /></a>
                                         <a href={this.getSocialLink('instagram')} rel="external" target="_blank"><img src={instagram_white} alt='instagram' /></a>
-                                    </div>dsf
+                                    </div>
                                 </div>
 
 
@@ -212,12 +213,12 @@ class Header extends PureComponent {
                                 <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>
                                     {currentSelectedSubcompany && ((screen === 0 && currentSelectedSubcompany.onlineCompanyHeader)
                                         ? currentSelectedSubcompany.onlineCompanyHeader : currentSelectedSubcompany.companyName)}</p>
-                                {selectedSubcompany.bookingPage && <p className="adress-text"> {currentSelectedSubcompany && `${currentSelectedSubcompany.city
+                                {screen !== 0 && <p className="adress-text"> {currentSelectedSubcompany && `${currentSelectedSubcompany.city
                                     ? (currentSelectedSubcompany.city + ', ') : ''}${currentSelectedSubcompany["companyAddress" + currentSelectedSubcompany.defaultAddress]}`}</p>}
                             </div>
                         </div>
-                        <div className={selectedSubcompany.bookingPage ? "firm-icons" : "firm-icons firm-icons_only_lang"}>
-                            {selectedSubcompany.bookingPage &&
+                        <div className={screen !== 0 ? "firm-icons" : "firm-icons firm-icons_only_lang"}>
+                            {screen !== 0 &&
                                 <div className="adress-phones">
                                     <span className="adress-icon" />
                                     <div className="adress-text-wrapper">
@@ -251,8 +252,8 @@ class Header extends PureComponent {
                                     </div>
                                 </div>
                             </div>
-                            {selectedSubcompany.bookingPage && <div className="separation"></div>}
-                            {selectedSubcompany.bookingPage && <div className="mobile-icon-block">
+                            {screen !== 0 && <div className="separation"></div>}
+                            {screen !== 0 && <div className="mobile-icon-block">
                                 <div className={mobile ? "mobile-icon-wrapper mobile_active" : "mobile-icon-wrapper"}>
 
                                     <div className="text-phones">
