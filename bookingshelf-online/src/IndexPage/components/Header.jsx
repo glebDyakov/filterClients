@@ -107,9 +107,8 @@ class Header extends PureComponent {
     }
 
     getSocialLink = (social) => {
-        const link = this.props.info.companySocialNetworks.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social).companyUrl;
-        console.log(link);
-        return `https://${link}`;
+        const link = this.props.selectedSubcompany.companySocialNetworks?.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social)?.companyUrl || '';
+        return link ? `https://${link}` : null;
     } 
 
     render() {
