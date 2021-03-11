@@ -1,6 +1,6 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import {staffActions} from "../../../bookingshelf-online/src/_actions";
+import { staffActions } from "../../../bookingshelf-online/src/_actions";
 import moment from 'moment';
 import 'moment-duration-format';
 import 'moment/locale/ru';
@@ -19,10 +19,11 @@ import Header from "./components/Header";
 import TabError from "./components/TabError";
 import TabCanceled from "./components/TabCanceled";
 import Footer from "./components/Footer";
+import Loading from "./components/Loading";
 import TabStaffComments from "./components/TabStaffComments";
 import TabCreateComment from "./components/TabCreateComment";
 import { getFirstScreen } from "../_helpers/common";
-import {withTranslation} from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import Blob from './components/Blob';
 
@@ -31,7 +32,7 @@ import skip_arrow from "../../public/img/icons/skip-arrow-white.svg"
 class IndexPage extends PureComponent {
     constructor(props) {
         super(props);
-        const group = localStorage.getItem('userInfoOnlineZapis') ? JSON.parse(localStorage.getItem('userInfoOnlineZapis')) : { phone: ''}
+        const group = localStorage.getItem('userInfoOnlineZapis') ? JSON.parse(localStorage.getItem('userInfoOnlineZapis')) : { phone: '' }
         group.description = '';
         if (!group.carBrand) {
             group.carBrand = '';
@@ -58,15 +59,15 @@ class IndexPage extends PureComponent {
             language: "default"
         };
 
-        this.selectStaff=this.selectStaff.bind(this);
-        this.handleMoveVisit=this.handleMoveVisit.bind(this);
+        this.selectStaff = this.selectStaff.bind(this);
+        this.handleMoveVisit = this.handleMoveVisit.bind(this);
         this.getDurationForCurrentStaff = this.getDurationForCurrentStaff.bind(this);
-        this.clearStaff=this.clearStaff.bind(this);
-        this.refreshTimetable=this.refreshTimetable.bind(this);
-        this.selectService=this.selectService.bind(this);
-        this.selectSubcompany=this.selectSubcompany.bind(this);
-        this.setStaffComments=this.setStaffComments.bind(this);
-        this.handleDayClick=this.handleDayClick.bind(this);
+        this.clearStaff = this.clearStaff.bind(this);
+        this.refreshTimetable = this.refreshTimetable.bind(this);
+        this.selectService = this.selectService.bind(this);
+        this.selectSubcompany = this.selectSubcompany.bind(this);
+        this.setStaffComments = this.setStaffComments.bind(this);
+        this.handleDayClick = this.handleDayClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.isValidEmailAddress = this.isValidEmailAddress.bind(this);
@@ -85,8 +86,8 @@ class IndexPage extends PureComponent {
         this.clearSelectedServices = this.clearSelectedServices.bind(this);
     }
 
-    componentDidMount () {
-        let {company} = this.props.match.params
+    componentDidMount() {
+        let { company } = this.props.match.params
         company = company.includes('_') ? company.split('_')[0] : company
 
         this.props.dispatch(staffActions.getSubcompanies(company));
@@ -105,13 +106,13 @@ class IndexPage extends PureComponent {
             })
         }
 
-        if ( JSON.stringify(this.props.staff) !==  JSON.stringify(newProps.staff)) {
-            if(newProps.staff.info) {
+        if (JSON.stringify(this.props.staff) !== JSON.stringify(newProps.staff)) {
+            if (newProps.staff.info) {
                 document.title = newProps.staff.info.companyName + " | Онлайн-запись";
             }
             newProps.staff.info && moment.tz.setDefault(newProps.staff.info.timezoneId)
 
-            let disabledDays=[];
+            let disabledDays = [];
             const defaultBlockedTime = (newProps.staff.info && !newProps.staff.info.onlineZapisOn && newProps.staff.info.onlineZapisEndTimeMillis)
                 ? newProps.staff.info.onlineZapisEndTimeMillis
                 : parseInt(moment().utc().add(6, 'month').format('x'))
@@ -125,22 +126,22 @@ class IndexPage extends PureComponent {
             if ((year % 4 === 0) && month === 2) {
                 lastDayOfMonth++;
             }
-            for(let i=firstDayOfMonth; i<=lastDayOfMonth;i++) {
-                let avDay=newProps.staff && newProps.staff.timetableAvailable &&
-                    newProps.staff.timetableAvailable.filter(timetableItem => timetableItem.availableDays && timetableItem.availableDays.some((time, key, elements) =>{
+            for (let i = firstDayOfMonth; i <= lastDayOfMonth; i++) {
+                let avDay = newProps.staff && newProps.staff.timetableAvailable &&
+                    newProps.staff.timetableAvailable.filter(timetableItem => timetableItem.availableDays && timetableItem.availableDays.some((time, key, elements) => {
                         const checkingDay = parseInt(moment(time.dayMillis, 'x').format('D'));
                         const checkingDayTimesArray = time.availableTimes;
 
-                        return checkingDay ===i && checkingDayTimesArray.length!==0 &&
-                            time.availableTimes.some((timeOne)=>{
+                        return checkingDay === i && checkingDayTimesArray.length !== 0 &&
+                            time.availableTimes.some((timeOne) => {
                                 const countTimes = (timeOne.endTimeMillis - timeOne.startTimeMillis) / 1000 / 60 / 15 + 1;
                                 const arrayTimes = []
-                                for( let i = 0 ; i< countTimes; i++) {
+                                for (let i = 0; i < countTimes; i++) {
                                     arrayTimes.push(timeOne.startTimeMillis + (1000 * 60 * 15 * i))
                                 }
 
                                 return arrayTimes.some(intervalTime => {
-                                    const intervalTimeMillis =parseInt(moment(intervalTime, 'x').format('x'))
+                                    const intervalTimeMillis = parseInt(moment(intervalTime, 'x').format('x'))
                                     const currentUserTimeMillis = parseInt(moment().utc().format('x'))
                                     return intervalTimeMillis >= currentUserTimeMillis;
                                 })
@@ -148,32 +149,33 @@ class IndexPage extends PureComponent {
                     })
                     );
 
-                const checkingDate = parseInt(moment(moment(this.state.month).format('YYYY/MMMM')+"/"+i, 'YYYY/MMMM/D').utc().format('x'));
+                const checkingDate = parseInt(moment(moment(this.state.month).format('YYYY/MMMM') + "/" + i, 'YYYY/MMMM/D').utc().format('x'));
                 const currentDate = parseInt(moment().startOf('day').format('x'));
 
-                if(avDay && avDay.length===0 || (checkingDate < currentDate) || checkingDate > defaultBlockedTime){
-                    const pushedDay = new Date(moment(moment(this.state.month).format('YYYY/MMMM')+"/"+i, 'YYYY/MMMM/D').format('YYYY-MM-DD HH:mm').replace(/-/g, "/"))
-                    disabledDays.push(pushedDay)}
+                if (avDay && avDay.length === 0 || (checkingDate < currentDate) || checkingDate > defaultBlockedTime) {
+                    const pushedDay = new Date(moment(moment(this.state.month).format('YYYY/MMMM') + "/" + i, 'YYYY/MMMM/D').format('YYYY-MM-DD HH:mm').replace(/-/g, "/"))
+                    disabledDays.push(pushedDay)
+                }
 
             }
 
-            newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.every(timetableItem => timetableItem.availableDays && timetableItem.availableDays.length===0) && disabledDays.push( {before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate()});
+            newProps.staff && newProps.staff.timetableAvailable && newProps.staff.timetableAvailable.every(timetableItem => timetableItem.availableDays && timetableItem.availableDays.length === 0) && disabledDays.push({ before: moment(this.state.month).utc().endOf('month').add(1, 'day').toDate() });
 
             if (JSON.stringify(newProps.staff.newAppointment) !== JSON.stringify(this.props.staff.newAppointment)) {
-                this.setState({ screen: 6})
+                this.setState({ screen: 6 })
             }
 
             this.setState({
                 staffs: newProps.staff && newProps.staff.staff,
                 newAppointments: newProps.staff.newAppointment,
                 services: newProps.staff && newProps.staff.services,
-                nearestTime:  newProps.staff && newProps.staff.nearestTime,
+                nearestTime: newProps.staff && newProps.staff.nearestTime,
                 info: newProps.staff.info && newProps.staff.info, disabledDays: disabledDays,
 
             })
         }
         if (newProps.staff.info && ((!newProps.staff.superCompany && (this.props.staff.superCompany !== newProps.staff.superCompany))
-        || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== (this.props.staff.info && this.props.staff.info.subCompanies)))))) {
+            || (newProps.staff.info && (!newProps.staff.info.subCompanies && (newProps.staff.info.subCompanies !== (this.props.staff.info && this.props.staff.info.subCompanies)))))) {
             this.setScreen(getFirstScreen(newProps.staff.info.firstScreen))
         }
 
@@ -182,7 +184,7 @@ class IndexPage extends PureComponent {
             this.setScreen(screen)
             this.setState({ firstScreenSet: true })
             if (screen === 2) {
-                this.setState({ flagAllStaffs: true})
+                this.setState({ flagAllStaffs: true })
             }
         }
 
@@ -191,9 +193,9 @@ class IndexPage extends PureComponent {
 
     componentDidUpdate(prevProps, prevState) {
         initializeJs()
-       
+
         if ((prevState.screen === 0) && (this.state.screen === 1 || this.state.screen === 2)) {
-            let {company} = this.props.match.params
+            let { company } = this.props.match.params
 
             this.props.dispatch(staffActions.getInfo(company));
             // this.props.dispatch(staffActions.getInfoSocial());
@@ -223,17 +225,17 @@ class IndexPage extends PureComponent {
         this.props.dispatch(staffActions.clearStaff());
     }
 
-    setDefaultFlag(){
-        this.setState({flagAllStaffs: false})
+    setDefaultFlag() {
+        this.setState({ flagAllStaffs: false })
     }
 
-    selectStaff (staff){
+    selectStaff(staff) {
         const { isStartMovingVisit } = this.props.staff
-        const { flagAllStaffs }=this.state;
+        const { flagAllStaffs } = this.state;
         let screen = 2;
 
-        if((staff && staff.length) === 0){
-            this.setState({flagAllStaffs: true});
+        if ((staff && staff.length) === 0) {
+            this.setState({ flagAllStaffs: true });
         }
 
         if (flagAllStaffs) {
@@ -243,7 +245,7 @@ class IndexPage extends PureComponent {
         if (isStartMovingVisit) {
             screen = 3;
         }
-        this.setState({selectedStaff: staff})
+        this.setState({ selectedStaff: staff })
         this.setScreen(screen)
     }
 
@@ -264,21 +266,23 @@ class IndexPage extends PureComponent {
         const { name, value } = e.target;
         const { group } = this.state;
 
-        this.setState({ group: {...group, [name]: value }});
+        this.setState({ group: { ...group, [name]: value } });
     }
 
-    handleSave (codeInfo) {
+    handleSave(codeInfo) {
         const { dispatch } = this.props;
 
-        const { selectedStaff,selectedServices,group,selectedDay,selectedTime } = this.state;
-        const {company} = this.props.match.params
+        const { selectedStaff, selectedServices, group, selectedDay, selectedTime } = this.state;
+        const { company } = this.props.match.params
         let resultTime = parseInt(selectedTime);
 
         localStorage.setItem('userInfoOnlineZapis', JSON.stringify(group))
 
         const data = selectedServices.map((selectedService) => {
-            const item = {...group, notice: '', duration: this.getDurationForCurrentStaff(selectedService), serviceId: selectedService.serviceId,
-                appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm')+" "+moment(selectedDay).format('DD/MM/YYYY'), 'HH:mm DD/MM/YYYY').format('x')}
+            const item = {
+                ...group, notice: '', duration: this.getDurationForCurrentStaff(selectedService), serviceId: selectedService.serviceId,
+                appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm') + " " + moment(selectedDay).format('DD/MM/YYYY'), 'HH:mm DD/MM/YYYY').format('x')
+            }
             resultTime += this.getDurationForCurrentStaff(selectedService) * 1000;
             return item;
         });
@@ -295,7 +299,7 @@ class IndexPage extends PureComponent {
 
 
     handleDayClick(day, modifiers = {}) {
-        
+
         const { isStartMovingVisit } = this.props.staff
         if (modifiers.disabled) {
             return;
@@ -309,7 +313,7 @@ class IndexPage extends PureComponent {
             // screen: 4
         })
         //if (!isStartMovingVisit) {
-            // this.refreshTimetable();
+        // this.refreshTimetable();
         //}
     }
 
@@ -318,19 +322,19 @@ class IndexPage extends PureComponent {
         this.props.dispatch(staffActions.getStaffComments(company, staffId))
     }
 
-    setScreen (num) {
+    setScreen(num) {
         this.setState({
             screen: num,
         })
     }
 
 
-    setterPhone(phone){
-        const {group} = this.state
-        this.setState({ group: {...group, phone: phone.replace(/[()\- ]/g, '')} })
+    setterPhone(phone) {
+        const { group } = this.state
+        this.setState({ group: { ...group, phone: phone.replace(/[()\- ]/g, '') } })
     }
-    setterEmail(){
-        const {group} = this.state
+    setterEmail() {
+        const { group } = this.state
         this.setState({
             emailIsValid: this.isValidEmailAddress(group.email)
         })
@@ -338,13 +342,13 @@ class IndexPage extends PureComponent {
 
     render() {
         const { history, match, t } = this.props;
-        const { selectedStaff, selectedSubcompany, flagAllStaffs, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, info, selectedTime, screen, group, month, newAppointments, nearestTime }=this.state;
+        const { selectedStaff, selectedSubcompany, flagAllStaffs, selectedService, selectedServices, approveF, disabledDays, selectedDay, staffs, services, info, selectedTime, screen, group, month, newAppointments, nearestTime } = this.state;
 
         const { error, isLoading: isLoadingFromProps, isLoadingServices, clientActivationId, timetableAvailable, isStartMovingVisit, movingVisit, movedVisitSuccess, subcompanies, serviceGroups, enteredCodeError, clients } = this.props.staff;
 
         const isLoading = isLoadingFromProps || isLoadingServices
-        let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) =>{
-            return service.staffs && service.staffs.some(st=>st.staffId===selectedStaff.staffId)
+        let servicesForStaff = selectedStaff.staffId && services && services.some((service, serviceKey) => {
+            return service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)
         });
 
         let content;
@@ -354,241 +358,241 @@ class IndexPage extends PureComponent {
                 {t("Подождите")}...
             </div>
         } else if (error) {
-            content =  <div className="online-zapis-off">
+            content = <div className="online-zapis-off">
                 {t(`${error}`)}
                 {(error.startsWith("Онлайн-запись отключена") && subcompanies.length > 1) && (
                     <button onClick={() => {
                         this.setScreen(0)
                         this.props.dispatch(staffActions.clearError());
-                        let {company} = match.params;
+                        let { company } = match.params;
                         let url = company.includes('_') ? company.split('_')[0] : company
                         history.push(`/${url}`)
-                    }} className="online_zapis_off_btn">{t("На страницу выбора филиалов")}<img src={skip_arrow} alt="skip_arrow"/></button>
+                    }} className="online_zapis_off_btn">{t("На страницу выбора филиалов")}<img src={skip_arrow} alt="skip_arrow" /></button>
                 )}
             </div>
         } else {
             content = (
                 <React.Fragment>
                     {screen === 0 &&
-                    <TabCompanySelection
-                        match={match}
-                        history={history}
-                        selectSubcompany={this.selectSubcompany}
-                        selectedSubcompany={selectedSubcompany}
-                        subcompanies={subcompanies}
-                        info={info}
-                        staffId={selectedStaff.staffId }
-                        staffs={staffs}
-                        nearestTime={nearestTime}
-                        selectStaff={this.selectStaff}
-                        setScreen={this.setScreen}
-                        refreshTimetable={this.refreshTimetable}
-                        roundDown={this.roundDown}
-                    />}
+                        <TabCompanySelection
+                            match={match}
+                            history={history}
+                            selectSubcompany={this.selectSubcompany}
+                            selectedSubcompany={selectedSubcompany}
+                            subcompanies={subcompanies}
+                            info={info}
+                            staffId={selectedStaff.staffId}
+                            staffs={staffs}
+                            nearestTime={nearestTime}
+                            selectStaff={this.selectStaff}
+                            setScreen={this.setScreen}
+                            refreshTimetable={this.refreshTimetable}
+                            roundDown={this.roundDown}
+                        />}
                     {screen === 1 &&
-                    <TabOne
-                        isLoading={isLoading}
-                        error={error}
-                        newAppointments={newAppointments}
-                        handleMoveVisit={this.handleMoveVisit}
-                        handleDayClick={this.handleDayClick}
-                        forceUpdateStaff={this.forceUpdateStaff}
-                        selectedTime={selectedTime}
-                        timetableAvailable={timetableAvailable}
-                        setStaffComments={this.setStaffComments}
-                        setDefaultFlag={this.setDefaultFlag}
-                        match={match}
-                        history={history}
-                        clearStaff={this.clearStaff}
-                        subcompanies={subcompanies}
-                        flagAllStaffs={flagAllStaffs}
-                        selectedServices={selectedServices}
-                        info={info}
-                        movingVisit={movingVisit}
-                        services={services}
-                        staffId={selectedStaff.staffId }
-                        staffs={staffs}
-                        isStartMovingVisit={isStartMovingVisit}
-                        nearestTime={nearestTime}
-                        selectStaff={this.selectStaff}
-                        setScreen={this.setScreen}
-                        selectService={this.selectService}
-                        refreshTimetable={this.refreshTimetable}
-                        roundDown={this.roundDown}
-                        selectedDay={selectedDay}
-                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
-                    />}
+                        <TabOne
+                            isLoading={isLoading}
+                            error={error}
+                            newAppointments={newAppointments}
+                            handleMoveVisit={this.handleMoveVisit}
+                            handleDayClick={this.handleDayClick}
+                            forceUpdateStaff={this.forceUpdateStaff}
+                            selectedTime={selectedTime}
+                            timetableAvailable={timetableAvailable}
+                            setStaffComments={this.setStaffComments}
+                            setDefaultFlag={this.setDefaultFlag}
+                            match={match}
+                            history={history}
+                            clearStaff={this.clearStaff}
+                            subcompanies={subcompanies}
+                            flagAllStaffs={flagAllStaffs}
+                            selectedServices={selectedServices}
+                            info={info}
+                            movingVisit={movingVisit}
+                            services={services}
+                            staffId={selectedStaff.staffId}
+                            staffs={staffs}
+                            isStartMovingVisit={isStartMovingVisit}
+                            nearestTime={nearestTime}
+                            selectStaff={this.selectStaff}
+                            setScreen={this.setScreen}
+                            selectService={this.selectService}
+                            refreshTimetable={this.refreshTimetable}
+                            roundDown={this.roundDown}
+                            selectedDay={selectedDay}
+                            getDurationForCurrentStaff={this.getDurationForCurrentStaff}
+                        />}
                     {screen === 'staff-comments' &&
-                    <TabStaffComments
-                        isLoading={isLoading}
-                        setStaffComments={this.setStaffComments}
-                        setDefaultFlag={this.setDefaultFlag}
-                        match={match}
-                        history={history}
-                        clearStaff={this.clearStaff}
-                        subcompanies={subcompanies}
-                        flagAllStaffs={flagAllStaffs}
-                        selectedServices={selectedServices}
-                        info={info}
-                        movingVisit={movingVisit}
-                        services={services}
-                        staffId={selectedStaff.staffId }
-                        staffs={staffs}
-                        isStartMovingVisit={isStartMovingVisit}
-                        nearestTime={nearestTime}
-                        selectStaff={this.selectStaff}
-                        setScreen={this.setScreen}
-                        selectService={this.selectService}
-                        refreshTimetable={this.refreshTimetable}
-                        roundDown={this.roundDown}
-                    />
+                        <TabStaffComments
+                            isLoading={isLoading}
+                            setStaffComments={this.setStaffComments}
+                            setDefaultFlag={this.setDefaultFlag}
+                            match={match}
+                            history={history}
+                            clearStaff={this.clearStaff}
+                            subcompanies={subcompanies}
+                            flagAllStaffs={flagAllStaffs}
+                            selectedServices={selectedServices}
+                            info={info}
+                            movingVisit={movingVisit}
+                            services={services}
+                            staffId={selectedStaff.staffId}
+                            staffs={staffs}
+                            isStartMovingVisit={isStartMovingVisit}
+                            nearestTime={nearestTime}
+                            selectStaff={this.selectStaff}
+                            setScreen={this.setScreen}
+                            selectService={this.selectService}
+                            refreshTimetable={this.refreshTimetable}
+                            roundDown={this.roundDown}
+                        />
                     }
                     {screen === 'staff-create-comment' &&
-                    <TabCreateComment
-                        isLoading={isLoading}
-                        setStaffComments={this.setStaffComments}
-                        setDefaultFlag={this.setDefaultFlag}
-                        match={match}
-                        history={history}
-                        clearStaff={this.clearStaff}
-                        subcompanies={subcompanies}
-                        flagAllStaffs={flagAllStaffs}
-                        selectedServices={selectedServices}
-                        info={info}
-                        movingVisit={movingVisit}
-                        services={services}
-                        staffId={selectedStaff.staffId }
-                        staffs={staffs}
-                        isStartMovingVisit={isStartMovingVisit}
-                        nearestTime={nearestTime}
-                        selectStaff={this.selectStaff}
-                        setScreen={this.setScreen}
-                        selectService={this.selectService}
-                        refreshTimetable={this.refreshTimetable}
-                        roundDown={this.roundDown}
-                    />
+                        <TabCreateComment
+                            isLoading={isLoading}
+                            setStaffComments={this.setStaffComments}
+                            setDefaultFlag={this.setDefaultFlag}
+                            match={match}
+                            history={history}
+                            clearStaff={this.clearStaff}
+                            subcompanies={subcompanies}
+                            flagAllStaffs={flagAllStaffs}
+                            selectedServices={selectedServices}
+                            info={info}
+                            movingVisit={movingVisit}
+                            services={services}
+                            staffId={selectedStaff.staffId}
+                            staffs={staffs}
+                            isStartMovingVisit={isStartMovingVisit}
+                            nearestTime={nearestTime}
+                            selectStaff={this.selectStaff}
+                            setScreen={this.setScreen}
+                            selectService={this.selectService}
+                            refreshTimetable={this.refreshTimetable}
+                            roundDown={this.roundDown}
+                        />
                     }
                     {screen === 2 &&
-                    <TabTwo
-                        info={info}
-                        error={error}
-                        isLoading={isLoading}
-                        history={history}
-                        match={match}
-                        firstScreen={info.firstScreen}
-                        isStartMovingVisit={isStartMovingVisit}
-                        clearSelectedServices={this.clearSelectedServices}
-                        flagAllStaffs={flagAllStaffs}
-                        serviceGroups={serviceGroups}
-                        subcompanies={subcompanies}
-                        selectedServices={selectedServices}
-                        selectedStaff={selectedStaff}
-                        services={services}
-                        selectedService={selectedService}
-                        servicesForStaff={servicesForStaff}
-                        setScreen={this.setScreen}
-                        refreshTimetable={this.refreshTimetable}
-                        selectService={this.selectService}
-                        setDefaultFlag={this.setDefaultFlag}
-                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
-                    />}
+                        <TabTwo
+                            info={info}
+                            error={error}
+                            isLoading={isLoading}
+                            history={history}
+                            match={match}
+                            firstScreen={info.firstScreen}
+                            isStartMovingVisit={isStartMovingVisit}
+                            clearSelectedServices={this.clearSelectedServices}
+                            flagAllStaffs={flagAllStaffs}
+                            serviceGroups={serviceGroups}
+                            subcompanies={subcompanies}
+                            selectedServices={selectedServices}
+                            selectedStaff={selectedStaff}
+                            services={services}
+                            selectedService={selectedService}
+                            servicesForStaff={servicesForStaff}
+                            setScreen={this.setScreen}
+                            refreshTimetable={this.refreshTimetable}
+                            selectService={this.selectService}
+                            setDefaultFlag={this.setDefaultFlag}
+                            getDurationForCurrentStaff={this.getDurationForCurrentStaff}
+                        />}
                     {screen === 3 &&
-                    <TabThird
-                        setDefaultFlag={this.setDefaultFlag}
-                        isStartMovingVisit={isStartMovingVisit}
-                        selectedDay={selectedDay}
-                        selectedStaff={selectedStaff}
-                        selectedServices={selectedServices}
-                        selectedService={selectedService}
-                        disabledDays={disabledDays}
-                        month={month}
-                        setScreen={this.setScreen}
-                        refreshTimetable={this.refreshTimetable}
-                        handleDayClick={this.handleDayClick}
-                        showPrevWeek={this.showPrevWeek}
-                        showNextWeek={this.showNextWeek}
-                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
-                    />}
+                        <TabThird
+                            setDefaultFlag={this.setDefaultFlag}
+                            isStartMovingVisit={isStartMovingVisit}
+                            selectedDay={selectedDay}
+                            selectedStaff={selectedStaff}
+                            selectedServices={selectedServices}
+                            selectedService={selectedService}
+                            disabledDays={disabledDays}
+                            month={month}
+                            setScreen={this.setScreen}
+                            refreshTimetable={this.refreshTimetable}
+                            handleDayClick={this.handleDayClick}
+                            showPrevWeek={this.showPrevWeek}
+                            showNextWeek={this.showNextWeek}
+                            getDurationForCurrentStaff={this.getDurationForCurrentStaff}
+                        />}
                     {screen === 4 &&
-                    <TabFour
-                        flagAllStaffs={flagAllStaffs}
-                        serviceIntervalOn={info.serviceIntervalOn}
-                        isStartMovingVisit={isStartMovingVisit}
-                        selectedTime={selectedTime}
-                        selectedStaff={selectedStaff}
-                        selectedService={selectedService}
-                        selectedServices={selectedServices}
-                        selectedDay={selectedDay}
-                        movedVisitSuccess={movedVisitSuccess}
-                        timetableAvailable={timetableAvailable}
-                        setScreen={this.setScreen}
-                        refreshTimetable={this.refreshTimetable}
-                        setTime={this.setTime}
-                        staffs={staffs}
-                        movingVisit={movingVisit}
-                        selectStaff={this.selectStaff}
-                        handleDayClick={this.handleDayClick}
-                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
-                    />}
+                        <TabFour
+                            flagAllStaffs={flagAllStaffs}
+                            serviceIntervalOn={info.serviceIntervalOn}
+                            isStartMovingVisit={isStartMovingVisit}
+                            selectedTime={selectedTime}
+                            selectedStaff={selectedStaff}
+                            selectedService={selectedService}
+                            selectedServices={selectedServices}
+                            selectedDay={selectedDay}
+                            movedVisitSuccess={movedVisitSuccess}
+                            timetableAvailable={timetableAvailable}
+                            setScreen={this.setScreen}
+                            refreshTimetable={this.refreshTimetable}
+                            setTime={this.setTime}
+                            staffs={staffs}
+                            movingVisit={movingVisit}
+                            selectStaff={this.selectStaff}
+                            handleDayClick={this.handleDayClick}
+                            getDurationForCurrentStaff={this.getDurationForCurrentStaff}
+                        />}
                     {screen === 5 &&
-                    <TabFive
-                        info={info}
-                        setDefaultFlag={this.setDefaultFlag}
-                        flagAllStaffs={flagAllStaffs}
-                        forceUpdateStaff={this.forceUpdateStaff}
-                        enteredCodeError={enteredCodeError}
-                        serviceId={selectedService.serviceId}
-                        clientActivationId={clientActivationId}
-                        selectedStaff={selectedStaff}
-                        selectedDay={selectedDay}
-                        selectedServices={selectedServices}
-                        selectedTime={selectedTime}
-                        group={group}
-                        setScreen={this.setScreen}
-                        refreshTimetable={this.refreshTimetable}
-                        handleChange={this.handleChange}
-                        isValidEmailAddress={this.isValidEmailAddress}
-                        setterPhone={this.setterPhone}
-                        setterEmail={this.setterEmail}
-                        handleSave={this.handleSave}
-                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
-                    />
+                        <TabFive
+                            info={info}
+                            setDefaultFlag={this.setDefaultFlag}
+                            flagAllStaffs={flagAllStaffs}
+                            forceUpdateStaff={this.forceUpdateStaff}
+                            enteredCodeError={enteredCodeError}
+                            serviceId={selectedService.serviceId}
+                            clientActivationId={clientActivationId}
+                            selectedStaff={selectedStaff}
+                            selectedDay={selectedDay}
+                            selectedServices={selectedServices}
+                            selectedTime={selectedTime}
+                            group={group}
+                            setScreen={this.setScreen}
+                            refreshTimetable={this.refreshTimetable}
+                            handleChange={this.handleChange}
+                            isValidEmailAddress={this.isValidEmailAddress}
+                            setterPhone={this.setterPhone}
+                            setterEmail={this.setterEmail}
+                            handleSave={this.handleSave}
+                            getDurationForCurrentStaff={this.getDurationForCurrentStaff}
+                        />
                     }
 
                     {screen === 6 && ((newAppointments && !!newAppointments.length) || movedVisitSuccess) && !error &&
-                    <TabSix
-                        info={info}
-                        match={match}
-                        movedVisitSuccess={movedVisitSuccess}
-                        movingVisit={movingVisit}
-                        selectedStaff={selectedStaff}
-                        selectedService={selectedService}
-                        selectedServices={selectedServices}
-                        selectedDay={selectedDay}
-                        selectedTime={selectedTime}
-                        approveF={approveF}
-                        newAppointments={newAppointments}
-                        // onCancelVisit={this.onCancelVisit}
-                        // approvedButtons={this.approvedButtons}
-                        _delete={this._delete}
-                        _move={this._move}
-                        setScreen={this.setScreen}
-                        refreshTimetable={this.refreshTimetable}
-                        setDefaultFlag={this.setDefaultFlag}
-                        getDurationForCurrentStaff={this.getDurationForCurrentStaff}
+                        <TabSix
+                            info={info}
+                            match={match}
+                            movedVisitSuccess={movedVisitSuccess}
+                            movingVisit={movingVisit}
+                            selectedStaff={selectedStaff}
+                            selectedService={selectedService}
+                            selectedServices={selectedServices}
+                            selectedDay={selectedDay}
+                            selectedTime={selectedTime}
+                            approveF={approveF}
+                            newAppointments={newAppointments}
+                            // onCancelVisit={this.onCancelVisit}
+                            // approvedButtons={this.approvedButtons}
+                            _delete={this._delete}
+                            _move={this._move}
+                            setScreen={this.setScreen}
+                            refreshTimetable={this.refreshTimetable}
+                            setDefaultFlag={this.setDefaultFlag}
+                            getDurationForCurrentStaff={this.getDurationForCurrentStaff}
                         // setterApproveF={this.setterApproveF}
-                    />}
+                        />}
 
                     { screen === 6 && error &&
-                    <TabError
-                        error={error}
-                        setScreen={this.setScreen}
-                    />}
+                        <TabError
+                            error={error}
+                            setScreen={this.setScreen}
+                        />}
                     {screen === 7 &&
-                    <TabCanceled
-                    selectedSubcompany={selectedSubcompany}
-                        setScreen={this.setScreen}
-                    />
+                        <TabCanceled
+                            selectedSubcompany={selectedSubcompany}
+                            setScreen={this.setScreen}
+                        />
                     }
                 </React.Fragment>
             )
@@ -597,25 +601,26 @@ class IndexPage extends PureComponent {
         const title = `${t("Онлайн-запись в")} ${info ? info.companyName : ''}`;
         const description = `${title}. ${t("Вы можете записаться онлайн используя нашу страницу и виджет онлайн-записи. Онлайн-запись доступна круглосуточно.")}`;
         return (
-          <React.Fragment>
-            {info && info.companyName && <Helmet>
-                <meta name="title" content={title} />
-                <meta name="description" content={description} />
-                <meta property="og:description" content={description} />
-                <meta name="twitter:description" content={description} />
-            </Helmet>}
-           <Blob screen={screen}/>
-            <div className="container_popups">
+            <React.Fragment>
+                {info && info.companyName && <Helmet>
+                    <meta name="title" content={title} />
+                    <meta name="description" content={description} />
+                    <meta property="og:description" content={description} />
+                    <meta name="twitter:description" content={description} />
+                </Helmet>}
+                <Blob screen={screen} />
+                {isLoading && (<Loading />) }
+                <div className="container_popups">
 
-                {info && <Header selectedSubcompany={selectedSubcompany} screen={screen} info={info}/>}
+                    {info && <Header selectedSubcompany={selectedSubcompany} screen={screen} info={info} />}
 
-                <div className="service_selection_wrapper">
-                    {content}
-                    {isLoading && (<div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>)}
+                    <div className="service_selection_wrapper">
+                        {content}
+
+                    </div>
+                    <Footer />
                 </div>
-                <Footer/>
-            </div>
-          </React.Fragment>
+            </React.Fragment>
         );
     }
 
@@ -634,9 +639,9 @@ class IndexPage extends PureComponent {
         this.setScreen(1)
     }
 
-    selectService (e, service) {
-        const {selectedStaff, staffs}=this.state;
-        const {selectedServices, nearestTime} = this.state;
+    selectService(e, service) {
+        const { selectedStaff, staffs } = this.state;
+        const { selectedServices, nearestTime } = this.state;
         const { checked } = e.target;
         // 
         if (checked) {
@@ -687,11 +692,13 @@ class IndexPage extends PureComponent {
             }
 
         }
-        this.setState({selectedService:service, selectedServices, allPriceFrom, allPriceTo, numbers,
-            month:moment().utc().startOf('month').toDate()})
+        this.setState({
+            selectedService: service, selectedServices, allPriceFrom, allPriceTo, numbers,
+            month: moment().utc().startOf('month').toDate()
+        })
 
-        if(selectedServices.length === 0 && this.state.flagAllStaffs){
-            this.setState({selectedStaff: []})
+        if (selectedServices.length === 0 && this.state.flagAllStaffs) {
+            this.setState({ selectedStaff: [] })
         }
     }
 
@@ -706,7 +713,7 @@ class IndexPage extends PureComponent {
     handleMoveVisit(time = this.state.selectedTime) {
         const { dispatch } = this.props
         const { movingVisit, staff } = this.props.staff
-        const { selectedStaff} = this.state;
+        const { selectedStaff } = this.state;
         let coStaffs;
         if (movingVisit[0].coStaffs && movingVisit[0].staffId !== selectedStaff.staffId) {
             const updatedCoStaff = staff.find(item => item.staffId === movingVisit[0].staffId)
@@ -724,7 +731,7 @@ class IndexPage extends PureComponent {
         this.setState({ screen: 6, selectedTime: time })
     }
 
-    setTime (time, shouldMove){
+    setTime(time, shouldMove) {
         const { flagAllStaffs } = this.state;
 
         if (shouldMove) {
@@ -739,7 +746,7 @@ class IndexPage extends PureComponent {
 
             this.setState({
                 newAppointments: [],
-                selectedTime:time,
+                selectedTime: time,
                 screen,
                 ...updatedState
             });
@@ -751,7 +758,7 @@ class IndexPage extends PureComponent {
         const { movingVisit } = this.props.staff
         const { selectedServices, services, flagAllStaffs } = this.state;
         let serviceIdList = this.getServiceIdList(selectedServices);
-        const {company} = this.props.match.params;
+        const { company } = this.props.match.params;
         let appointmentsIdList = ''
         let staffsIdList = '';
         if (movingVisit && movingVisit[0]) {
@@ -761,7 +768,7 @@ class IndexPage extends PureComponent {
                 const activeService = services.find(item => item.serviceId === visit.serviceId)
                 const activeSelectedService = selectedServices.find(item => item.serviceId === visit.serviceId)
                 if (activeService && !activeSelectedService) {
-                    this.selectService({target: {checked: true}}, activeService)
+                    this.selectService({ target: { checked: true } }, activeService)
                 }
                 serviceIdList += `${i === 0 ? '' : ','}${visit.serviceId}`
 
@@ -789,31 +796,31 @@ class IndexPage extends PureComponent {
         }
     }
 
-    showPrevWeek (){
-        const {month}=this.state;
+    showPrevWeek() {
+        const { month } = this.state;
 
 
-        const newMonth= moment(month).subtract(1, 'month').toDate()
-        this.setState({...this.state, month: newMonth})
+        const newMonth = moment(month).subtract(1, 'month').toDate()
+        this.setState({ ...this.state, month: newMonth })
         this.refreshTimetable(newMonth)
     }
 
-    showNextWeek (){
-        const { month }=this.state;
+    showNextWeek() {
+        const { month } = this.state;
 
         const newMonth = moment(month).add(1, 'month').toDate()
-        this.setState({...this.state, month: newMonth})
+        this.setState({ ...this.state, month: newMonth })
         this.refreshTimetable(newMonth)
     }
 
     roundDown(number, precision) {
-        let date=moment(number, 'x')
-        let time = Math.ceil((parseInt(moment(number, 'x').format('m')))/ 15) * 15
+        let date = moment(number, 'x')
+        let time = Math.ceil((parseInt(moment(number, 'x').format('m'))) / 15) * 15
 
-        if(time===60){
+        if (time === 60) {
             return date.add(1, 'hour').format('MMMM DD');
 
-        }else {
+        } else {
             return date.format('MMMM DD')
         }
     }
@@ -821,7 +828,7 @@ class IndexPage extends PureComponent {
 }
 
 function mapStateToProps(store) {
-    const {staff}=store;
+    const { staff } = store;
 
     return {
         staff

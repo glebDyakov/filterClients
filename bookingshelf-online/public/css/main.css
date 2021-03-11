@@ -2920,3 +2920,6 @@ max-height: calc(100% - 50px);
     bottom: 0;
     margin: auto;
 }
+.blob svg{
+    overflow: visible;
+}

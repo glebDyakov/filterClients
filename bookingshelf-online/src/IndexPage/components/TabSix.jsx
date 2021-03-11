@@ -101,7 +101,7 @@ class TabSix extends PureComponent {
                                     this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                                 }}>{t("Создать новую запись")}</a><p>
                                     {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
-              <a className="last_footer_block_a" rel="nofollow noopener noreferrer" href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
+              <a className="last_footer_block_a"  href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
                                 </p>
                             </div>
                             <div className="last_list">
@@ -175,7 +175,7 @@ class TabSix extends PureComponent {
 
                             <div className="title_block staff_title">
 
-                                <span className="prev_block"><span className="title_block_text"><a rel="nofollow" href={`/online/${this.props.match.params.company}`} onClick={() => {
+                                <span className="prev_block"><span className="title_block_text"><a  href={`/online/${this.props.match.params.company}`} onClick={() => {
                                     this.props.dispatch(staffActions.toggleMovedVisitSuccess(false));
                                 }} className="title_block_text" >{t("Создать новую запись")}</a></span>
                                 </span>
