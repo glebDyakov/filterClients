@@ -610,7 +610,6 @@ class IndexPage extends PureComponent {
                 </Helmet>}
                 <Blob screen={screen} />
                 {isLoading && (<Loading />) }
-                <Loading />
                 <div className="container_popups">
 
                     {info && <Header selectedSubcompany={selectedSubcompany} screen={screen} info={info} />}
