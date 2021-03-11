@@ -7,13 +7,12 @@ import tiktok_white from "../../../public/img/icons/header-tiktok-white.svg";
 import instagram_white from "../../../public/img/icons/header-instagram-white.svg";
 import facebook_white from "../../../public/img/icons/header-facebook-white.svg";
 import arrow_down from "../../../public/img/arrow_down.png";
-import arrow_down_white from "../../../public/img/icons/arrow_down_white.svg";
 import burger_close from "../../../public/img/icons/burger-close.svg";
 import burger_open from "../../../public/img/icons/burger-open.svg";
 import telephone_btn from "../../../public/img/icons/telephone_btn.svg";
 import MediaQuery from 'react-responsive'
 import { withTranslation } from "react-i18next";
-import { BUTTON_COLORS_BY_NUMBER, DEFAULT_BUTTON_COLOR } from '../../_constants/styles.constants';
+import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants';
 // import { findSourceMap } from 'module';
 
 class Header extends PureComponent {
@@ -53,12 +52,11 @@ class Header extends PureComponent {
     }
     changeColor() {
         const newStyles = document.createElement('style')
-        const newColor = this.props.selectedSubcompany ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
-
+        const newColor = this.props.selectedSubcompany.bookingPage ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
 
         document.head.append(newStyles)
         newStyles.innerHTML = ":root {" +
-            "--color_button: #" + `${BUTTON_COLORS_BY_NUMBER[newColor] || DEFAULT_BUTTON_COLOR}` + ";" +
+            "--color_button: #" + BUTTON_COLORS_BY_NUMBER[newColor] + ";" +
             " --color_text: #09093A;" +
             "}"
         this.setState({
@@ -109,9 +107,8 @@ class Header extends PureComponent {
     }
 
     getSocialLink = (social) => {
-        const link = this.props.info.companySocialNetworks.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social).companyUrl;
-        console.log(link);
-        return `https://${link}`;
+        const link = this.props.selectedSubcompany.companySocialNetworks?.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social)?.companyUrl || '';
+        return link ? `https://${link}` : null;
     } 
 
     render() {
