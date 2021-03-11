@@ -164,7 +164,7 @@ class Header extends PureComponent {
                                 </div>
                             </div>
                         </div>
-                        {screen !== 0 &&
+                        {!!screen &&
                             <div className="burger_menu_btn_off" onClick={(event) => this.changeBurger()}>
                                 <img src={burger_close} alt="telephone" />
                             </div>}
@@ -213,12 +213,12 @@ class Header extends PureComponent {
                                 <p className={"firm_name" + ((screen === 0) ? ' not-selected' : '')}>
                                     {currentSelectedSubcompany && ((screen === 0 && currentSelectedSubcompany.onlineCompanyHeader)
                                         ? currentSelectedSubcompany.onlineCompanyHeader : currentSelectedSubcompany.companyName)}</p>
-                                {screen !== 0 && <p className="adress-text"> {currentSelectedSubcompany && `${currentSelectedSubcompany.city
+                                {!!screen && <p className="adress-text"> {currentSelectedSubcompany && `${currentSelectedSubcompany.city
                                     ? (currentSelectedSubcompany.city + ', ') : ''}${currentSelectedSubcompany["companyAddress" + currentSelectedSubcompany.defaultAddress]}`}</p>}
                             </div>
                         </div>
-                        <div className={screen !== 0 ? "firm-icons" : "firm-icons firm-icons_only_lang"}>
-                            {screen !== 0 &&
+                        <div className={!!screen ? "firm-icons" : "firm-icons firm-icons_only_lang"}>
+                            {!!screen &&
                                 <div className="adress-phones">
                                     <span className="adress-icon" />
                                     <div className="adress-text-wrapper">
@@ -252,8 +252,8 @@ class Header extends PureComponent {
                                     </div>
                                 </div>
                             </div>
-                            {screen !== 0 && <div className="separation"></div>}
-                            {screen !== 0 && <div className="mobile-icon-block">
+                            {!!screen && <div className="separation"></div>}
+                            {!!screen && <div className="mobile-icon-block">
                                 <div className={mobile ? "mobile-icon-wrapper mobile_active" : "mobile-icon-wrapper"}>
 
                                     <div className="text-phones">

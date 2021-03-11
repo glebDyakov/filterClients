@@ -86,7 +86,6 @@ class IndexPage extends PureComponent {
     }
 
     componentDidMount () {
-        shapeJs();
         let {company} = this.props.match.params
         company = company.includes('_') ? company.split('_')[0] : company
 
@@ -605,7 +604,7 @@ class IndexPage extends PureComponent {
                 <meta property="og:description" content={description} />
                 <meta name="twitter:description" content={description} />
             </Helmet>}
-           <Blob/>
+           <Blob screen={screen}/>
             <div className="container_popups">
 
                 {info && <Header selectedSubcompany={selectedSubcompany} screen={screen} info={info}/>}

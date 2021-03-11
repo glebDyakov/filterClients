@@ -2909,3 +2909,14 @@ max-height: calc(100% - 50px);
     overflow: hidden;
     margin-bottom: 10px;
 }
+
+.blob {
+    position: absolute;
+    width: 1200px;
+    height: 700px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
