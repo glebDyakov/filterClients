@@ -1,7 +1,6 @@
 import React from 'react';
 import MediaQuery from 'react-responsive'
 const Blob = (props) => {
-    console.log(props.screen)
     switch (props.screen) {
         case 0: return (
             <MediaQuery minWidth={810}>
