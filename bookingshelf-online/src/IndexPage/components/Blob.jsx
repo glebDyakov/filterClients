@@ -1,9 +1,10 @@
 import React from 'react';
-
+import MediaQuery from 'react-responsive'
 const Blob = () => {
    
     return (
-        <svg id="blob" xmlns="http://www.w3.org/2000/svg" version="1.1" filter="url(#goo)">
+        <MediaQuery minWidth={810}>
+            <svg id="blob" xmlns="http://www.w3.org/2000/svg" version="1.1" filter="url(#goo)">
         <defs>
             <filter id="goo">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
@@ -15,7 +16,9 @@ const Blob = () => {
         <circle class="blob" fill="#ed16aa" cx="50%" cy="50%" r="60" id="Circle2"></circle>
         <circle class="blob" fill="#ed16aa" cx="50%" cy="50%" r="60" id="Circle3"></circle>
         <circle class="blob" fill="#ed16aa" cx="50%" cy="50%" r="60" id="Circle4"></circle>
-    </svg>
+    </svg> 
+        </MediaQuery>
+       
     )
 }
 

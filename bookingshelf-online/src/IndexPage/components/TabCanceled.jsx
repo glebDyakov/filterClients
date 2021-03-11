@@ -15,9 +15,7 @@ class TabCanceled extends PureComponent {
                     <p>{t("Запись успешно отменена")}</p>
                 </div>
 
-                {/*{isVisitPage ? <a href={`/online/${companyId}`} className="skip_employee" >Создать запись</a> : <p className="skip_employee"  onClick={() => setScreen(2)}> Создать запись</p>}*/}
-                {/* надо будет поменять ссылку на эту */}  {/* <a href={`/online/${companyId}`} className="skip_employee" >{t("Создать запись")}</a> */}
-                <a href={`/online/${selectedSubcompany.bookingPage}`} className="skip_employee" >{t("Создать запись")}</a>
+             <a href={`/online/${selectedSubcompany.bookingPage}`} className="skip_employee" >{t("Создать запись")}</a>
 
 
             </div>
