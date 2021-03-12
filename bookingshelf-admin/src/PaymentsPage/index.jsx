@@ -895,12 +895,12 @@ class Index extends Component {
                         alt="Попробовать бесплатно"/></a>
                     </div>
                   </div>
-                  {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
+                  {/* {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
                     <p className="description-currency">
                       ({t('Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях')})
                     </p>
                   </div>
-                  }
+                  } */}
 
 
                 </div>
@@ -1013,12 +1013,12 @@ class Index extends Component {
                       <button className="button" type="button"
                               onClick={() => this.AddingInvoice()}>{t('Оплатить')}
                       </button>
-                      {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
+                      {/* {(countryCode && (countryCode === 'BLR' || countryCode === 'UKR')) && <div>
                         <p className="description">
                           ({t('Цены в национальной валюте указаны для ознакомления. Оплата производится по курсу в рос. рублях')})
                         </p>
                       </div>
-                      }
+                      } */}
                     </React.Fragment>
                     }
                   </div>
