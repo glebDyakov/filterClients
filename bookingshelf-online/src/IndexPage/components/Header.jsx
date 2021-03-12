@@ -52,7 +52,7 @@ class Header extends PureComponent {
     }
     changeColor() {
         const newStyles = document.createElement('style')
-        const newColor = this.props.selectedSubcompany.bookingPage ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
+        const newColor = this.props.selectedSubcompany && this.props.selectedSubcompany.bookingPage ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
 
         document.head.append(newStyles)
         newStyles.innerHTML = ":root {" +
@@ -97,8 +97,7 @@ class Header extends PureComponent {
         document.addEventListener('click', this.outsideClickListener);
     }
     componentDidUpdate() {
-
-        if (this.state.curentColor !== this.props.selectedSubcompany.buttonColor) {
+        if (this.props.selectedSubcompany && this.state.curentColor !== this.props.selectedSubcompany.buttonColor) {
             this.changeColor();
         }
 
@@ -108,8 +107,11 @@ class Header extends PureComponent {
     }
 
     getSocialLink = (social) => {
-        const link = this.props.selectedSubcompany.companySocialNetworks?.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social)?.companyUrl || '';
-        return link ? `https://${link}` : null;
+        if (this.props.selectedSubcompany) {
+            const link = this.props.selectedSubcompany.companySocialNetworks?.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social)?.companyUrl || '';
+            return link ? `https://${link}` : null;
+        }
+
     }
 
     render() {
@@ -119,8 +121,7 @@ class Header extends PureComponent {
         const desctop = 600;
         const mob = 599;
         const hiddenMenu = mobile ? "hidden" : "visible";
-        const currentSelectedSubcompany = selectedSubcompany.bookingPage ? selectedSubcompany : info;
-
+        const currentSelectedSubcompany = selectedSubcompany && selectedSubcompany.bookingPage ? selectedSubcompany : info;
         return (
             <div className="modal_menu"
                 style={{
