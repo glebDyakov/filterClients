@@ -15,7 +15,7 @@ import { withTranslation } from "react-i18next";
 import MediaQuery from 'react-responsive'
 import Footer from "../IndexPage/components/Footer";
 import Loading from "../IndexPage/components/Loading";
-
+import {TABLET_WIDTH} from '../_constants/global.constants'
 import Blob from '../IndexPage/components/Blob';
 class VisitPage extends React.Component {
     constructor(props) {
@@ -90,8 +90,6 @@ class VisitPage extends React.Component {
         const { staff: { staff }, t } = this.props;
         const { appointment: visitAppointments, info, screen, approveF, allVisits } = this.state;
         const { isLoading, deleted, error } = this.props.staff;
-        const desktop = 600;
-        const mob = 599;
 
 
         const activeAppointment = visitAppointments && visitAppointments[0] && staff && staff.find(item => item.staffId === visitAppointments[0].staffId);
@@ -164,7 +162,7 @@ class VisitPage extends React.Component {
 
         return (
             <React.Fragment>
-                <MediaQuery maxWidth={mob}>
+                <MediaQuery maxWidth={TABLET_WIDTH-1}>
                     <div className="container_popups">
 
                         {isLoading && <Loading />}
@@ -243,7 +241,7 @@ class VisitPage extends React.Component {
 
                     </div>
                 </MediaQuery>
-                <MediaQuery minWidth={desktop}>
+                <MediaQuery minWidth={TABLET_WIDTH}>
                     <Blob screen={screen} />
                     <div className="container_popups">
                         {isLoading && <Loading />}

@@ -7,6 +7,7 @@ import Paginator from "./Paginator";
 import { withTranslation } from "react-i18next";
 import skip_arrow from "../../../public/img/icons/skip-arrow-white.svg"
 import MediaQuery from 'react-responsive'
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 
 class TabStaffComments extends PureComponent {
     constructor(props) {
@@ -34,9 +35,6 @@ class TabStaffComments extends PureComponent {
 
     render() {
         const { staffComments, staffCommentsStaff, staffCommentsTotalPages, setScreen, isLoading, t } = this.props;
-        const desktop = 600;
-        const mob = 599;
-
         return (
             <div className="service_selection screen1">
                 <div className="title_block n data_title">
@@ -51,7 +49,7 @@ class TabStaffComments extends PureComponent {
                         <React.Fragment>
                             <div className="staff_popup staff_popup_large">
                                 <div className="staff_popup_item">
-                                    <MediaQuery maxWidth={mob}>
+                                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                                         <div className="img_container">
 
                                             <span className="staff_popup_name">
@@ -91,7 +89,7 @@ class TabStaffComments extends PureComponent {
                                             }
                                         </div>
                                     </MediaQuery>
-                                    <MediaQuery minWidth={desktop}>
+                                    <MediaQuery minWidth={TABLET_WIDTH}>
                                         <div className="img_container">
 
                                             <span className="staff_popup_name">

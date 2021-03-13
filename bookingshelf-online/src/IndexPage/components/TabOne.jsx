@@ -10,6 +10,7 @@ import { compose } from 'redux';
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
 import { ARROW_ICON,CURSOR_ICON } from '../../_constants/svg.constants';
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 
 class TabOne extends PureComponent {
     constructor(props) {
@@ -122,7 +123,7 @@ class TabOne extends PureComponent {
 
         serviceInfo = (
             <div>
-                <MediaQuery maxWidth={mob}>
+                <MediaQuery maxWidth={TABLET_WIDTH-1}>
                     <div className="specialist" onClick={event => this.openListFunc()}>
 
                         <div className="specialist-block">
@@ -195,7 +196,7 @@ class TabOne extends PureComponent {
                         </div>
                     </div>
                 </MediaQuery>
-                <MediaQuery minWidth={desktop}>
+                <MediaQuery minWidth={TABLET_WIDTH}>
                     <div className="specialist" >
                         <div className="specialist-block">
                             {CURSOR_ICON}

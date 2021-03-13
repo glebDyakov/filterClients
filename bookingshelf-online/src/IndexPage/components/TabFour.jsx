@@ -8,6 +8,7 @@ import MediaQuery from 'react-responsive'
 import cansel from "../../../public/img/icons/cansel_black.svg";
 import { culcDay } from "../../_helpers/data-calc"
 import { CURSOR_ICON } from '../../_constants/svg.constants';
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 class TabFour extends PureComponent {
     constructor(props) {
         super(props)
@@ -43,8 +44,6 @@ class TabFour extends PureComponent {
 
         const { t, flagAllStaffs, serviceIntervalOn, movedVisitSuccess, getDurationForCurrentStaff, movingVisit, selectedTime: time, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
-        const desktop = 600;
-        const mob = 599;
         const availableTimes = []
         const currentDay = culcDay(selectedDay, "desktop");
         let currentTimeText = "";
@@ -136,7 +135,7 @@ class TabFour extends PureComponent {
             }
             serviceInfo = (
                 <div>
-                    <MediaQuery maxWidth={mob}>
+                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
@@ -203,7 +202,7 @@ class TabFour extends PureComponent {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desktop}>
+                    <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="specialist-block">
                             {CURSOR_ICON}
                             {openList ?

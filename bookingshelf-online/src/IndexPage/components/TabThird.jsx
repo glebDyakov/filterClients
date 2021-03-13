@@ -6,6 +6,7 @@ import { withTranslation } from "react-i18next";
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
 import { CURSOR_ICON } from '../../_constants/svg.constants';
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 class TabThird extends PureComponent {
     constructor(props) {
         super(props);
@@ -33,9 +34,6 @@ class TabThird extends PureComponent {
 
         let currentDay = culcDay(selectedDay, "desktop");
 
-        const desktop = 600;
-        const mob = 599;
-
         let serviceInfo = null
         if (selectedService.serviceId) {
             let priceFrom = 0;
@@ -61,7 +59,7 @@ class TabThird extends PureComponent {
             }
             serviceInfo = (
                 <div>
-                    <MediaQuery maxWidth={mob}>
+                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
                                 {CURSOR_ICON}
@@ -134,7 +132,7 @@ class TabThird extends PureComponent {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desktop}>
+                    <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
 
                             <div className="specialist-block">

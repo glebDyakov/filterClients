@@ -9,6 +9,7 @@ import Footer from "./Footer";
 import MediaQuery from 'react-responsive'
 import cansel from "../../../public/img/icons/cansel_black.svg";
 import { ARROW_ICON } from '../../_constants/svg.constants';
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 class TabSix extends PureComponent {
     constructor(props) {
         super(props);
@@ -35,8 +36,6 @@ class TabSix extends PureComponent {
         const { selectedStaff, selectedService, selectedServices, selectedDay, selectedTime: time, selectedTime, newAppointments, getDurationForCurrentStaff,
             info, _delete, _move, movedVisitSuccess, movingVisit, t } = this.props;
         const { approveF } = this.state;
-        const desktop = 600;
-        const mob = 599;
         const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
         let serviceInfo = null
         if (selectedServices[0]) {
@@ -93,7 +92,7 @@ class TabSix extends PureComponent {
         }
         return (
             <React.Fragment>
-                <MediaQuery maxWidth={mob}>
+                <MediaQuery maxWidth={TABLET_WIDTH-1}>
                     <div className="service_selection final-screen">
                         <div className="service_selection_block_six">
                             <div className="last_footer_block">
@@ -166,7 +165,7 @@ class TabSix extends PureComponent {
 
                     </div>
                 </MediaQuery>
-                <MediaQuery minWidth={desktop}>
+                <MediaQuery minWidth={TABLET_WIDTH}>
                     <div className="service_selection final-screen">
                         <div className="last_list">
                             {serviceInfo}

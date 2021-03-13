@@ -13,7 +13,7 @@ import telephone_btn from "../../../public/img/icons/telephone_btn.svg";
 import MediaQuery from 'react-responsive'
 import { withTranslation } from "react-i18next";
 import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants';
-// import { findSourceMap } from 'module';
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 
 class Header extends PureComponent {
     constructor(props) {
@@ -118,8 +118,6 @@ class Header extends PureComponent {
         const { info, screen, selectedSubcompany } = this.props;
         const { burger, mobile, currentLang, langList, curentColor } = this.state
         const currentTextLeng = this.props.i18n.language.toUpperCase();
-        const desktop = 600;
-        const mob = 599;
         const hiddenMenu = mobile ? "hidden" : "visible";
         const currentSelectedSubcompany = selectedSubcompany && selectedSubcompany.bookingPage ? selectedSubcompany : info;
         return (
@@ -129,7 +127,7 @@ class Header extends PureComponent {
                 }}>
                 <React.Fragment>
 
-                    <MediaQuery maxWidth={mob}>
+                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                         <div className="firm-title">
                             <img className="logo" src={currentSelectedSubcompany.imageBase64
                                 ? "data:image/png;base64," + currentSelectedSubcompany.imageBase64
@@ -204,7 +202,7 @@ class Header extends PureComponent {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desktop}>
+                    <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="firm-title">
                             <img className="logo" src={currentSelectedSubcompany.imageBase64
                                 ? "data:image/png;base64," + currentSelectedSubcompany.imageBase64
