@@ -92,11 +92,14 @@ class VisitPage extends React.Component {
         const { isLoading, deleted, error } = this.props.staff;
         const desktop = 600;
         const mob = 599;
-        console.log(visitAppointments)
+
 
         const activeAppointment = visitAppointments && visitAppointments[0] && staff && staff.find(item => item.staffId === visitAppointments[0].staffId);
-
+       
         let serviceInfo = null
+        const appointment = visitAppointments ? visitAppointments[0] : {};
+        
+        const currentDay = moment(appointment.appointmentTimeMillis).format('DD MMMM YYYY,');
         if (visitAppointments && visitAppointments[0]) {
             let priceFrom = 0;
             let priceTo = 0;
@@ -121,7 +124,7 @@ class VisitPage extends React.Component {
 
                                 <div className="last_list_name">
                                     <span>{visitAppointments[0].staffName}</span>
-                                    {/* <p>{t(`${currentDay}`)}{moment(time).format('LT')}</p> */}
+                                    {appointment.appointmentTimeMillis && <p>{t(`${currentDay}`)}{moment(appointment.appointmentTimeMillis).format('LT')}</p>}
                                 </div>
                             </div>
                             <p className="desktop_visible" style={{
@@ -155,7 +158,7 @@ class VisitPage extends React.Component {
             )
         }
 
-        const appointment = visitAppointments ? visitAppointments[0] : {};
+  
 
 
 
@@ -163,7 +166,7 @@ class VisitPage extends React.Component {
             <React.Fragment>
                 <MediaQuery maxWidth={mob}>
                     <div className="container_popups">
-                   
+
                         {isLoading && <Loading />}
                         {info && <Header info={info} />}
                         {!error && !deleted && appointment && screen === 1 && !isLoading &&
@@ -241,7 +244,7 @@ class VisitPage extends React.Component {
                     </div>
                 </MediaQuery>
                 <MediaQuery minWidth={desktop}>
-                <Blob screen={screen} />
+                    <Blob screen={screen} />
                     <div className="container_popups">
                         {isLoading && <Loading />}
                         {info && <Header info={info} />}
