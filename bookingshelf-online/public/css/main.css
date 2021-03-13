@@ -863,6 +863,11 @@ a {
     font-size: 13px;
     line-height: 18px;
 }
+.time-footer_desktop_p{
+    color: white;
+    font-size: 13px;
+    line-height: 18px; 
+}
 
 .service_footer_price_small_text:hover {
     cursor: pointer;

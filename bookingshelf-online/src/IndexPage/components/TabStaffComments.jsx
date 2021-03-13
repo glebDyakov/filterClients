@@ -34,7 +34,7 @@ class TabStaffComments extends PureComponent {
 
     render() {
         const { staffComments, staffCommentsStaff, staffCommentsTotalPages, setScreen, isLoading, t } = this.props;
-        const desctop = 600;
+        const desktop = 600;
         const mob = 599;
 
         return (
@@ -91,7 +91,7 @@ class TabStaffComments extends PureComponent {
                                             }
                                         </div>
                                     </MediaQuery>
-                                    <MediaQuery minWidth={desctop}>
+                                    <MediaQuery minWidth={desktop}>
                                         <div className="img_container">
 
                                             <span className="staff_popup_name">

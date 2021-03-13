@@ -73,7 +73,7 @@ class TabTwo extends Component {
         }
     }
     priceText(priceFrom, priceTo, currency, white, footer) {
-        const desctop = 600;
+        const desktop = 600;
         const mob = 599;
         let whiteClass = "";
         white ? whiteClass = "white_text" : whiteClass = "";
@@ -99,7 +99,7 @@ class TabTwo extends Component {
                         </React.Fragment>
 
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={desktop}>
                         <div className="price_service_half">
                             <strong className={whiteClass}>{priceFrom}</strong>
                             <span className={whiteClass}>{currency}</span>
@@ -132,7 +132,7 @@ class TabTwo extends Component {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={desktop}>
                         <div className="price_service_half">
                             <strong className={whiteClass}>{priceFrom}</strong>
                             <span className={whiteClass}>{currency}</span>
@@ -174,7 +174,7 @@ class TabTwo extends Component {
 
         const { selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff, services, selectedService, servicesForStaff, selectService, setDefaultFlag, t } = this.props;
         const { searchValue, openList, catigor, visibleSearch } = this.state;
-        const desctop = 600;
+        const desktop = 600;
         const mob = 599;
         const defaultHeight = 310;
         let heightService = "0";
@@ -328,7 +328,7 @@ class TabTwo extends Component {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={desktop}>
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
@@ -446,7 +446,7 @@ class TabTwo extends Component {
                                 </div></div>)}
 
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={desktop}>
                         <div className="title_block service-title">
                             {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) &&
                                 <span className="prev_block service-prev" onClick={() => {
@@ -633,7 +633,7 @@ class TabTwo extends Component {
                                                                 )}
                                                         </div>
                                                     </MediaQuery>
-                                                    <MediaQuery minWidth={desctop}>
+                                                    <MediaQuery minWidth={desktop}>
                                                         <div className="service_items"
                                                             style={this.startOpenservice
                                                                 ? (catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })

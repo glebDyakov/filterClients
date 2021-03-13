@@ -43,10 +43,10 @@ class TabFour extends PureComponent {
 
         const { t, flagAllStaffs, serviceIntervalOn, movedVisitSuccess, getDurationForCurrentStaff, movingVisit, selectedTime: time, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
-        const desctop = 600;
+        const desktop = 600;
         const mob = 599;
         const availableTimes = []
-        const currentDay = culcDay(selectedDay, "desctop");
+        const currentDay = culcDay(selectedDay, "desktop");
         let currentTimeText = "";
         if (moment(this.state.arrayTime).format('LT') !== "Invalid date") {
             currentTimeText = moment(this.state.arrayTime).format('LT');
@@ -203,7 +203,7 @@ class TabFour extends PureComponent {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={desktop}>
                         <div className="specialist-block">
                             {CURSOR_ICON}
                             {openList ?
@@ -238,7 +238,7 @@ class TabFour extends PureComponent {
                                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                     </div>
                                     <div className="time-footer hover" >
-                                        <p className="time-footer_desctop_p" onClick={event => this.setState({
+                                        <p className="time-footer_desktop_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Выбрано услуг")}: {selectedServices.length}</p>
                                         {/* } */}
@@ -246,7 +246,7 @@ class TabFour extends PureComponent {
                                         </p>
                                     </div>
                                     <div className="time-footer" >
-                                        <p className="time-footer_desctop_p" >{t("Дата")}:</p>
+                                        <p className="time-footer_desktop_p" >{t("Дата")}:</p>
                                         <p className="service_footer_price_small_text" >{t(`${currentDay}`)} {currentTimeText}</p>
                                     </div>
                                     {!!selectedServices.length && <button disabled={!this.state.arrayTime} className={this.state.arrayTime ? "next_block" : "next_block disabledField"} onClick={() => this.rescheduleVisit()}>

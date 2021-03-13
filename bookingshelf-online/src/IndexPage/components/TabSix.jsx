@@ -35,7 +35,7 @@ class TabSix extends PureComponent {
         const { selectedStaff, selectedService, selectedServices, selectedDay, selectedTime: time, selectedTime, newAppointments, getDurationForCurrentStaff,
             info, _delete, _move, movedVisitSuccess, movingVisit, t } = this.props;
         const { approveF } = this.state;
-        const desctop = 600;
+        const desktop = 600;
         const mob = 599;
         const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
         let serviceInfo = null
@@ -166,7 +166,7 @@ class TabSix extends PureComponent {
 
                     </div>
                 </MediaQuery>
-                <MediaQuery minWidth={desctop}>
+                <MediaQuery minWidth={desktop}>
                     <div className="service_selection final-screen">
                         <div className="last_list">
                             {serviceInfo}

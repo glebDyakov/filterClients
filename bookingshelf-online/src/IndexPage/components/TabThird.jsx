@@ -31,9 +31,9 @@ class TabThird extends PureComponent {
         const { openList } = this.state;
 
 
-        let currentDay = culcDay(selectedDay, "desctop");
+        let currentDay = culcDay(selectedDay, "desktop");
 
-        const desctop = 600;
+        const desktop = 600;
         const mob = 599;
 
         let serviceInfo = null
@@ -134,7 +134,7 @@ class TabThird extends PureComponent {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={desktop}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
 
                             <div className="specialist-block">
@@ -171,7 +171,7 @@ class TabThird extends PureComponent {
                                             <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                         </div>
                                         <div className="time-footer hover" >
-                                            <p className="time-footer_desctop_p" onClick={event => this.setState({
+                                            <p className="time-footer_desktop_p" onClick={event => this.setState({
                                                 openList: !openList,
                                             })}>{t("Выбрано услуг")}: {selectedServices.length} </p>
 
@@ -179,7 +179,7 @@ class TabThird extends PureComponent {
                                             </p>
                                         </div>
                                         <div className="time-footer" >
-                                            <p className="time-footer_desctop_p" >{t("Дата")}:</p>
+                                            <p className="time-footer_desktop_p" >{t("Дата")}:</p>
                                             <p className="service_footer_price_small_text" >{t(`${currentDay}`)}</p>
                                         </div>
                                         {!!selectedServices.length && <button disabled={!selectedDay} className={!selectedDay ? "next_block disabledField" : "next_block"} onClick={() => {

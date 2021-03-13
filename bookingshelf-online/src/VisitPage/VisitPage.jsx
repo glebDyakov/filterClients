@@ -90,7 +90,7 @@ class VisitPage extends React.Component {
         const { staff: { staff }, t } = this.props;
         const { appointment: visitAppointments, info, screen, approveF, allVisits } = this.state;
         const { isLoading, deleted, error } = this.props.staff;
-        const desctop = 600;
+        const desktop = 600;
         const mob = 599;
         console.log(visitAppointments)
 
@@ -240,7 +240,7 @@ class VisitPage extends React.Component {
 
                     </div>
                 </MediaQuery>
-                <MediaQuery minWidth={desctop}>
+                <MediaQuery minWidth={desktop}>
                 <Blob screen={screen} />
                     <div className="container_popups">
                         {isLoading && <Loading />}

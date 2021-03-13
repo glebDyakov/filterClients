@@ -25,7 +25,7 @@ class TabFive extends PureComponent {
       group, handleChange, isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone, setterEmail, handleSave, clientActivationId, enteredCodeError, t } = this.props;
 
     const { enteredCode } = this.state;
-    const desctop = 600;
+    const desktop = 600;
     const mob = 599;
 
     const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
@@ -175,7 +175,7 @@ class TabFive extends PureComponent {
                           />
                         </div>
                       </MediaQuery>
-                      <MediaQuery minWidth={desctop}>
+                      <MediaQuery minWidth={desktop}>
                         <div className="entry_form-item">
                           {!(group.email && group.email !== '' && !isValidEmailAddress(group.email))
                             ? (<p >{t("Email")}</p>)
@@ -233,7 +233,7 @@ class TabFive extends PureComponent {
                 </React.Fragment>
               )
           }
-          <MediaQuery minWidth={desctop}>
+          <MediaQuery minWidth={desktop}>
             <div className="specialist">
               <div className="last_footer_block">
                 <p >

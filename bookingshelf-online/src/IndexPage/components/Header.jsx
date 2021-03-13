@@ -118,7 +118,7 @@ class Header extends PureComponent {
         const { info, screen, selectedSubcompany } = this.props;
         const { burger, mobile, currentLang, langList, curentColor } = this.state
         const currentTextLeng = this.props.i18n.language.toUpperCase();
-        const desctop = 600;
+        const desktop = 600;
         const mob = 599;
         const hiddenMenu = mobile ? "hidden" : "visible";
         const currentSelectedSubcompany = selectedSubcompany && selectedSubcompany.bookingPage ? selectedSubcompany : info;
@@ -204,7 +204,7 @@ class Header extends PureComponent {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={desktop}>
                         <div className="firm-title">
                             <img className="logo" src={currentSelectedSubcompany.imageBase64
                                 ? "data:image/png;base64," + currentSelectedSubcompany.imageBase64
