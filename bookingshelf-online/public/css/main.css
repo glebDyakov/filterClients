@@ -863,6 +863,11 @@ a {
     font-size: 13px;
     line-height: 18px;
 }
+.time-footer_desktop_p{
+    color: white;
+    font-size: 13px;
+    line-height: 18px; 
+}
 
 .service_footer_price_small_text:hover {
     cursor: pointer;
@@ -2420,7 +2425,7 @@ a.last_footer_block_a {
 
 .cansel_block {
     display: flex;
-    margin: 13px 10px 0px -25px;
+    margin: 13px 10px 0px -15px;
 }
 
 .cansel-visit {

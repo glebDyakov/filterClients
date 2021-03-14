@@ -8,6 +8,7 @@ import mobile_gray_cansel from "../../../public/img/icons/mobile_gray_cansel.svg
 import MediaQuery from 'react-responsive'
 import { CURSOR_ICON } from '../../_constants/svg.constants';
 import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants'
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 class TabTwo extends Component {
     constructor(props) {
         super(props);
@@ -73,15 +74,14 @@ class TabTwo extends Component {
         }
     }
     priceText(priceFrom, priceTo, currency, white, footer) {
-        const desctop = 600;
-        const mob = 599;
+       
         let whiteClass = "";
         white ? whiteClass = "white_text" : whiteClass = "";
         const { t } = this.props;
         if (priceFrom !== priceTo) {
             if (footer) {
                 return (<React.Fragment>
-                    <MediaQuery maxWidth={mob}>
+                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                         <React.Fragment>
                             <div className="price_footer_service_item">
                                 <div className="price_footer_service_half">
@@ -99,7 +99,7 @@ class TabTwo extends Component {
                         </React.Fragment>
 
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="price_service_half">
                             <strong className={whiteClass}>{priceFrom}</strong>
                             <span className={whiteClass}>{currency}</span>
@@ -114,7 +114,7 @@ class TabTwo extends Component {
                 )
             } else {
                 return (<React.Fragment>
-                    <MediaQuery maxWidth={mob}>
+                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                         <div className="price_service">
                             <div className="price_service_item">
                                 <div className="price_service_half">
@@ -132,7 +132,7 @@ class TabTwo extends Component {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="price_service_half">
                             <strong className={whiteClass}>{priceFrom}</strong>
                             <span className={whiteClass}>{currency}</span>
@@ -174,8 +174,7 @@ class TabTwo extends Component {
 
         const { selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff, services, selectedService, servicesForStaff, selectService, setDefaultFlag, t } = this.props;
         const { searchValue, openList, catigor, visibleSearch } = this.state;
-        const desctop = 600;
-        const mob = 599;
+        
         const defaultHeight = 310;
         let heightService = "0";
         let heightServiceMob = "0";
@@ -285,7 +284,7 @@ class TabTwo extends Component {
             }
             serviceInfo = (
                 <div>
-                    <MediaQuery maxWidth={mob}>
+                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
@@ -328,7 +327,7 @@ class TabTwo extends Component {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="specialist" onClick={event => this.openListFunc(event)}>
 
                             <div className="specialist-block">
@@ -384,7 +383,7 @@ class TabTwo extends Component {
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
             <div className="service_selection screen2">
                 <div className="service_selection_block_two">
-                    <MediaQuery maxWidth={mob}>
+                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                         {visibleSearch ?
                             (<div className="title_block service-title">
 
@@ -438,7 +437,7 @@ class TabTwo extends Component {
                                     width: "175px",
                                 }}>
                                     <p className="modal_title">{t("Выберите услугу")}</p>
-                                    <div className="desktop_invisible" onClick={e => this.setState({
+                                    <div className="TABLET_WIDTH_invisible" onClick={e => this.setState({
                                         visibleSearch: !visibleSearch,
                                     })}>
                                         <img className="media_search" alt="search" src={search_icon} />
@@ -446,7 +445,7 @@ class TabTwo extends Component {
                                 </div></div>)}
 
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="title_block service-title">
                             {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) &&
                                 <span className="prev_block service-prev" onClick={() => {
@@ -469,7 +468,7 @@ class TabTwo extends Component {
                                     }
                                 }}><span className="title_block_text">{t("Назад")}</span></span>}
                             <p className="modal_title">{t("Выберите услугу")}</p>
-                            <div className="row align-items-center content clients mb-2 search-block desktop_visible">
+                            <div className="row align-items-center content clients mb-2 search-block TABLET_WIDTH_visible">
                                 <div className="search col-12">
                                     <img
 
@@ -562,7 +561,7 @@ class TabTwo extends Component {
                                                                 </div>)}
                                                         </div>
                                                     </div>
-                                                    <MediaQuery maxWidth={mob}>
+                                                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                                                         <div className="service_items"
                                                             style={this.startOpenservice
                                                                 ? (catigor[index] ? { maxHeight: `${heightServiceMob}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })
@@ -633,7 +632,7 @@ class TabTwo extends Component {
                                                                 )}
                                                         </div>
                                                     </MediaQuery>
-                                                    <MediaQuery minWidth={desctop}>
+                                                    <MediaQuery minWidth={TABLET_WIDTH}>
                                                         <div className="service_items"
                                                             style={this.startOpenservice
                                                                 ? (catigor[index] ? { maxHeight: `${heightService}`, transition: `max-height ${transit}s linear ` } : { maxHeight: "0px", borderBottom: "1px solid rgba(172, 172, 172, 0.2)", transition: `max-height ${transit}s linear ` })

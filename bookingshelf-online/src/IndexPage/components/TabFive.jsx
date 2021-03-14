@@ -6,6 +6,7 @@ import { origin } from "../../_helpers/handle-response";
 import { withTranslation } from "react-i18next";
 import 'react-phone-input-2/lib/style.css';
 import MediaQuery from 'react-responsive'
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 
 class TabFive extends PureComponent {
   constructor(props) {
@@ -25,8 +26,6 @@ class TabFive extends PureComponent {
       group, handleChange, isValidEmailAddress, forceUpdateStaff, flagAllStaffs, setterPhone, setterEmail, handleSave, clientActivationId, enteredCodeError, t } = this.props;
 
     const { enteredCode } = this.state;
-    const desctop = 600;
-    const mob = 599;
 
     const currentDay = moment(selectedDay).format('DD MMMM YYYY,');
     if (!clientActivationId) {
@@ -128,7 +127,7 @@ class TabFive extends PureComponent {
                           className={((group.phone && !group.clientName) ? ' redBorder' : '')}
                         />
                       </div>
-                      <MediaQuery maxWidth={mob}>
+                      <MediaQuery maxWidth={TABLET_WIDTH-1}>
                         <div className="entry_form-item">
                           <p>{t("Телефон")}</p>
                           <div className="phones_country">
@@ -175,7 +174,7 @@ class TabFive extends PureComponent {
                           />
                         </div>
                       </MediaQuery>
-                      <MediaQuery minWidth={desctop}>
+                      <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="entry_form-item">
                           {!(group.email && group.email !== '' && !isValidEmailAddress(group.email))
                             ? (<p >{t("Email")}</p>)
@@ -233,7 +232,7 @@ class TabFive extends PureComponent {
                 </React.Fragment>
               )
           }
-          <MediaQuery minWidth={desctop}>
+          <MediaQuery minWidth={TABLET_WIDTH}>
             <div className="specialist">
               <div className="last_footer_block">
                 <p >
@@ -260,7 +259,7 @@ class TabFive extends PureComponent {
               </div>
             </div>
           </MediaQuery>
-          <MediaQuery maxWidth={mob}>
+          <MediaQuery maxWidth={TABLET_WIDTH-1}>
             <div className="last_footer_block">
               <input
                 className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " book_button"}
