@@ -102,7 +102,7 @@ class TabSix extends PureComponent {
                                 }}>{t("Создать новую запись")}</a><p>
                                     {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
               <a className="last_footer_block_a"  href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
-                                </p>
+                                </p>y
                             </div>
                             <div className="last_list">
                                 {serviceInfo}

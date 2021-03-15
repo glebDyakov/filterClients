@@ -383,7 +383,7 @@ class TabTwo extends Component {
         }
         return info && (info.bookingPage === match.params.company) && (info.onlineZapisOn || (!info.onlineZapisOn && (parseInt(moment().utc().format('x')) < info.onlineZapisEndTimeMillis))) && (
             <div className="service_selection screen2">
-                <div className="service_selection_block_two">
+                <div className={selectedServices[0]?"service_selection_block_two service_selection_block_one_select":"service_selection_block_two"}>
                     <MediaQuery maxWidth={mob}>
                         {visibleSearch ?
                             (<div className="title_block service-title">
