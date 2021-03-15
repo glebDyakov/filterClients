@@ -126,6 +126,9 @@
     .service_selection_block_one {
         max-height: calc(100% - 50px);
     }
+    .service_selection_block_one_select{
+        max-height: calc(100% - 90px);
+    }
     .affiliate {
         max-height: calc(100% - 50px);
         margin-bottom: 0;
@@ -843,7 +846,7 @@
         margin-top: 17px;
     }
     .service_selection_block_two {
-        max-height: calc(100% - 140px);
+        max-height: calc(100% - 50px);
     }
     .service_selection_block_one {
         max-height: calc(100% - 50px);
@@ -874,5 +877,8 @@
     }
     .price_service {
         align-items: center;
+    }
+    .service_selection_block_one_select{
+        max-height: calc(100% - 160px);
     }
 }
