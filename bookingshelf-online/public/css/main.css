@@ -719,7 +719,7 @@ a {
     border-radius: 50%;
     box-shadow: 2px 3px 15px 0 rgb(56 62 74 / 8%);
     background-color: #ffffff;
-    margin: -2px 15px -1px -2px;
+    margin: -2px 15px -1px 0px;
     border: solid 1px rgba(172, 172, 172, 0.3);
     max-width: 100%;
     height: 42px;
@@ -1605,12 +1605,25 @@ a {
 /*--time_book_popup--*/
 
 .book_button {
+    background-color: white;
+    width: 165px;
+    height: 42px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    font-weight: 600;
     font-size: 14px;
     line-height: 19px;
-    padding: 0px 24px 0px 1px;
-    background-position-x: 120px;
 }
-
+.book_button img{
+    margin-left: 10px;
+    margin-top: 3px;
+}
+.book_button:hover{
+    cursor: pointer;
+}
 /*--end time_book_popup--*/
 
 input[type="search"]::-webkit-input-placeholder {
@@ -2927,4 +2940,47 @@ max-height: calc(100% - 50px);
 }
 .blob svg{
     overflow: visible;
+}
+.clientCookie_name{
+
+}
+.clientCookie_block{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.clientCookie_block div{
+    margin-top: 10px;
+}
+.clientCookie_block p{
+    margin-top: 10px;
+}
+.clientCookie_block button{
+    width: 150px;
+    height: 35px;
+    margin-top: 10px;
+}
+.clientCookie_block textarea{
+    width: 500px;
+    height: 110px;
+}
+.confirmation{
+    width: 700px;
+    border: 1px solid rgba(9, 9, 58, 0.1);
+    border-radius: 5px;
+    margin: auto;
+    padding: 20px 20px 15px 20px;
+    margin-top: 13px;
+}
+.confirmation img {
+    width: 17px;
+}
+.confirmation span {
+  font-size: 14px;
+}
+.confirmation p:nth-child(2){
+    margin-top: 10px;
+}
+.confirmation input{
+    margin-top: 10px;
 }
