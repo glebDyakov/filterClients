@@ -6,6 +6,7 @@ import { withTranslation } from "react-i18next";
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
 import { CURSOR_ICON } from '../../_constants/svg.constants';
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 class TabThird extends PureComponent {
     constructor(props) {
         super(props);
@@ -31,10 +32,7 @@ class TabThird extends PureComponent {
         const { openList } = this.state;
 
 
-        let currentDay = culcDay(selectedDay, "desctop");
-
-        const desctop = 600;
-        const mob = 599;
+        let currentDay = culcDay(selectedDay, "desktop");
 
         let serviceInfo = null
         if (selectedService.serviceId) {
@@ -61,7 +59,7 @@ class TabThird extends PureComponent {
             }
             serviceInfo = (
                 <div>
-                    <MediaQuery maxWidth={mob}>
+                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
                             <div className="specialist-block">
                                 {CURSOR_ICON}
@@ -134,7 +132,7 @@ class TabThird extends PureComponent {
                             </div>
                         </div>
                     </MediaQuery>
-                    <MediaQuery minWidth={desctop}>
+                    <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="specialist" onClick={event => this.openListFunc()}>
 
                             <div className="specialist-block">
@@ -171,7 +169,7 @@ class TabThird extends PureComponent {
                                             <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                         </div>
                                         <div className="time-footer hover" >
-                                            <p className="time-footer_desctop_p" onClick={event => this.setState({
+                                            <p className="time-footer_desktop_p" onClick={event => this.setState({
                                                 openList: !openList,
                                             })}>{t("Выбрано услуг")}: {selectedServices.length} </p>
 
@@ -179,7 +177,7 @@ class TabThird extends PureComponent {
                                             </p>
                                         </div>
                                         <div className="time-footer" >
-                                            <p className="time-footer_desctop_p" >{t("Дата")}:</p>
+                                            <p className="time-footer_desktop_p" >{t("Дата")}:</p>
                                             <p className="service_footer_price_small_text" >{t(`${currentDay}`)}</p>
                                         </div>
                                         {!!selectedServices.length && <button disabled={!selectedDay} className={!selectedDay ? "next_block disabledField" : "next_block"} onClick={() => {

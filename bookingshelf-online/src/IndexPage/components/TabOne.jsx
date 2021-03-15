@@ -10,6 +10,7 @@ import { compose } from 'redux';
 import MediaQuery from 'react-responsive'
 import { culcDay } from "../../_helpers/data-calc"
 import { ARROW_ICON,CURSOR_ICON } from '../../_constants/svg.constants';
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 
 class TabOne extends PureComponent {
     constructor(props) {
@@ -88,7 +89,7 @@ class TabOne extends PureComponent {
     render() {
         const { t, staffId, isLoading, selectedDay, handleMoveVisit, error, handleDayClick, newAppointments, staffs, selectedTime: time, timetableAvailable, isStartMovingVisit, setDefaultFlag, selectedServices, flagAllStaffs, movingVisit, services, subcompanies, history, match, clearStaff, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, getDurationForCurrentStaff } = this.props;
         const { openList } = this.state;
-        const desctop = 600;
+        const desktop = 600;
         const mob = 599;
         let currentTimeText = "";
         if (moment(time).format('LT') !== "Invalid date") {
@@ -96,7 +97,7 @@ class TabOne extends PureComponent {
         }
         let serviceInfo = null;
 
-        const currentDay = culcDay(selectedDay, "desctop");
+        const currentDay = culcDay(selectedDay, "desktop");
 
         let sizeWords = "23px";
         let priceFrom = 0;
@@ -122,7 +123,7 @@ class TabOne extends PureComponent {
 
         serviceInfo = (
             <div>
-                <MediaQuery maxWidth={mob}>
+                <MediaQuery maxWidth={TABLET_WIDTH-1}>
                     <div className="specialist" onClick={event => this.openListFunc()}>
 
                         <div className="specialist-block">
@@ -195,7 +196,7 @@ class TabOne extends PureComponent {
                         </div>
                     </div>
                 </MediaQuery>
-                <MediaQuery minWidth={desctop}>
+                <MediaQuery minWidth={TABLET_WIDTH}>
                     <div className="specialist" >
                         <div className="specialist-block">
                             {CURSOR_ICON}
@@ -230,7 +231,7 @@ class TabOne extends PureComponent {
                                         <span>{selectedServices[0] && selectedServices[0].currency}</span>
                                     </div>
                                     <div className="time-footer hover" >
-                                        <p className="time-footer_desctop_p" onClick={event => this.setState({
+                                        <p className="time-footer_desktop_p" onClick={event => this.setState({
                                             openList: !openList,
                                         })}>{t("Выбрано услуг")}: {selectedServices.length}</p>
                                         {/* } */}
@@ -238,7 +239,7 @@ class TabOne extends PureComponent {
                                         </p>
                                     </div>
                                     <div className="time-footer" >
-                                        <p className="time-footer_desctop_p" >{t("Дата")}:</p>
+                                        <p className="time-footer_desktop_p" >{t("Дата")}:</p>
                                         <p className="service_footer_price_small_text" >{currentDay} {moment(time).format('LT')}</p>
                                     </div>
                                     <span style={{
