@@ -2963,6 +2963,7 @@ max-height: calc(100% - 50px);
 .clientCookie_block textarea{
     width: 500px;
     height: 110px;
+    border: solid 1px rgba(172, 172, 172, 0.2);
 }
 .confirmation{
     width: 700px;
