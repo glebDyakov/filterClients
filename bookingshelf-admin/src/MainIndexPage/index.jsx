@@ -229,8 +229,7 @@ class Index extends Component {
     const { subcompanies, confirmModal } = this.state;
     const newSubcompanies = subcompanies;
     newSubcompanies[confirmModal.index]["appointmentStoragePeriod"] = +confirmModal.value;
-
-    this.setState({ ...this.state, subcompanies: newSubcompanies, confirmModal: false });
+    this.setState({ ...this.state, subcompanies: [...newSubcompanies], confirmModal: false });
   }
 
   setErrors = (errors) => this.setState({ errors });
@@ -341,6 +340,7 @@ class Index extends Component {
                 saved={saved}
                 isAvatarOpened={isAvatarOpened}
                 submitted={submitted}
+                onVisitStorageDurationChange={this.onVisitStorageDurationChange}
               />
             ),
             )}

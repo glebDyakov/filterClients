@@ -22,6 +22,7 @@ const SubCompany = ({
   saved,
   isAvatarOpened,
   submitted,
+  onVisitStorageDurationChange,
 }) => {
   return (
     <form key={`settings-page_subcompanies-item-${i}`} className="content retreats company_fields" name="form">
@@ -140,7 +141,7 @@ const SubCompany = ({
               className="custom-select"
               placeholder="По умолчанию"
               value={subcompany.appointmentStoragePeriod}
-              onChange={(e) => this.onVisitStorageDurationChange(e, i)}
+              onChange={(e) => onVisitStorageDurationChange(e, i)}
               name="appointmentStoragePeriod"
             >
               {VISITS_STORAGE_DURATIONS.map(({ name, value }) => (
