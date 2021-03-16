@@ -362,19 +362,18 @@ class TabOne extends PureComponent {
                                                                     &nbsp;{staff.rating}
                                                                 </p>
                                                             </div>
-                                                        ) : <p className="no_zap">{t("Нет отзывов")}</p>}
+                                                        ) : <p className="no_otz">{t("Нет отзывов")}</p>}
                                                     </div>
                                                 </div>
                                             </div>
-                                            {staff.description ? (<p className="staff_popup_item_p">{staff.description}</p>)
-                                                : (<p className="staff_popup_item_p">{t("Нет описания")}</p>)}
+                                            {staff.description && (<p className="staff_popup_item_p">{staff.description}</p>)}
                                             {nearestTime && nearestTime.map((time, id) =>
                                                 time.staffId === staff.staffId && time.availableDays.length !== 0 &&
                                                 <React.Fragment key={'time' + id}>
-                                                    <div className="mobile-visible" >
+                                                    {/* <div className="mobile-visible" >
                                                         <span>{t("Ближ. запись")}</span>
                                                         <div className="stars" >{roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</div>
-                                                    </div>
+                                                    </div> */}
 
                                                     <span className="nearest_appointment">{t("Ближайшая запись")} - {roundDown(parseInt(time.availableDays[0].availableTimes[0].startTimeMillis))}</span>
 
@@ -384,8 +383,8 @@ class TabOne extends PureComponent {
                                             {nearestTime && !nearestTime.some((time, id) =>
                                                 time.staffId === staff.staffId && time.availableDays.length !== 0
 
-                                            ) && <div>
-                                                    <span className="no_zap">{t("Нет записи")}</span>
+                                            ) && <div className="no_zap">
+                                                    <span >{t("Нет записи")}</span>
                                                 </div>
                                             }
 
