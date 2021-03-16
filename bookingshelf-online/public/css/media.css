@@ -946,4 +946,7 @@
         width: 330px;
         height: 49px;
     }
+    .staff_popup_item{
+        height: auto;
+    }
 }
