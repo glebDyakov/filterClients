@@ -2887,12 +2887,12 @@ a.last_footer_block_a {
 .service_selection_block_two,
 .service_selection_block_one,
 .affiliate {
-    overflow-y: auto;
+    overflow-y: overlay;
     margin-bottom: 0;
     margin-top: 13px;
 }
 .comments{
-    overflow-y: auto;
+    overflow-y: overlay;
 margin-bottom: 0;
 margin-top: 13px;
 max-height: calc(100% - 50px);
