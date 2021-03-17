@@ -52,7 +52,7 @@ class ServiceGroupInfo extends Component {
             <p className="title_block mt-1">
               <span>{item.name} {item.description.length === 0 ? '' : ('(' + item.description + ')')}</span>
               <div className="buttons_wrap">
-                <div className="order_button" onClick={() => onManualOrderChange(keyGroup, keyGroup + 1)}>{downArrowIcon}</div>
+              {keyGroup !== (services.services.length-1) &&<div className="order_button" onClick={() => onManualOrderChange(keyGroup, keyGroup + 1)}>{downArrowIcon}</div>}
                 {keyGroup !== 0 && <div className="order_button up" onClick={() => onManualOrderChange(keyGroup, keyGroup - 1)}>{downArrowIcon}</div>}
               </div>
             </p>
