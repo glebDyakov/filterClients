@@ -6,7 +6,6 @@ import PhoneInput from "../../_components/PhoneInput";
 import { getCookie } from "../../_helpers/cookie";
 import moment from "moment";
 import { withTranslation } from "react-i18next";
-import skip_arrow from "../../../public/img/icons/skip-arrow-blue.svg"
 import { ARROW_ICON} from '../../_constants/svg.constants';
 class TabCreateComment extends PureComponent {
     constructor(props) {
@@ -166,12 +165,11 @@ class TabCreateComment extends PureComponent {
                     </div>
 
                     {clientCookie ? (
-                        <div>
-                            <div style={{ textAlign: 'right' }}>
-                                <p>{t("Вы вошли как")} {`${clientCookie.firstName}${clientCookie.lastName ? ` ${clientCookie.lastName}` : ''}`}, {clientCookie.phone}</p>
+                        <div className="clientCookie_block">
+                            <div >
+                                <p className="clientCookie_name">{t("Вы вошли как")} {`${clientCookie.firstName}${clientCookie.lastName ? ` ${clientCookie.lastName}` : ''}`}, {clientCookie.phone}</p>
                                 <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={() => this.props.dispatch(staffActions.clearClientLogin())}>{t("Сменить аккаунт")}</p>
                             </div>
-                            <br />
                             <p>{t("Рейтинг")}</p>
                             <StarRatings
                                 rating={group.rating}
@@ -180,18 +178,15 @@ class TabCreateComment extends PureComponent {
                                 starRatedColor={'#ff9500'}
                                 name='rating'
                                 starDimension="20px"
-                                starSpacing="5px"
+                                starSpacing="3px"
                             />
 
-                            <p style={{ marginTop: '15px' }}>{t("Комментарии")}</p>
+                            <p >{t("Комментарии")}</p>
                             <textarea placeholder="" name="comment" onChange={this.handleCommentChange} value={group.comment} />
-
-                            <input
-                                style={{ marginBottom: '20px' }}
-                                className={((!group.comment || !group.rating) ? 'disabledField' : '') + " book_button"}
-                                disabled={!group.comment || !group.rating}
-                                type="submit" value={group.clientPassword ? t('Добавить отзыв') : t('Добавить отзыв')} onClick={this.handleSave}
-                            />
+                            <button className={((!group.comment || !group.rating) ? 'disabledField' : '') + " next_block-btn_arrow"}
+                            disabled={!group.comment || !group.rating} onClick={this.handleSave}>
+                                    {t("Добавить отзыв")}
+                                </button>
                         </div>
                     ) : (
                             <React.Fragment>

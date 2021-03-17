@@ -7,6 +7,7 @@ import { withTranslation } from "react-i18next";
 import 'react-phone-input-2/lib/style.css';
 import MediaQuery from 'react-responsive'
 import {TABLET_WIDTH} from '../../_constants/global.constants'
+import skip_arrow from "../../../public/img/icons/skip-arrow.svg"
 
 class TabFive extends PureComponent {
   constructor(props) {
@@ -106,15 +107,18 @@ class TabFive extends PureComponent {
           {
             clientActivationId ? (
               <React.Fragment>
-                <p style={{ marginBottom: '0' }} className="modal_title">{t("Подтверждение нового клиента")}</p>
-                <p style={{ display: 'flex', alignItems: 'center' }}>
-                  <img style={{ height: '22px', marginRight: '4px' }} src={`${process.env.CONTEXT}public/img/client-verification.svg`}
+                <div className="confirmation">
+                 <p  className="modal_title">{t("Подтверждение нового клиента")}</p>
+                <p >
+                  <img src={`${process.env.CONTEXT}public/img/client-verification.svg`}
                   /> <span>{t("Код подтверждения был отправлен на номер")} {group.phone}. {t("Введите код ниже")}:</span>
                 </p>
                 <input type="text" placeholder={t("Код")} name="enteredCode" onChange={this.handleActivationChange}
                   value={enteredCode}
                   className={(enteredCodeError ? ' redBorder' : '')}
-                />
+                /> 
+                </div>
+                
               </React.Fragment>
             ) : (
                 <React.Fragment>
@@ -239,10 +243,10 @@ class TabFive extends PureComponent {
                   {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
               <a className="last_footer_block_desc_a"  href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
                 </p>
-                <input
-                  className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " next_block book_button"}
+                <button
+                  className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " book_button"}
                   disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
-                  type="submit" value={clientActivationId ? t("Подтвердить код") : t('Записаться')} onClick={
+                  type="submit" onClick={
                     () => {
                       if (clientActivationId) {
                         handleSave({
@@ -255,16 +259,16 @@ class TabFive extends PureComponent {
                           handleSave()
                         }
                       }
-                    }} />
+                    }} >{clientActivationId ? t("Подтвердить код") : t('Записаться')}<img src={skip_arrow} alt="skip_arrow" /></button>
               </div>
             </div>
           </MediaQuery>
           <MediaQuery maxWidth={TABLET_WIDTH-1}>
             <div className="last_footer_block">
-              <input
+              <button
                 className={((!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)) ? 'disabledField' : '') + " book_button"}
                 disabled={!selectedStaff.staffId || !serviceId || !selectedDay || !group.phone || !isValidNumber(group.phone) || !selectedTime || !group.clientName || (group.email ? !isValidEmailAddress(group.email) : false) || (info.companyTypeId === 2 ? !group.carNumber : false)}
-                type="submit" value={clientActivationId ? t("Подтвердить код") : t('Записаться')} onClick={
+                type="submit"  onClick={
                   () => {
                     if (clientActivationId) {
                       handleSave({
@@ -277,7 +281,7 @@ class TabFive extends PureComponent {
                         handleSave()
                       }
                     }
-                  }} />
+                  }} >{clientActivationId ? t("Подтвердить код") : t('Записаться')}<img src={skip_arrow} alt="skip_arrow" /></button>
               <p>
                 {t("Нажимая кнопку записаться, вы соглашаетесь с условиями ")}&nbsp;
               <a className="last_footer_block_a"  href={`${origin}/user_agreement`} >{t("пользовательского соглашения")}</a>
