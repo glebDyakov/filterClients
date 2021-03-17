@@ -219,7 +219,7 @@ class Index extends Component {
     this.setState({ sound: e.target.checked });
   }
 
-  onVisitStorageDurationChange = ({target: {value}}, index)  => {
+  onVisitStorageDurationChange = ({ target: {value} }, index)  => {
     this.setState({
       confirmModal: {value, index},
     })
@@ -341,6 +341,7 @@ class Index extends Component {
                 isAvatarOpened={isAvatarOpened}
                 submitted={submitted}
                 onVisitStorageDurationChange={this.onVisitStorageDurationChange}
+                status={status}
               />
             ),
             )}

@@ -23,6 +23,7 @@ const SubCompany = ({
   isAvatarOpened,
   submitted,
   onVisitStorageDurationChange,
+  status,
 }) => {
   return (
     <form key={`settings-page_subcompanies-item-${i}`} className="content retreats company_fields" name="form">

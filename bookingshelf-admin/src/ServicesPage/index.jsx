@@ -202,7 +202,6 @@ class Index extends Component {
     if (!result.destination) {
       return;
     }
-
     const updatedDragDropItems = reorder(
       this.state.dragDropItems,
       result.source.index,
@@ -219,6 +218,19 @@ class Index extends Component {
         handleDrogEnd(updatedDragDropItems);
       }
     }
+  }
+
+  onManualOrderChange = (oldIndex, newIndex, items) => {
+    console.log(items);
+    const updatedDragDropItems = reorder(
+      items,
+      oldIndex,
+      newIndex,
+    );
+    this.setState({
+      dragDropItems: updatedDragDropItems,
+    });
+    this.handleDrogEnd(updatedDragDropItems);
   }
 
   render() {
@@ -273,6 +285,7 @@ class Index extends Component {
             dragDropServicesItems={dragDropServicesItems}
             handleServicesDrogEnd={this.handleServicesDrogEnd}
             newService={this.newService}
+            onManualOrderChange={(oldIndex, newIndex) => this.onManualOrderChange(oldIndex, newIndex, dragDropGroupsItems)}
           />
         ),
       });
