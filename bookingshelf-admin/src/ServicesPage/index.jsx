@@ -69,6 +69,7 @@ class Index extends Component {
       company: props.company,
     };
 
+
     this.onDragEnd = this.onDragEnd.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.update = this.update.bind(this);
@@ -144,7 +145,12 @@ class Index extends Component {
       });
     }
     if (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services)) {
-      this.setState({ services: newProps.services, defaultServicesList: newProps.services });
+      if (this.state.searchInput) {
+        this.setState({ defaultServicesList: newProps.services })
+        this.handleSearch({ target: { value: this.state.searchInput } })
+      } else {
+        this.setState({ services: newProps.services, defaultServicesList: newProps.services });
+      }
     }
     if (JSON.stringify(this.props.services.services) !== JSON.stringify(newProps.services.services)) {
       setTimeout(() => {
