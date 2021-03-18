@@ -53,10 +53,11 @@ class Header extends PureComponent {
     changeColor() {
         const newStyles = document.createElement('style')
         const newColor = this.props.selectedSubcompany && this.props.selectedSubcompany.bookingPage ? this.props.selectedSubcompany.buttonColor : this.props.info.buttonColor;
+        const buttonColor = BUTTON_COLORS_BY_NUMBER[newColor] || DEFAULT_BUTTON_COLOR;
 
         document.head.append(newStyles)
         newStyles.innerHTML = ":root {" +
-            "--color_button: #" + BUTTON_COLORS_BY_NUMBER[newColor] || DEFAULT_BUTTON_COLOR + ";" +
+            "--color_button: #" + buttonColor  + ";" +
             " --color_text: #09093A;" +
             "}"
         this.setState({
