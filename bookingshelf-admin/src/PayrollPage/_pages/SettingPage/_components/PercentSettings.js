@@ -42,7 +42,7 @@ class PercentSettings extends Component {
         color: serviceGroup.color,
         amount: serviceGroupPercent ? serviceGroupPercent.percent : '',
         type: 'servicegroups',
-        nestedItems: serviceGroup.services.map((service) => {
+        nestedItems: (serviceGroup.services || []).map((service) => {
           const servicesPercent = context.payroll.servicesPercent.find((servicePercent) => servicePercent.serviceId === service.serviceId);
           return {
             nestedId: serviceGroup.serviceGroupId,

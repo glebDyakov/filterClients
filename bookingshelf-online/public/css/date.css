@@ -1,128 +1,155 @@
-
 /*datapicker*/
 
 .DayPicker {
     width: 100%;
-    margin-top: 10px;
 }
-.DayPicker,
-.DayPicker *:focus{
+
+.DayPicker, .DayPicker *:focus {
     outline: none;
 }
+
 .DayPicker-Month {
     width: 100%;
 }
-.DayPicker-Caption > div{
-    font-family: 'helvetica_medium';
-    font-size: 26px;
-    font-weight: bold;
-    letter-spacing: -0.2px;
-    text-align: center;
-    padding: 10px 0 0;
-    text-transform: capitalize;
-}
+
 .DayPicker-Weekdays {
     display: flex;
     margin-top: 0;
-    width: 100%;
+    width: 723px;
+    margin-left: -12px;
     justify-content: space-between;
-    margin-bottom: 22px;
+    margin-bottom: 3px;
 }
+
 .DayPicker-Week {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 56px;
-    margin-bottom: 22px;
+    margin-bottom: 6px;
     align-items: center;
 }
+
 .DayPicker-Weekday {
-    width: 56px;
-    height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 .DayPicker-Body {
     display: flex;
-    width: 100%;
+    width: 723px;
+    margin-left: -12px;
     flex-direction: column;
 }
+
 .DayPicker-WeekdaysRow {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
+
 .DayPicker-Caption {
-    height: 55px;
-    border-bottom: none;
+    margin-bottom: 40px;
 }
+
+.DayPicker-Caption div {
+    height: 52px;
+    border-bottom: solid 1px rgba(9, 9, 58, 0.1);
+    padding: 10px 15px 15px;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 27px;
+    text-align: center;
+    color: var(--color_button);
+}
+
 .DayPicker-Weekday abbr[title] {
     border-bottom: none;
     text-decoration: none;
-    font-size: 24px;
-    font-weight: bold;
-    font-family: 'helvetica_medium';
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
     text-align: center;
-    text-transform: capitalize;
+    color: #09093A;
+    width: 47px;
+    height: 47px;
 }
+
 .DayPicker-Day {
     position: relative;
     display: flex;
     align-items: center;
-    font-size: 30px;
+    font-size: 20px;
     cursor: pointer;
-    width: 56px;
-    height: 56px;
+    width: 47px;
+    height: 47px;
     border-radius: 50%;
     justify-content: center;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: normal;
+    line-height: 27px;
+    text-align: center;
+    color: #09093A;
+    opacity: 0.9;
 }
-.DayPicker-Day:hover{
-    background-color: rgba(38, 78, 134, 0.09);
+
+.DayPicker-Day:hover {
+    background-color: rgba(7, 110, 255, 0.09);
     font-weight: bold;
 }
 
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
-    color: #3b4b5c;
+    color: white;
+    background-color: var(--color_button);
 }
+
 .DayPicker-NavButton:hover {
     opacity: 0.8;
 }
 
 .arrow-right {
-
     background-image: url(../img/icons/next.svg);
     left: auto;
-    background-size: 24px;
+    background-size: 15px;
     width: 30px;
     height: 30px;
     position: absolute;
     display: block;
     background-repeat: no-repeat;
-    right: 30px;
+    right: 79px;
+    top: 15px;
     cursor: pointer;
 }
+
 .arrow-left {
     margin-right: 0;
     right: auto;
     background-image: url(../img/icons/next.svg);
     width: 30px;
     height: 30px;
-    background-size: 24px;
+    background-size: 15px;
     position: absolute;
     display: block;
     cursor: pointer;
     background-repeat: no-repeat;
-    left: 30px;
+    left: 76px;
+    top: 0px;
 }
 
-.arrow-left{
+.arrow-left {
     transform: rotate(180deg);
 }
 
 .DayPicker-NavButton--interactionDisabled {
     display: none;
 }
+
 .DayPicker-Day--outside, .DayPicker-Day--disabled {
     color: rgba(65, 76, 88, 0.47);
     cursor: default;
@@ -136,52 +163,64 @@
     background-color: unset;
     font-weight: 400;
 }
-.DayPicker-Day--outside:hover,
-.DayPicker-Day--outside:focus{
+
+.DayPicker-Day--outside:hover, .DayPicker-Day--outside:focus {
     background: none;
     cursor: default;
-
 }
+
 .DayPicker-Day--today {
-    font-weight: 700;
-    border: 1px solid;
-}
-.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover,
-.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):focus{
-    background-color: rgba(38, 78, 134, 0.09) !important;
-    outline: none;
+    width: 47px;
+    height: 47px;
+    border: 1.5px solid #3B4B5C;
 }
 
-@media screen and (max-width: 1650px){
-
-    .DayPicker-Caption > div,
-    .DayPicker-Weekday abbr[title],
-    .DayPicker-Day--outside{
-        font-size: 20px;
-    }
-    .DayPicker-Day {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-    .DayPicker-Week {
-        height: 50px;
-        margin-bottom: 10px;
-    }
-}
-@media screen and (max-width: 620px){
+@media screen and (max-width: 720px) {
     .DayPicker-Week {
         font-size: 24px;
     }
+    .DayPicker-Weekdays, .DayPicker-Body {
+        width: 600px;
+        margin-left: -6px;
+    }
 }
-@media screen and (max-width: 520px){
-    .DayPicker-Day,
-    .DayPicker-Weekday abbr[title]{
-        width: 30px;
-        height: 30px;
+
+@media screen and (max-width: 599px) {
+    .calendar_modal {
+        width: 330px;
+        margin-top: -14px;
+    }
+    .DayPicker-Body, .DayPicker-Weekdays {
+        width: 343px;
+        margin-left: -6px;
+    }
+    .DayPicker-Caption div {
+        height: 54px;
         font-size: 16px;
+        line-height: 22px;
+    }
+    .DayPicker-Weekday abbr[title] {
+        font-size: 14px;
+        line-height: 19px;
+        height: 23px;
+    }
+    .DayPicker-Day {
+        font-size: 14px;
+        line-height: 19px;
+    }
+    .DayPicker-Caption {
+        margin-bottom: 20px;
+    }
+    .DayPicker-Weekdays {
+        margin-bottom: 1px;
     }
     .DayPicker-Week {
-        height: 30px;
+        height: 41px;
+    }
+    .arrow-right {
+        right: 16px;
+    }
+    .arrow-left {
+        left: 16px;
     }
 }

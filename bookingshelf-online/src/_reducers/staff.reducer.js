@@ -1,6 +1,6 @@
-import {staffConstants} from '../_constants';
+import { staffConstants } from '../_constants';
 import moment from 'moment';
-import {getCookie, deleteCookie, setCookie} from "../_helpers/cookie";
+import { getCookie, deleteCookie, setCookie } from "../_helpers/cookie";
 
 const client = getCookie('client');
 const sendSmsTimer = getCookie('sendSmsTimer')
@@ -174,6 +174,12 @@ export function staff(state = initialState, action) {
                 info: action.info,
                 isLoading: false
             };
+        case staffConstants.GET_INFO_SOCIAL_SUCCESS:
+            return {
+                ...state,
+                info: action.info,
+                isLoading: false
+            };
         case staffConstants.GET_SERVICES:
             return {
                 ...state,
@@ -181,6 +187,7 @@ export function staff(state = initialState, action) {
             }
         case staffConstants.GET:
         case staffConstants.GET_INFO:
+        case staffConstants.GET_INFO_SOCIAL:
         case staffConstants.GET_SERVICE_GROUPS:
         case staffConstants.GET_NEAREST_TIME:
         case staffConstants.GET_APPOINTMENT_CUSTOM:
@@ -240,6 +247,7 @@ export function staff(state = initialState, action) {
                 isLoadingServices: false
             }
         case staffConstants.GET_INFO_FAILURE:
+        case staffConstants.GET_INFO_SOCIAL_FAILURE:
         case staffConstants.GET_STAFF_COMMENTS_FAILURE:
         case staffConstants.CREATE_COMMENT_FAILURE:
         case staffConstants.GET_SERVICE_GROUPS_FAILURE:

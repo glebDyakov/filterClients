@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ActionModal from '../_components/modals/ActionModal';
 import DragDrop from '../_components/DragDrop';
 import {withTranslation} from "react-i18next";
+import { downArrowIcon } from '../_constants/svg.constants';
 
 class ServiceGroupInfo extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class ServiceGroupInfo extends Component {
   render() {
     const {
       onCollapse, services, item, keyGroup, dragHandleProps, collapse, handleClick,
-      _delete, dragDropServicesItems, handleServicesDrogEnd, newService, t,
+      _delete, dragDropServicesItems, handleServicesDrogEnd, newService, t, onManualOrderChange
     } = this.props;
 
     return (
@@ -49,7 +50,11 @@ class ServiceGroupInfo extends Component {
               onClick={() => onCollapse(item.serviceGroupId)}>
             </div>
             <p className="title_block mt-1">
-              {item.name} {item.description.length === 0 ? '' : ('(' + item.description + ')')}
+              <span>{item.name} {item.description.length === 0 ? '' : ('(' + item.description + ')')}</span>
+              <div className="buttons_wrap">
+              {keyGroup !== (services.services.length-1) &&<div className="order_button" onClick={() => onManualOrderChange(keyGroup, keyGroup + 1)}>{downArrowIcon}</div>}
+                {keyGroup !== 0 && <div className="order_button up" onClick={() => onManualOrderChange(keyGroup, keyGroup - 1)}>{downArrowIcon}</div>}
+              </div>
             </p>
           </div>
 

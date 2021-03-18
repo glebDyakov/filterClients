@@ -11,6 +11,7 @@ import { access } from '../_helpers/access';
 
 import '../../public/scss/online_booking.scss';
 import {withTranslation} from "react-i18next";
+import SocialNetworks from './socialNetworks';
 
 class Index extends Component {
   constructor(props) {
@@ -27,6 +28,8 @@ class Index extends Component {
       status: '',
       messageCopyModalOpen: false,
     };
+
+    this.buttonColors = ['6A7187', '747474', '3B4B5C', '2A3042', '5B7465', '728399', 'A490F1', '7D785F', '991212', 'F7B83E', 'C959A3', '3E50F7']
 
     this.handleChange = this.handleChange.bind(this);
     this.handleStepChange = this.handleStepChange.bind(this);
@@ -432,11 +435,11 @@ class Index extends Component {
               <div className="col-xl-8 content-pages-bg main-tab">
                 <p className="title mb-3">{t("Стили кнопок")}</p>
                 <p className="text">
-                  {t("Чтобы установить кнопку онлайн-записи на сайт, выберите цвет и форму кнопки, скопируйте код и поместите на сайт")}
+                  {t("Чтобы установить кнопку онлайн-записи на сайт, выберите цвет виджета, скопируйте код и поместите на сайт.")}
                 </p>
 
                 <hr/>
-                <div className="form-button">
+                {/* <div className="form-button">
                   <div>
                     <p className="sub-title">{t("Форма кнопки")}</p>
                   </div>
@@ -506,79 +509,19 @@ class Index extends Component {
                       }}
                     />
                   </div>
-                </div>
-                <p className="sub-title m-20">{t("Выберите цвет")}</p>
+                </div> */}
+                <p className="sub-title m-20">{t("Выберите цвет виджета")}</p>
                 <div className="chose_button">
+                  {this.buttonColors.map((color) => 
                   <a
-                    className={(booking.bookingColor.toString(16) === '39434f' && 'active') +
-                    ' button-color color39434F'
+                    className={(booking.bookingColor.toString(16) === color && 'active') +
+                    ` button-color color${color}`
                     }
-                    onClick={() => this.setColor('39434F')}>
-                    <span />
-                  </a>
-                  <a
-                    className={(booking.bookingColor.toString(16) === 'ea3e3e' && 'active') +
-                    ' button-color colorEA3E3E'
-                    }
-                    onClick={() => this.setColor('EA3E3E')}>
-                    <span />
-                  </a>
-                  <a
-                    className={(booking.bookingColor.toString(16) === '2f84' && 'active') +
-                    ' button-color color002F84'
-                    }
-                    onClick={() => this.setColor('002F84')}>
-                    <span />
-                  </a>
-                  <a
-                    className={(booking.bookingColor.toString(16) === 'a300b7' && 'active') +
-                    ' button-color colorA300B7'
-                    }
-                    onClick={() => this.setColor('A300B7')}>
-                    <span />
-                  </a>
-                  <a
-                    className={(booking.bookingColor.toString(16) === '14a736' && 'active') +
-                    ' button-color color14A736'
-                    }
-                    onClick={() => this.setColor('14A736')}>
-                    <span />
-                  </a>
-                  <a
-                    className={(booking.bookingColor.toString(16) === 'fec81d' && 'active') +
-                    ' button-color colorFEC81D'
-                    }
-                    onClick={() => this.setColor('FEC81D')}>
-                    <span />
-                  </a>
-                  <a
-                    className={(booking.bookingColor.toString(16) === '0' && 'active') +
-                    ' button-color color000000'
-                    }
-                    onClick={() => this.setColor('000000')}>
-                    <span />
-                  </a>
-                  <a
-                    className={(booking.bookingColor.toString(16) === '5b88a8' && 'active') +
-                    ' button-color color5B88A8'
-                    }
-                    onClick={() => this.setColor('5B88A8')}>
-                    <span />
-                  </a>
-                  <a
-                    className={(booking.bookingColor.toString(16) === '7a7a7a' && 'active') +
-                    ' button-color color7A7A7A'
-                    }
-                    onClick={() => this.setColor('7A7A7A')}>
-                    <span />
-                  </a>
-                  <a
-                    className={(booking.bookingColor.toString(16) === '23d2cc' && 'active') +
-                    ' button-color color23D2CC'
-                    }
-                    onClick={() => this.setColor('23D2CC')}>
-                    <span />
-                  </a>
+                    onClick={() => this.setColor(color)}
+                    key={color}
+                    >
+                  <span />
+                </a>)}
                 </div>
 
                 <div className="form-button">
@@ -710,8 +653,10 @@ class Index extends Component {
                   <p onClick={(e) => this.copyToClipboard(e, 'textArea')}
                     className="copy-code">{t("Скопировать код")}</p>
                 </div>
+              <SocialNetworks t={t} companyId={company?.settings?.companyId || null} />
               </div>
             </div>
+
             {this.state.messageCopyModalOpen &&
               <div className="message-is-sent-wrapper">
                 <div className="message-is-sent-modal">

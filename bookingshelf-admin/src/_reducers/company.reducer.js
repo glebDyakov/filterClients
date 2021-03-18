@@ -34,7 +34,9 @@ export function company(state = initialState, action) {
     case companyConstants.GET_SUBCOMPANIES_SUCCESS:
       return {
         ...state,
-        subcompanies: action.subcompanies.sort((a, b) => a.companyId - b.companyId),
+        subcompanies: action.subcompanies.sort((a, b) => a.companyId - b.companyId)
+          .map((company) => ({ ...company, ...company.companySocialNetworks.reduce((values, social) => (
+            {...values, [social.socialNetwork.toLowerCase()]: social.companyUrl}), {})})),
       };
 
     case companyConstants.GET_COMPANY_SUCCESS:

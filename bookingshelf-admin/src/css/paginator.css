@@ -1,0 +1,13 @@
+.page-item .page-link {
+  color: #0a1330;
+}
+
+.page-item .page-link:focus {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+.page-item.active .page-link {
+  background-color: #0a1330;
+  border-color: #0a1330;
+}

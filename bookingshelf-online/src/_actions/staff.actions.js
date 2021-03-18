@@ -11,6 +11,7 @@ export const staffActions = {
     _delete,
     _move,
     getInfo,
+    getInfoSocial,
     clientLogin,
     clearClientLogin,
     getServiceGroups,
@@ -112,6 +113,20 @@ function getInfo(id, loaded) {
     function request() { return { type: staffConstants.GET_INFO } }
     function success(info) { return { type: staffConstants.GET_INFO_SUCCESS, info, loaded } }
     function failure() { return { type: staffConstants.GET_INFO_FAILURE } }
+}
+function getInfoSocial(id, loaded) {
+    return dispatch => {
+        dispatch(request());
+        staffService.getInfoSocial(id)
+            .then(
+                info => dispatch(success(info)),
+                () => dispatch(failure())
+            );
+    };
+
+    function request() { return { type: staffConstants.GET_INFO_SOCIAL } }
+    function success(info) { return { type: staffConstants.GET_INFO_SOCIAL_SUCCESS, info, loaded } }
+    function failure() { return { type: staffConstants.GET_INFO_SOCIAL_FAILURE } }
 }
 
 

@@ -1,0 +1,319 @@
+.managers-settings-wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 10;
+}
+
+.managers-settings {
+  background-color: #FFFFFF;
+  -webkit-box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+          box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
+  padding: 20px 15px 20px 15px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  margin-bottom: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: normal;
+      -ms-flex-pack: normal;
+          justify-content: normal;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -webkit-transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.3s;
+  z-index: 15;
+  width: 275px;
+  overflow: auto;
+}
+
+@media (max-width: 500px) {
+  .managers-settings {
+    width: 260px;
+  }
+}
+
+.managers-settings .modal-header, .managers-settings .theme-block, .managers-settings .send-leader .send-button {
+  width: 230px;
+  margin: 0 auto;
+}
+
+.managers-settings .modal-header {
+  display: block;
+  padding: 0;
+  position: relative;
+}
+
+.managers-settings .modal-header h4 {
+  font-family: "Open Sans", "sans-serif";
+  font-style: normal;
+  font-size: 24px;
+  line-height: 33px;
+  margin-bottom: 20px;
+}
+
+.managers-settings .close {
+  color: #2A3042;
+  position: absolute;
+  right: 21px;
+  top: 60%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: 21px;
+  height: 21px;
+  min-width: 15px !important;
+  padding: 0 !important;
+  opacity: 1;
+}
+
+.managers-settings .close::before {
+  content: '';
+  width: 21px;
+  height: 2px;
+  border-radius: 5px;
+  background: #2A3042;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  position: absolute;
+  top: 50%;
+  right: 0;
+}
+
+.managers-settings .close::after {
+  content: '';
+  width: 21px;
+  height: 2px;
+  border-radius: 5px;
+  background: #2A3042;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  position: absolute;
+  top: 50%;
+  right: 0;
+}
+
+.managers-settings .close span {
+  font-size: 2rem;
+}
+
+.managers-settings .theme-block {
+  padding: 20px 0;
+  border-bottom: 1px solid #e9ecef;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+}
+
+.managers-settings .theme-block h5 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #495057;
+}
+
+.managers-settings .theme-block p {
+  margin: 20px 0 10px;
+  font-size: 13px;
+  line-height: 18px;
+  color: #495057;
+}
+
+.managers-settings .theme-block .screen {
+  width: 100%;
+  height: 126px;
+  background-position-x: -10px;
+  background-position-y: -10px;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+}
+
+.managers-settings .theme-block .white {
+  background-image: url("../img/light_theme.jpg");
+  cursor: pointer;
+}
+
+.managers-settings .theme-block .black {
+  background-image: url("../img/dark_theme.jpg");
+  cursor: pointer;
+}
+
+.managers-settings .manager-block {
+  padding: 15px 0;
+  border-bottom: 1px solid #e9ecef;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+}
+
+.managers-settings .manager-block h5 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #495057;
+}
+
+.managers-settings .manager-block .manager-name {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 18px;
+  color: #495057;
+}
+
+.managers-settings .manager-block .manager-questions {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: #495057;
+}
+
+.managers-settings .manager-block .contact {
+  position: relative;
+  margin: 15px 0;
+}
+
+.managers-settings .manager-block .contact .abbreviation {
+  left: 0;
+  width: 40px;
+  height: 40px;
+  background-image: url("../img/Andrei.jpg");
+  background-size: contain;
+  background-position-y: -1px;
+}
+
+.managers-settings .manager-block .contact p {
+  margin-left: 55px;
+  font-family: "Open Sans", "sans-serif";
+  font-style: normal;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.managers-settings .manager-block .contact p :first-of-type {
+  font-weight: 600;
+}
+
+.managers-settings .manager-block .contact-details {
+  margin-left: 14px;
+  position: relative;
+}
+
+.managers-settings .manager-block .contact-details a {
+  font-family: "Open Sans", "sans-serif";
+  font-style: normal;
+  font-weight: 100;
+  font-size: 13px;
+  line-height: 18px;
+  color: #50A5F1;
+  margin-bottom: 6px;
+}
+
+.managers-settings .manager-block .contact-details span {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  top: 4px;
+  left: -14px;
+  background-size: contain;
+}
+
+.managers-settings .manager-block .contact-details .phone_logo {
+  background-image: url("../img/call_manager.svg");
+}
+
+.managers-settings .manager-block .contact-details .email_logo {
+  background-image: url("../img/send_mail_2.svg");
+}
+
+.managers-settings .manager-block .contact-details .skype_logo {
+  background-image: url("../img/skype_manager.svg");
+}
+
+.managers-settings .send-leader {
+  padding: 15px 0 20px;
+}
+
+.managers-settings .send-leader h5 {
+  font-family: "Open Sans", "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: #495057;
+  margin-bottom: 26px;
+}
+
+.managers-settings .send-leader p {
+  font-family: "Open Sans", "sans-serif";
+  font-style: normal;
+  font-weight: 100;
+  font-size: 13px;
+  line-height: 18px;
+  margin: 0 0 7px;
+}
+
+.managers-settings .send-leader input {
+  height: 36px;
+  background-color: #F3F3F9;
+  border: none;
+  font-family: "Open Sans", "sans-serif";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+  color: #2A3042;
+  padding: 9px 10px !important;
+  cursor: text !important;
+}
+
+.managers-settings .send-leader textarea {
+  background-color: #F3F3F9;
+  padding: 9px 10px !important;
+  border: none;
+  border-radius: 2px;
+  min-height: 110px;
+  overflow: hidden;
+  font-family: "Open Sans", "sans-serif";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+  color: #2A3042;
+  cursor: text !important;
+}
+
+.managers-settings .react-tel-input input[type=tel], .managers-settings .react-tel-input input[type=text].phone-number {
+  margin-left: 40px !important;
+  width: calc(100% - 40px) !important;
+  border-radius: 0 5px 5px 0;
+}
+
+.managers-settings .send-button {
+  background: #50A5F1;
+  opacity: 0.7;
+  border-radius: 25px;
+  border: none;
+  -webkit-transition: 400ms;
+  transition: 400ms;
+  width: 100%;
+  padding: 10px 0;
+  min-height: 42px;
+  margin: auto;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.managers-settings:hover {
+  opacity: 1;
+}

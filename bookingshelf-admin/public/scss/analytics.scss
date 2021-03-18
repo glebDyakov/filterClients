@@ -576,7 +576,8 @@
 
           .green-marker,
           .purple-marker,
-          .orange-marker {
+          .orange-marker,
+          .red-marker {
             border-radius: 30px;
             width: 5px;
             height: 5px;
@@ -593,6 +594,10 @@
 
           .orange-marker {
             background: #F1B44C;
+          }
+
+          .red-marker {
+            background: #bb2626;
           }
         }
       }

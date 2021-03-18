@@ -1,18 +1,19 @@
-import React, {PureComponent} from 'react';
-import {staffActions} from "../../_actions";
+import React, { PureComponent } from 'react';
+import { staffActions } from "../../_actions";
 import { connect } from 'react-redux';
 import { getFirstScreen } from "../../_helpers/common";
-import {withTranslation} from "react-i18next";
+import { withTranslation } from "react-i18next";
+import skip_arrow from "../../../public/img/icons/skip-arrow-white.svg"
+import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants';
 
 
-
-class TabCompanySelection extends  PureComponent{
+class TabCompanySelection extends PureComponent {
     constructor(props) {
         super(props)
         this.getPlace = this.getPlace.bind(this);
     }
     componentDidMount() {
-        let {company} = this.props.match.params
+        const { company } = this.props.match.params
 
         this.props.dispatch(staffActions.getInfo(company, true));
     }
@@ -36,31 +37,46 @@ class TabCompanySelection extends  PureComponent{
 
     render() {
 
-        const { subcompanies, selectedSubcompany, history, selectSubcompany, staffId,staffs, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, t} = this.props;
-
-        return(
+        const { subcompanies, selectedSubcompany, history, selectSubcompany, staffId, staffs, nearestTime, selectStaff, info, setScreen, refreshTimetable, roundDown, t } = this.props;
+        return (
             <div className="service_selection screen1">
-                <div className="title_block n">
-                    <p className="modal_title">{t("Выберите филиал")}</p>
-                    {staffId &&
-                    <span className="next_block" onClick={() => {
-                        setScreen(getFirstScreen(selectedSubcompany.firstScreen));
-                        this.props.history.push(`/${selectedSubcompany.bookingPage}`)
-                        //refreshTimetable();
-                    }}>{t("Далее")}</span>}
+                <div className="title_block n affiliate_title" >
+                    <p className="modal_title" >{t("Выберите филиал")}</p>
                 </div>
-                <ul className={`staff_popup`}>
+                <ul className={`affiliate`}>
                     {subcompanies.sort((a, b) => a.companyId - b.companyId).map((subcompany, i) =>
-                        <li style={{ margin: '12px 0' }} className={(staffId && staffId === subcompany.companyId && 'selected') + ' nb active'}
+                        <li className={(staffId && staffId === subcompany.companyId && 'selected') + ' nb active'}
                             onClick={() => {
                                 selectSubcompany(subcompany)
                                 this.props.history.push(`/${subcompany.bookingPage}`)
                             }}
                             key={i}
                         >
+                            <span className="affiliate_item">
+
+                                <div className="img_container">
+                                    <img
+                                        src={subcompany.imageBase64 ? "data:image/png;base64," + subcompany.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                        alt="" />
+
+                                    <div>
+                                        <div className="affiliate_name">{subcompany.companyName}</div>
+                                        <div className="stars desktop_visible" >{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
+                                    </div>
+                                </div>
+
+                                <button className="desktop_visible next_block-btn_arrow" >
+                                    {t("Выбрать")}<img src={skip_arrow} alt="skip_arrow" />
+                                </button>
+
+                            </span>
+                            <div className="stars desktop_invisible" >{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
                             {subcompany.city && (
                                 <iframe
-                                    style={{ padding: '6px 12px 0'}}
+                                    style={{
+                                        padding: "0px 0px 10px 0px",
+                                        borderRadius: "5px"
+                                    }}
                                     id={`google-map-${i}`}
                                     width="100%"
                                     height="250"
@@ -70,32 +86,7 @@ class TabCompanySelection extends  PureComponent{
                                     allowFullScreen>
                                 </iframe>
                             )}
-                            <span className="staff_popup_item">
-
-                                <div className="img_container">
-                                    <img
-                                        src={subcompany.imageBase64 ? "data:image/png;base64," + subcompany.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                        alt=""/>
-
-                                    <div>
-
-                                    <div style={{ fontSize: '18px', fontWeight: 'bold'}} className="staff_popup_name">{subcompany.companyName}</div>
-                                        <div style={{ textAlign: 'left' }} className="mobile_block mobile-visible">
-                                            <div className="stars" style={{textTransform: 'capitalize'}}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <div className="mobile_block desktop-visible">
-                                    <div className="stars" style={{textTransform: 'capitalize'}}>{(info.city ? (info.city + ', ') : '') + subcompany[`companyAddress${subcompany.defaultAddress}`]}</div>
-                                </div>
-                                <div style={{position: 'relative', width: '30px', height: '54px'}}>
-                                    <span style={{ right: 0 }} className="next_block" />
-                                </div>
-
-                            </span>
+                            <button className="desktop_invisible next_block-btn_arrow" > {t("Выбрать")} <img src={skip_arrow} alt="skip_arrow" /> </button>
                         </li>
                     )}
                 </ul>

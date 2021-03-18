@@ -163,7 +163,6 @@ class ManagerSettings extends React.Component {
     const { message } = this.state;
     const {t} = this.props;
 
-
     return (
       <div className="managers-settings-wrapper">
         <div ref={this.setWrapperRef} className="managers-settings">
@@ -188,7 +187,7 @@ class ManagerSettings extends React.Component {
 
           <div className="theme-block lang-block">
             <h5>{t("Выберите язык")}</h5>
-            <select value={this.props.i18n.language} onChange={(e) => {
+            <select value={this.props.i18n.language.toUpperCase()} onChange={(e) => {
               this.handleChangeLang(e.target.value);
             }} className="custom-select">
 

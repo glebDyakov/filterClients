@@ -47,14 +47,43 @@
       width: 100%;
       justify-content: space-between;
       align-content: center;
-    }
 
+      
     .title_block {
       font-weight: normal;
       font-size: 13px;
       line-height: 18px;
       /* identical to box height */
       color: #2A3042;
+      display: flex;
+
+    .buttons_wrap {
+      margin-left: 15px;
+      display: flex;
+        .order_button {
+          background-color: #fff;
+          width: 20px;
+          max-width: 20px;
+          height: 20px;
+          max-height: 20px;
+          border-radius: 50%;
+          box-shadow: 0px 2px 15px rgba(9, 9, 58, 0.1);
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          &.up {
+            transform: rotate(180deg);
+          }
+
+          &:not(:last-child) {
+            margin-right: 5px;
+          }
+      }
+    }
+
+    }
 
       @media screen and (max-width: $mob-width) {
         margin-bottom: 6px;

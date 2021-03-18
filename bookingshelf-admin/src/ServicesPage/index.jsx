@@ -69,6 +69,7 @@ class Index extends Component {
       company: props.company,
     };
 
+
     this.onDragEnd = this.onDragEnd.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.update = this.update.bind(this);
@@ -144,7 +145,12 @@ class Index extends Component {
       });
     }
     if (JSON.stringify(this.props.services) !== JSON.stringify(newProps.services)) {
-      this.setState({ services: newProps.services, defaultServicesList: newProps.services });
+      if (this.state.searchInput) {
+        this.setState({ defaultServicesList: newProps.services })
+        this.handleSearch({ target: { value: this.state.searchInput } })
+      } else {
+        this.setState({ services: newProps.services, defaultServicesList: newProps.services });
+      }
     }
     if (JSON.stringify(this.props.services.services) !== JSON.stringify(newProps.services.services)) {
       setTimeout(() => {
@@ -202,7 +208,6 @@ class Index extends Component {
     if (!result.destination) {
       return;
     }
-
     const updatedDragDropItems = reorder(
       this.state.dragDropItems,
       result.source.index,
@@ -219,6 +224,19 @@ class Index extends Component {
         handleDrogEnd(updatedDragDropItems);
       }
     }
+  }
+
+  onManualOrderChange = (oldIndex, newIndex, items) => {
+    console.log(items);
+    const updatedDragDropItems = reorder(
+      items,
+      oldIndex,
+      newIndex,
+    );
+    this.setState({
+      dragDropItems: updatedDragDropItems,
+    });
+    this.handleDrogEnd(updatedDragDropItems);
   }
 
   render() {
@@ -273,6 +291,7 @@ class Index extends Component {
             dragDropServicesItems={dragDropServicesItems}
             handleServicesDrogEnd={this.handleServicesDrogEnd}
             newService={this.newService}
+            onManualOrderChange={(oldIndex, newIndex) => this.onManualOrderChange(oldIndex, newIndex, dragDropGroupsItems)}
           />
         ),
       });

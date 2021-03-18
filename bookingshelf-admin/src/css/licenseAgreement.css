@@ -1,0 +1,54 @@
+.licenseAgreement {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  max-width: 700px;
+}
+
+.licenseAgreement p {
+  margin-bottom: 50px;
+  white-space: pre-line;
+  text-align: justify;
+}
+
+.licenseAgreement .title {
+  text-align: center;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.licenseAgreement .licenseAgreement_title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.licenseAgreement .licenseAgreement_title p {
+  width: 50%;
+}
+
+.licenseAgreement .licenseAgreement_title .last {
+  margin-bottom: 0 !important;
+}
+
+.modalLicense .modalHeader {
+  background-color: #0a1330;
+  text-align: center;
+  padding: 10px 10%;
+}
+
+.modalLicense .modalHeader p {
+  color: white;
+  font-size: 1.5em;
+}
+
+.modalLicense .hideModal {
+  color: #264e86;
+  text-align: center;
+  padding: 20px 10%;
+}

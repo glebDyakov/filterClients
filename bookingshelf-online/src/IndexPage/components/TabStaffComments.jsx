@@ -1,12 +1,15 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import StarRatings from 'react-star-ratings';
-import {staffActions} from "../../_actions";
+import { staffActions } from "../../_actions";
 import moment from "moment";
 import Paginator from "./Paginator";
-import {withTranslation} from "react-i18next";
+import { withTranslation } from "react-i18next";
+import skip_arrow from "../../../public/img/icons/skip-arrow-white.svg"
+import MediaQuery from 'react-responsive'
+import {TABLET_WIDTH} from '../../_constants/global.constants'
 
-class TabStaffComments extends  PureComponent{
+class TabStaffComments extends PureComponent {
     constructor(props) {
         super(props);
         const group = {
@@ -32,94 +35,144 @@ class TabStaffComments extends  PureComponent{
 
     render() {
         const { staffComments, staffCommentsStaff, staffCommentsTotalPages, setScreen, isLoading, t } = this.props;
-
-        return(
-            <div className="service_selection screen1 screen5">
-                <div className="title_block n">
+        return (
+            <div className="service_selection screen1">
+                <div className="title_block n data_title">
                     <span className="prev_block" onClick={() => {
                         setScreen(1);
 
                     }}><span className="title_block_text">{t("Назад")}</span></span>
-                    <p className="modal_title">{t("Отзывы")}</p>
+                    <p className="modal_title">{t("Отзывы клиентов")}</p>
                 </div>
-                {!isLoading && (
-                    <React.Fragment>
-                        <div className="staff_popup staff_popup_large">
-                            <div className="staff_popup_item">
-                                <div className="img_container">
-                                    <img
-                                        src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
-                                        alt=""/>
-                                    <span className="staff_popup_name">{staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}<br/>
-                                                    <span style={{ fontSize: "13px"}}>{staffCommentsStaff.description}</span>
-                                        <StarRatings
-                                            rating={staffCommentsStaff.rating}
-                                            starHoverColor={'#ff9500'}
-                                            starRatedColor={'#ff9500'}
-                                            starDimension="18px"
-                                            starSpacing="0"
-                                        />
-                                                </span>
+                <div className="comments">
+                    {!isLoading && (
+                        <React.Fragment>
+                            <div className="staff_popup staff_popup_large">
+                                <div className="staff_popup_item">
+                                    <MediaQuery maxWidth={TABLET_WIDTH-1}>
+                                        <div className="img_container">
+
+                                            <span className="staff_popup_name">
+                                                <img
+                                                    src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    alt="" />
+
+
+                                            </span>
+                                            {staffCommentsStaff.rating !== 0 ? (
+                                                <div className="comments_rating">
+                                                    <p>
+                                                        {staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}
+                                                    </p>
+                                                    <div className="display_flex">
+                                                        <StarRatings
+                                                            rating={staffCommentsStaff.rating}
+                                                            starHoverColor={'#ff9500'}
+                                                            starRatedColor={'#ff9500'}
+                                                            starDimension="20px"
+                                                            starSpacing="3px"
+                                                        />
+                                                        <p className="rating_text">
+                                                            &nbsp;{staffCommentsStaff.rating}
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+                                            ) : (
+                                                    <div className="comments_rating">
+                                                        <p>
+                                                            {staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}
+                                                        </p>
+                                                        <p>{t("Рейтинг отсутствует")}</p>
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                    </MediaQuery>
+                                    <MediaQuery minWidth={TABLET_WIDTH}>
+                                        <div className="img_container">
+
+                                            <span className="staff_popup_name">
+                                                <img
+                                                    src={staffCommentsStaff.imageBase64 ? "data:image/png;base64," + staffCommentsStaff.imageBase64 : `${process.env.CONTEXT}public/img/image.png`}
+                                                    alt="" />
+                                                <p>
+                                                    {staffCommentsStaff.firstName} {staffCommentsStaff.lastName ? ` ${staffCommentsStaff.lastName}` : ''}
+                                                </p>
+
+                                            </span>
+                                            {staffCommentsStaff.rating !== 0 ? (
+                                                <div className="comments_rating">
+                                                    <p>{t("Усредненный рейтинг")}:</p>
+                                                    <div className="display_flex">
+                                                        <StarRatings
+                                                            rating={staffCommentsStaff.rating}
+                                                            starHoverColor={'#ff9500'}
+                                                            starRatedColor={'#ff9500'}
+                                                            starDimension="20px"
+                                                            starSpacing="3px"
+                                                        />
+                                                        <p className="rating_text">
+                                                            &nbsp;{staffCommentsStaff.rating}
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+                                            ) : (
+                                                    <div className="comments_rating">
+                                                        <p>{t("Рейтинг отсутствует")}</p>
+                                                    </div>
+                                                )
+                                            }
+
+
+                                        </div>
+                                    </MediaQuery>
+
+
                                 </div>
-
                             </div>
-                        </div>
-                        <ul style={{ marginTop: '20px' }} className={`staff_popup`}>
-                            {staffComments && staffComments.length > 0
-                                ? staffComments.map((staff) =>
-                                    <li className={('staff_comment selected')}>
-                                <span className="staff_popup_item">
-                                    <div style={{ width: '100%' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                                            <p style={{ fontSize: '16px', fontWeight: 'bold' }}>{staff.clientName}</p>
+                            <ul >
+                                {staffComments && staffComments.length > 0
+                                    ? staffComments.map((staff, index) =>
+                                        <li key={index} className="staff_popup_comment">
+                                            <p >{staff.clientName}</p>
+                                            <div className="display_flex">
+                                                <StarRatings
+                                                    rating={staff.rating}
+                                                    starHoverColor={'#ff9500'}
+                                                    starRatedColor={'#ff9500'}
+                                                    starDimension="17px"
+                                                    starSpacing="0px"
+                                                />
+                                                <p className="rating_text">&nbsp;{staff.rating}</p>
+                                            </div>
+                                            <span >
+                                                <p style={{ wordBreak: 'break-word' }}>{staff.comment}</p>
+                                            </span>
+                                        </li>)
+                                    : (
+                                        <div className="final-book">
+                                            <p >
+                                                {t('Нет ни одного отзыва')}
+                                            </p>
+                                            <span
+                                                onClick={() => setScreen('staff-create-comment')}>{t("Станьте первым!")}
+                                            </span>
                                         </div>
-
-                                        <div style={{ display: 'flex' }}>
-                                            <StarRatings
-                                                rating={staff.rating}
-                                                starHoverColor={'#ff9500'}
-                                                starRatedColor={'#ff9500'}
-                                                starDimension="18px"
-                                                starSpacing="0"
-                                            />
-                                            <p style={{ marginLeft: '6px' }}>{moment(staff.feedbackDate).format('DD MMMM YYYY, HH:mm')}</p>
-
-                                        </div>
-                                        <div style={{ marginTop: '6px' }}>
-                                            <p style={{ wordBreak: 'break-word' }}>{staff.comment}</p>
-                                        </div>
-                                    </div>
-                                </span>
-                                    </li>)
-                                : (
-                                    <div className="final-book">
-                                        <p style={{ fontSize: '18px' }}>
-                                            {t('Пока нет ни одного отзыва.')} <span
-                                            style={{ textDecoration: 'underline', cursor: 'pointer', fontSize: '18px'}}
-                                            onClick={() => setScreen('staff-create-comment')}>{t("Станьте первым!")}
-                                    </span>
-                                        </p>
-                                    </div>
-                                )}
-                        </ul>
-                    </React.Fragment>
-                )}
-
-                <div style={{ display: isLoading ? 'none' : 'block', marginBottom: '50px' }}>
-                    <Paginator
-                        finalTotalPages={staffCommentsTotalPages}
-                        onPageChange={this.handlePageChange}
-                    />
+                                    )}
+                            </ul>
+                        </React.Fragment>
+                    )}
+                    <div className="comments_btn_footer" onClick={() => setScreen('staff-create-comment')}>{t("Оставить отзыв")}<img src={skip_arrow} alt="skip_arrow" /></div>
                 </div>
-
-                <p className="skip_employee" onClick={() =>  setScreen('staff-create-comment')}>{t('Оставить отзыв')}</p>
             </div>
         );
     }
 }
 
 function mapStateToProps(store) {
-    const { staff: { staffComments, staffCommentsTotalPages, staffCommentsStaff } }=store;
+    const { staff: { staffComments, staffCommentsTotalPages, staffCommentsStaff } } = store;
 
     return {
         staffComments, staffCommentsTotalPages, staffCommentsStaff

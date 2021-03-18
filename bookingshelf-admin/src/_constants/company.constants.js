@@ -1,3 +1,5 @@
+import { FACEBOOK_LINK_REGEX, INSTAGRAM_LINK_REGEX, TIKTOK_LINK_REGEX } from "./regex.constants";
+
 export const companyConstants = {
   UPDATE_SAVED: 'UPDATE_SAVED',
 
@@ -9,6 +11,7 @@ export const companyConstants = {
 
   ADD_SUBCOMPANY_SUCCESS: 'ADD_SUBCOMPANY_SUCCESS',
   UPDATE_SUBCOMPANY_SUCCESS: 'UPDATE_SUBCOMPANY_SUCCESS',
+  UPDATE_SUBCOMPANY_SOCIAL_NETWORK_SUCCESS: 'UPDATE_SUBCOMPANY_SOCIAL_NETWORK_SUCCESS',
   SWITCH_SUBCOMPANY_SUCCESS: 'SWITCH_SUBCOMPANY_SUCCESS',
 
   UPDATE_COMPANY_SETTINGS_REQUEST: 'UPDATE_COMPANY_SETTINGS_REQUEST',
@@ -32,4 +35,76 @@ export const companyConstants = {
   GET_NEW_APPOINMENTS_MARKER_INCR: 'GET_NEW_APPOINMENTS_MARKER_INCR',
   GET_MOVED_APPOINMENTS_MARKER_INCR: 'GET_MOVED_APPOINMENTS_MARKER_INCR',
   GET_NEW_APPOINMENTS_MARKER_DECR: 'GET_NEW_APPOINMENTS_MARKER_DECR',
+};
+
+export const VISITS_STORAGE_DURATIONS = [
+  {
+    name: 'По умолчанию',
+    value: 0,
+  },
+  {
+    name: '2 года',
+    value: 365 * 2,
+  },
+  {
+    name: '1 год',
+    value: 365,
+  },
+  {
+    name: '6 месяцев',
+    value: 183,
+  },
+  {
+    name: '3 месяца',
+    value: 91,
+  },
+  {
+    name: '1 месяц',
+    value: 30,
+  },
+  ,
+  {
+    name: '1 неделя',
+    value: 7,
+  },
+  {
+    name: '1 день',
+    value: 1,
+  },
+];
+
+export const SOCIAL_NETWORKS = {
+  TIKTOK: 'tiktok',
+  INSTAGRAM: 'instagram',
+  FACEBOOK: 'facebook',
+};
+
+export const COMPANY_SOCIAL_NETWORKS = [
+  {
+    name: SOCIAL_NETWORKS.TIKTOK,
+    displayingName: 'Tik tok',
+    regex: TIKTOK_LINK_REGEX,
+  },
+  {
+    name: SOCIAL_NETWORKS.INSTAGRAM,
+    displayingName: 'Instagram',
+    regex: INSTAGRAM_LINK_REGEX,
+  },
+  {
+    name: SOCIAL_NETWORKS.FACEBOOK,
+    displayingName: 'Facebook',
+    regex: FACEBOOK_LINK_REGEX,
+  },
+];
+
+export const SOCIAL_NETWORK_ENUM = {
+  [SOCIAL_NETWORKS.INSTAGRAM]: 1,
+  [SOCIAL_NETWORKS.FACEBOOK]: 2,
+  [SOCIAL_NETWORKS.TIKTOK]: 4,
+};
+
+export const SOCIAL_NETWORK_MAP = {
+  [SOCIAL_NETWORKS.INSTAGRAM]: 'Instagram',
+  [SOCIAL_NETWORKS.FACEBOOK]: 'Facebook',
+  [SOCIAL_NETWORKS.TIKTOK]: 'Tiktok',
 };
