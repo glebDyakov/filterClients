@@ -175,13 +175,13 @@
     border: 1.5px solid #3B4B5C;
 }
 
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 720px) {
     .DayPicker-Week {
         font-size: 24px;
     }
     .DayPicker-Weekdays, .DayPicker-Body {
-        width: 590px;
-        margin-left: 0;
+        width: 600px;
+        margin-left: -6px;
     }
 }
 

@@ -9,6 +9,10 @@
     .title_block {
         top: 80px;
     }
+    /* .staff_popup-name p, */
+    .staff_popup .mobile_block {
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 720px) {
@@ -35,9 +39,7 @@
     .affiliate li {
         max-width: 590px;
     }
-    .service_footer_price p,
-    .price_footer_service_half strong,
-    .price_footer_service_half p {
+    .service_footer_price p, .price_footer_service_half strong, .price_footer_service_half p {
         color: #fff;
         font-size: 13px;
         line-height: 18px;
@@ -69,29 +71,12 @@
     .service_list {
         width: 584px;
     }
-    .confirmation,
-    .mobile-icon-wrapper.mobile_active,
-    .staff_popup_comment,
-    .create_comments,
-    .comments,
-    .final-screen-block,
-    .last_footer_block,
-    .entry_form,
-    .last_list,
-    .choise_time,
-    .DayPicker-Weekdays,
-    .DayPicker-Body,
-    .calendar_modal,
-    .service_list_block,
-    .specialist-block,
-    .skip_employee-block {
+    .confirmation, .mobile-icon-wrapper.mobile_active, .staff_popup_comment, .create_comments, .comments, .final-screen-block, .last_footer_block, .entry_form, .last_list, .choise_time, .calendar_modal, .service_list_block, .specialist-block, .skip_employee-block, .staff_popup {
         width: 590px;
     }
     .staff_popup_comment {
         padding-left: 10px;
-    }
-    .staff_popup {
-        width: 98%;
+        width: 587px;
     }
     .specialist {
         margin: auto;
@@ -100,34 +85,25 @@
     .service_items.service_items_active {
         max-height: 1000px !important;
     }
-    .service_items li,
-    .staff_popup li {
+    .service_items li, .staff_popup li {
         width: 287px;
     }
     .leng_list {
         left: 333px;
     }
-    .service_items li:nth-child(2n),
-    .staff_popup li:nth-child(2n) {
+    .service_items li:nth-child(2n), .staff_popup li:nth-child(2n) {
         margin-left: 10px;
     }
     .choise_time div:nth-child(7n) {
         margin-right: 52px;
     }
-    .service_selection.submit_screen,
-    .service_selection_block_six,
-    .service_selection_block_five,
-    .service_selection_block_four,
-    .service_selection_block_third,
-    .service_selection_block_two,
-    .service_selection_block_one,
-    .affiliate {
+    .service_selection.submit_screen, .service_selection_block_six, .service_selection_block_five, .service_selection_block_four, .service_selection_block_third, .service_selection_block_two, .service_selection_block_one, .affiliate {
         overflow-y: overlay;
         margin-bottom: 0;
         margin-top: 13px;
     }
     .comments {
-        overflow-y: auto;
+        overflow-y: overlay;
         margin-bottom: 0;
         margin-top: 13px;
         max-height: calc(100% - 50px);
@@ -159,18 +135,12 @@
         max-height: calc(100% - 50px);
         margin-bottom: 0;
     }
-    .service_selection.screen0,
-    .service_selection.screen1,
-    .service_selection.screen2,
-    .service_selection.screen3,
-    .service_selection.screen4,
-    .service_selection.screen5,
-    .final-screen {
+    .service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5, .final-screen {
         overflow: hidden;
         margin-bottom: 10px;
     }
     .choise_time div:not(:nth-child(6n)) {
-        margin-right: 54px;
+        margin-right: 55px;
     }
     .choise_time div:nth-child(6n) {
         margin-right: 0px;
@@ -192,7 +162,7 @@
         max-width: 400px;
         width: 100%;
     }
-    .service_selection.screen1 > .calendar_modal {
+    .service_selection.screen1>.calendar_modal {
         max-height: 100%;
         overflow-y: initial;
     }
@@ -282,8 +252,7 @@
         margin: auto;
         left: 0;
     }
-    .burger_menu_btn_off img,
-    .burger_menu_btn_on img:hover {
+    .burger_menu_btn_off img, .burger_menu_btn_on img:hover {
         cursor: pointer;
     }
     .burger_menu_btn_off {
@@ -505,8 +474,7 @@
         font-weight: 400;
         line-height: 18px;
     }
-    .dark_blue_text p,
-    .gray_text p {
+    .dark_blue_text p, .gray_text p {
         font-weight: 400;
     }
     .runtime strong {
@@ -629,7 +597,6 @@
     .confirmation input {
         width: 290px !important;
     }
-
     .last_list {
         width: 330px;
         /* margin-top: -3px; */
@@ -644,9 +611,7 @@
     .entry_form-item:nth-child(2n) {
         margin-left: 0px;
     }
-    .screen5 input[type="text"],
-    input[type="search"],
-    .screen5 textarea {
+    .screen5 input[type="text"], input[type="search"], .screen5 textarea {
         width: 330px;
         font-weight: 400;
         border: solid 1px rgba(172, 172, 172, 0.2);
@@ -673,7 +638,6 @@
         width: 330px;
         background-color: #fff;
         left: auto;
-
         height: 50px;
         border-radius: 3px;
         display: flex;
@@ -841,8 +805,7 @@
         left: 101px;
         top: 87px;
     }
-    a.last_footer_block_a,
-    .last_footer_block p {
+    a.last_footer_block_a, .last_footer_block p {
         color: #fff;
     }
     .comments .staff_popup_large {
@@ -864,14 +827,7 @@
     .service_grow {
         flex-grow: 0.7;
     }
-    .service_selection.submit_screen,
-    .service_selection_block_six,
-    .service_selection_block_five,
-    .service_selection_block_four,
-    .service_selection_block_third,
-    .service_selection_block_two,
-    .service_selection_block_one,
-    .affiliate {
+    .service_selection.submit_screen, .service_selection_block_six, .service_selection_block_five, .service_selection_block_four, .service_selection_block_third, .service_selection_block_two, .service_selection_block_one, .affiliate {
         overflow-y: overlay;
         margin-bottom: 0;
         margin-top: 13px;
@@ -914,19 +870,11 @@
         margin-right: 10px;
         background-size: 10px;
     }
-    .service_selection.screen0,
-    .service_selection.screen1,
-    .service_selection.screen2,
-    .service_selection.screen3,
-    .service_selection.screen4,
-    .service_selection.screen5,
-    .final-screen {
+    .service_selection.screen0, .service_selection.screen1, .service_selection.screen2, .service_selection.screen3, .service_selection.screen4, .service_selection.screen5, .final-screen {
         overflow: hidden;
         margin-bottom: 10px;
     }
-    .title_block .prev_block,
-    .title_block .next_block,
-    .staff_title .prev_block {
+    .title_block .prev_block, .title_block .next_block, .staff_title .prev_block {
         margin-top: 1px;
     }
     .price_service p {
@@ -946,7 +894,12 @@
         width: 330px;
         height: 49px;
     }
-    .staff_popup_item{
+    .staff_popup_item {
         height: auto;
     }
+    .staff_popup-name p,
+    .staff_popup .mobile_block {
+        width: auto;
+    }
+
 }

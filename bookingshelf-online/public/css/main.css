@@ -1305,7 +1305,6 @@ a {
 
 /*--end service_popup--*/
 
-.staff_popup .mobile_block {}
 
 .affiliate_item {
     display: flex;
@@ -1392,7 +1391,6 @@ a {
     flex-direction: column;
     margin-left: 20px;
 }
-
 .staff_popup-name p {
     font-size: 16px;
     line-height: 22px;
@@ -1558,13 +1556,7 @@ a {
     margin: auto;
 }
 
-/* .staff_popup .mobile_block span {
-    font-size: 20px;
-} */
 
-/*--end staff_popup--*/
-
-/*--time_popup--*/
 
 .specialist .date_item_popup {
     text-align: left;
