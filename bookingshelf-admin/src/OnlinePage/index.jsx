@@ -514,7 +514,7 @@ class Index extends Component {
                 <div className="chose_button">
                   {this.buttonColors.map((color) => 
                   <a
-                    className={(booking.bookingColor.toString(16) === color && 'active') +
+                    className={(booking.bookingColor.toString(16).toUpperCase() === color && 'active') +
                     ` button-color color${color}`
                     }
                     onClick={() => this.setColor(color)}

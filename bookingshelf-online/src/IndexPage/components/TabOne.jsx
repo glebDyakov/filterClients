@@ -359,7 +359,7 @@ class TabOne extends PureComponent {
                                                                     starSpacing="3.5px"
                                                                 />
                                                                 <p className="rating_text">
-                                                                    &nbsp;{staff.rating}
+                                                                    &nbsp;{staff.rating.toFixed(1)}
                                                                 </p>
                                                             </div>
                                                         ) : <p className="no_otz">{t("Нет отзывов")}</p>}
