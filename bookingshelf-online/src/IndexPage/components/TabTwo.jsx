@@ -537,7 +537,6 @@ class TabTwo extends Component {
                                         }
 
 
-
                                         return condition && finalServices && finalServices.length > 0 && (
                                             <ul className="service_list" key={index}>
                                                 <div>
@@ -573,7 +572,7 @@ class TabTwo extends Component {
 
                                                                     if (select) {
                                                                         return <li key={serviceKey}
-                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (array.length === 1 && " service_items_grow")}
+                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (finalServices.length === 1 && " service_items_grow")}
                                                                             style={{
                                                                                 backgroundColor: "var(--color_button)"
                                                                             }}
@@ -604,7 +603,7 @@ class TabTwo extends Component {
                                                                         </li>
                                                                     } else {
                                                                         return <li key={serviceKey}
-                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}
+                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (finalServices.length === 1 && " service_items_grow")}
                                                                         >
                                                                             <div className="service_item" >
                                                                                 <label className="service-block">
@@ -644,7 +643,7 @@ class TabTwo extends Component {
 
                                                                     if (select) {
                                                                         return <li key={serviceKey}
-                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (array.length === 1 && " service_items_grow")}
+                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected`) + (finalServices.length === 1 && " service_items_grow")}
                                                                             style={{
                                                                                 backgroundColor: "var(--color_button)"
                                                                             }}
@@ -678,7 +677,7 @@ class TabTwo extends Component {
                                                                         </li>
                                                                     } else {
                                                                         return <li key={serviceKey}
-                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (array.length === 1 && " service_items_grow")}
+                                                                            className={(selectedService && selectedService.serviceId === service.serviceId && `selected `) + (finalServices.length === 1 && " service_items_grow")}
                                                                         >
                                                                             <div className="service_item" >
                                                                                 <label className="service-block">
