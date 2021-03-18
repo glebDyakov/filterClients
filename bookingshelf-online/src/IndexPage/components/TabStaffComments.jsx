@@ -73,7 +73,7 @@ class TabStaffComments extends PureComponent {
                                                             starSpacing="3px"
                                                         />
                                                         <p className="rating_text">
-                                                            &nbsp;{staffCommentsStaff.rating}
+                                                            &nbsp;{staffCommentsStaff.rating.toFixed(1)}
                                                         </p>
                                                     </div>
 
@@ -113,7 +113,7 @@ class TabStaffComments extends PureComponent {
                                                             starSpacing="3px"
                                                         />
                                                         <p className="rating_text">
-                                                            &nbsp;{staffCommentsStaff.rating}
+                                                            &nbsp;{staffCommentsStaff.rating.toFixed(1)}
                                                         </p>
                                                     </div>
 
@@ -145,7 +145,7 @@ class TabStaffComments extends PureComponent {
                                                     starDimension="17px"
                                                     starSpacing="0px"
                                                 />
-                                                <p className="rating_text">&nbsp;{staff.rating}</p>
+                                                <p className="rating_text">&nbsp;{staff.rating.toFixed(1)}</p>
                                             </div>
                                             <span >
                                                 <p style={{ wordBreak: 'break-word' }}>{staff.comment}</p>

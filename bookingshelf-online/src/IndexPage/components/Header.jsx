@@ -12,7 +12,7 @@ import burger_open from "../../../public/img/icons/burger-open.svg";
 import telephone_btn from "../../../public/img/icons/telephone_btn.svg";
 import MediaQuery from 'react-responsive'
 import { withTranslation } from "react-i18next";
-import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants';
+import { BUTTON_COLORS_BY_NUMBER, DEFAULT_BUTTON_COLOR } from '../../_constants/styles.constants';
 import {TABLET_WIDTH} from '../../_constants/global.constants'
 
 class Header extends PureComponent {
@@ -56,7 +56,7 @@ class Header extends PureComponent {
 
         document.head.append(newStyles)
         newStyles.innerHTML = ":root {" +
-            "--color_button: #" + BUTTON_COLORS_BY_NUMBER[newColor] + ";" +
+            "--color_button: #" + BUTTON_COLORS_BY_NUMBER[newColor] || DEFAULT_BUTTON_COLOR + ";" +
             " --color_text: #09093A;" +
             "}"
         this.setState({
