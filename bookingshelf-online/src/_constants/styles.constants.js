@@ -2,4 +2,4 @@ export const BUTTON_COLORS = ['6A7187', 'CBC8C2', '3B4B5C', '2A3042', '5B7465', 
  
 export const BUTTON_COLORS_BY_NUMBER = BUTTON_COLORS.reduce((colors, color) => ({ ...colors, [parseInt(color, 16)]: color }), {});
 
-export const DEFAULT_BUTTON_COLOR = '#3B4B5C';
+export const DEFAULT_BUTTON_COLOR = '3B4B5C';
