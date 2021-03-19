@@ -32,8 +32,7 @@ class CellAppointment extends React.PureComponent {
     let totalDuration = appointment.duration;
     let totalCount = 0;
     // let totalPrice = appointment.price;
-    let totalAmount = appointment.price;
-
+    let totalAmount = appointment.totalAmount;
     const appointmentServices = [];
     const activeService = services && services.servicesList &&
       services.servicesList.find((service) => service.serviceId === appointment.serviceId
