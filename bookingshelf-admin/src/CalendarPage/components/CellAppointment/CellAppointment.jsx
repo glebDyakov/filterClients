@@ -54,7 +54,7 @@ class CellAppointment extends React.PureComponent {
             totalDuration += currentAppointment.duration;
             totalCount++;
             // totalPrice += currentAppointment.price;
-            totalAmount += currentAppointment.price;
+            totalAmount += currentAppointment.totalAmount;
             const activeCoService = services && services.servicesList &&
               services.servicesList.find((service) => service.serviceId === currentAppointment.serviceId);
             appointmentServices.push({
@@ -185,7 +185,7 @@ class CellAppointment extends React.PureComponent {
           currentAppointments={currentAppointments}
           numberKey={numberKey}
           staffKey={staffKey}
-          totalAmount={Math.floor(totalAmount * 100) / 100}
+          totalAmount={totalAmount.toFixed(2)}
         />
 
         {access(15) && appointment.appointmentId === selectedNote && !appointment.coappointment &&
@@ -204,7 +204,7 @@ class CellAppointment extends React.PureComponent {
             changeTime={changeTime}
             updateAppointmentForDeleting={updateAppointmentForDeleting}
             services={services}
-            totalAmount={Math.floor(totalAmount * 100) / 100}
+            totalAmount={totalAmount.toFixed(2)}
             numbers={numbers}
           />
         }
