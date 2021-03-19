@@ -227,7 +227,6 @@ class Index extends Component {
   }
 
   onManualOrderChange = (oldIndex, newIndex, items) => {
-    console.log(items);
     const updatedDragDropItems = reorder(
       items,
       oldIndex,
