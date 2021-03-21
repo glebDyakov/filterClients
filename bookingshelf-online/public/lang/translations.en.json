@@ -886,7 +886,10 @@
   "На страницу выбора филиалов": "To the branch selection page",
   "Неправильный Email": "Invalid Email",
   "Усредненный рейтинг":"Average rating",
-  "Пропустить выбор сотрудника": "Skip employee selection",
+  "Пропустить выбор": "Skip employee",
+  "Выберите рабочее место": "Choose a workplace",
+  "Выберите врача": "Choose a doctor",
+  "Рабочее место не важно": "The workplace is not important",
   "компании": "company"
 
 }

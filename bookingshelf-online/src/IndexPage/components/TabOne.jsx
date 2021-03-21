@@ -278,8 +278,8 @@ class TabOne extends PureComponent {
             <div className="service_selection screen1">
                 <div className={selectedServices[0] ?"service_selection_block_one service_selection_block_one_select" :"service_selection_block_one"}>
                     <div className="skip_employee-block">
-                        {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{t("Сотрудник не важен")} <div className="skip-arrow-blue"></div></p>}
-                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор сотрудника")} <div className="skip-arrow-blue">{ARROW_ICON}</div></p>}
+                        {flagAllStaffs && <p className="skip_employee" onClick={() => this.handleNoStaffClick()}>{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Рабочее место не важно') : t('Сотрудник не важен')} <div className="skip-arrow-blue"></div></p>}
+                        {!flagAllStaffs && <p className="skip_employee" onClick={() => selectStaff([])}>{t("Пропустить выбор")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow-blue">{ARROW_ICON}</div></p>}
 
                         {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>
@@ -300,7 +300,7 @@ class TabOne extends PureComponent {
                                 }
                             }}><span className="title_block_text">{t("Назад")}</span></span>
                         )}
-                        <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Выбор рабочего места') : (info.companyTypeId === 4 ? t('Выбор врача') : t('Выберите сотрудника'))}</p>
+                        <p className="modal_title">{(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('Выберите рабочее место') : (info.companyTypeId === 4 ? t('Выберите врача') : t('Выберите сотрудника'))}</p>
                     </div>
                     <React.Fragment>
                         <ul className={`desktop-visible staff_popup ${staffs && staffs.length <= 23 ? "staff_popup_large" : ""} ${staffs && staffs.length === 1 ? "staff_popup_one" : ""}`}>

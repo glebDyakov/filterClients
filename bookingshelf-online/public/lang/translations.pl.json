@@ -875,7 +875,7 @@
   "Онлайн-запись отключена. Пожалуйста, свяжитесь с администратором. Приносим извинения за доставленные неудобства.": "Nagrywanie online jest wyłączone. Skontaktuj się z administratorem. Przepraszamy za niedogodności.",
   "На страницу выбора филиалов": "Przejdź do strony wyboru oddziału",
   "Неправильный Email": "Niepoprawny Email",
-  "Пропустить выбор сотрудника": "Pomiń wybór pracowników",
+  "Пропустить выбор": "Pomiń wybór",
   "Рейтинг": "Ocena",
   "Сменить аккаунт": "Zmień konto",
   "Вы вошли как": "Jesteś zalogowany jako",
@@ -884,6 +884,9 @@
   "Код подтверждения был отправлен на номер": "Kod potwierdzający został wysłany na numer",
   "Введите код ниже": "Wpisz kod poniżej",
   "Подтвердить код": "Potwierdź kod",
+  "Выберите рабочее место": "Wybierz miejsce pracy",
+  "Выберите врача": "Wybierz lekarza",
+  "Рабочее место не важно": "Miejsce pracy nie jest ważne",
   "Усредненный рейтинг": "Średnia ocena"
 }
 
