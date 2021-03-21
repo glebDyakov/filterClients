@@ -121,10 +121,6 @@ class Index extends Component {
 
     let phone;
 
-    if (name==='defaultPhone1' && value) {
-      phone=1;
-    }
-
     if (name==='defaultPhone2' && value) {
       phone=2;
     }
@@ -343,6 +339,7 @@ class Index extends Component {
                 onVisitStorageDurationChange={this.onVisitStorageDurationChange}
                 status={status}
                 subcompanies={subcompanies}
+                handleChangePhone={this.handleChangePhone}
               />
             ),
             )}
