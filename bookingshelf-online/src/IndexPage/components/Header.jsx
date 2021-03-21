@@ -186,7 +186,7 @@ class Header extends PureComponent {
                             <div className="firm-icons">
 
                                 <div className="text-phones">
-                                    <p>{currentSelectedSubcompany.companyPhone1}</p>
+                                    {/* <p>{currentSelectedSubcompany.companyPhone1}</p> */}
                                     <p>{currentSelectedSubcompany.companyPhone2}</p>
                                     <p>{currentSelectedSubcompany.companyPhone3}</p>
                                 </div>
@@ -257,7 +257,7 @@ class Header extends PureComponent {
                                 <div className={mobile ? "mobile-icon-wrapper mobile_active" : "mobile-icon-wrapper"}>
 
                                     <div className="text-phones">
-                                        <p>{currentSelectedSubcompany.companyPhone1}</p>
+                                        {/* <p>{currentSelectedSubcompany.companyPhone1}</p> */}
                                         <p>{currentSelectedSubcompany.companyPhone2}</p>
                                         <p>{currentSelectedSubcompany.companyPhone3}</p>
                                     </div>
