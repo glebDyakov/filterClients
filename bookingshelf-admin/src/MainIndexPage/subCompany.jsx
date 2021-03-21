@@ -24,6 +24,7 @@ const SubCompany = ({
   submitted,
   onVisitStorageDurationChange,
   status,
+  subcompanies,
 }) => {
   return (
     <form key={`settings-page_subcompanies-item-${i}`} className="content retreats company_fields" name="form">

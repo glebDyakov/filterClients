@@ -330,7 +330,7 @@ class Index extends Component {
                 t={t}
                 handleChange={this.handleChange}
                 handleNotificationChange={this.handleNotificationChange}
-                setState={this.setState}
+                setState={(values) => this.setState(values)}
                 handleSubmit={this.handleSubmit}
                 onClose={this.onClose}
                 onCrop={this.onCrop}
@@ -342,6 +342,7 @@ class Index extends Component {
                 submitted={submitted}
                 onVisitStorageDurationChange={this.onVisitStorageDurationChange}
                 status={status}
+                subcompanies={subcompanies}
               />
             ),
             )}
