@@ -770,10 +770,15 @@ input {
   .name_company_wrapper {
     border: none !important;
 
-    input[type="radio"] {
-      width: -webkit-fit-content;
-      width: -moz-fit-content;
-      width: fit-content;
+    .radio-wrap {
+      display: flex;
+      align-items: center;
+
+      input[type="radio"] {
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+      }
     }
 
     &.bank {

@@ -208,7 +208,7 @@ const SubCompany = ({
 
           <div style={{ border: 'none' }} className="name_company_wrapper form-control">
             <div style={{ border: 'none' }} className="check-box-group2 input-text2">
-              <div className="input-text2">
+              <div className="input-text2 radio-wrap">
                  <input type="radio" aria-label="" name="defaultPhone2"
                         disabled={!(subcompany.companyPhone3 && subcompany.companyPhone3.length > 4)}
                         checked={subcompany.defaultPhone===2} onChange={(e) => handleChangePhone(e, i)}/>
@@ -253,7 +253,7 @@ const SubCompany = ({
 
           <div style={{ border: 'none' }} className="name_company_wrapper form-control">
             <div style={{ border: 'none' }} className="check-box-group2 input-text2">
-              <div className="input-text2">
+              <div className="input-text2 radio-wrap">
                  <input type="radio" aria-label="" name="defaultPhone3"
                         disabled={!(subcompany.companyPhone2 && subcompany.companyPhone2.length > 4)}
                         checked={subcompany.defaultPhone===3} onChange={(e) => handleChangePhone(e, i)}/>

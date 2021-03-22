@@ -258,8 +258,8 @@ class Header extends PureComponent {
 
                                     <div className="text-phones">
                                         {/* <p>{currentSelectedSubcompany.companyPhone1}</p> */}
-                                        <p>{currentSelectedSubcompany.companyPhone2}</p>
-                                        <p>{currentSelectedSubcompany.companyPhone3}</p>
+                                        <p>{!!currentSelectedSubcompany.companyPhone2?.replace('+', '') && currentSelectedSubcompany.companyPhone2}</p>
+                                        <p>{!!currentSelectedSubcompany.companyPhone3?.replace('+', '') && currentSelectedSubcompany.companyPhone3}</p>
                                     </div>
 
                                     <img src={telephone_btn} onClick={e => this.setState({
