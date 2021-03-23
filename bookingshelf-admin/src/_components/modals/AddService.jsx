@@ -208,7 +208,7 @@ class AddService extends React.Component {
                           <option value="UAH">UAH</option>
                           <option value="EUR">EUR</option>
                           <option value="USD">USD</option>
-                          <option value="RUR">RUB</option>
+                          <option value="RUB">RUB</option>
                           <option value="GBP">GBP</option>
                         </select>
                       </div>
