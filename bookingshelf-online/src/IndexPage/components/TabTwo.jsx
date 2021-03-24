@@ -178,7 +178,7 @@ class TabTwo extends Component {
         let heightServiceMob = "0";
         let transit;
         let servicesSum = 0;
-
+        const screenTwoFirst=(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true);
         serviceGroups.map((serviceGroup, index) => {
 
             const { services } = serviceGroup
@@ -404,7 +404,7 @@ class TabTwo extends Component {
                                 <img onClick={e => this.canselMobSearch()} src={mobile_gray_cansel} alt="mobile_gray_cansel" />
                             </div>)
                             : (<div className="title_block service-title">
-                                {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) &&
+                                {screenTwoFirst &&
                                     <span className="prev_block service-prev" onClick={() => {
                                         if (getFirstScreen(firstScreen) === 2) {
                                             if (!isStartMovingVisit) {
@@ -424,12 +424,8 @@ class TabTwo extends Component {
                                             }
                                         }
                                     }}><span className="title_block_text">{t("Назад")}</span></span>}
-                                <div style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    width: "175px",
-                                }}>
-                                    <p className="modal_title">{t("Выберите услугу")}</p>
+                                <div className={screenTwoFirst?"closed_search_mob":"closed_search_mob first_services"}>
+                                    <p className={screenTwoFirst?"modal_title":"first_services"}>{t("Выберите услугу")}</p>
                                     <div className="TABLET_WIDTH_invisible" onClick={e => this.setState({
                                         visibleSearch: !visibleSearch,
                                     })}>
@@ -440,7 +436,7 @@ class TabTwo extends Component {
                     </MediaQuery>
                     <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="title_block service-title">
-                            {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) &&
+                            {screenTwoFirst &&
                                 <span className="prev_block service-prev" onClick={() => {
                                     if (getFirstScreen(firstScreen) === 2) {
                                         if (!isStartMovingVisit) {
@@ -460,7 +456,7 @@ class TabTwo extends Component {
                                         }
                                     }
                                 }}><span className="title_block_text">{t("Назад")}</span></span>}
-                            <p className="modal_title">{t("Выберите услугу")}</p>
+                            <p className={screenTwoFirst?"modal_title":"first_services"}>{t("Выберите услугу")}</p>
                             <div className="row align-items-center content clients mb-2 search-block TABLET_WIDTH_visible">
                                 <div className="search col-12">
                                     <img

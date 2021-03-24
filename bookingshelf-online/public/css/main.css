@@ -583,7 +583,7 @@ a {
     margin-left: 6px;
     margin-top: 1px;
 }
-
+.first_services,
 .modal_title {
     font-family: 'Open Sans';
     font-style: normal;
@@ -2981,4 +2981,12 @@ max-height: calc(100% - 50px);
 }
 .confirmation input{
     margin-top: 10px;
+}
+.closed_search_mob{
+    display: flex;
+    justify-content: space-between;
+    width: 175px;
+}
+.closed_search_mob.first_services{
+    width: 100%;
 }
