@@ -24,6 +24,8 @@ const SubCompany = ({
   submitted,
   onVisitStorageDurationChange,
   status,
+  subcompanies,
+  handleChangePhone,
 }) => {
   return (
     <form key={`settings-page_subcompanies-item-${i}`} className="content retreats company_fields" name="form">
@@ -93,11 +95,11 @@ const SubCompany = ({
 
           <div style={{ border: 'none' }} className="name_company_wrapper form-control">
             <div style={{ border: 'none' }} className="check-box-group2 input-text2">
-              {/* <div className="input-text2">*/}
-              {/*    <input type="radio" aria-label="" name="defaultPhone1"
+              {/* <div className="input-text2">
+                 <input type="radio" aria-label="" name="defaultPhone1"
                         disabled={!(subcompany.companyPhone1 && subcompany.companyPhone1.length > 4)}
                         checked={subcompany.defaultPhone===1} onChange={(e) => handleChangePhone(e, i)}/>*/}
-              {/* </div>*/}
+              {/* </div> */}
 
               <ReactPhoneInput
                 defaultCountry={'by'}
@@ -117,11 +119,11 @@ const SubCompany = ({
 
           <p>{t('Адрес компании')}</p>
           <div className="check-box-group2 form-control">
-            {/* <div className="input-text2">*/}
-            {/*    <input type="radio" aria-label="" name="defaultAddress1"
+            {/* <div className="input-text2">
+               <input type="radio" aria-label="" name="defaultAddress1"
                       disabled={!subcompany.companyAddress1}  checked={subcompany.defaultAddress===1}
-                      onChange={(e) => handleChangeAddress(e, i)}/>*/}
-            {/* </div>*/}
+                      onChange={(e) => handleChangeAddress(e, i)}/>
+            </div> */}
 
             <input
               checked={true}
@@ -206,11 +208,11 @@ const SubCompany = ({
 
           <div style={{ border: 'none' }} className="name_company_wrapper form-control">
             <div style={{ border: 'none' }} className="check-box-group2 input-text2">
-              {/* <div className="input-text2">*/}
-              {/*    <input type="radio" aria-label="" name="defaultPhone3"
+              <div className="input-text2 radio-wrap">
+                 <input type="radio" aria-label="" name="defaultPhone2"
                         disabled={!(subcompany.companyPhone3 && subcompany.companyPhone3.length > 4)}
-                        checked={subcompany.defaultPhone===3} onChange={(e) => handleChangePhone(e, i)}/>*/}
-              {/* </div>*/}
+                        checked={subcompany.defaultPhone===2} onChange={(e) => handleChangePhone(e, i)}/>
+              </div>
 
               <ReactPhoneInput
                 defaultCountry={'by'}
@@ -251,11 +253,11 @@ const SubCompany = ({
 
           <div style={{ border: 'none' }} className="name_company_wrapper form-control">
             <div style={{ border: 'none' }} className="check-box-group2 input-text2">
-              {/* <div className="input-text2">*/}
-              {/*    <input type="radio" aria-label="" name="defaultPhone2"
+              <div className="input-text2 radio-wrap">
+                 <input type="radio" aria-label="" name="defaultPhone3"
                         disabled={!(subcompany.companyPhone2 && subcompany.companyPhone2.length > 4)}
-                        checked={subcompany.defaultPhone===2} onChange={(e) => handleChangePhone(e, i)}/>*/}
-              {/* </div>*/}
+                        checked={subcompany.defaultPhone===3} onChange={(e) => handleChangePhone(e, i)}/>
+              </div>
               <ReactPhoneInput
                 defaultCountry={'by'}
                 country={'by'}

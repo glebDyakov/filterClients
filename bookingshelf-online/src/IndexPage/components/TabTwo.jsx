@@ -22,8 +22,8 @@ class TabTwo extends Component {
         this.openListFunc = this.openListFunc.bind(this);
         this.openCatigor = this.openCatigor.bind(this);
         this.searchOpen = this.searchOpen.bind(this);
-    }
-    startOpenservice = false;
+    this.startOpenservice = false;
+}
 
     canselMobSearch() {
         if (this.state.visibleSearch) {
@@ -171,10 +171,8 @@ class TabTwo extends Component {
         }
     }
     render() {
-
         const { selectedServices, info, isLoading, match, history, subcompanies, firstScreen, isStartMovingVisit, clearSelectedServices, getDurationForCurrentStaff, setScreen, flagAllStaffs, refreshTimetable, serviceGroups, selectedStaff, services, selectedService, servicesForStaff, selectService, setDefaultFlag, t } = this.props;
         const { searchValue, openList, catigor, visibleSearch } = this.state;
-        
         const defaultHeight = 310;
         let heightService = "0";
         let heightServiceMob = "0";
@@ -208,11 +206,6 @@ class TabTwo extends Component {
 
             if (finalServices) {
                 servicesSum += finalServices.length;
-                if (servicesSum >= 10) {
-                    this.startOpenservice = true;
-                } else {
-                    this.startOpenservice = false;
-                }
             }
             if (searchValue && searchValue.length > 0) {
                 finalServices = finalServices && finalServices.filter(service =>

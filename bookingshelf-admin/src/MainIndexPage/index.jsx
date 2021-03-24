@@ -121,10 +121,6 @@ class Index extends Component {
 
     let phone;
 
-    if (name==='defaultPhone1' && value) {
-      phone=1;
-    }
-
     if (name==='defaultPhone2' && value) {
       phone=2;
     }
@@ -330,7 +326,7 @@ class Index extends Component {
                 t={t}
                 handleChange={this.handleChange}
                 handleNotificationChange={this.handleNotificationChange}
-                setState={this.setState}
+                setState={(values) => this.setState(values)}
                 handleSubmit={this.handleSubmit}
                 onClose={this.onClose}
                 onCrop={this.onCrop}
@@ -342,6 +338,8 @@ class Index extends Component {
                 submitted={submitted}
                 onVisitStorageDurationChange={this.onVisitStorageDurationChange}
                 status={status}
+                subcompanies={subcompanies}
+                handleChangePhone={this.handleChangePhone}
               />
             ),
             )}
