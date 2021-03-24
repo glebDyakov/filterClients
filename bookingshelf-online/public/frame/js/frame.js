@@ -57,7 +57,7 @@ function displayFrame() {
     document.getElementById("online-booking").style.visibility = 'visible';
     document.getElementById("online-booking").style.width = "100%";
     document.getElementById("popup-shadow").style.display = "block";
-    document.getElementById("closer-modal").style.display = "block";
+    document.getElementById("closer-modal").style.display = "flex";
 }
 
 function closeFrame() {

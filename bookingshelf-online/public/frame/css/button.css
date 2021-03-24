@@ -139,6 +139,8 @@
   background-color: #fff;
   z-index: 999903;
   right: 634px;
+  justify-content: center;
+  align-items: center;
 }
 @media screen and (max-width: 620px){
   #online-booking {
