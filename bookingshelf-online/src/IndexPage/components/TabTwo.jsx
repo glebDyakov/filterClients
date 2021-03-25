@@ -520,7 +520,6 @@ class TabTwo extends Component {
                                             heightServiceMob=String(finalServices.length * defaultHeight);
                                             transit = (finalServices.length * 0.1) + 0.3;
                                         }
-console.log(finalServices)
 
                                         return condition && finalServices && finalServices.length > 0 && (
                                             <ul className="service_list" key={index}>
