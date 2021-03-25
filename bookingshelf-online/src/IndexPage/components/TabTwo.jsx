@@ -177,7 +177,7 @@ class TabTwo extends Component {
         let heightService = "0";
         let heightServiceMob = "0";
         let transit;
-        let servicesSum = 0;
+        let oneCatigor = 0;
         const screenTwoFirst=(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true);
         serviceGroups.map((serviceGroup, index) => {
 
@@ -203,10 +203,7 @@ class TabTwo extends Component {
             if (condition && info && finalServices && finalServices.length > 0) {
                 finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
             }
-
-            if (finalServices) {
-                servicesSum += finalServices.length;
-            }
+           
 
             if (searchValue && searchValue.length > 0) {
                 finalServices = finalServices && finalServices.filter(service =>
@@ -214,10 +211,8 @@ class TabTwo extends Component {
                     || service.details.toLowerCase().includes(this.search.value.toLowerCase())
                     || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
                 )
-            }
+            } 
         })
-
-
 
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
@@ -525,7 +520,7 @@ class TabTwo extends Component {
                                             heightServiceMob=String(finalServices.length * defaultHeight);
                                             transit = (finalServices.length * 0.1) + 0.3;
                                         }
-
+console.log(finalServices)
 
                                         return condition && finalServices && finalServices.length > 0 && (
                                             <ul className="service_list" key={index}>
