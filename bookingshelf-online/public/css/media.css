@@ -32,6 +32,9 @@
     .next_block {
         width: 155px;
     }
+    .first_services{
+        margin-right: 5%;
+    }
     .modal_menu {
         width: 590px;
         padding: 0px 5px;
@@ -798,7 +801,11 @@
         font-size: 14px;
         line-height: 19px;
     }
-    .first_services,
+    .first_services{
+        font-size: 13px;
+    text-align: center;
+    margin-right: 0;
+    }
     .modal_title {
         font-size: 13px;
     }

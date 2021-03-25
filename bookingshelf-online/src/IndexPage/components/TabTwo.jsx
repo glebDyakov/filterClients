@@ -22,7 +22,7 @@ class TabTwo extends Component {
         this.openListFunc = this.openListFunc.bind(this);
         this.openCatigor = this.openCatigor.bind(this);
         this.searchOpen = this.searchOpen.bind(this);
-    this.startOpenservice = false;
+    this.startOpenservice = true;
 }
 
     canselMobSearch() {
@@ -207,6 +207,7 @@ class TabTwo extends Component {
             if (finalServices) {
                 servicesSum += finalServices.length;
             }
+
             if (searchValue && searchValue.length > 0) {
                 finalServices = finalServices && finalServices.filter(service =>
                     service.name.toLowerCase().includes(this.search.value.toLowerCase())

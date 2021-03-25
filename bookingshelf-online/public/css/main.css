@@ -591,7 +591,11 @@ a {
     font-size: 14px;
     line-height: 18px;
 }
-
+.first_services{
+    flex-grow: 1;
+    text-align: end;
+    margin-right: 9%;
+}
 .service_selection {
     width: 100%;
 }
@@ -2989,4 +2993,7 @@ max-height: calc(100% - 50px);
 }
 .closed_search_mob.first_services{
     width: 100%;
+}
+.no_back_button{
+    justify-content: space-around;
 }
