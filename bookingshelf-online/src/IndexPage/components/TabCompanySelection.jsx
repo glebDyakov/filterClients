@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
 import { staffActions } from "../../_actions";
 import { connect } from 'react-redux';
-import { getFirstScreen } from "../../_helpers/common";
 import { withTranslation } from "react-i18next";
 import skip_arrow from "../../../public/img/icons/skip-arrow-white.svg"
-import { BUTTON_COLORS_BY_NUMBER } from '../../_constants/styles.constants';
 
 
 class TabCompanySelection extends PureComponent {

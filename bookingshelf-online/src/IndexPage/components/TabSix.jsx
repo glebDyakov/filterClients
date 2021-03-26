@@ -48,8 +48,11 @@ class TabSix extends PureComponent {
                 priceTo += Number(service.priceTo)
                 duration += Number(getDurationForCurrentStaff(service))
             })
+            priceTo=Math.floor(priceTo * 100) / 100;
+            priceFrom=Math.floor(priceFrom * 100) / 100;
             newAppointments && newAppointments[0] && newAppointments[0].discountPercent && newAppointments.forEach(( appointment => {
                 totalAmount += appointment.totalAmount;
+                totalAmount=Math.floor(totalAmount * 100) / 100; 
             }))
             serviceInfo = (
                 <div className="last_list_block">

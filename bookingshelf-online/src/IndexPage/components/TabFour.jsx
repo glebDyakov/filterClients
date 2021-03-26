@@ -120,7 +120,8 @@ class TabFour extends PureComponent {
                 priceTo += Number(service.priceTo)
                 duration += Number(getDurationForCurrentStaff(service))
             })
-
+            priceTo=Math.floor(priceTo * 100) / 100;
+            priceFrom=Math.floor(priceFrom * 100) / 100;
             let sizeWords = "23px";
             const priceFrom100 = priceFrom / 100;
             const priceTo100 = priceTo / 100;

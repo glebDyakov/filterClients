@@ -47,7 +47,8 @@ class TabFive extends PureComponent {
         priceTo += Number(service.priceTo)
         duration += Number(getDurationForCurrentStaff(service))
       })
-
+      priceTo=Math.floor(priceTo * 100) / 100;
+      priceFrom=Math.floor(priceFrom * 100) / 100;
       serviceInfo = (
         <div className="last_list_block">
           <div className="last_list_caption">

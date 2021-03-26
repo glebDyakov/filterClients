@@ -23,6 +23,7 @@ class TabTwo extends Component {
         this.openCatigor = this.openCatigor.bind(this);
         this.searchOpen = this.searchOpen.bind(this);
     this.startOpenservice = true;
+     this.oneCatigor = 0;
 }
 
     canselMobSearch() {
@@ -50,16 +51,17 @@ class TabTwo extends Component {
 
         for (let i = 0; i < this.props.serviceGroups.length; i++) {
             if (e.target.value != "") {
-                newArray.push(true)
+                newArray.push(false);
             }
             else {
-                newArray.push(false)
+                this.oneCatigor>10? newArray.push(false):newArray.push(false)  
             }
         }
 
         this.setState({ searchValue: e.target.value, catigor: newArray.concat() })
     }
     openCatigor(index) {
+        
         const newArray = this.state.catigor;
         newArray[index] = !newArray[index]
         this.setState({
@@ -77,7 +79,6 @@ class TabTwo extends Component {
        
         let whiteClass = "";
         white ? whiteClass = "white_text" : whiteClass = "";
-        const { t } = this.props;
         if (priceFrom !== priceTo) {
             if (footer) {
                 return (<React.Fragment>
@@ -177,7 +178,7 @@ class TabTwo extends Component {
         let heightService = "0";
         let heightServiceMob = "0";
         let transit;
-        let oneCatigor = 0;
+        this.oneCatigor = 0;
         const screenTwoFirst=(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true);
         serviceGroups.map((serviceGroup, index) => {
 
@@ -197,20 +198,24 @@ class TabTwo extends Component {
             } else {
                 finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
             }
-
-
-
-            if (condition && info && finalServices && finalServices.length > 0) {
-                finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
-            }
-           
-
             if (searchValue && searchValue.length > 0) {
                 finalServices = finalServices && finalServices.filter(service =>
                     service.name.toLowerCase().includes(this.search.value.toLowerCase())
                     || service.details.toLowerCase().includes(this.search.value.toLowerCase())
                     || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
                 )
+            }
+            if (condition && info && finalServices && finalServices.length > 0) {
+                finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
+            }
+            
+            if (finalServices && finalServices.length > 0) {
+                this.oneCatigor += finalServices.length ;
+                if (this.oneCatigor>10){
+                    this.startOpenservice=true;
+                }else{
+                    this.startOpenservice=false;
+                }
             } 
         })
 
@@ -258,8 +263,10 @@ class TabTwo extends Component {
                 priceFrom += Number(service.priceFrom)
                 priceTo += Number(service.priceTo)
                 duration += Number(getDurationForCurrentStaff(service))
+                
             })
-
+            priceTo=Math.floor(priceTo * 100) / 100;
+            priceFrom=Math.floor(priceFrom * 100) / 100;
             const priceFrom100 = priceFrom / 100;
             const priceTo100 = priceTo / 100;
             const priceFrom1000 = priceFrom / 1000;
@@ -503,7 +510,6 @@ class TabTwo extends Component {
                                         } else {
                                             finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
                                         }
-
                                         if (searchValue && searchValue.length > 0) {
                                             finalServices = finalServices && finalServices.filter(service =>
                                                 service.name.toLowerCase().includes(this.search.value.toLowerCase())
@@ -511,11 +517,11 @@ class TabTwo extends Component {
                                                 || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
                                             )
                                         }
-
                                         if (condition && info && finalServices && finalServices.length > 0) {
                                             finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
                                         }
-                                        if (finalServices) {
+                                       
+                                        if (finalServices && finalServices.length > 0) {
                                             heightService = String(Math.ceil(finalServices.length / 2) * defaultHeight);
                                             heightServiceMob=String(finalServices.length * defaultHeight);
                                             transit = (finalServices.length * 0.1) + 0.3;
