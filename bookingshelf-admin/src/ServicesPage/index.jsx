@@ -567,7 +567,7 @@ class Index extends Component {
       if (group.name.toLowerCase().includes(value)) {
         filtered.push(group);
       } else {
-        const services = group.services.filter((s) => {
+        const services = (group.services || []).filter((s) => {
           if (group.name.toLowerCase().includes(value.toLowerCase())) return true;
           return (s.name.toLowerCase().includes(value.toLowerCase()) || s.details.toLowerCase().includes(value.toLowerCase()));
         });
