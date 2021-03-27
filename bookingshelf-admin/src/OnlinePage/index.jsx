@@ -29,7 +29,13 @@ class Index extends Component {
       messageCopyModalOpen: false,
     };
 
-    this.buttonColors = ['6A7187', '747474', '3B4B5C', '2A3042', '5B7465', '728399', 'A490F1', '7D785F', '991212', 'F7B83E', 'C959A3', '3E50F7']
+    this.buttonColors = ['6A7187', '747474', '3B4B5C', '2A3042', '5B7465', '728399', 'A490F1', '7D785F', '991212', 'F7B83E', 'C959A3', '3E50F7'];
+    this.onlineIntervalData = [
+      { value: 60 * 15 , content: '15' },
+      { value: 60 * 30 , content: '30' },
+      { value: 60 * 45 , content: '45' },
+      { value: 60 * 60 , content: '60' },
+    ]
 
     this.handleChange = this.handleChange.bind(this);
     this.handleStepChange = this.handleStepChange.bind(this);
@@ -66,7 +72,7 @@ class Index extends Component {
           ? parseInt(moment(this.state.selectedDay).format('x'))
           : parseInt(newProps.company.settings.onlineZapisEndTimeMillis),
         onlineZapisOn: newProps.company.settings.onlineZapisOn,
-        serviceIntervalOn: newProps.company.settings.serviceIntervalOn,
+        booktimeOnlineStepSec: newProps.company.settings.booktimeOnlineStepSec,
       });
     }
     if (newProps.company && newProps.company.saved === 'stepSaved') {
@@ -103,6 +109,18 @@ class Index extends Component {
       [checkboxKey]: newState[checkboxKey],
     }, 'isServiceIntervalLoading'));
   }
+
+  onIntervalChange = (value) => {
+    this.setState({ booktimeOnlineStepSec: value });
+    const activeCompany = this.props.company.subcompanies && this.props.company.subcompanies
+      .find((item) => item.companyId === this.props.company.settings.companyId);
+    this.props.dispatch(companyActions.updateCompanySettings({
+      imageBase64: activeCompany && activeCompany.imageBase64,
+      ...this.props.company.settings,
+      booktimeOnlineStepSec: value,
+    }, 'isServiceIntervalLoading'));
+  }
+
 
   handleScreenCheckboxChange(firstScreen) {
     this.setState({ firstScreen });
@@ -221,7 +239,7 @@ class Index extends Component {
   render() {
     const { company, t } = this.props;
     const {
-      booking, booktimeStep, appointmentMessage, urlButton, selectedDay, onlineZapisOn, serviceIntervalOn, status,
+      booking, booktimeStep, appointmentMessage, urlButton, selectedDay, onlineZapisOn, booktimeOnlineStepSec, status,
     } = this.state;
 
     const isOnlineZapisChecked = !onlineZapisOn;
@@ -371,7 +389,10 @@ class Index extends Component {
 
                 <div className=" content-pages-bg mb-0 h-auto p-zapis online-interval">
                   <p className="title mb-3">{t("Интервал онлайн-записи")}</p>
-                  <div className="check-box">
+                  
+
+                  {this.onlineIntervalData.map(({ value, content }) => (
+                    <div className="check-box" key={value}>
                     <label>
                       {isServiceIntervalLoading
                         ?
@@ -382,16 +403,17 @@ class Index extends Component {
                         <React.Fragment>
                           <input
                             className="form-check-input"
-                            checked={!serviceIntervalOn}
-                            onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}
+                            checked={booktimeOnlineStepSec === value}
+                            onChange={() => this.onIntervalChange(value)}
                             type="checkbox"
                           />
                           <span className="check-box-circle"/>
                         </React.Fragment>
                       }
-                      15 {t("минут")}
+                      {content} {t("минут")}
                     </label>
                   </div>
+                  ))}
 
                   <div className="check-box">
                     <label>
@@ -402,8 +424,8 @@ class Index extends Component {
                             alt=""/></div>
                         : <React.Fragment>
                           <input className="form-check-input"
-                            checked={serviceIntervalOn}
-                            onChange={() => this.handleServiceCheckboxChange('serviceIntervalOn')}
+                            checked={!booktimeOnlineStepSec}
+                            onChange={() => this.onIntervalChange(0)}
                             type="checkbox"/>
                           <span className="check-box-circle"/>
                         </React.Fragment>
