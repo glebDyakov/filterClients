@@ -108,7 +108,8 @@ class TabOne extends PureComponent {
             priceTo += Number(service.priceTo)
             duration += Number(getDurationForCurrentStaff(service))
         })
-
+        priceTo=Math.floor(priceTo * 100) / 100;
+        priceFrom=Math.floor(priceFrom * 100) / 100;
         const priceFrom100 = priceFrom / 100;
         const priceTo100 = priceTo / 100;
         const priceFrom1000 = priceFrom / 1000;
@@ -283,8 +284,8 @@ class TabOne extends PureComponent {
 
                         {/* {<p className="skip_employee" onClick={() => selectStaff([])}>{t("Сотрудник не важен")} {(info.template === 2 || info.companyTypeId === 2 || info.companyTypeId === 3) ? t('рабочего места') : (info.companyTypeId === 4 ? t('врача') : t('сотрудника'))}<div className="skip-arrow"></div></p>} */}
                     </div>
-                    <div className="title_block n staff_title">
-                        {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (
+                    <div className={((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1)))?"title_block n staff_title":"title_block n staff_title no_back_button"}>
+                      {((isStartMovingVisit && newAppointments && !!newAppointments.length) || (flagAllStaffs || (subcompanies.length > 1))) && (
                             <span className="prev_block" onClick={() => {
                                 if (flagAllStaffs) {
                                     setScreen(4);

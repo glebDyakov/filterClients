@@ -69,7 +69,7 @@ class CellAppointmentArea extends React.PureComponent {
           <span className="notes-container-message">
             <span className="client-name w-100 d-flex justify-content-between">
               <span className="client-name">{appointment.clientFirstName
-                ? (`${companyTypeId === 4 ? t("Пациент") : t('Клиент')}: ` + appointment.clientFirstName +
+                 ? (appointment.clientFirstName +
                   (appointment.clientLastName ? ` ${appointment.clientLastName}` : ''))
                 : t('Без клиента')}
                 {clientAppointmentsCount > 1 &&
