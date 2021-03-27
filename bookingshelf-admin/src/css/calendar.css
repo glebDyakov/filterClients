@@ -1818,7 +1818,6 @@
 .calendar .calendar-list .tabs-scroll .tab-content-list .notes .notes-container .notes-container-message .appointment-body-icon {
   width: 12px;
   height: 12px;
-  margin-left: 5px;
 }
 
 .calendar .calendar-list .tabs-scroll .tab-content-list .notes .notes-container .notes-container-message ul {
@@ -1837,7 +1836,7 @@
 }
 
 .calendar .calendar-list .tabs-scroll .tab-content-list .notes .notes-container .notes-container-message .client-phone {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 14px;
   color: #495057;
 }
