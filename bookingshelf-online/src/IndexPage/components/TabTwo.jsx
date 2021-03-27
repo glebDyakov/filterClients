@@ -23,7 +23,8 @@ class TabTwo extends Component {
         this.openCatigor = this.openCatigor.bind(this);
         this.searchOpen = this.searchOpen.bind(this);
     this.startOpenservice = true;
-     this.oneCatigor = 0;
+     this.numberServices = 0;
+     this.numberCategory = 0;
 }
 
     canselMobSearch() {
@@ -54,7 +55,7 @@ class TabTwo extends Component {
                 newArray.push(false);
             }
             else {
-                this.oneCatigor>10? newArray.push(false):newArray.push(false)  
+                this.numberServices>10 && this.numberCategory>1 ? newArray.push(false):newArray.push(false)  
             }
         }
 
@@ -178,7 +179,8 @@ class TabTwo extends Component {
         let heightService = "0";
         let heightServiceMob = "0";
         let transit;
-        this.oneCatigor = 0;
+        this.numberServices = 0;
+        this.numberCategory = 0;
         const screenTwoFirst=(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true);
         serviceGroups.map((serviceGroup, index) => {
 
@@ -210,8 +212,10 @@ class TabTwo extends Component {
             }
             
             if (finalServices && finalServices.length > 0) {
-                this.oneCatigor += finalServices.length ;
-                if (this.oneCatigor>10){
+                this.numberServices += finalServices.length ;
+                this.numberCategory += 1;
+                console.log(this.numberCategory)
+                if (this.numberServices>10 && this.numberCategory>1 ){
                     this.startOpenservice=true;
                 }else{
                     this.startOpenservice=false;
