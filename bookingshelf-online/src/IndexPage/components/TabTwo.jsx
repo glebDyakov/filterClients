@@ -17,14 +17,13 @@ class TabTwo extends Component {
             openList: false,
             catigor: [],
             visibleSearch: false,
+            numberCategory:0,
         }
         this.priceText = this.priceText.bind(this);
         this.openListFunc = this.openListFunc.bind(this);
         this.openCatigor = this.openCatigor.bind(this);
         this.searchOpen = this.searchOpen.bind(this);
     this.startOpenservice = true;
-     this.numberServices = 0;
-     this.numberCategory = 0;
 }
 
     canselMobSearch() {
@@ -49,16 +48,15 @@ class TabTwo extends Component {
     }
     searchOpen(e) {
         const newArray = [];
-
+       
         for (let i = 0; i < this.props.serviceGroups.length; i++) {
-            if (e.target.value != "") {
-                newArray.push(false);
+            if (e.target.value) {
+                this.state.numberCategory>1 ? newArray.push(true):newArray.push(false)  
             }
             else {
-                this.numberServices>10 && this.numberCategory>1 ? newArray.push(false):newArray.push(false)  
+               this.state.numberCategory>1 ? newArray.push(false):newArray.push(false)  
             }
         }
-
         this.setState({ searchValue: e.target.value, catigor: newArray.concat() })
     }
     openCatigor(index) {
@@ -75,6 +73,52 @@ class TabTwo extends Component {
                 openList: !this.state.openList,
             })
         }
+    }
+    componentDidMount(){
+        const { selectedServices, info, flagAllStaffs,  serviceGroups, selectedStaff } = this.props;
+        const { searchValue} = this.state;
+        let count =0;
+        serviceGroups.map((serviceGroup, index) => {
+
+            const { services } = serviceGroup
+            const condition =
+                services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
+                flagAllStaffs
+
+            let finalServices
+
+            if (flagAllStaffs) {
+                if (selectedServices && selectedServices.length) {
+                    finalServices = services && services.filter(service => service.staffs && service.staffs.some(st => selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => st.staffId === selectedServStaff.staffId))))
+                } else {
+                    finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0)
+                }
+            } else {
+                finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
+            }
+            if (searchValue && searchValue.length > 0) {
+                finalServices = finalServices && finalServices.filter(service =>
+                    service.name.toLowerCase().includes(this.search.value.toLowerCase())
+                    || service.details.toLowerCase().includes(this.search.value.toLowerCase())
+                    || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
+                )
+            }
+            if (condition && info && finalServices && finalServices.length > 0) {
+                finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
+            }
+            
+            if (finalServices && finalServices.length > 0) {
+               count += 1;
+                if (count>1 ){
+                    this.startOpenservice=true;
+                }else{
+                    this.startOpenservice=false;
+                }
+            } 
+        })
+        this.setState({
+            numberCategory:count
+        })
     }
     priceText(priceFrom, priceTo, currency, white, footer) {
        
@@ -179,49 +223,8 @@ class TabTwo extends Component {
         let heightService = "0";
         let heightServiceMob = "0";
         let transit;
-        this.numberServices = 0;
-        this.numberCategory = 0;
         const screenTwoFirst=(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true);
-        serviceGroups.map((serviceGroup, index) => {
-
-            const { services } = serviceGroup
-            const condition =
-                services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
-                flagAllStaffs
-
-            let finalServices
-
-            if (flagAllStaffs) {
-                if (selectedServices && selectedServices.length) {
-                    finalServices = services && services.filter(service => service.staffs && service.staffs.some(st => selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => st.staffId === selectedServStaff.staffId))))
-                } else {
-                    finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0)
-                }
-            } else {
-                finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
-            }
-            if (searchValue && searchValue.length > 0) {
-                finalServices = finalServices && finalServices.filter(service =>
-                    service.name.toLowerCase().includes(this.search.value.toLowerCase())
-                    || service.details.toLowerCase().includes(this.search.value.toLowerCase())
-                    || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
-                )
-            }
-            if (condition && info && finalServices && finalServices.length > 0) {
-                finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
-            }
-            
-            if (finalServices && finalServices.length > 0) {
-                this.numberServices += finalServices.length ;
-                this.numberCategory += 1;
-                console.log(this.numberCategory)
-                if (this.numberServices>10 && this.numberCategory>1 ){
-                    this.startOpenservice=true;
-                }else{
-                    this.startOpenservice=false;
-                }
-            } 
-        })
+        
 
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
@@ -252,10 +255,6 @@ class TabTwo extends Component {
                     (!servicesForStaff && selectedStaff && selectedStaff.length === 0)
                 )
         })
-
-
-
-
 
         let serviceInfo = null;
         let sizeWords = "23px";
