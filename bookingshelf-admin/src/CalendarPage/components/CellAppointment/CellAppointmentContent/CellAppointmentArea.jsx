@@ -67,20 +67,22 @@ class CellAppointmentArea extends React.PureComponent {
           }}
         >
           <span className="notes-container-message">
-            <span className="client-name w-100 d-flex justify-content-between">
-              <span className="client-name">{appointment.clientFirstName
+            <span  style={{alignItems:"flex-start"}} className="client-name w-100 d-flex justify-content-between">
+              <span style={{wordBreak:"normal"}} className="client-name">
+                {appointment.clientFirstName
                  ? (appointment.clientFirstName +
                   (appointment.clientLastName ? ` ${appointment.clientLastName}` : ''))
                 : t('Без клиента')}
-                {clientAppointmentsCount > 1 &&
-                <img title={`${companyTypeId === 4 ? t('У пациента') : t('У клиента')} ${clientAppointmentsCount} ${t(countAppointmentsText())}`}
-                     className="appointment-body-icon" src={`${process.env.CONTEXT}public/img/appointment_body.svg`}
-                     alt=""/>}
+               
 
               </span>
 
-              <span style={{ width: '43%' }}
-                    className="text-right client-name">{totalAmount} {appointment.currency}</span>
+              <span style={{ width: '43%', display:"flex",flexDirection:"column" }}
+                    className="text-right client-name">{totalAmount} {appointment.currency}
+                    {clientAppointmentsCount > 1 &&
+                <img title={`${companyTypeId === 4 ? t('У пациента') : t('У клиента')} ${clientAppointmentsCount} ${t(countAppointmentsText())}`}
+                     className="appointment-body-icon" src={`${process.env.CONTEXT}public/img/appointment_body.svg`}
+                     alt=""/>}</span>
             </span>
             {access(12) && appointment.clientId && appointment.clientPhone &&
             <span className="client-phone">{appointment.clientPhone}</span>}
