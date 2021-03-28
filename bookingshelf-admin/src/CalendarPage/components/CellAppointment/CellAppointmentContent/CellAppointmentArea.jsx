@@ -77,7 +77,7 @@ class CellAppointmentArea extends React.PureComponent {
 
               </span>
 
-              <span style={{ width: '44%', display:"flex"}}
+              <span style={{ width: '46%', display:"flex", justifyContent:"flex-end"}}
                     className="text-right client-name">{totalAmount} {appointment.currency}
                     {clientAppointmentsCount > 1 &&
                 <img title={`${companyTypeId === 4 ? t('У пациента') : t('У клиента')} ${clientAppointmentsCount} ${t(countAppointmentsText())}`}
