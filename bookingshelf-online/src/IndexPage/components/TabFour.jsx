@@ -42,7 +42,7 @@ class TabFour extends PureComponent {
     }
     render() {
 
-        const { t, flagAllStaffs, serviceIntervalOn, movedVisitSuccess, getDurationForCurrentStaff, movingVisit, selectedTime: time, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
+        const { t, flagAllStaffs, company, movedVisitSuccess, getDurationForCurrentStaff, movingVisit, selectedTime: time, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
         const availableTimes = []
         const currentDay = culcDay(selectedDay, "desktop");
@@ -50,8 +50,8 @@ class TabFour extends PureComponent {
         if (moment(this.state.arrayTime).format('LT') !== "Invalid date") {
             currentTimeText = moment(this.state.arrayTime).format('LT');
         }
-        let interval = 15;
-        if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
+        let interval = company.booktimeOnlineStepSec ? company.booktimeOnlineStepSec / 60 : 15;
+        if (!company.booktimeOnlineStepSec && selectedServices && selectedServices.length > 0) {
             interval = 0
             selectedServices.forEach(item => {
                 interval += (getDurationForCurrentStaff(item) / 60)
