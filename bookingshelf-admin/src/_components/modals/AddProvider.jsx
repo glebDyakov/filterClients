@@ -11,6 +11,7 @@ import moment from 'moment';
 import ReactPhoneInput from 'react-phone-input-2';
 import { companyActions, materialActions } from '../../_actions';
 import {withTranslation} from "react-i18next";
+import { mapEmptyObjFields } from '../../_helpers/functions';
 
 class AddProvider extends React.Component {
   constructor(props) {
@@ -345,11 +346,7 @@ class AddProvider extends React.Component {
                                   return true;
                                 }
                               },
-                              )) &&
-
-                                            client.supplierName && client.webSite && client.description
-                                            && client.countryCode && client.street && client.city
-                                            && client.office && client.zipCode ) ? 'disabledField': '')+' button button-save'}
+                              )) && client.supplierName) ? 'disabledField': '')+' button button-save'}
 
                             disabled={!(
                               (client.contactPersons.every((contact) => {
@@ -365,18 +362,11 @@ class AddProvider extends React.Component {
                                   return true;
                                 }
                               },
-                              )) &&
-
-                                            client.supplierName && client.webSite && client.description
-                                            && client.countryCode && client.street && client.city
-                                            && client.office && client.zipCode)}
+                              )) && client.supplierName)}
 
 
                             onClick={
-                              (client.supplierName && client.webSite && client.description
-                                            && client.countryCode && client.street && client.city
-                                            && client.office && client.zipCode)
-                                            && (edit ? this.updateClient : this.addClient)}
+                              (client.supplierName && (edit ? this.updateClient : this.addClient))}
 
                           >{t("Сохранить")}
                           </button>
@@ -446,8 +436,8 @@ class AddProvider extends React.Component {
   addClient() {
     const { addClient } = this.props;
     const { client } = this.state;
-
-    const finalClient = this.getFinalClient(client);
+    const mappedClient = mapEmptyObjFields(client);
+    const finalClient = this.getFinalClient(mappedClient);
 
     const finalClientCorrect = this.fixNumber(finalClient);
     this.props.dispatch(materialActions.toggleSupplier(finalClientCorrect));

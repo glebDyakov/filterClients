@@ -445,6 +445,7 @@ class Index extends Component {
                     <option value={300}>5 {t("минут")}</option>
                     <option value={600}>10 {t("минут")}</option>
                     <option value={900}>15 {t("минут")}</option>
+                    <option value={1800}>30 {t("минут")}</option>
                   </select>
                   {saved === 'stepSaved' && <p className="alert-success p-1 rounded pl-3">{t("Сохранено")}</p>}
                   <button className="ahref button button-save" onClick={this.handleStepSubmit}>
