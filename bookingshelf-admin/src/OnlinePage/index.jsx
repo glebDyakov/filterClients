@@ -33,7 +33,6 @@ class Index extends Component {
     this.onlineIntervalData = [
       { value: 60 * 15 , content: '15' },
       { value: 60 * 30 , content: '30' },
-      { value: 60 * 45 , content: '45' },
       { value: 60 * 60 , content: '60' },
     ]
 

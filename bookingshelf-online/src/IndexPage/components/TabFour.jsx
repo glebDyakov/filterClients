@@ -63,9 +63,8 @@ class TabFour extends PureComponent {
                 timetableItem.availableDays && timetableItem.availableDays.map((workingStaffElement, i) =>
                     parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x')) === parseInt(moment(selectedDay).startOf('day').format('x')) &&
                     workingStaffElement.availableTimes.map((workingTime) => {
-                        const currentMinutes = moment().format('mm') - (moment().format('mm') % 15) + 15;
+                        const currentMinutes = moment().format('mm') - (moment().format('mm') % interval) + interval;
                         const currentTime = parseInt(moment((moment().add(currentMinutes === 60 ? 1 : 0, 'hour').format("YYYY MMMM DD HH:") + (currentMinutes % 60)), 'YYYY MMMM DD HH:mm').format('x'));
-
                         const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / interval + 1;
                         const arrayTimes = []
                         let startTime = workingTime.startTimeMillis
