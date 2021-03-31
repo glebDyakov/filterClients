@@ -95,7 +95,6 @@ class TabScroll extends React.Component {
 
     const isWeekBefore = this.moizedGetIsWeekBefore(selectedDays[0])
     const isToday = this.moizedGetIsToday(selectedDays[0]);
-
     let listClass = 'list-15';
     switch (step) {
       case 5:
@@ -104,6 +103,10 @@ class TabScroll extends React.Component {
 
       case 10:
         listClass = 'list-10';
+        break;
+
+      case 30:
+        listClass = 'list-30';
         break;
       default:
     }
