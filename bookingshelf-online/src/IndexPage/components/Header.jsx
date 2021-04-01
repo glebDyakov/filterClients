@@ -108,9 +108,12 @@ class Header extends PureComponent {
     }
 
     getSocialLink = (social) => {
-        if (this.props.selectedSubcompany) {
+        if (this.props.selectedSubcompany && this.props.selectedSubcompany.bookingPage) {
             const link = this.props.selectedSubcompany.companySocialNetworks?.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social)?.companyUrl || '';
             return link ? `https://${link}` : null;
+        }else{
+            const link = this.props.info.companySocialNetworks?.find(({ socialNetwork }) => socialNetwork.toLowerCase() === social)?.companyUrl || '';
+            return link ? `https://${link}` : null; 
         }
 
     }
