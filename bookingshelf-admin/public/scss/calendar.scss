@@ -770,6 +770,21 @@
           }
         }
       }
+
+      &.list-30 {
+        &:nth-child(2n) {
+          &::before {
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            height: 1px;
+            right: 0;
+            background: #495057;
+            border-radius: 5px;
+            content: "";
+          }
+        }
+      }
     }
 
     .fixed-tab {

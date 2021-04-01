@@ -533,6 +533,7 @@ class IndexPage extends PureComponent {
                             selectStaff={this.selectStaff}
                             handleDayClick={this.handleDayClick}
                             getDurationForCurrentStaff={this.getDurationForCurrentStaff}
+                            company={selectedSubcompany}
                         />}
                     {screen === 5 &&
                         <TabFive
