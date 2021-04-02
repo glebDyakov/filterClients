@@ -137,23 +137,25 @@ function calculteHeight(totalDuration, step, cellHeight, startTime) {
   const lastNumberTime = Number(startTime[1]);
   let missingStepAmount = 0;
   let heightResult;
+  const minStep = 5;
+  const intevalSteps = step / minStep;
   switch (step) {
     case 5:
-      return (totalStep - 1) * cellHeight;
+      return (totalStep - intevalSteps) * cellHeight;
     case 10:
-      if (lastNumberTime % 10) {
-        heightResult = (totalStep - 1) * cellHeight / 2;
+      if (lastNumberTime % step) {
+        heightResult = (totalStep - intevalSteps + 1) * cellHeight / intevalSteps;
       } else {
-        heightResult = (totalStep - 2) * cellHeight / 2;
+        heightResult = (totalStep - intevalSteps) * cellHeight / intevalSteps;
       }
       break;
     case 15:
-      missingStepAmount = lastNumberTime % 15 / 5;
-      heightResult = (totalStep + missingStepAmount - 3) * cellHeight / 3;
+      missingStepAmount = lastNumberTime % step / minStep;
+      heightResult = (totalStep + missingStepAmount - intevalSteps) * cellHeight / intevalSteps;
       break;
     case 30:
-      missingStepAmount = lastNumberTime % 30 / 5;
-      heightResult = (totalStep + missingStepAmount - 6) * cellHeight / 6;
+      missingStepAmount = lastNumberTime % step / minStep;
+      heightResult = (totalStep + missingStepAmount - intevalSteps) * cellHeight / intevalSteps;
       break;
     default:
       heightResult = 0;
