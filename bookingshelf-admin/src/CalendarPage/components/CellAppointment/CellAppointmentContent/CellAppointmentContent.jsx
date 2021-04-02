@@ -6,6 +6,7 @@ import CellAppointmentArea from './CellAppointmentArea';
 import { getNearestAvailableTime } from '../../../../_helpers/available-time';
 import { appointmentActions } from '../../../../_actions';
 import { withTranslation } from 'react-i18next';
+import moment from 'moment';
 
 class CellAppointmentContent extends React.PureComponent {
   constructor(props) {
@@ -58,7 +59,7 @@ class CellAppointmentContent extends React.PureComponent {
     const {
       isWeekBefore, appointment, totalDuration, updateAppointmentForDeleting, workingStaffElement,
       totalCount, currentAppointments, numberKey, staffKey, step, cellHeight,
-      appointments, timetable, reservedTime, staff, t, totalAmount, clientAppointmentsCount,
+      appointments, timetable, reservedTime, staff, t, totalAmount, clientAppointmentsCount, cell
     } = this.props;
 
     const maxTextAreaHeight = this.updateMaxTextareaHeight({
@@ -78,7 +79,7 @@ class CellAppointmentContent extends React.PureComponent {
       cellHeight,
     });
 
-    const resultTextAreaHeight = ((totalDuration / 60 / step) - 1) * cellHeight;
+    let resultTextAreaHeight = calculteHeight(totalDuration, step, cellHeight, moment(appointment.appointmentTimeMillis, 'x').format('HH:mm'));
 
     let extraServiceText;
     switch (totalCount) {
@@ -123,12 +124,45 @@ class CellAppointmentContent extends React.PureComponent {
           extraServiceText={extraServiceText}
           toggleSelectedNote={this.toggleSelectedNote}
           totalAmount={totalAmount}
+          totalDuration={totalDuration}
         />
       </React.Fragment>
     );
   };
 }
+function calculteHeight(totalDuration, step, cellHeight, startTime) {
 
+  const totalStep = totalDuration / 300;
+  startTime = startTime.split(":");
+  const lastNumberTime = Number(startTime[1]);
+  let missingStepAmount = 0;
+  let heightResult;
+  switch (step) {
+    case 5:
+      return (totalStep - 1) * cellHeight;
+    case 10:
+      if (lastNumberTime % 10) {
+        heightResult = (totalStep - 1) * cellHeight / 2;
+      } else {
+        heightResult = (totalStep - 2) * cellHeight / 2;
+      }
+      break;
+    case 15:
+      missingStepAmount = lastNumberTime % 15 / 5;
+      heightResult = (totalStep + missingStepAmount - 3) * cellHeight / 3;
+      break;
+    case 30:
+      missingStepAmount = lastNumberTime % 30 / 5;
+      heightResult = (totalStep + missingStepAmount - 6) * cellHeight / 6;
+      break;
+    default:
+      heightResult = 0;
+  }
+  if (heightResult < 1) {
+    return 0;
+  }
+  return heightResult;
+}
 function mapStateToProps(state) {
   const {
     calendar: {
