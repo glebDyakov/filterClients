@@ -59,7 +59,7 @@ class CellAppointmentContent extends React.PureComponent {
     const {
       isWeekBefore, appointment, totalDuration, updateAppointmentForDeleting, workingStaffElement,
       totalCount, currentAppointments, numberKey, staffKey, step, cellHeight,
-      appointments, timetable, reservedTime, staff, t, totalAmount, clientAppointmentsCount, cell
+      appointments, timetable, reservedTime, staff, t, totalAmount, clientAppointmentsCount
     } = this.props;
 
     const maxTextAreaHeight = this.updateMaxTextareaHeight({
