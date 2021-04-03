@@ -7,7 +7,7 @@ import { getNearestAvailableTime } from '../../../../_helpers/available-time';
 import { appointmentActions } from '../../../../_actions';
 import { withTranslation } from 'react-i18next';
 import moment from 'moment';
-import { CALCULATE_HEIGHT } from '../../../../_helpers/functions';
+import { CALCULATE_NOTES_HEIGHT } from '../../../../_helpers/functions';
 
 class CellAppointmentContent extends React.PureComponent {
   constructor(props) {
@@ -80,7 +80,7 @@ class CellAppointmentContent extends React.PureComponent {
       cellHeight,
     });
 
-    let resultTextAreaHeight = CALCULATE_HEIGHT(totalDuration, step, cellHeight, moment(appointment.appointmentTimeMillis, 'x').format('HH:mm'));
+    const resultTextAreaHeight = CALCULATE_NOTES_HEIGHT(totalDuration, step, cellHeight, moment(appointment.appointmentTimeMillis, 'x').format('HH:mm'));
 
     let extraServiceText;
     switch (totalCount) {

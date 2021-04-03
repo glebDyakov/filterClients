@@ -1,12 +1,11 @@
 export const mapEmptyObjFields = (obj) => Object.keys(obj).reduce((values, key) => ({ ...values, [key]: obj[key] || null }), {});
-export const CALCULATE_HEIGHT = (totalDuration, step, cellHeight, startTime) => {
+export const CALCULATE_NOTES_HEIGHT  = (totalDuration, step, cellHeight, startTime) => {
     const totalStep = totalDuration / 300;
-    startTime = startTime.split(":");
-    const lastNumberTime = Number(startTime[1]);
-    let missingStepAmount = 0;
+    const lastNumberTime = Number(startTime.split(":")[1]);
     let heightResult;
     const minStep = 5;
     const intervalSteps = step / minStep;
+    const missingStepAmount = lastNumberTime % step / minStep;
     switch (step) {
         case 5:
             heightResult = (totalStep - intervalSteps) * cellHeight;
@@ -19,11 +18,9 @@ export const CALCULATE_HEIGHT = (totalDuration, step, cellHeight, startTime) => 
             }
             break;
         case 15:
-            missingStepAmount = lastNumberTime % step / minStep;
             heightResult = (totalStep + missingStepAmount - intervalSteps) * cellHeight / intervalSteps;
             break;
         case 30:
-            missingStepAmount = lastNumberTime % step / minStep;
             heightResult = (totalStep + missingStepAmount - intervalSteps) * cellHeight / intervalSteps;
             break;
         default:
