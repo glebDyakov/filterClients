@@ -7,6 +7,7 @@ import { getNearestAvailableTime } from '../../../../_helpers/available-time';
 import { appointmentActions } from '../../../../_actions';
 import { withTranslation } from 'react-i18next';
 import moment from 'moment';
+import { CALCULATE_HEIGHT } from '../../../../_helpers/functions';
 
 class CellAppointmentContent extends React.PureComponent {
   constructor(props) {
@@ -79,7 +80,7 @@ class CellAppointmentContent extends React.PureComponent {
       cellHeight,
     });
 
-    let resultTextAreaHeight = calculteHeight(totalDuration, step, cellHeight, moment(appointment.appointmentTimeMillis, 'x').format('HH:mm'));
+    let resultTextAreaHeight = CALCULATE_HEIGHT(totalDuration, step, cellHeight, moment(appointment.appointmentTimeMillis, 'x').format('HH:mm'));
 
     let extraServiceText;
     switch (totalCount) {
@@ -129,41 +130,6 @@ class CellAppointmentContent extends React.PureComponent {
       </React.Fragment>
     );
   };
-}
-function calculteHeight(totalDuration, step, cellHeight, startTime) {
-
-  const totalStep = totalDuration / 300;
-  startTime = startTime.split(":");
-  const lastNumberTime = Number(startTime[1]);
-  let missingStepAmount = 0;
-  let heightResult;
-  const minStep = 5;
-  const intevalSteps = step / minStep;
-  switch (step) {
-    case 5:
-      return (totalStep - intevalSteps) * cellHeight;
-    case 10:
-      if (lastNumberTime % step) {
-        heightResult = (totalStep - intevalSteps + 1) * cellHeight / intevalSteps;
-      } else {
-        heightResult = (totalStep - intevalSteps) * cellHeight / intevalSteps;
-      }
-      break;
-    case 15:
-      missingStepAmount = lastNumberTime % step / minStep;
-      heightResult = (totalStep + missingStepAmount - intevalSteps) * cellHeight / intevalSteps;
-      break;
-    case 30:
-      missingStepAmount = lastNumberTime % step / minStep;
-      heightResult = (totalStep + missingStepAmount - intevalSteps) * cellHeight / intevalSteps;
-      break;
-    default:
-      heightResult = 0;
-  }
-  if (heightResult < 1) {
-    return 0;
-  }
-  return heightResult;
 }
 function mapStateToProps(state) {
   const {
