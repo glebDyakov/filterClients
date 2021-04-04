@@ -1914,11 +1914,17 @@
           max-width: 49% !important;
           min-width: 0 !important;
           margin-left: 50% !important;
+          .client-name{
+            line-height: 14px !important;
+          }
         }
 
         .notes-left {
           max-width: 49% !important;
           min-width: 0 !important;
+          .client-name{
+            line-height: 14px !important;
+          }
         }
 
         .reserve {

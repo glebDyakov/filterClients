@@ -6,6 +6,8 @@ import CellAppointmentArea from './CellAppointmentArea';
 import { getNearestAvailableTime } from '../../../../_helpers/available-time';
 import { appointmentActions } from '../../../../_actions';
 import { withTranslation } from 'react-i18next';
+import moment from 'moment';
+import { calculateNotesHeight } from '../../../../_helpers/functions';
 
 class CellAppointmentContent extends React.PureComponent {
   constructor(props) {
@@ -58,7 +60,7 @@ class CellAppointmentContent extends React.PureComponent {
     const {
       isWeekBefore, appointment, totalDuration, updateAppointmentForDeleting, workingStaffElement,
       totalCount, currentAppointments, numberKey, staffKey, step, cellHeight,
-      appointments, timetable, reservedTime, staff, t, totalAmount, clientAppointmentsCount,
+      appointments, timetable, reservedTime, staff, t, totalAmount, clientAppointmentsCount
     } = this.props;
 
     const maxTextAreaHeight = this.updateMaxTextareaHeight({
@@ -78,7 +80,7 @@ class CellAppointmentContent extends React.PureComponent {
       cellHeight,
     });
 
-    const resultTextAreaHeight = ((totalDuration / 60 / step) - 1) * cellHeight;
+    const resultTextAreaHeight = calculateNotesHeight(totalDuration, step, cellHeight, moment(appointment.appointmentTimeMillis, 'x').format('HH:mm'));
 
     let extraServiceText;
     switch (totalCount) {
@@ -123,12 +125,12 @@ class CellAppointmentContent extends React.PureComponent {
           extraServiceText={extraServiceText}
           toggleSelectedNote={this.toggleSelectedNote}
           totalAmount={totalAmount}
+          totalDuration={totalDuration}
         />
       </React.Fragment>
     );
   };
 }
-
 function mapStateToProps(state) {
   const {
     calendar: {
