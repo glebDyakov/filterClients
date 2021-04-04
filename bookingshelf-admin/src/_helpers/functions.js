@@ -1,5 +1,5 @@
 export const mapEmptyObjFields = (obj) => Object.keys(obj).reduce((values, key) => ({ ...values, [key]: obj[key] || null }), {});
-export const CALCULATE_NOTES_HEIGHT  = (totalDuration, step, cellHeight, startTime) => {
+export const calculateNotesHeight  = (totalDuration, step, cellHeight, startTime) => {
     const totalStep = totalDuration / 300;
     const lastNumberTime = Number(startTime.split(":")[1]);
     let heightResult;
