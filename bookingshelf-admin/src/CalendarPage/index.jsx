@@ -193,11 +193,12 @@ class Index extends PureComponent {
       this.updateAnalytic(this.props.match.params.dateFrom || moment(), this.state.staffFromUrl, true);
     }
 
-    this.props.dispatch(staffActions.getClosedDates());
-    this.refreshTable(startTime, endTime);
-
-    this.props.dispatch(servicesActions.get());
-    this.props.dispatch(servicesActions.getServices());
+    Promise.all([
+      this.props.dispatch(staffActions.getClosedDates()),
+      this.refreshTable(startTime, endTime),
+      this.props.dispatch(servicesActions.get()),
+      this.props.dispatch(servicesActions.getServices()),
+    ])
 
     setTimeout(() => {
       if (!this.props.scrollableAppointmentId &&
