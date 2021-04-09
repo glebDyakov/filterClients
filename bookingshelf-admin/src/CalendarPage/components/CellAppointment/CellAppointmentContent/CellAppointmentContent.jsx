@@ -59,10 +59,9 @@ class CellAppointmentContent extends React.PureComponent {
   render() {
     const {
       isWeekBefore, appointment, totalDuration, updateAppointmentForDeleting, workingStaffElement,
-      totalCount, currentAppointments, numberKey, staffKey, step, cellHeight,
-      appointments, timetable, reservedTime, staff, t, totalAmount, clientAppointmentsCount
+      currentAppointments, numberKey, staffKey, step, cellHeight,
+      appointments, timetable, reservedTime, staff, t, totalAmount, clientAppointmentsCount,appointmentServices,services
     } = this.props;
-
     const maxTextAreaHeight = this.updateMaxTextareaHeight({
       appointment,
       staff,
@@ -81,23 +80,6 @@ class CellAppointmentContent extends React.PureComponent {
     });
 
     const resultTextAreaHeight = calculateNotesHeight(totalDuration, step, cellHeight, moment(appointment.appointmentTimeMillis, 'x').format('HH:mm'));
-
-    let extraServiceText;
-    switch (totalCount) {
-      case 0:
-        extraServiceText = '';
-        break;
-      case 1:
-        extraServiceText = t('и ещё 1 услуга');
-        break;
-      case 2:
-      case 3:
-      case 4:
-        extraServiceText = `и ещё ${totalCount} услуги`;
-        break;
-      default:
-        extraServiceText = t(`и ещё 5+ услуг`);
-    }
 
     const minTextAreaHeight = ((currentAppointments.length - 1) ? cellHeight * (currentAppointments.length - 1) : 0);
 
@@ -122,10 +104,11 @@ class CellAppointmentContent extends React.PureComponent {
           minTextAreaHeight={minTextAreaHeight}
           maxTextAreaHeight={maxTextAreaHeight}
           resultTextAreaHeight={resultTextAreaHeight}
-          extraServiceText={extraServiceText}
           toggleSelectedNote={this.toggleSelectedNote}
           totalAmount={totalAmount}
           totalDuration={totalDuration}
+          appointmentServices={appointmentServices}
+          services={services}
         />
       </React.Fragment>
     );

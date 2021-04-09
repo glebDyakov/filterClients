@@ -185,6 +185,8 @@ class CellAppointment extends React.PureComponent {
           numberKey={numberKey}
           staffKey={staffKey}
           totalAmount={totalAmount.toFixed(2)}
+          appointmentServices={appointmentServices}
+          services={services}
         />
 
         {access(15) && appointment.appointmentId === selectedNote && !appointment.coappointment &&
