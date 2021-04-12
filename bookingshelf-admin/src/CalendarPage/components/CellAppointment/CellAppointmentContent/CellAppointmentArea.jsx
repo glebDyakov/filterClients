@@ -29,11 +29,8 @@ class CellAppointmentArea extends React.PureComponent {
   render() {
     const {
       isWeekBefore, appointment, textAreaId, minTextAreaHeight, maxTextAreaHeight, clientAppointmentsCount,
-      resultTextAreaHeight, extraServiceText, services, movingVisit, totalAmount, toggleSelectedNote, t,
+      resultTextAreaHeight, services, movingVisit, totalAmount, toggleSelectedNote, t, appointmentServices
     } = this.props;
-
-    const serviceDetails = services && services.servicesList &&
-      (services.servicesList.find((service) => service.serviceId === appointment.serviceId) || {}).details;
 
     const dragVert = appointment.appointmentId &&
       ((movingVisit && movingVisit.appointmentId) !== appointment.appointmentId) && isWeekBefore && (
@@ -90,9 +87,14 @@ class CellAppointmentArea extends React.PureComponent {
               <span className="client-phone">{appointment.clientPhone}</span>}
 
             <ul>
-              <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
+              {appointmentServices.map((service, i) => {
+                const detailsId = services?.servicesList?.findIndex((service) => service.serviceId === appointment.serviceId);
+                return (
+                  <li key={"service" + service.serviceId + i} className="service">{service.serviceName} {services.servicesList[detailsId].details ? `(${services.servicesList[detailsId].details})` : ''}</li>
+                );
+              })
+              }
             </ul>
-            {extraServiceText}
             {appointment.description.length > 0 &&
               <p className="service client-name">{t('Заметка')}: {appointment.description}</p>}
             {/* {('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount
