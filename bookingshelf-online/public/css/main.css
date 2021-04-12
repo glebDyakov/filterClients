@@ -2910,7 +2910,9 @@ max-height: calc(100% - 50px);
 .service_selection_block_two {
     max-height: calc(100% - 120px);
 }
-
+.service_selection_block_two .final-book p{
+    text-align: center;
+}
 .service_selection_block_one {
     max-height: calc(100% - 50px);
 }
