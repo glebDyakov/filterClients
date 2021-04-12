@@ -54,7 +54,7 @@ export function staff(state = initialState, action) {
             const updatedServiceGroups = action.serviceGroups && action.serviceGroups.map(item => {
                 return {
                     ...item,
-                    services: item.services && item.services.sort((a, b) => a.sortOrder - b.sortOrder)
+                    services: item.services
                 }
             })
             return {
