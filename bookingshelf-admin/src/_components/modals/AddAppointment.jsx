@@ -1487,11 +1487,9 @@ class AddAppointment extends React.Component {
     const cl = clientChecked;
 
     const appointmentsAllPrice =
-      Math.floor(
         (appointment.reduce((prev, current) => {
           return +prev + +current.price;
-        }, 0) || 0) * 100
-      ) / 100;
+        }, 0) || 0).toFixed(2);
 
     const servicesDisabling =
       services[0].servicesList &&
