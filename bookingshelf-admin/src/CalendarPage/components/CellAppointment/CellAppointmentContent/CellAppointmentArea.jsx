@@ -88,8 +88,7 @@ class CellAppointmentArea extends React.PureComponent {
 
             <ul>
               {appointmentServices.map((service, i) => {
-                const detailsId = services && services.servicesList &&
-                  (services.servicesList.findIndex((service) => service.serviceId === appointment.serviceId));
+                const detailsId = services?.servicesList?.findIndex((service) => service.serviceId === appointment.serviceId);
                 return (
                   <li key={"service" + service.serviceId + i} className="service">{service.serviceName} {services.servicesList[detailsId].details ? `(${services.servicesList[detailsId].details})` : ''}</li>
                 );
