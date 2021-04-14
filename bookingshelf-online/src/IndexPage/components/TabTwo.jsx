@@ -17,12 +17,13 @@ class TabTwo extends Component {
             openList: false,
             catigor: [],
             visibleSearch: false,
+            numberCategory:0,
         }
         this.priceText = this.priceText.bind(this);
         this.openListFunc = this.openListFunc.bind(this);
         this.openCatigor = this.openCatigor.bind(this);
         this.searchOpen = this.searchOpen.bind(this);
-    this.startOpenservice = false;
+    this.startOpenservice = true;
 }
 
     canselMobSearch() {
@@ -47,19 +48,19 @@ class TabTwo extends Component {
     }
     searchOpen(e) {
         const newArray = [];
-
+       
         for (let i = 0; i < this.props.serviceGroups.length; i++) {
-            if (e.target.value != "") {
-                newArray.push(true)
+            if (e.target.value) {
+                this.state.numberCategory>1 ? newArray.push(true):newArray.push(false)  
             }
             else {
-                newArray.push(false)
+               this.state.numberCategory>1 ? newArray.push(false):newArray.push(false)  
             }
         }
-
         this.setState({ searchValue: e.target.value, catigor: newArray.concat() })
     }
     openCatigor(index) {
+        
         const newArray = this.state.catigor;
         newArray[index] = !newArray[index]
         this.setState({
@@ -73,11 +74,56 @@ class TabTwo extends Component {
             })
         }
     }
+    componentDidMount(){
+        const { selectedServices, info, flagAllStaffs,  serviceGroups, selectedStaff } = this.props;
+        const { searchValue} = this.state;
+        let count =0;
+        serviceGroups.map((serviceGroup, index) => {
+
+            const { services } = serviceGroup
+            const condition =
+                services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
+                flagAllStaffs
+
+            let finalServices
+
+            if (flagAllStaffs) {
+                if (selectedServices && selectedServices.length) {
+                    finalServices = services && services.filter(service => service.staffs && service.staffs.some(st => selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => st.staffId === selectedServStaff.staffId))))
+                } else {
+                    finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0)
+                }
+            } else {
+                finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
+            }
+            if (searchValue && searchValue.length > 0) {
+                finalServices = finalServices && finalServices.filter(service =>
+                    service.name.toLowerCase().includes(this.search.value.toLowerCase())
+                    || service.details.toLowerCase().includes(this.search.value.toLowerCase())
+                    || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
+                )
+            }
+            if (condition && info && finalServices && finalServices.length > 0) {
+                finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
+            }
+            
+            if (finalServices && finalServices.length > 0) {
+               count += 1;
+                if (count>1 ){
+                    this.startOpenservice=true;
+                }else{
+                    this.startOpenservice=false;
+                }
+            } 
+        })
+        this.setState({
+            numberCategory:count
+        })
+    }
     priceText(priceFrom, priceTo, currency, white, footer) {
        
         let whiteClass = "";
         white ? whiteClass = "white_text" : whiteClass = "";
-        const { t } = this.props;
         if (priceFrom !== priceTo) {
             if (footer) {
                 return (<React.Fragment>
@@ -177,46 +223,8 @@ class TabTwo extends Component {
         let heightService = "0";
         let heightServiceMob = "0";
         let transit;
-        let servicesSum = 0;
-
-        serviceGroups.map((serviceGroup, index) => {
-
-            const { services } = serviceGroup
-            const condition =
-                services && services.some(service => selectedStaff.staffId && service.staffs && service.staffs.some(st => st.staffId === selectedStaff.staffId)) ||
-                flagAllStaffs
-
-            let finalServices
-
-            if (flagAllStaffs) {
-                if (selectedServices && selectedServices.length) {
-                    finalServices = services && services.filter(service => service.staffs && service.staffs.some(st => selectedServices.some(selectedServ => selectedServ.staffs && selectedServ.staffs.some(selectedServStaff => st.staffId === selectedServStaff.staffId))))
-                } else {
-                    finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0)
-                }
-            } else {
-                finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
-            }
-
-
-
-            if (condition && info && finalServices && finalServices.length > 0) {
-                finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
-            }
-
-            if (finalServices) {
-                servicesSum += finalServices.length;
-            }
-            if (searchValue && searchValue.length > 0) {
-                finalServices = finalServices && finalServices.filter(service =>
-                    service.name.toLowerCase().includes(this.search.value.toLowerCase())
-                    || service.details.toLowerCase().includes(this.search.value.toLowerCase())
-                    || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
-                )
-            }
-        })
-
-
+        const screenTwoFirst=(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true);
+        
 
         if (info && (info.bookingPage === match.params.company) && !info.onlineZapisOn && (parseInt(moment().utc().format('x')) >= info.onlineZapisEndTimeMillis)) {
             return (
@@ -248,10 +256,6 @@ class TabTwo extends Component {
                 )
         })
 
-
-
-
-
         let serviceInfo = null;
         let sizeWords = "23px";
         if (selectedService.serviceId) {
@@ -262,8 +266,10 @@ class TabTwo extends Component {
                 priceFrom += Number(service.priceFrom)
                 priceTo += Number(service.priceTo)
                 duration += Number(getDurationForCurrentStaff(service))
+                
             })
-
+            priceTo=Math.floor(priceTo * 100) / 100;
+            priceFrom=Math.floor(priceFrom * 100) / 100;
             const priceFrom100 = priceFrom / 100;
             const priceTo100 = priceTo / 100;
             const priceFrom1000 = priceFrom / 1000;
@@ -404,7 +410,7 @@ class TabTwo extends Component {
                                 <img onClick={e => this.canselMobSearch()} src={mobile_gray_cansel} alt="mobile_gray_cansel" />
                             </div>)
                             : (<div className="title_block service-title">
-                                {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) &&
+                                {screenTwoFirst &&
                                     <span className="prev_block service-prev" onClick={() => {
                                         if (getFirstScreen(firstScreen) === 2) {
                                             if (!isStartMovingVisit) {
@@ -424,12 +430,8 @@ class TabTwo extends Component {
                                             }
                                         }
                                     }}><span className="title_block_text">{t("Назад")}</span></span>}
-                                <div style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    width: "175px",
-                                }}>
-                                    <p className="modal_title">{t("Выберите услугу")}</p>
+                                <div className={screenTwoFirst?"closed_search_mob":"closed_search_mob first_services"}>
+                                    <p className={screenTwoFirst?"modal_title":"first_services"}>{t("Выберите услугу")}</p>
                                     <div className="TABLET_WIDTH_invisible" onClick={e => this.setState({
                                         visibleSearch: !visibleSearch,
                                     })}>
@@ -440,7 +442,7 @@ class TabTwo extends Component {
                     </MediaQuery>
                     <MediaQuery minWidth={TABLET_WIDTH}>
                         <div className="title_block service-title">
-                            {(getFirstScreen(firstScreen) === 2 ? (subcompanies.length > 1) : true) &&
+                            {screenTwoFirst &&
                                 <span className="prev_block service-prev" onClick={() => {
                                     if (getFirstScreen(firstScreen) === 2) {
                                         if (!isStartMovingVisit) {
@@ -460,7 +462,7 @@ class TabTwo extends Component {
                                         }
                                     }
                                 }}><span className="title_block_text">{t("Назад")}</span></span>}
-                            <p className="modal_title">{t("Выберите услугу")}</p>
+                            <p className={screenTwoFirst?"modal_title":"first_services"}>{t("Выберите услугу")}</p>
                             <div className="row align-items-center content clients mb-2 search-block TABLET_WIDTH_visible">
                                 <div className="search col-12">
                                     <img
@@ -511,7 +513,6 @@ class TabTwo extends Component {
                                         } else {
                                             finalServices = services && services.filter(service => service.staffs && service.staffs.length > 0 && service.staffs.some(localStaff => localStaff.staffId === selectedStaff.staffId))
                                         }
-
                                         if (searchValue && searchValue.length > 0) {
                                             finalServices = finalServices && finalServices.filter(service =>
                                                 service.name.toLowerCase().includes(this.search.value.toLowerCase())
@@ -519,16 +520,15 @@ class TabTwo extends Component {
                                                 || serviceGroup.name.toLowerCase().includes(this.search.value.toLowerCase())
                                             )
                                         }
-
                                         if (condition && info && finalServices && finalServices.length > 0) {
                                             finalServices = finalServices.filter(service => info.booktimeStep <= service.duration && service.duration % info.booktimeStep === 0);
                                         }
-                                        if (finalServices) {
+                                       
+                                        if (finalServices && finalServices.length > 0) {
                                             heightService = String(Math.ceil(finalServices.length / 2) * defaultHeight);
                                             heightServiceMob=String(finalServices.length * defaultHeight);
                                             transit = (finalServices.length * 0.1) + 0.3;
                                         }
-
 
                                         return condition && finalServices && finalServices.length > 0 && (
                                             <ul className="service_list" key={index}>

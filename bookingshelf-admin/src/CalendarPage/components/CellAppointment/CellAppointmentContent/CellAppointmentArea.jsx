@@ -29,11 +29,8 @@ class CellAppointmentArea extends React.PureComponent {
   render() {
     const {
       isWeekBefore, appointment, textAreaId, minTextAreaHeight, maxTextAreaHeight, clientAppointmentsCount,
-      resultTextAreaHeight, extraServiceText, services, movingVisit, totalAmount, toggleSelectedNote, t,
+      resultTextAreaHeight, services, movingVisit, totalAmount, toggleSelectedNote, t, appointmentServices
     } = this.props;
-
-    const serviceDetails = services && services.servicesList &&
-      (services.servicesList.find((service) => service.serviceId === appointment.serviceId) || {}).details;
 
     const dragVert = appointment.appointmentId &&
       ((movingVisit && movingVisit.appointmentId) !== appointment.appointmentId) && isWeekBefore && (
@@ -66,31 +63,40 @@ class CellAppointmentArea extends React.PureComponent {
             padding: (resultTextAreaHeight === 0 ? '0px' : ''),
           }}
         >
-          <span className="notes-container-message">
-            <span className="client-name w-100 d-flex justify-content-between">
-              <span className="client-name">{appointment.clientFirstName
-                ? (`${companyTypeId === 4 ? t("Пациент") : t('Клиент')}: ` + appointment.clientFirstName +
-                  (appointment.clientLastName ? ` ${appointment.clientLastName}` : ''))
-                : t('Без клиента')}
-                {clientAppointmentsCount > 1 &&
-                <img title={`${companyTypeId === 4 ? t('У пациента') : t('У клиента')} ${clientAppointmentsCount} ${t(countAppointmentsText())}`}
-                     className="appointment-body-icon" src={`${process.env.CONTEXT}public/img/appointment_body.svg`}
-                     alt=""/>}
+          <span className="notes-container-message" style={{
+            height: resultTextAreaHeight + 'px',
+          }}>
+            <span style={{ alignItems: "flex-start" }} className="client-name w-100 d-flex justify-content-between">
+              <span style={{ wordBreak: "normal" }} className="client-name">
+                {appointment.clientFirstName
+                  ? (appointment.clientFirstName +
+                    (appointment.clientLastName ? ` ${appointment.clientLastName}` : ''))
+                  : t('Без клиента')}
+
 
               </span>
 
-              <span style={{ width: '43%' }}
-                    className="text-right client-name">{totalAmount} {appointment.currency}</span>
+              <span style={{ width: '46%', display: "flex", justifyContent: "flex-end" }}
+                className="text-right client-name">{totalAmount} {appointment.currency}
+                {clientAppointmentsCount > 1 &&
+                  <img title={`${companyTypeId === 4 ? t('У пациента') : t('У клиента')} ${clientAppointmentsCount} ${t(countAppointmentsText())}`}
+                    className="appointment-body-icon" src={`${process.env.CONTEXT}public/img/appointment_body.svg`}
+                    alt="" />}</span>
             </span>
             {access(12) && appointment.clientId && appointment.clientPhone &&
-            <span className="client-phone">{appointment.clientPhone}</span>}
+              <span className="client-phone">{appointment.clientPhone}</span>}
 
             <ul>
-              <li className="service">{appointment.serviceName} {serviceDetails ? `(${serviceDetails})` : ''}</li>
+              {appointmentServices.map((service, i) => {
+                const detailsId = services?.servicesList?.findIndex((service) => service.serviceId === appointment.serviceId);
+                return (
+                  <li key={"service" + service.serviceId + i} className="service">{service.serviceName} {services.servicesList[detailsId].details ? `(${services.servicesList[detailsId].details})` : ''}</li>
+                );
+              })
+              }
             </ul>
-            {extraServiceText}
             {appointment.description.length > 0 &&
-            <p className="service client-name">{t('Заметка')}: {appointment.description}</p>}
+              <p className="service client-name">{t('Заметка')}: {appointment.description}</p>}
             {/* {('\nЦена: ' + totalPrice + ' ' + appointment.currency)} ${totalPrice !== totalAmount
             ? ('(' + totalAmount.toFixed(2) + ' ' + appointment.currency + ')') : ''} ${appointment.description
             ? `\nЗаметка: ${appointment.description}` : ''}`;*/}

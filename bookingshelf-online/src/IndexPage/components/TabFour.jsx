@@ -42,7 +42,7 @@ class TabFour extends PureComponent {
     }
     render() {
 
-        const { t, flagAllStaffs, serviceIntervalOn, movedVisitSuccess, getDurationForCurrentStaff, movingVisit, selectedTime: time, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
+        const { t, flagAllStaffs, company, movedVisitSuccess, getDurationForCurrentStaff, movingVisit, selectedTime: time, staffs, handleDayClick, selectStaff, setScreen, isStartMovingVisit, refreshTimetable, selectedStaff, selectedService, selectedDay, selectedServices, timetableAvailable, setTime } = this.props;
         const { openList } = this.state;
         const availableTimes = []
         const currentDay = culcDay(selectedDay, "desktop");
@@ -50,8 +50,8 @@ class TabFour extends PureComponent {
         if (moment(this.state.arrayTime).format('LT') !== "Invalid date") {
             currentTimeText = moment(this.state.arrayTime).format('LT');
         }
-        let interval = 15;
-        if (serviceIntervalOn && selectedServices && selectedServices.length > 0) {
+        let interval = company.booktimeOnlineStepSec ? company.booktimeOnlineStepSec / 60 : 15;
+        if (!company.booktimeOnlineStepSec && selectedServices && selectedServices.length > 0) {
             interval = 0
             selectedServices.forEach(item => {
                 interval += (getDurationForCurrentStaff(item) / 60)
@@ -63,9 +63,8 @@ class TabFour extends PureComponent {
                 timetableItem.availableDays && timetableItem.availableDays.map((workingStaffElement, i) =>
                     parseInt(moment(workingStaffElement.dayMillis, 'x').startOf('day').format('x')) === parseInt(moment(selectedDay).startOf('day').format('x')) &&
                     workingStaffElement.availableTimes.map((workingTime) => {
-                        const currentMinutes = moment().format('mm') - (moment().format('mm') % 15) + 15;
+                        const currentMinutes = moment().format('mm') - (moment().format('mm') % interval) + interval;
                         const currentTime = parseInt(moment((moment().add(currentMinutes === 60 ? 1 : 0, 'hour').format("YYYY MMMM DD HH:") + (currentMinutes % 60)), 'YYYY MMMM DD HH:mm').format('x'));
-
                         const countTimes = (workingTime.endTimeMillis - workingTime.startTimeMillis) / 1000 / 60 / interval + 1;
                         const arrayTimes = []
                         let startTime = workingTime.startTimeMillis
@@ -120,7 +119,8 @@ class TabFour extends PureComponent {
                 priceTo += Number(service.priceTo)
                 duration += Number(getDurationForCurrentStaff(service))
             })
-
+            priceTo=Math.floor(priceTo * 100) / 100;
+            priceFrom=Math.floor(priceFrom * 100) / 100;
             let sizeWords = "23px";
             const priceFrom100 = priceFrom / 100;
             const priceTo100 = priceTo / 100;

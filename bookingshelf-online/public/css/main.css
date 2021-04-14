@@ -583,7 +583,7 @@ a {
     margin-left: 6px;
     margin-top: 1px;
 }
-
+.first_services,
 .modal_title {
     font-family: 'Open Sans';
     font-style: normal;
@@ -591,7 +591,11 @@ a {
     font-size: 14px;
     line-height: 18px;
 }
-
+.first_services{
+    flex-grow: 1;
+    text-align: end;
+    margin-right: 9%;
+}
 .service_selection {
     width: 100%;
 }
@@ -2906,7 +2910,9 @@ max-height: calc(100% - 50px);
 .service_selection_block_two {
     max-height: calc(100% - 120px);
 }
-
+.service_selection_block_two .final-book p{
+    text-align: center;
+}
 .service_selection_block_one {
     max-height: calc(100% - 50px);
 }
@@ -2981,4 +2987,15 @@ max-height: calc(100% - 50px);
 }
 .confirmation input{
     margin-top: 10px;
+}
+.closed_search_mob{
+    display: flex;
+    justify-content: space-between;
+    width: 175px;
+}
+.closed_search_mob.first_services{
+    width: 100%;
+}
+.no_back_button{
+    justify-content: space-around;
 }

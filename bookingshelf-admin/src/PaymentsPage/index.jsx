@@ -411,6 +411,8 @@ class Index extends Component {
     }
   }
 
+  getCurrency = (countryCode) =>  countryCode === 'BLR' ? this.props.t('BYN') : this.props.t('EUR');
+
   render() {
     const { authentication, t } = this.props;
     const {
@@ -418,7 +420,7 @@ class Index extends Component {
       chosenInvoice, invoiceSelected, list,
     } = this.state;
     const { workersCount, period, specialWorkersCount } = this.state.rate;
-    const { countryCode } = this.state.country;
+    const { countryCode } = this.props.company.settings;
     const { packets, isLoading } = this.props.payments;
     const companyTypeId = this.props.company.settings && this.props.company.settings.companyTypeId;
     let activePacket;
@@ -733,32 +735,17 @@ class Index extends Component {
                         <hr/>
 
                         <p className="month-price"><span
-                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m24.finalPriceMonth.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m24.finalPriceMonth.toFixed(2)} {this.getCurrency(countryCode)}
                         </p>
 
                         {this.state.finalPriceObject.m24.finalPriceMonthDiscount !== 0 &&
                         <p className="month-price"><span
-                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m24.finalPriceMonthDiscount.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }
+                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m24.finalPriceMonthDiscount.toFixed(2)} {this.getCurrency(countryCode)}
                         </p>}
 
 
                         <p className="total"><span
-                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }</p>
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m24.finalPrice.toFixed(2)} {this.getCurrency(countryCode)}</p>
                       </div>
                       <a onClick={() => {
                         this.AddingInvoiceStaff('4');
@@ -776,31 +763,16 @@ class Index extends Component {
                         <hr/>
 
                         <p className="month-price"><span
-                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m12.finalPriceMonth.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m12.finalPriceMonth.toFixed(2)} {this.getCurrency(countryCode)}
                         </p>
 
                         {this.state.finalPriceObject.m12.finalPriceMonthDiscount !== 0 &&
                         <p className="month-price"><span
-                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m12.finalPriceMonthDiscount.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }
+                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m12.finalPriceMonthDiscount.toFixed(2)} {this.getCurrency(countryCode)}
                         </p>}
 
                         <p className="total"><span
-                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }</p>
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m12.finalPrice.toFixed(2)} {this.getCurrency(countryCode)}</p>
                       </div>
                       <a onClick={() => {
                         this.AddingInvoiceStaff('3');
@@ -819,31 +791,16 @@ class Index extends Component {
                         <hr/>
 
                         <p className="month-price"><span
-                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m6.finalPriceMonth.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m6.finalPriceMonth.toFixed(2)} {this.getCurrency(countryCode)}
                         </p>
 
                         {this.state.finalPriceObject.m6.finalPriceMonthDiscount !== 0 &&
                         <p className="month-price"><span
-                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m6.finalPriceMonthDiscount.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }
+                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m6.finalPriceMonthDiscount.toFixed(2)} {this.getCurrency(countryCode)}
                         </p>}
 
                         <p className="total"><span
-                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }</p>
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m6.finalPrice.toFixed(2)} {this.getCurrency(countryCode)}</p>
                       </div>
                       <a onClick={() => {
                         this.AddingInvoiceStaff('2');
@@ -862,31 +819,16 @@ class Index extends Component {
                         <hr/>
 
                         <p className="month-price"><span
-                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m3.finalPriceMonth} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }
+                          className="blue_text">{t('Стоимость в месяц')}: </span>{this.state.finalPriceObject.m3.finalPriceMonth} {this.getCurrency(countryCode)}
                         </p>
 
                         {this.state.finalPriceObject.m3.finalPriceMonthDiscount && this.state.finalPriceObject.m3.finalPriceMonthDiscount !== 0 &&
                         <p className="month-price"><span
-                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m3.finalPriceMonthDiscount} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }
+                          className="red-text">{t('Стоимость в месяц со скидкой')}: </span>{this.state.finalPriceObject.m3.finalPriceMonthDiscount} {this.getCurrency(countryCode)}
                         </p>}
 
                         <p className="total"><span
-                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {countryCode
-                          ? (countryCode === 'BLR' ? t('BYN') : (countryCode === 'UKR'
-                            ? t('грн')
-                            : (countryCode === 'RUS' ? t('руб') : t('руб'))))
-                          : t('BYN')
-                        }</p>
+                          className="blue_text">{t('Итого')}: </span>{this.state.finalPriceObject.m3.finalPrice.toFixed(2)} {this.getCurrency(countryCode)}</p>
                       </div>
                       <a onClick={() => {
                         this.AddingInvoiceStaff('1');

@@ -276,12 +276,15 @@ class IndexPage extends PureComponent {
         const { company } = this.props.match.params
         let resultTime = parseInt(selectedTime);
 
+
         localStorage.setItem('userInfoOnlineZapis', JSON.stringify(group))
 
         const data = selectedServices.map((selectedService) => {
             const item = {
                 ...group, notice: '', duration: this.getDurationForCurrentStaff(selectedService), serviceId: selectedService.serviceId,
-                appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm') + " " + moment(selectedDay).format('DD/MM/YYYY'), 'HH:mm DD/MM/YYYY').format('x')
+                appointmentTimeMillis: moment(moment(resultTime, 'x').format('HH:mm') + " " + moment(selectedDay).format('DD/MM/YYYY'), 'HH:mm DD/MM/YYYY').format('x'),
+                carNumber: this.state.info.companyTypeId === 2 ? group.carNumber : '',
+                carBrand: this.state.info.companyTypeId === 2 ? group.carBrand : '',
             }
             resultTime += this.getDurationForCurrentStaff(selectedService) * 1000;
             return item;
@@ -533,6 +536,7 @@ class IndexPage extends PureComponent {
                             selectStaff={this.selectStaff}
                             handleDayClick={this.handleDayClick}
                             getDurationForCurrentStaff={this.getDurationForCurrentStaff}
+                            company={selectedSubcompany}
                         />}
                     {screen === 5 &&
                         <TabFive
