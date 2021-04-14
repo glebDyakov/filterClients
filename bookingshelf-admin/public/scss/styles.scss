@@ -108,12 +108,19 @@
 }
 
 .search-wrapper {
-  background-color: #fff;
-  cursor: pointer;
-  padding: 10px 12px;
-  margin-bottom: 1px;
   display: flex;
   flex-direction: column;
+  padding: 10px 12px;
+  margin-bottom: 1px;
+  cursor: pointer;
+  background-color: #fff;
+
+  .color-circle {
+    width: 15px;
+    height: 15px;
+    margin-left: 0;
+    margin-right: 5;
+  }
 
   .name {
     font-weight: 600;
@@ -125,6 +132,46 @@
     font-size: 10px;
     line-height: 14px;
     color: #555b6d;
+  }
+
+  .red {
+    background-color: $red-color;
+  }
+
+  .green {
+    background-color: $green-color;
+  }
+
+  .lime {
+    background-color: $lime-color;
+  }
+
+  .light-green {
+    background-color: $light-green-color;
+  }
+
+  .green_light {
+    background-color: $light-green-color;
+  }
+
+  .violet {
+    background-color: $violet-color;
+  }
+
+  .sky {
+    background-color: $sky-color;
+  }
+
+  .white {
+    background-color: $white-color;
+  }
+
+  .rose {
+    background-color: $rose-color;
+  }
+
+  .yellow {
+    background-color: #f5cc1f;
   }
 
   span:last-child {
@@ -1936,10 +1983,9 @@ input {
   @media screen {
     @media (max-width: $laptop-width) {
       padding-left: 250px;
-     
     }
     @media (max-width: $tablet-width) {
-      padding: 57px 0 0 0; 
+      padding: 57px 0 0 0;
       margin-top: 15px;
     }
     @media (max-width: $mob-width) {
@@ -4670,7 +4716,7 @@ select {
     //   width: 100%;
     // }
     @media screen and (max-width: $tablet-width) {
-        width: 100%;
+      width: 100%;
     }
 
     .modal-header {
@@ -4893,7 +4939,6 @@ select {
       }
     }
   }
- 
 }
 
 .paginator-wrapper,
@@ -5207,7 +5252,8 @@ textarea {
 
         + span + span {
           display: none;
-          background: rgba(25, 255, 175, 0.15) url(../img/selected2.png) no-repeat 10px center;
+          background: rgba(25, 255, 175, 0.15) url(../img/selected2.png)
+            no-repeat 10px center;
           color: #47b598;
 
           @media screen and(max-width: $laptop-width) {
@@ -6559,7 +6605,8 @@ textarea {
     .clientEyeDel {
       display: none !important;
       position: absolute;
-      background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
+      background: url(../img/information_icon-icons.com_70098.svg) no-repeat
+        center;
       background-size: contain;
       height: 18px;
       width: 18px !important;
