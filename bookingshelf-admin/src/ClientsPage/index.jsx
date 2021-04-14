@@ -169,7 +169,7 @@ class Index extends Component {
   updateClients(currentPage = 1, tab = this.state.activeTab) {
     let searchValue = '';
     if (this.search.value.length >= 3) {
-      searchValue = this.search.value.toLowerCase();
+      searchValue = this.search.value.toLowerCase().replace(/[+]/g, '');
     }
 
     const blacklisted = tab === 'blacklist';
