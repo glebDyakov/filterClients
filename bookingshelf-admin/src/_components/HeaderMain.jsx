@@ -18,6 +18,7 @@ import {
   ClientDetails,
   NewClient,
   SettingsSidebar,
+  AddBookingService,
 } from "./modals";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { clientService, managersService } from "../_services";
@@ -257,15 +258,22 @@ class HeaderMain extends React.PureComponent {
     this.setState({ newClientModal: false });
   }
 
+  onOpenAddBookingServiceModal = (searchedService) =>
+    this.setState({ addBookingService: true, searchedService });
+
+  onCloseAddBookingServiceModal = () =>
+    this.setState({ addBookingService: false });
+
   showSearchedServices = (search, services) => {
     const searchedServices = services.filter((service) =>
       service.name.includes(search)
     );
 
-    // console.log(searchedServices);
-
     return searchedServices.map((searchedService) => (
-      <div className="search-wrapper">
+      <div
+        className="search-wrapper"
+        onClick={() => this.onOpenAddBookingServiceModal(searchedService)}
+      >
         <div className="d-block">
           <span
             className={`color-circle ${searchedService.color.toLowerCase()}`}
@@ -282,10 +290,12 @@ class HeaderMain extends React.PureComponent {
   };
 
   render() {
-    const { location, staff, clients, services, t } = this.props;
+    const { location, staff, clients, services, timetable, t } = this.props;
     const {
       authentication,
       newClientModal,
+      addBookingService,
+      searchedService,
       client_working,
       editClient,
       isModalShouldPassClient,
@@ -788,6 +798,13 @@ class HeaderMain extends React.PureComponent {
                 onClose={this.onCloseClient}
               />
             )}
+            {addBookingService && (
+              <AddBookingService
+                closeModal={this.onCloseAddBookingServiceModal}
+                timetable={timetable}
+                searchedService={searchedService}
+              />
+            )}
 
             <UserPhoto />
           </div>
@@ -883,6 +900,7 @@ function mapStateToProps(state) {
     appointmentsCount,
     staff: staff.staff,
     services: services.servicesList,
+    timetable: staff.timetable,
   };
 }
 

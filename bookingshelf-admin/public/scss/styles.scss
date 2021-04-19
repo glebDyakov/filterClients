@@ -7645,7 +7645,8 @@ textarea {
   }
 }
 
-.modal_add_group {
+.modal_add_group,
+.modal_add_booking_service {
   .modal-inner {
     padding: 20px;
 
@@ -8075,4 +8076,17 @@ textarea {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
+}
+
+.booking-calendar {
+  background-image: url("/public/img/icons/Calendar.svg");
+  background-position: center;
+  background-size: 30px;
+  background-repeat: no-repeat;
+}
+
+.booking-timetable {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 }
