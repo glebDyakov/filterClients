@@ -18,7 +18,7 @@ import {
   ClientDetails,
   NewClient,
   SettingsSidebar,
-  AddBookingService,
+  AddBookedService,
 } from "./modals";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { clientService, managersService } from "../_services";
@@ -259,10 +259,10 @@ class HeaderMain extends React.PureComponent {
   }
 
   onOpenAddBookingServiceModal = (searchedService) =>
-    this.setState({ addBookingService: true, searchedService });
+    this.setState({ addBookedService: true, searchedService });
 
   onCloseAddBookingServiceModal = () =>
-    this.setState({ addBookingService: false });
+    this.setState({ addBookedService: false });
 
   showSearchedServices = (search, services) => {
     const searchedServices = services.filter((service) =>
@@ -294,7 +294,7 @@ class HeaderMain extends React.PureComponent {
     const {
       authentication,
       newClientModal,
-      addBookingService,
+      addBookedService,
       searchedService,
       client_working,
       editClient,
@@ -798,8 +798,8 @@ class HeaderMain extends React.PureComponent {
                 onClose={this.onCloseClient}
               />
             )}
-            {addBookingService && (
-              <AddBookingService
+            {addBookedService && (
+              <AddBookedService
                 closeModal={this.onCloseAddBookingServiceModal}
                 timetable={timetable}
                 searchedService={searchedService}

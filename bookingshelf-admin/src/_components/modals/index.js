@@ -22,4 +22,4 @@ export * from "./ExpenditureProduct";
 export * from "./StorehouseProduct";
 export * from "./AddStoreHouse";
 export * from "./ConfirmModal";
-export * from "./AddBookingService";
+export * from "./AddBookedService";

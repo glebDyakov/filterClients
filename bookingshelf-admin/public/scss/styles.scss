@@ -8086,7 +8086,25 @@ textarea {
 }
 
 .booking-timetable {
+  overflow: auto;
+  width: 200px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-auto-flow: column;
   gap: 10px;
+}
+
+.button {
+  background: #50a5f1;
+  border-radius: 30px;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #ffffff;
+  padding: 10px 35px;
+  height: 38px;
+  border: 0;
 }
