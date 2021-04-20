@@ -6256,7 +6256,6 @@ textarea {
 }
 
 .rc-time-picker-input {
-  z-index: 1;
   height: 36px;
   border: none;
   border-radius: 2px;
@@ -7057,13 +7056,6 @@ textarea {
   }
 
   .work-time-container {
-    .gap {
-      display: none;
-    }
-
-    .gap-item-timepicker {
-      display: none !important;
-    }
     .repeat {
       display: flex;
       align-items: center;
@@ -7090,10 +7082,11 @@ textarea {
           left: -120px;
         }
         .arrow-left, .arrow-right {
-          display: none;
+          display: none !important;
         }
         .button-calendar {
           max-width: 150px;
+          background: #f3f3f9 !important;
         }
       }
     }
