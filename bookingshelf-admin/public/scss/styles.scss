@@ -7056,6 +7056,68 @@ textarea {
     display: none;
   }
 
+  .work-time-container {
+    .gap {
+      display: none;
+    }
+
+    .gap-item-timepicker {
+      display: none !important;
+    }
+    .repeat {
+      display: flex;
+      align-items: center;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+
+      
+      .form-check-inline {
+        margin-top: 12px;
+      }
+
+      .picker {
+        max-width: 240px;
+        position: relative;
+        margin-top: 12px;
+
+
+        .questions_black {
+          position: absolute;
+          left: auto;
+          right: 0;
+        }
+        .SelectedWeekExample {
+          left: -120px;
+        }
+        .arrow-left, .arrow-right {
+          display: none;
+        }
+        .button-calendar {
+          max-width: 150px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 720px) {
+    .work-time-container {
+      .repeat {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .picker {
+          .SelectedWeekExample {
+            left: -20px;
+          }
+          .button-calendar {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+
   @media screen and (max-width: $mob-width) {
     .mobile-select-staff-modal_wrapper {
       z-index: 1060;
@@ -7092,9 +7154,7 @@ textarea {
     margin-bottom: 0;
 
     .check-box.repeat .form-check-inline {
-      width: unset;
       margin-right: 50px;
-      margin-bottom: 50px;
 
       label {
         margin-bottom: 0;
@@ -7154,12 +7214,6 @@ textarea {
         max-width: 100%;
 
         .repeat {
-          display: grid;
-          grid-template-columns: 140px 300px;
-          grid-template-rows: 40px 30px;
-          grid-column-gap: 0px;
-          grid-row-gap: 0px;
-          max-width: 600px;
 
           .form-check-inline {
             max-width: 200px;

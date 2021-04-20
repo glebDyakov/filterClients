@@ -5,6 +5,7 @@ import moment from 'moment';
 import {connect} from 'react-redux';
 import {staffActions} from '../../_actions';
 import Hint from "../Hint";
+import { DatePicker } from '../DatePicker';
 
 
 class WorkTimeModal extends Component {
@@ -23,6 +24,7 @@ class WorkTimeModal extends Component {
             days: props.date ? [moment(props.date, 'DD/MM/YYYY').day()] : [],
             date: props.date ? props.date : moment().format('DD/MM/YYYY'),
             isOpenMobileSelectStaff: true,
+            dateTo: new Date(moment().add(7, 'days'))
         };
 
         this.toggleSelectStaff = this.toggleSelectStaff.bind(this);
@@ -95,7 +97,7 @@ class WorkTimeModal extends Component {
                     times.forEach((t) => {
                     switch (period) {
                         case 7: {
-                            const endDate = moment(proposedDate).add(3, 'months');
+                            const endDate = moment(this.state.dateTo);
                             while (moment(proposedDate) <= moment(endDate)) {
                                 updatedTimetables.push({
                                 period: 0,
@@ -129,7 +131,7 @@ class WorkTimeModal extends Component {
                         }
                         
                         case 2: {
-                            const endDate = moment(proposedDate).add(3, 'months');
+                            const endDate = moment(this.state.dateTo);
                             while (moment(proposedDate) <= moment(endDate)) {
                                 updatedTimetables.push({
                                 period: 0,
@@ -149,7 +151,7 @@ class WorkTimeModal extends Component {
                         }
 
                         case 4: {
-                            const endDate = moment(proposedDate).add(3, 'months');
+                            const endDate = moment(this.state.dateTo);
                             while (moment(proposedDate) <= moment(endDate)) {
                                 updatedTimetables.push({
                                 period: 0,
@@ -485,7 +487,27 @@ class WorkTimeModal extends Component {
                                                 }
                                             />
                                         </div>
-
+                                        <div className="picker">
+                                        <DatePicker
+                                            type="day"
+                                            language={this.props.i18n.language}
+                                            selectedDay={this.state.dateTo}
+                                            handleDayClick={(day, modifiers) => {
+                                                this.setState({ dateTo: day })}}
+                                            dayPickerProps={{
+                                                disabled: !period,
+                                            disabledDays: [
+                                                {
+                                                    before: new Date(),
+                                                },
+                                            ],
+                                            }}
+                                    />
+                                    <Hint
+                                                hintMessage={
+                                                    t('Выберите дату, до которой проставить расписание')
+                                                }
+                                            /></div>
                                     </div>
 
                                     <div className="inline-group d-flex">
