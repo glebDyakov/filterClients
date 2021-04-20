@@ -88,50 +88,108 @@ class WorkTimeModal extends Component {
                     const startDate = moment(date, 'DD-MM-YYYY');
                     const matchDay = Number(d);
                     const daysToAdd = Math.ceil((startDate.day() - matchDay) / 7) * 7 + matchDay;
-                    const proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
 
-
-                    // console.log("start week: ", moment(startDate).startOf('week'));
-                    // console.log("start week add 1: ", moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd'));
-                    // console.log("startDate: ", startDate);
-                    // console.log("matchDay: ", matchDay);
-                    // console.log("daysToAdd: ", daysToAdd);
-                    // console.log("PROPOSED DATE: ", proposedDate);
+                    let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
 
                     const updatedTimetables = [];
                     times.forEach((t) => {
-                        updatedTimetables.push({
-                            // staffTimetableId: edit ? t.staffTimetableId : null,
-                            period,
-                            endTimeMillis: proposedDate.set({
-                                'hour': moment(t.endTimeMillis, 'x').get('hour'),
-                                'minute': moment(t.endTimeMillis, 'x').get('minute'),
-                            }).format('x'),
-                            startTimeMillis: proposedDate.set({
-                                'hour': moment(t.startTimeMillis, 'x').get('hour'),
-                                'minute': moment(t.startTimeMillis, 'x').get('minute'),
-                            }).format('x'),
-                        });
-                        if (period === 4) {
-                            const updatedDate = moment(proposedDate.format('x'), 'x').add(1, 'day');
-                            updatedTimetables.push({
-                                // staffTimetableId: edit ? t.staffTimetableId : null,
-                                period,
-                                endTimeMillis: updatedDate.set({
+                    switch (period) {
+                        case 7: {
+                            const endDate = moment(proposedDate).add(3, 'months');
+                            while (moment(proposedDate) <= moment(endDate)) {
+                                updatedTimetables.push({
+                                period: 0,
+                                endTimeMillis: proposedDate.set({
                                     'hour': moment(t.endTimeMillis, 'x').get('hour'),
                                     'minute': moment(t.endTimeMillis, 'x').get('minute'),
                                 }).format('x'),
-                                startTimeMillis: updatedDate.set({
+                                startTimeMillis: proposedDate.set({
                                     'hour': moment(t.startTimeMillis, 'x').get('hour'),
                                     'minute': moment(t.startTimeMillis, 'x').get('minute'),
                                 }).format('x'),
                             });
+                            proposedDate = moment(proposedDate).add(7, 'days');
                         }
+                            break;
+                        }
+
+                        case 0: {
+                                updatedTimetables.push({
+                                period: 0,
+                                endTimeMillis: proposedDate.set({
+                                    'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.endTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                                startTimeMillis: proposedDate.set({
+                                    'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.startTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                            });
+                            break;
+                        }
+                        
+                        case 2: {
+                            const endDate = moment(proposedDate).add(3, 'months');
+                            while (moment(proposedDate) <= moment(endDate)) {
+                                updatedTimetables.push({
+                                period: 0,
+                                endTimeMillis: proposedDate.set({
+                                    'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.endTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                                startTimeMillis: proposedDate.set({
+                                    'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.startTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                            });
+                            
+                            proposedDate = moment(proposedDate).add(2, 'days');
+                        }
+                            break;
+                        }
+
+                        case 4: {
+                            const endDate = moment(proposedDate).add(3, 'months');
+                            while (moment(proposedDate) <= moment(endDate)) {
+                                updatedTimetables.push({
+                                period: 0,
+                                endTimeMillis: proposedDate.set({
+                                    'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.endTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                                startTimeMillis: proposedDate.set({
+                                    'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.startTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                            }, {
+                                period: 0,
+                                endTimeMillis: moment(proposedDate).add(1, 'days').set({
+                                    'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.endTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                                startTimeMillis: moment(proposedDate).add(1, 'days').set({
+                                    'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.startTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                            });
+                            
+                            
+                            proposedDate = moment(proposedDate).add(4, 'days');
+                        }
+                            break;
+                        }
+                    
+                        default:
+                            break;
+                    }
+                    
+                       
                     });
                     return updatedTimetables;
                 }),
             };
         });
+
 
         if (edit) {
             this.finalRemove(this.props.editing_object)
