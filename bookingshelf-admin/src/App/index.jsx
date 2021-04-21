@@ -240,7 +240,7 @@ class Index extends React.Component {
 
   handleSocketDispatch(payload) {
     const { staffId, roleId } = this.props.authentication.user.profile;
-    if (staffId === payload.payload[0].staffId || roleId === 1 || roleId === 2 || roleId === 3 || roleId === 4) {
+    if (staffId === payload.payload[0].staffId || (roleId === 1 && access(2)) || (roleId === 2 && access(2)) || roleId === 3 || roleId === 4) {
       this.playSound();
       this.props.dispatch(socketActions.alertSocketMessage(payload));
       if (payload.wsMessageType === 'APPOINTMENT_CREATED') {
