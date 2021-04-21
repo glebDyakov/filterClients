@@ -7056,38 +7056,48 @@ textarea {
   }
 
   .work-time-container {
+    .picker-title {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 25px;
+      color: #2a3042;
+      margin-bottom: 12px;
+    }
+
+    .picker {
+      max-width: 160px;
+      position: relative;
+      margin-top: 12px;
+      margin-bottom: 16px;
+
+
+      .questions_black {
+        position: absolute;
+        left: auto;
+        right: 0;
+      }
+      .SelectedWeekExample {
+        left: 0;
+      }
+      .arrow-left, .arrow-right {
+        display: none !important;
+      }
+      .button-calendar {
+        max-width: 150px;
+        background: #f3f3f9 !important;
+        margin: 0;
+      }
+    }
     .repeat {
       display: flex;
       align-items: center;
-      margin-bottom: 50px;
+      margin-bottom: 14px;
       flex-wrap: wrap;
 
       
       .form-check-inline {
         margin-top: 12px;
-      }
-
-      .picker {
-        max-width: 240px;
-        position: relative;
-        margin-top: 12px;
-
-
-        .questions_black {
-          position: absolute;
-          left: auto;
-          right: 0;
-        }
-        .SelectedWeekExample {
-          left: -120px;
-        }
-        .arrow-left, .arrow-right {
-          display: none !important;
-        }
-        .button-calendar {
-          max-width: 150px;
-          background: #f3f3f9 !important;
-        }
       }
     }
   }
@@ -7362,7 +7372,7 @@ textarea {
       background: #ffffff;
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
       border-radius: 5px 0px 0px 0px;
-      padding: 37px 50px 25px 30px;
+      padding: 6px 50px 25px 30px;
       min-width: 819px;
 
       .work-time-title {
@@ -7371,7 +7381,7 @@ textarea {
         font-size: 18px;
         line-height: 25px;
         color: #2a3042;
-        margin-bottom: 25px;
+        margin-bottom: 12px;
       }
 
       .days {

@@ -857,5 +857,6 @@
   "1 день": "1 day",
   "Вы уверены, что хотите изменить срок хранения истории визитов?": "Are you sure you want to change the retention period of your session history?",
   "Срок хранения истории визитов": "Session history retention period",
-  "Выберите дату, до которой проставить расписание": "Select the date to set the schedule by"
+  "Выберите дату, до которой проставить расписание": "Select the date to set the schedule by",
+  "Дата, до которой применить расписание": "Date before which to apply the schedule"
 }
