@@ -877,6 +877,7 @@ class Index extends Component {
           editWorkingHours={editWorkingHours}
           editing_object={editing_object}
           edit={editing_object && editing_object.length > 0}
+          i18n={this.props.i18n}
         />
         }
         {newStaff &&
