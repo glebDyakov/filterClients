@@ -499,10 +499,10 @@ class WorkTimeModal extends Component {
                                             handleDayClick={(day, modifiers) => {
                                                 this.setState({ dateTo: day })}}
                                             dayPickerProps={{
-                                                disabled: !period,
                                             disabledDays: [
                                                 {
                                                     before: new Date(),
+                                                    after: period ? undefined : new Date()
                                                 },
                                             ],
                                             }}
