@@ -10,8 +10,17 @@ import { staffActions } from "../../_actions";
 import { DatePicker } from "../DatePicker";
 
 const AddBookedServiceModal = (props) => {
-  const { t, dispatch, closeModal, timetable, searchedService } = props;
+  const {
+    t,
+    i18n: { language },
+    dispatch,
+    closeModal,
+    timetable,
+    searchedService,
+  } = props;
+  const [activeDay, setActiveDay] = useState(0);
   const [state, forceUpdate] = useState(false);
+  const [activeTimesByStaffs, setActiveTimesByStaffs] = useState([]);
   const bookingDays = Array(8)
     .fill({})
     .map((el, index) => {
@@ -38,6 +47,8 @@ const AddBookedServiceModal = (props) => {
   }, []);
 
   useEffect(() => {
+    if (!searchedService.staffs) return;
+
     searchedService.staffs.forEach((staff, index) => {
       const staffTimetable = timetable.find(
         (staffTimetable) => staffTimetable.staffId === staff.staffId
@@ -67,17 +78,66 @@ const AddBookedServiceModal = (props) => {
         },
         []
       );
-
-      forceUpdate(!state);
     });
+    // console.log(searchedService);
+
+    setActiveTimesByStaffs(
+      searchedService.staffs.reduce(
+        (acc, staff) => (
+          staff.availableTimes &&
+            acc.push({
+              staffId: staff.staffId,
+              activeTimes: [],
+            }),
+          acc
+        ),
+        []
+      )
+    );
   }, [timetable]);
   // console.log(timetable, searchedService);
+  // console.log(activeTimesByStaffs);
 
   const bookingDayOnClick = useCallback(
     (dayInterval) =>
       dispatch(staffActions.getTimetableStaffs(...dayInterval, true)),
     []
   );
+
+  const handleDayChange = (date) => {
+    const day = moment(date.getTime(), "x").subtract(12, "hours");
+    const dayStart = day.format("x");
+    const dayEnd = day.add(1, "days").format("x");
+
+    bookingDayOnClick([dayStart, dayEnd]);
+  };
+
+  const checkTimeOnAvailability = (staffId, time) => {
+    const staff = activeTimesByStaffs.find(
+      (staff) => staff.staffId === staffId
+    );
+
+    return staff?.activeTimes.includes(time);
+  };
+
+  const availableTimeOnClick = (staff, availableTime) => {
+    const updatedActiveTimesByStaffs = activeTimesByStaffs;
+
+    updatedActiveTimesByStaffs.map(
+      (activeTimesByStaff) => (
+        activeTimesByStaff.staffId === staff.staffId &&
+          (activeTimesByStaff.activeTimes.includes(availableTime)
+            ? (activeTimesByStaff.activeTimes = activeTimesByStaff.activeTimes.filter(
+                (activeTime) => activeTime !== availableTime
+              ))
+            : activeTimesByStaff.activeTimes.push(availableTime)),
+        activeTimesByStaff
+      )
+    );
+
+    setActiveTimesByStaffs(updatedActiveTimesByStaffs);
+    forceUpdate(!state);
+  };
 
   return (
     <Modal
@@ -110,24 +170,38 @@ const AddBookedServiceModal = (props) => {
             <div className="modal-inner bg-secondary">
               <div className="p-3 mx-4 mb-4 bg-light">
                 <div className="d-flex">
-                  {bookingDays.map((bookingDay) => (
+                  {bookingDays.map((bookingDay, index) => (
                     <div
                       key={bookingDay.weekDay}
-                      className="p-2 border border-1 m-2"
-                      onClick={() => bookingDayOnClick(bookingDay.dayInterval)}
+                      className={`p-2 border border-1 m-2 ${index ===
+                        activeDay && "bg-dark"}`}
+                      onClick={() => {
+                        bookingDayOnClick(bookingDay.dayInterval);
+                        setActiveDay(index);
+                      }}
                     >
-                      <p className="p-0 m-0 font-weight-bold">
+                      <p
+                        className={`p-0 m-0 font-weight-bold ${index ===
+                          activeDay && "text-white"}`}
+                      >
                         {bookingDay.monthDay}
                       </p>
-                      <p>{bookingDay.weekDay}</p>
+                      <p className={index === activeDay && "text-white"}>
+                        {bookingDay.weekDay}
+                      </p>
                     </div>
                   ))}
                   <div className="p-4 border border-1 m-auto booking-calendar">
-                    {/* <DatePicker /> */}
+                    <DatePicker
+                      isAddBookedService
+                      language={language}
+                      selectedDays={new Date()}
+                      handleDayChange={handleDayChange}
+                    />
                   </div>
                 </div>
                 <div>
-                  {searchedService.staffs.map(
+                  {searchedService.staffs?.map(
                     (staff) =>
                       staff.availableTimes && (
                         <div
@@ -152,7 +226,13 @@ const AddBookedServiceModal = (props) => {
                               (availableTime, index) => (
                                 <span
                                   key={index}
-                                  className="p-1 border border-1"
+                                  className={`p-1 border border-1 ${checkTimeOnAvailability(
+                                    staff.staffId,
+                                    availableTime
+                                  ) && "text-white bg-dark"}`}
+                                  onClick={() =>
+                                    availableTimeOnClick(staff, availableTime)
+                                  }
                                 >
                                   {availableTime}
                                 </span>
