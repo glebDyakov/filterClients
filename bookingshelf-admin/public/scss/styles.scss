@@ -9,6 +9,7 @@
     @media (max-width: $large-width) {
       font-size: 16px;
     }
+
     @media (max-width: $laptop-width) {
       font-size: 14px;
     }
@@ -30,6 +31,7 @@
 }
 
 .delimiter {
+
   p,
   span {
     font-weight: normal;
@@ -91,8 +93,8 @@
 
 .search-col {
   min-width: unset !important;
-  @media (max-width: $mob-width) {
-  }
+
+  @media (max-width: $mob-width) {}
 }
 
 .search-header {
@@ -367,9 +369,11 @@ body {
     @media (max-width: $large-width) {
       font-size: 16px;
     }
+
     @media (max-width: $laptop-width) {
       font-size: 14px;
     }
+
     @media (max-width: $tablet-width) {
       font-size: 13px;
     }
@@ -395,10 +399,12 @@ ul {
 
 .title {
   font-size: 22px;
+
   @media screen {
     @media (max-width: $large-width) {
       font-size: 20px;
     }
+
     @media (max-width: $laptop-width) {
       font-size: 16px;
     }
@@ -407,10 +413,12 @@ ul {
 
 .title_block {
   font-size: 20px;
+
   @media screen {
     @media (max-width: $large-width) {
       font-size: 18px;
     }
+
     @media (max-width: $laptop-width) {
       font-size: 16px;
     }
@@ -456,6 +464,7 @@ button,
     @media (max-width: $large-width) {
       font-size: $font-body;
     }
+
     @media (max-width: $laptop-width) {
       font-size: $font-reg;
       min-height: 25px;
@@ -499,6 +508,7 @@ input {
   height: 50px;
 
   @include input-text();
+
   @media screen {
     @media (max-width: $laptop-width) {
       height: 35px;
@@ -529,6 +539,7 @@ input {
 
     input {
       height: 50px;
+
       @media screen and(max-width: 1650px) {
         height: 35px;
       }
@@ -623,6 +634,7 @@ input {
       text-align-last: left;
       padding-bottom: 0px;
       margin-bottom: 0px;
+
       @media screen and(max-width: 1050px) {
         //max-width: 60%;
       }
@@ -664,6 +676,7 @@ input {
     height: 50px;
     background: rgb(224, 224, 230);
     border-right: 1px solid #ced4da;
+
     @media screen and(max-width: 1650px) {
       height: 35px;
     }
@@ -675,6 +688,7 @@ input {
     border: none;
     position: initial;
     width: -webkit-fill-available;
+
     @media screen and(max-width: 1650px) {
       height: 35px;
     }
@@ -809,6 +823,7 @@ input {
 }
 
 .company_fields {
+
   .input-text2,
   input {
     height: 100%;
@@ -934,6 +949,7 @@ input {
   font-size: 18px;
   font-weight: bold;
   color: rgb(237, 27, 36);
+
   @media screen and(max-width: $laptop-width) {
     font-size: 15px;
   }
@@ -944,6 +960,7 @@ input {
     font-style: normal;
     color: rgb(237, 27, 36);
     margin-left: 5px;
+
     @media screen and(max-width: $laptop-width) {
       font-size: 15px;
     }
@@ -1001,6 +1018,7 @@ input {
 
   @media (max-width: $laptop-width) {
     height: 35px;
+
     i {
       width: 35px;
       height: 35px;
@@ -1036,22 +1054,24 @@ input {
     @media (max-width: $laptop-width) {
       width: 250px;
     }
+
     @media (min-width: $tablet-width + 1px) {
       display: flex !important;
     }
+
     @media (max-width: $tablet-width) {
       display: none;
       width: 280px;
       transition: none;
       padding-top: 15px;
     }
-    @media (max-width: $mob-width) {
-    }
+
+    @media (max-width: $mob-width) {}
   }
 
   li {
     a {
-      > span {
+      >span {
         font-size: 16px;
         color: #a6b0cf;
       }
@@ -1060,10 +1080,12 @@ input {
 
   * {
     @include font-style-sidebar();
+
     @media screen {
       @media (max-width: $large-width) {
         font-size: 16px;
       }
+
       @media (max-width: $tablet-width) {
         font-size: 16px;
       }
@@ -1174,6 +1196,7 @@ input {
           max-width: 20px;
           max-height: 20px;
         }
+
         @media (max-width: $tablet-width) {
           width: auto;
           margin: auto 20px auto 0;
@@ -1191,6 +1214,7 @@ input {
     }
 
     &.active {
+
       // border-left: 2px solid #fff;
       img {
         opacity: 1;
@@ -1231,6 +1255,7 @@ input {
       @media screen and(max-width: $tablet-width) {
         display: none !important;
       }
+
       transition: 50ms;
     }
 
@@ -1260,10 +1285,12 @@ input {
         @media (max-width: $tablet-width) {
           display: block;
           width: 45px;
+
           &:hover {
             background: none;
           }
         }
+
         @media (max-width: $mob-width) {
           display: block;
           width: 44px !important;
@@ -1464,6 +1491,7 @@ input {
   align-items: center;
   height: 100%;
   padding: 0;
+
   @media screen and(max-width: $mob-width) {
     -ms-flex: 0 0 60%;
     flex: 0 0 60%;
@@ -1484,6 +1512,7 @@ input {
     max-height: 65vh;
     overflow-x: auto;
     min-width: 283px;
+
     @media screen and(max-width: $tablet-width) {
       transform: translate3d(0px, 45px, 0px) !important;
     }
@@ -1530,6 +1559,7 @@ input {
 
         margin-bottom: 0;
         padding-left: 0;
+
         @media screen and(max-width: $tablet-width) {
           font-size: 16px;
         }
@@ -1582,6 +1612,7 @@ input {
         }
 
         padding-left: 0;
+
         @media screen and(max-width: $tablet-width) {
           font-size: 14px;
         }
@@ -1614,6 +1645,7 @@ input {
   &-wrapper {
     position: absolute;
     right: 0;
+
     @media screen and(max-width: 960px) {
       right: 0;
     }
@@ -1709,8 +1741,7 @@ input {
           padding: 30px 20px 10px;
         }
 
-        span {
-        }
+        span {}
 
         input {
           background: #ffffff;
@@ -1723,6 +1754,7 @@ input {
           font-weight: normal;
           font-size: 13px;
           line-height: 18px;
+
           @media screen and(max-width: $mob-width) {
             width: 320px;
           }
@@ -1813,7 +1845,7 @@ input {
             .form-check-input[type="checkbox"] {
               display: none;
 
-              + .check-box-circle {
+              +.check-box-circle {
                 border-radius: 50%;
                 background: rgba(0, 0, 0, 0) !important;
                 display: flex;
@@ -1833,7 +1865,7 @@ input {
               }
 
               &:checked {
-                + .check-box-circle {
+                +.check-box-circle {
                   transition: 200ms;
                   background: #ffffff;
                   border: 4px solid #50a5f1;
@@ -1859,7 +1891,7 @@ input {
             opacity: 0.5;
           }
 
-          .col-md-4 > div {
+          .col-md-4>div {
             margin-bottom: 20px;
 
             .flag-dropdown {
@@ -1867,7 +1899,7 @@ input {
             }
           }
 
-          div > p {
+          div>p {
             font-weight: normal;
             font-size: 13px;
             line-height: 18px;
@@ -1964,6 +1996,7 @@ input {
     right: unset;
     left: 38px;
     color: white;
+
     @media screen and(min-width: $tablet-width) {
       /*--изменения--*/
       display: none;
@@ -1980,21 +2013,26 @@ input {
   height: 100%;
   transition: all ease-in-out 0.3s;
   overflow: hidden;
+
   @media screen {
     @media (max-width: $laptop-width) {
       padding-left: 250px;
     }
+
     @media (max-width: $tablet-width) {
       padding: 57px 0 0 0;
       margin-top: 15px;
     }
+
     @media (max-width: $mob-width) {
       padding-top: 57px;
       padding-left: 0 !important;
       margin-top: 0px;
+
       .container-fluid {
         padding: 0;
       }
+
       .calendar & {
         padding-top: 0;
       }
@@ -2110,10 +2148,12 @@ input {
     @media screen {
       @media (max-width: $laptop-width) {
         margin: 0 0 0 250px;
+
         &.collapsed-header {
           margin-left: 70px;
         }
       }
+
       @media (max-width: $tablet-width) {
         margin-left: 0;
 
@@ -2123,6 +2163,7 @@ input {
           background-color: #fff;
           box-shadow: 5px 6px 20px 0 rgba(188, 191, 205, 0.13);
         }
+
         .mob-setting {
           text-transform: inherit;
           font-size: 15px;
@@ -2132,14 +2173,17 @@ input {
           overflow: hidden;
         }
       }
+
       @media (max-width: $mob-width) {
         margin: 0;
         left: 0;
         right: 0;
+
         &.retreats {
           height: 50px;
           padding: 0 12px 0 0;
         }
+
         .col {
           width: 100%;
           display: flex;
@@ -2148,6 +2192,7 @@ input {
           align-items: center;
           min-width: 100%;
         }
+
         .right_elements {
           display: none;
         }
@@ -2157,6 +2202,7 @@ input {
     &.content-collapse {
       margin: 0 0 0 85px;
       transition: all ease-in-out 0.3s;
+
       @media screen {
         @media (max-width: $laptop-width) {
           padding-left: 30px;
@@ -2281,6 +2327,7 @@ input {
   &.content-collapse {
     padding-left: 85px;
     transition: all ease-in-out 0.3s;
+
     @media screen {
       @media (max-width: $laptop-width) {
         padding-left: 70px;
@@ -2295,6 +2342,7 @@ input {
       @media (max-width: $tablet-width) {
         display: block;
       }
+
       @media (max-width: $mob-width) {
         display: block;
         width: 100%;
@@ -2334,6 +2382,7 @@ input {
   .mob-menu {
     display: none;
     min-width: 66px;
+
     @media (max-width: $mob-width) {
       display: flex;
       justify-content: center;
@@ -2362,6 +2411,7 @@ input {
         display: flex;
         justify-content: center;
       }
+
       @media (max-width: $mob-width) {
         div {
           width: 22px;
@@ -2384,11 +2434,13 @@ input {
     background-size: 100% auto;
     background: url(../img/logo.png) no-repeat center;
     display: block;
+
     @media screen {
       @media (max-width: $laptop-width) {
         max-width: 160px;
         min-width: 120px;
       }
+
       @media (max-width: $tablet-width) {
         display: none;
       }
@@ -2439,6 +2491,7 @@ input {
             width: auto;
             height: auto;
           }
+
           @media (max-width: $tablet-width) {
             display: none;
           }
@@ -2457,6 +2510,7 @@ input {
         height: 25px;
         margin-right: 6px;
       }
+
       @media screen and(max-width: $mob-width) {
         display: none;
       }
@@ -2510,10 +2564,12 @@ input {
       width: 25px;
       height: 25px;
       cursor: pointer;
+
       @media screen and(max-width: $laptop-width) {
         width: 25px;
         height: 25px;
       }
+
       @media screen and(max-width: $mob-width) {
         display: none;
       }
@@ -2531,8 +2587,7 @@ input {
       }
     }
 
-    a {
-    }
+    a {}
 
     .firm-name {
       max-height: 40px;
@@ -2625,6 +2680,7 @@ input {
           margin-bottom: 10px;
           display: inline-block;
         }
+
         @media (max-width: $mob-width) {
           margin-top: 10px;
         }
@@ -2662,6 +2718,7 @@ input {
             @media (max-width: $laptop-width) {
               font-size: 13px;
             }
+
             @media (max-width: $mob-width) {
               padding: 10px 15px;
             }
@@ -2705,6 +2762,7 @@ input {
     padding: 0;
     width: 100%;
     margin-left: 16px;
+
     @media screen {
       @media (max-width: $laptop-width) {
         padding: 0 20px;
@@ -2771,6 +2829,7 @@ input {
       @media screen and(max-width: $laptop-width) {
         height: 40px;
       }
+
       @media screen and(max-width: $mob-width) {
         height: 36px;
       }
@@ -2834,6 +2893,7 @@ input {
 
     .arrow-left {
       transform: rotate(180deg);
+
       @media screen and(max-width: $mob-width) {
         left: 0;
         display: flex !important;
@@ -2883,6 +2943,7 @@ input {
       .search-input {
         display: none;
       }
+
       .mob-search-input {
         text-align: left;
         display: unset !important;
@@ -2949,6 +3010,7 @@ input {
     @media (max-width: $large-width) {
       margin-bottom: 0.5rem;
     }
+
     @media (max-width: $laptop-width) {
       font-size: $font-tablet;
       padding: 15px 15px;
@@ -2957,10 +3019,12 @@ input {
 
   p {
     margin-bottom: 1rem;
+
     @media screen {
       @media (max-width: $large-width) {
         margin-bottom: 0.5rem;
       }
+
       @media (max-width: $laptop-width) {
         font-size: $font-tablet;
       }
@@ -3038,6 +3102,7 @@ input {
       .settings_wrap {
         overflow: hidden;
         position: relative;
+
         @media screen and (max-width: $tablet-width) {
           padding: 5px;
         }
@@ -3268,7 +3333,7 @@ input {
   .form-check-input[type="radio"] {
     display: none;
 
-    + label::before {
+    +label::before {
       border-radius: 50%;
       background: rgba(0, 0, 0, 0) !important;
       display: flex;
@@ -3289,7 +3354,7 @@ input {
     }
 
     &:checked {
-      + label::before {
+      +label::before {
         transition: 200ms;
         background: #ffffff;
         border: 4px solid #50a5f1;
@@ -3302,7 +3367,7 @@ input {
   .form-check-input[type="checkbox"] {
     display: none;
 
-    + .check {
+    +.check {
       border-radius: 32px;
       background: #ced4da;
       display: flex;
@@ -3339,13 +3404,12 @@ input {
       }
 
       @media screen {
-        @media (max-width: $laptop-width) {
-        }
+        @media (max-width: $laptop-width) {}
       }
     }
 
     &:checked {
-      + .check {
+      +.check {
         background-color: #50a5f1 !important;
         flex-direction: row-reverse;
         padding: 2px 2px 2px 5px !important;
@@ -3363,7 +3427,7 @@ input {
     }
 
     &:disabled {
-      + span {
+      +span {
         background-color: #e3c3c5;
         border: solid 1px #f2838a;
         background-size: 12px;
@@ -3411,6 +3475,7 @@ select {
 }
 
 .online-zapis-date-picker {
+
   .arrow-left,
   .arrow-right {
     display: none !important;
@@ -3423,6 +3488,7 @@ select {
 
   &.analytic-day-picker {
     margin-left: 0;
+
     @media (max-width: $tablet-width) {
       margin-left: -8px;
       margin-bottom: 8px;
@@ -3445,6 +3511,7 @@ select {
     resize: none;
     font-size: $font-button;
     border-color: $border;
+
     @media screen {
       @media (max-width: $laptop-width) {
         font-size: $font-reg;
@@ -3494,6 +3561,7 @@ select {
     @media (max-width: $tablet-width) {
       width: 100%;
     }
+
     @media (max-width: $mob-width) {
       width: 100%;
       margin: auto;
@@ -3519,6 +3587,7 @@ select {
     p {
       margin-bottom: 0;
       font-size: 18px;
+
       @media screen and(max-width: $laptop-width) {
         font-size: 16px;
       }
@@ -3526,6 +3595,7 @@ select {
 
     span {
       font-size: 15px;
+
       @media screen and(max-width: $laptop-width) {
         font-size: 13px;
       }
@@ -3573,6 +3643,7 @@ select {
     .modal-title {
       font-size: 24px;
       text-align: left;
+
       @media screen and(max-width: $tablet-width) {
         font-size: 18px;
       }
@@ -3593,6 +3664,7 @@ select {
   p {
     font-size: 16px;
     margin-bottom: 8px;
+
     @media screen and(max-width: $laptop-width) {
       font-size: $font-reg;
     }
@@ -3624,6 +3696,7 @@ select {
 
   .title {
     font-size: 18px;
+
     @media screen and(max-width: $laptop-width) {
       font-size: 16px;
     }
@@ -3735,9 +3808,11 @@ select {
   @media screen {
     @media (max-width: $mob-width) {
       padding: 0;
+
       .button-field {
         display: none !important;
       }
+
       .button-field-mob {
         display: flex !important;
       }
@@ -3787,6 +3862,7 @@ select {
 
     &:nth-child(1) {
       padding: 25px 15px;
+
       @media screen {
         @media (max-width: $tablet-width) {
           display: flex;
@@ -3794,6 +3870,7 @@ select {
           justify-content: center;
           align-items: center;
           text-align: center;
+
           button {
             margin: 8px auto !important;
           }
@@ -3829,6 +3906,7 @@ select {
 
     &:nth-child(1) {
       padding: 25px 15px;
+
       @media screen {
         @media (max-width: $tablet-width) {
           display: flex;
@@ -3836,6 +3914,7 @@ select {
           justify-content: center;
           align-items: center;
           text-align: center;
+
           button {
             margin: 8px auto !important;
           }
@@ -3931,9 +4010,11 @@ select {
 
   .not-approved-list {
     height: calc(100% - 150px);
+
     @media (max-width: $laptop-width) {
       height: calc(100% - 110px);
     }
+
     @media (max-width: $mob-width) {
       img {
         width: 40px !important;
@@ -4102,7 +4183,7 @@ select {
   transition: 200ms linear;
 }
 
-.add + .buttons-container {
+.add+.buttons-container {
   background: #2a3042;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
@@ -4280,6 +4361,7 @@ select {
   @media screen and(max-width: $tablet-width) {
     width: 100%;
     float: none;
+
     .mob-hiden {
       display: none;
     }
@@ -4319,11 +4401,13 @@ select {
         padding: 5px !important;
         clear: both;
       }
+
       .mob-fade {
         display: block;
         width: 100%;
       }
     }
+
     @media (max-width: $tablet-width) {
       .list-block-right {
         padding: 15px 5px 0px !important;
@@ -4335,6 +4419,7 @@ select {
 
 .button-site {
   min-width: 140px;
+
   @media screen and(max-width: $tablet-width) {
     min-width: 100px;
   }
@@ -4343,6 +4428,7 @@ select {
 .button-standart {
   border-radius: 0;
   min-width: 140px;
+
   @media screen and(max-width: $tablet-width) {
     min-width: 100px;
   }
@@ -4351,6 +4437,7 @@ select {
 .button-round-border {
   border-radius: 20px;
   min-width: 140px;
+
   @media screen and(max-width: $tablet-width) {
     min-width: 100px;
   }
@@ -4794,6 +4881,7 @@ select {
         }
 
         width: 734px;
+
         @media screen and (max-width: $tablet-width) {
           width: 100%;
         }
@@ -4972,8 +5060,7 @@ select {
         }
       }
 
-      &.disabled {
-      }
+      &.disabled {}
 
       &.active {
         a {
@@ -5177,6 +5264,7 @@ textarea {
     padding-left: 50px;
     display: block;
     margin: 6px 0 0;
+
     @media screen {
       @media (max-width: $laptop-width) {
         font-size: $font-reg;
@@ -5192,6 +5280,7 @@ textarea {
 
   .abbreviation {
     line-height: 1rem;
+
     @media screen and(max-width: $laptop-width) {
       width: 35px;
       height: 35px;
@@ -5250,10 +5339,9 @@ textarea {
       input {
         display: none;
 
-        + span + span {
+        +span+span {
           display: none;
-          background: rgba(25, 255, 175, 0.15) url(../img/selected2.png)
-            no-repeat 10px center;
+          background: rgba(25, 255, 175, 0.15) url(../img/selected2.png) no-repeat 10px center;
           color: #47b598;
 
           @media screen and(max-width: $laptop-width) {
@@ -5263,10 +5351,10 @@ textarea {
         }
       }
 
-      input[type="checkbox"]:checked + span {
+      input[type="checkbox"]:checked+span {
         display: none;
 
-        + span {
+        +span {
           display: block;
         }
       }
@@ -5337,6 +5425,7 @@ textarea {
       width: 30px;
       height: 30px;
       border-radius: 50%;
+
       @media screen and(max-width: $laptop-width) {
         width: 20px;
         height: 20px;
@@ -5357,6 +5446,7 @@ textarea {
     cursor: pointer;
     height: 50px;
     align-items: center;
+
     @media screen and(max-width: $laptop-width) {
       height: 35px;
     }
@@ -5419,7 +5509,7 @@ textarea {
 
 .btn-secondary:not(:disabled):not(.disabled):active,
 .btn-secondary:not(:disabled):not(.disabled).active,
-.show > .btn-secondary.dropdown-toggle {
+.show>.btn-secondary.dropdown-toggle {
   color: #fff;
   background-color: #63707c;
   border-color: #5e6a75;
@@ -5427,7 +5517,7 @@ textarea {
 
 .btn-secondary:not(:disabled):not(.disabled):active:focus,
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
-.show > .btn-secondary.dropdown-toggle:focus {
+.show>.btn-secondary.dropdown-toggle:focus {
   -webkit-box-shadow: 0 0 0 0.15rem rgba(144, 156, 166, 0.5);
   box-shadow: 0 0 0 0.15rem rgba(144, 156, 166, 0.5);
 }
@@ -5459,6 +5549,7 @@ textarea {
       height: 36px;
       overflow: hidden;
       align-items: center;
+
       @media screen {
         @media (max-width: $laptop-width) {
           height: 35px;
@@ -5479,6 +5570,7 @@ textarea {
         height: 100%;
         right: 0;
         top: 0;
+
         @media screen {
           @media (max-width: $laptop-width) {
             width: 35px;
@@ -5759,10 +5851,11 @@ textarea {
   &.select-color {
     a {
       &.select-button {
-        > span {
+        >span {
           color: #000;
           font-size: 15px;
           margin-left: 0;
+
           @media screen {
             @media (max-width: $laptop-width) {
               font-size: $font-reg;
@@ -5804,6 +5897,7 @@ textarea {
           span {
             color: #000;
             font-size: 15px;
+
             @media screen {
               @media (max-width: $laptop-width) {
                 font-size: $font-reg;
@@ -5876,6 +5970,7 @@ textarea {
       @media (max-width: $mob-width) {
         width: 306px;
         height: 210px;
+
         img {
           width: 86px;
           height: 86px;
@@ -6142,10 +6237,12 @@ textarea {
     .title_block {
       font-size: 24px;
       padding-bottom: 10px;
+
       @media screen {
         @media (max-width: $laptop-width) {
           font-size: 18px;
         }
+
         @media (max-width: $tablet-width) {
           font-size: 16px;
         }
@@ -6362,6 +6459,7 @@ textarea {
                 @media (max-width: $laptop-width) {
                   font-size: 16px;
                 }
+
                 @media (max-width: $mob-width) {
                   padding: 12px 5px;
                 }
@@ -6500,7 +6598,7 @@ textarea {
         display: block;
       }
 
-      .check-box .form-check-input[type="checkbox"] + .check {
+      .check-box .form-check-input[type="checkbox"]+.check {
         margin: 0;
       }
 
@@ -6572,6 +6670,7 @@ textarea {
 
     @media screen and (max-width: $mob-width) {
       justify-content: flex-start !important;
+
       .cell_client-email {
         width: 50%;
       }
@@ -6605,8 +6704,7 @@ textarea {
     .clientEyeDel {
       display: none !important;
       position: absolute;
-      background: url(../img/information_icon-icons.com_70098.svg) no-repeat
-        center;
+      background: url(../img/information_icon-icons.com_70098.svg) no-repeat center;
       background-size: contain;
       height: 18px;
       width: 18px !important;
@@ -6621,9 +6719,11 @@ textarea {
       .abbreviation {
         margin: 8px 0;
       }
+
       .delete {
         height: 16px !important;
       }
+
       .clientEyeDel {
         margin-top: 0;
         display: block !important;
@@ -6636,10 +6736,12 @@ textarea {
 .edit-client {
   .check-box {
     margin: 44px 0 0;
+
     @media screen {
       @media (max-width: $laptop-width) {
         margin: 34px 0 0;
       }
+
       @media (max-width: 575px) {
         margin: 10px 0 0;
       }
@@ -6887,7 +6989,7 @@ textarea {
 }
 
 .DayPicker-Caption {
-  > div {
+  >div {
     font-weight: 600;
     font-size: 16px;
     line-height: 48px;
@@ -7068,7 +7170,7 @@ textarea {
       .form-check-input[type="checkbox"] {
         display: none;
 
-        + .check-box-circle {
+        +.check-box-circle {
           border-radius: 50%;
           background: rgba(0, 0, 0, 0) !important;
           display: flex;
@@ -7088,7 +7190,7 @@ textarea {
         }
 
         &:checked {
-          + .check-box-circle {
+          +.check-box-circle {
             transition: 200ms;
             background: #ffffff;
             border: 4px solid #50a5f1;
@@ -7568,6 +7670,7 @@ textarea {
   width: 18px !important;
   right: 5px;
   cursor: pointer;
+
   @media screen and(max-width: 720px) {
     display: none !important;
   }
@@ -7605,6 +7708,7 @@ textarea {
 }
 
 @media screen and (max-width: 960px) {
+
   .modal---modal-overlay---3D5Nr,
   .feedback-staff,
   .client-detail,
@@ -7649,6 +7753,29 @@ textarea {
 .modal_add_booking_service {
   .modal-inner {
     padding: 20px;
+
+    span {
+      border-radius: 3px;
+    }
+
+    @media screen and (max-width: 960px) {
+      padding: 20px 0px;
+    }
+
+    @media screen and (max-width: 500px) {
+      &>div {
+        &>div {
+          &>div {
+            padding-top: 20px !important;
+
+            .booking-timetable {
+              width: 100%;
+              margin-top: 25px !important;
+            }
+          }
+        }
+      }
+    }
 
     p {
       margin-bottom: 7px;
@@ -7766,8 +7893,7 @@ textarea {
   }
 }
 
-.client-detail {
-}
+.client-detail {}
 
 .modal_counts {
   .modal-content {
@@ -7812,6 +7938,7 @@ textarea {
   background: transparent;
   top: 0;
   left: 220px;
+
   @media screen and(max-width: $tablet-width) {
     width: 100%;
     left: 0;
@@ -7826,6 +7953,7 @@ textarea {
 .loader-client {
   margin-top: 140px;
   margin-left: 40px;
+
   // background-color: #f2f3f5!important;
   // z-index: 2!important;
   @media screen and (max-width: 960px) {
@@ -7839,6 +7967,7 @@ textarea {
   margin-left: 40px;
   background-color: #f2f3f5 !important;
   z-index: 2 !important;
+
   @media screen and (max-width: 960px) {
     margin-left: 0;
     margin-top: 60px;
@@ -7850,6 +7979,7 @@ textarea {
   margin-left: 40px;
   background-color: #f2f3f5 !important;
   z-index: 2 !important;
+
   @media screen and (max-width: 960px) {
     margin-left: 0;
     margin-top: 145px;
@@ -7861,6 +7991,7 @@ textarea {
   margin-left: 40px;
   background-color: #f5f5f6 !important;
   z-index: 2 !important;
+
   @media screen and (max-width: 960px) {
     margin-left: 0;
     margin-top: 120px;
@@ -7872,6 +8003,7 @@ textarea {
   margin-left: 40px;
   background-color: #f5f5f6 !important;
   z-index: 2 !important;
+
   @media screen and (max-width: 960px) {
     margin-left: 0;
     margin-top: 125px;
@@ -7883,6 +8015,7 @@ textarea {
   margin-left: 40px;
   background-color: #f5f5f6 !important;
   z-index: 2 !important;
+
   @media screen and (max-width: 960px) {
     margin-left: 0;
     margin-top: 125px;
@@ -7893,9 +8026,11 @@ textarea {
   0% {
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -7905,9 +8040,11 @@ textarea {
   0% {
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -7918,6 +8055,7 @@ textarea {
   animation-duration: 1s;
   animation-name: moveMessage;
   opacity: 0;
+
   @media screen and(max-width: 960px) {
     transform: translate(-110px, -86vh) scale(0.2, 0.2);
   }
@@ -7927,9 +8065,11 @@ textarea {
   0% {
     opacity: 1;
   }
+
   80% {
     opacity: 0.8;
   }
+
   100% {
     opacity: 0;
   }
@@ -7967,6 +8107,7 @@ textarea {
   @media screen and(max-width: 960px) {
     left: 10px;
   }
+
   @media screen and(max-width: 480px) {
     left: 10px;
     width: 280px;
@@ -8045,9 +8186,11 @@ textarea {
   0% {
     transform: rotate(0deg);
   }
+
   50% {
     transform: rotate(180deg);
   }
+
   100% {
     transform: rotate(360deg);
   }

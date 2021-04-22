@@ -189,8 +189,8 @@ const AddBookedServiceModal = (props) => {
                 </button>
               </div>
 
-              <div className="modal-inner bg-secondary">
-                <div className="p-3 mx-4 mb-4 bg-light">
+              <div className="modal-inner bg-modals">
+                <div className="p-3 mx-lg-4 mb-4 bg-white">
                   <div className="d-flex">
                     {bookingDays.map((bookingDay, index) => (
                       <div
@@ -228,15 +228,15 @@ const AddBookedServiceModal = (props) => {
                         staff.availableTimes && (
                           <div
                             key={staff.staffId}
-                            className="d-flex align-items-center border border-left-0 border-right-0 border-bottom-0 m-2"
+                            className="d-flex align-items-center border border-left-0 border-right-0 border-bottom-0 m-2  flex-wrap flex-sm-nowrap"
                           >
                             <img
                               src="/public/img/icons/Calendar.svg"
                               width="30"
                               height="30"
                             />
-                            <div className="ml-3">
-                              <p className="mb-4 font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
+                            <div className="ml-3 ">
+                              <p className="mb-3 font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
                               <div>
                                 <span className="p-1 border border-1 mr-2">{`${staff.serviceDuration /
                                   60} ${t("мин")}`}</span>

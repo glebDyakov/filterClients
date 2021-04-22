@@ -6082,6 +6082,9 @@ button.bg-primary:focus {
 .bg-secondary {
   background-color: #6c757d !important;
 }
+.bg-modals{
+  background-color: #f8f8fb !important;
+}
 
 a.bg-secondary:hover, a.bg-secondary:focus,
 button.bg-secondary:hover,
