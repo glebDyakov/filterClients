@@ -1570,20 +1570,20 @@ class AddAppointment extends React.Component {
                   <div className="calendar col-xl-8 pr-0">
                     {isAddBookedService ? (
                       <>
-                        <div className="appointments-container overflow-visible mb-3 ml-4">
+                        <div className="appointments-container overflow-visible mb-3 ml-4 mr-sm-5 mr-lg-3">
                           <h5 className="add-helpers-text font-weight-bold mb-4">
                             {t("Общая информация")}
                           </h5>
                           <div className="d-flex">
-                            <div className="col-3">
+                            <div className="col-sm-2 col-4">
                               <p>{t("Дата")}</p>
                               <input type="text" />
                             </div>
-                            <div className="col-2">
+                            <div className="pl-0 col-sm-2 col-3 ">
                               <p>{t("Время")}</p>
-                              <div className="dropdown add-staff p-3 border border-2 mb-3">
+                              <div className="dropdown add-staff p-2 border border-2 mb-3 ">
                                 <a
-                                  className="select-button dropdown-toggle"
+                                  className="select-button dropdown-toggle-gray"
                                   data-toggle="dropdown"
                                   href="#"
                                 >
@@ -1598,11 +1598,11 @@ class AddAppointment extends React.Component {
                                 </ul>
                               </div>
                             </div>
-                            <div className="col-7">
+                            <div className="pl-0 col-sm-8 col-11">
                               <p>{t("Исполнитель")}</p>
-                              <div className="dropdown add-staff p-3 border border-2 mb-3">
+                              <div className="dropdown add-staff p-2 border border-2 mb-3">
                                 <a
-                                  className="select-button dropdown-toggle"
+                                  className="select-button dropdown-toggle-gray"
                                   data-toggle="dropdown"
                                   href="#"
                                 >
@@ -1619,16 +1619,16 @@ class AddAppointment extends React.Component {
                             </div>
                           </div>
                         </div>
-                        <div className="appointments-container overflow-visible mb-3 ml-4">
+                        <div className="appointments-container overflow-visible mb-3 ml-4 mr-sm-5 mr-lg-3">
                           <h5 className="add-helpers-text font-weight-bold mb-4">
                             {t("Услуги")}
                           </h5>
                           <div className="d-flex">
-                            <div className="col-5">
+                            <div className="col-6">
                               <p>{t("Услуга")}</p>
-                              <div className="dropdown add-staff p-3 border border-2 mb-3">
+                              <div className="dropdown add-staff p-2 border border-2 mb-3">
                                 <a
-                                  className="select-button dropdown-toggle"
+                                  className="select-button dropdown-toggle-gray"
                                   data-toggle="dropdown"
                                   href="#"
                                 >
@@ -1645,9 +1645,9 @@ class AddAppointment extends React.Component {
                             </div>
                             <div className="col-2">
                               <p>{t("Длит.")}</p>
-                              <div className="dropdown add-staff p-3 border border-2 mb-3">
+                              <div className="dropdown add-staff p-2 border border-2 mb-3">
                                 <a
-                                  className="select-button dropdown-toggle"
+                                  className="select-button dropdown-toggle-gray"
                                   data-toggle="dropdown"
                                   href="#"
                                 >
@@ -1668,11 +1668,11 @@ class AddAppointment extends React.Component {
                             </div>
                             <div className="col-2">
                               <p>{`${t("Скидка")}, %`}</p>
-                              <input type="text" />
+                              <input className="col-sm-2" type="text" />
                             </div>
                           </div>
                         </div>
-                        <div className="appointments-container ml-4">
+                        <div className="appointments-container ml-4 mr-sm-5 mr-lg-3">
                           <InputCounter
                             withCounter={true}
                             title={t("Заметка")}
@@ -1758,7 +1758,7 @@ class AddAppointment extends React.Component {
                                             index
                                           ].service.color.toLowerCase() +
                                             " " +
-                                            "select-button dropdown-toggle"
+                                            "select-button dropdown-toggle-gray"
                                         }
                                         data-toggle={"dropdown"}
                                       >
@@ -1829,8 +1829,8 @@ class AddAppointment extends React.Component {
                                         className={
                                           !servicesDisabling ||
                                           !hasAddedServices
-                                            ? "disabledField select-button dropdown-toggle yellow"
-                                            : "select-button dropdown-toggle yellow"
+                                            ? "disabledField select-button dropdown-toggle-gray yellow"
+                                            : "select-button dropdown-toggle-gray yellow"
                                         }
                                         data-toggle={
                                           servicesDisabling &&
@@ -1969,8 +1969,8 @@ class AddAppointment extends React.Component {
                                       <a
                                         className={
                                           edit_appointment || timeArrange === 0
-                                            ? "disabledField dropdown-toggle drop_menu_personal"
-                                            : "dropdown-toggle drop_menu_personal"
+                                            ? "disabledField dropdown-toggle-gray drop_menu_personal"
+                                            : "dropdown-toggle-gray drop_menu_personal"
                                         }
                                         data-toggle={
                                           !edit_appointment &&
@@ -2219,7 +2219,7 @@ class AddAppointment extends React.Component {
                       {!edit_appointment && (
                         <div
                           className={`addApointmentClientBlock ${isAddBookedService &&
-                            "mr-5 mb-3"}`}
+                            "mr-5 mb-3 mr-sm-5 ml-sm-5 mt-sm-1 ml-lg-0 ml-lg-0 mt-lg-0"}`}
                         >
                           <div className="row">
                             <div className="col-sm-12">
@@ -2699,7 +2699,7 @@ class AddAppointment extends React.Component {
                               <h6 className="font-weight-bold">{`${t(
                                 "Итого со скидкой"
                               )}: 120`}</h6>
-                              <p>{`${t("Без скидки")}: 123`}</p>
+                              <p style={{opacity:"0.5"}}>{`${t("Без скидки")}: 123`}</p>
                             </>
                           ) : (
                             <>
