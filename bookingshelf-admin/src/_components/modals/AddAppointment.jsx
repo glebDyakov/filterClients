@@ -13,7 +13,10 @@ import Modal from "@trendmicro/react-modal";
 import { calendarActions } from "../../_actions/calendar.actions";
 import ReactPaginate from "react-paginate";
 import Paginator from "../Paginator";
-import { checkIsOnAnotherVisit, isAvailableTime } from '../../_helpers/available-time';
+import {
+  checkIsOnAnotherVisit,
+  isAvailableTime,
+} from "../../_helpers/available-time";
 import { clientService } from "../../_services";
 import Hint from "../Hint";
 import { isValidEmailAddress } from "../../_helpers/validators";
@@ -22,22 +25,23 @@ import { compose } from "redux";
 import { withTranslation } from "react-i18next";
 
 import CheckModal from "./CheckModal";
+import InputCounter from "../InputCounter";
 
 class AddAppointment extends React.Component {
   constructor(props) {
     super(props);
     const sortedAppointment = props.appointmentEdited
       ? props.appointmentEdited.sort(
-        (a, b) => a.appointmentId - b.appointmentId
-      )
+          (a, b) => a.appointmentId - b.appointmentId
+        )
       : null;
     const { authentication } = props;
     let defaultPhoneValue;
     switch (
-    authentication &&
-    authentication.user &&
-    authentication.user.countryCode
-      ) {
+      authentication &&
+      authentication.user &&
+      authentication.user.countryCode
+    ) {
       case "RUS":
         defaultPhoneValue = "+7";
         break;
@@ -133,10 +137,10 @@ class AddAppointment extends React.Component {
       timeArrange:
         props.clickedTime !== 0
           ? this.getTimeArrange(
-          props.clickedTime,
-          props.minutes,
-          sortedAppointment
-          )
+              props.clickedTime,
+              props.minutes,
+              sortedAppointment
+            )
           : null,
       timeNow:
         props.clickedTime === 0 ? moment().format("x") : props.clickedTime,
@@ -249,15 +253,15 @@ class AddAppointment extends React.Component {
     }
 
     if (
-      newProps.clients.activeClientAppointments &&
+      newProps.clients?.activeClientAppointments &&
       JSON.stringify(this.props.clients.activeClientAppointments) !==
-      JSON.stringify(newProps.clients.activeClientAppointments)
+        JSON.stringify(newProps.clients.activeClientAppointments)
     ) {
       let allPrice = 0;
       newProps.clients.activeClientAppointments &&
-      newProps.clients.activeClientAppointments.forEach((appointment) => {
-        allPrice += appointment.price;
-      });
+        newProps.clients.activeClientAppointments.forEach((appointment) => {
+          allPrice += appointment.price;
+        });
       this.setState({
         allPrice,
         clientChecked: {
@@ -268,9 +272,9 @@ class AddAppointment extends React.Component {
     }
 
     if (
-      newProps.clients.activeClient &&
+      newProps.clients?.activeClient &&
       JSON.stringify(this.props.clients.activeClient) !==
-      JSON.stringify(newProps.clients.activeClient)
+        JSON.stringify(newProps.clients.activeClient)
     ) {
       this.setState({
         clientChecked: {
@@ -293,12 +297,12 @@ class AddAppointment extends React.Component {
           timeArrange:
             newProps.clickedTime !== 0
               ? this.getTimeArrange(
-              newProps.clickedTime,
-              newProps.minutes,
-              (newProps.appointmentEdited || []).sort(
-                (a, b) => a.appointmentId - b.appointmentId
-              )
-              )
+                  newProps.clickedTime,
+                  newProps.minutes,
+                  (newProps.appointmentEdited || []).sort(
+                    (a, b) => a.appointmentId - b.appointmentId
+                  )
+                )
               : null,
           timeNow:
             newProps.clickedTime === 0
@@ -386,7 +390,7 @@ class AddAppointment extends React.Component {
     const { appointmentsFromProps, reservedTimeFromProps, staff } = this.props;
     const { staffs, staffCurrent } = this.state;
 
-    const availableCoStaffs = staffs.timetable
+    const availableCoStaffs = staffs?.timetable
       .filter((item) => item.staffId !== staffCurrent.staffId)
       .filter((coStaff) => {
         const startTime = parseInt(appointment[0].appointmentTimeMillis);
@@ -417,9 +421,9 @@ class AddAppointment extends React.Component {
                     appointment.some(
                       (currentAppointment) =>
                         item.appointmentId ===
-                        currentAppointment.appointmentId ||
+                          currentAppointment.appointmentId ||
                         item.appointmentId ===
-                        currentAppointment.coAppointmentId
+                          currentAppointment.coAppointmentId
                     )
                 )
                 .sort(
@@ -430,10 +434,10 @@ class AddAppointment extends React.Component {
               ownRelatedAppointments[0].appointmentTimeMillis <= i &&
               ownRelatedAppointments[ownRelatedAppointments.length - 1]
                 .appointmentTimeMillis +
-              ownRelatedAppointments[ownRelatedAppointments.length - 1]
-                .duration *
-              1000 >
-              i;
+                ownRelatedAppointments[ownRelatedAppointments.length - 1]
+                  .duration *
+                  1000 >
+                i;
           }
         }
 
@@ -468,11 +472,11 @@ class AddAppointment extends React.Component {
           minute
             ? `${minute / 60} ${this.props.t("минут")}`
             : `00 ${this.props.t("минут")}`
-          }`,
+        }`,
       });
     }
 
-    const activeStaffTimetable = staffs.timetable.find(
+    const activeStaffTimetable = staffs?.timetable.find(
       (item) => item.staffId === staffCurrent.staffId
     );
 
@@ -523,7 +527,7 @@ class AddAppointment extends React.Component {
       services,
       servicesSearch,
     } = this.state;
-    const user = staffs.timetable.find(
+    const user = staffs?.timetable.find(
       (timetable) => timetable.staffId === staffId.staffId
     );
 
@@ -585,7 +589,7 @@ class AddAppointment extends React.Component {
           );
           return {
             ...service,
-            grey: !isAvailable
+            grey: !isAvailable,
           };
         })
         .filter((service) => {
@@ -709,8 +713,14 @@ class AddAppointment extends React.Component {
   }
 
   removeService(index) {
-    const { appointmentsToDelete, propogatedAppointmentId, appointment, serviceCurrent, services } = this.state;
-    console.log('APPOINTMENT: ', appointment[0]);
+    const {
+      appointmentsToDelete,
+      propogatedAppointmentId,
+      appointment,
+      serviceCurrent,
+      services,
+    } = this.state;
+    console.log("APPOINTMENT: ", appointment[0]);
     // if (appointment[index].appointmentId) {
     //   appointmentsToDelete.push(appointment[index]);
     // }
@@ -727,7 +737,8 @@ class AddAppointment extends React.Component {
 
       appointment.forEach((item, localIndex) => {
         if (localIndex > 0) {
-          item.appointmentTimeMillis = item.appointmentTimeMillis - appointment[0].duration * 1000;
+          item.appointmentTimeMillis =
+            item.appointmentTimeMillis - appointment[0].duration * 1000;
         }
 
         if (localIndex > 1) {
@@ -742,7 +753,6 @@ class AddAppointment extends React.Component {
       services.splice(index, 1);
     }
 
-
     const updatedAppointments = this.getAppointments(appointment);
 
     this.updateAvailableCoStaffs(updatedAppointments.newAppointments);
@@ -753,7 +763,7 @@ class AddAppointment extends React.Component {
       serviceCurrent,
       services,
       appointment: updatedAppointments.newAppointments,
-    })
+    });
   }
 
   handleDurationChange(e, appointment, index) {
@@ -811,7 +821,7 @@ class AddAppointment extends React.Component {
       }
     }
 
-    if (time && minutes.length !== 0) {
+    if (time && minutes?.length !== 0) {
       const minuteStart = time;
       let minute = time;
 
@@ -872,8 +882,8 @@ class AddAppointment extends React.Component {
     const startTime = parseInt(
       moment(
         moment(timeNow, "x").format("DD/MM/YYYY") +
-        " " +
-        moment(appointmentTimeMillis).format("HH:mm"),
+          " " +
+          moment(appointmentTimeMillis).format("HH:mm"),
         "DD/MM/YYYY HH:mm"
       ).format("x")
     );
@@ -911,11 +921,11 @@ class AddAppointment extends React.Component {
 
     if (str === "start") {
       minutesReservedtime &&
-      minutesReservedtime.map((minute) => {
-        if (h == minute.split(":")[0]) {
-          minutesArray.push(parseInt(minute.split(":")[1]));
-        }
-      });
+        minutesReservedtime.map((minute) => {
+          if (h == minute.split(":")[0]) {
+            minutesArray.push(parseInt(minute.split(":")[1]));
+          }
+        });
     } else if (str === "end") {
       // const minHour = parseInt(moment(reservedTime.startTimeMillis, 'x').format('H'));
       // const minMinute = parseInt(moment(reservedTime.startTimeMillis, 'x').format('mm'));
@@ -985,22 +995,22 @@ class AddAppointment extends React.Component {
     let countElements = 0;
     if (str === "start") {
       minutesReservedtime &&
-      minutesReservedtime.map((minute) => {
-        if (countElements == 3 && minute.split(":")[0] == firstElement) {
-          hoursArray.push(parseInt(minute.split(":")[0]));
-          countElements = 0;
-          firstElement = null;
-        }
-        if (minute.split(":")[0] == firstElement) {
-          countElements++;
-        } else {
-          countElements = 1;
-        }
-        if (firstElement == null) {
-          countElements++;
-        }
-        firstElement = minute.split(":")[0];
-      });
+        minutesReservedtime.map((minute) => {
+          if (countElements == 3 && minute.split(":")[0] == firstElement) {
+            hoursArray.push(parseInt(minute.split(":")[0]));
+            countElements = 0;
+            firstElement = null;
+          }
+          if (minute.split(":")[0] == firstElement) {
+            countElements++;
+          } else {
+            countElements = 1;
+          }
+          if (firstElement == null) {
+            countElements++;
+          }
+          firstElement = minute.split(":")[0];
+        });
     }
 
     for (let i = 0; i <= 23; i++) {
@@ -1063,13 +1073,13 @@ class AddAppointment extends React.Component {
     const { staffCurrent } = this.state;
     let durationForCurrentStaff = service.duration;
     staffCurrent &&
-    staffCurrent.staffId &&
-    service.staffs &&
-    service.staffs.forEach((item) => {
-      if (item.staffId === staffCurrent.staffId && item.serviceDuration) {
-        durationForCurrentStaff = item.serviceDuration;
-      }
-    });
+      staffCurrent.staffId &&
+      service.staffs &&
+      service.staffs.forEach((item) => {
+        if (item.staffId === staffCurrent.staffId && item.serviceDuration) {
+          durationForCurrentStaff = item.serviceDuration;
+        }
+      });
     return durationForCurrentStaff;
   }
 
@@ -1153,7 +1163,10 @@ class AddAppointment extends React.Component {
                       <span
                         className={service.color && service.color.toLowerCase()}
                       >
-                        <span className="items-color" style={service.grey ? { opacity: '0.4'} : {}}>
+                        <span
+                          className="items-color"
+                          style={service.grey ? { opacity: "0.4" } : {}}
+                        >
                           <span className="name-service">
                             {service.name} <br />
                             <span>{service.details}</span>
@@ -1162,7 +1175,7 @@ class AddAppointment extends React.Component {
                             <span className="price">
                               |&nbsp;{service.priceFrom}
                               {service.priceFrom !== service.priceTo &&
-                              " - " + service.priceTo}{" "}
+                                " - " + service.priceTo}{" "}
                               {service.currency}
                             </span>
                             &nbsp;|&nbsp;
@@ -1271,17 +1284,17 @@ class AddAppointment extends React.Component {
             className="clients-list-container"
           >
             {staffFromProps &&
-            staffFromProps
-              .filter((item) => item.staffId !== staffCurrent.staffId)
-              .filter((item) =>
-                availableCoStaffs.some(
-                  (availableCoStaff) =>
-                    item.staffId === availableCoStaff.staffId
+              staffFromProps
+                .filter((item) => item.staffId !== staffCurrent.staffId)
+                .filter((item) =>
+                  availableCoStaffs.some(
+                    (availableCoStaff) =>
+                      item.staffId === availableCoStaff.staffId
+                  )
                 )
-              )
-              .map((item, keyStaffs) => (
-                <li className="row mt-3" key={keyStaffs}>
-                  <div className="col-9">
+                .map((item, keyStaffs) => (
+                  <li className="row mt-3" key={keyStaffs}>
+                    <div className="col-9">
                       <span
                         style={{ position: "static" }}
                         className="img-container"
@@ -1296,32 +1309,32 @@ class AddAppointment extends React.Component {
                           alt=""
                         />
                       </span>
-                    <span style={{ marginLeft: "6px" }}>
+                      <span style={{ marginLeft: "6px" }}>
                         {item.firstName} {item.lastName ? item.lastName : ""}
                       </span>
-                  </div>
+                    </div>
 
-                  <div
-                    style={{ marginTop: "15px" }}
-                    className="col-3 add-helpers-container justify-content-end check-box"
-                  >
-                    <label>
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        checked={
-                          coStaffs &&
-                          coStaffs.some(
-                            (staff) => staff.staffId === item.staffId
-                          )
-                        }
-                        onChange={(e) => this.toggleChangeStaff(e, item)}
-                      />
-                      <span className="check-box-circle" />
-                    </label>
-                  </div>
-                </li>
-              ))}
+                    <div
+                      style={{ marginTop: "15px" }}
+                      className="col-3 add-helpers-container justify-content-end check-box"
+                    >
+                      <label>
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={
+                            coStaffs &&
+                            coStaffs.some(
+                              (staff) => staff.staffId === item.staffId
+                            )
+                          }
+                          onChange={(e) => this.toggleChangeStaff(e, item)}
+                        />
+                        <span className="check-box-circle" />
+                      </label>
+                    </div>
+                  </li>
+                ))}
           </ul>
         )}
       </div>
@@ -1426,6 +1439,9 @@ class AddAppointment extends React.Component {
       services: servicesFromProps,
       selectedDay,
       t,
+      isAddBookedService,
+      searchedServiceName,
+      addAppointment,
     } = this.props;
     const {
       allPrice,
@@ -1467,18 +1483,18 @@ class AddAppointment extends React.Component {
       const isAvailable = isAvailableTime(
         appointment[0].appointmentTimeMillis,
         appointment[appointment.length - 1].appointmentTimeMillis +
-        appointment[appointment.length - 1].duration * 1000,
+          appointment[appointment.length - 1].duration * 1000,
         activeStaffTimetable,
         appointmentsFromProps,
         [],
         staffFromProps
-      )
+      );
       if (!edit_appointment && !isAvailable && !clientSubmitModal) {
         this.setState({ clientSubmitModal: true });
       } else {
-        this.handleSave()
+        this.handleSave();
       }
-    }
+    };
     const activeStaffCurrent =
       staffFromProps &&
       staffFromProps.find(
@@ -1486,10 +1502,11 @@ class AddAppointment extends React.Component {
       );
     const cl = clientChecked;
 
-    const appointmentsAllPrice =
-        (appointment.reduce((prev, current) => {
-          return +prev + +current.price;
-        }, 0) || 0).toFixed(2);
+    const appointmentsAllPrice = (
+      appointment.reduce((prev, current) => {
+        return +prev + +current.price;
+      }, 0) || 0
+    ).toFixed(2);
 
     const servicesDisabling =
       services[0].servicesList &&
@@ -1523,7 +1540,11 @@ class AddAppointment extends React.Component {
           <div>
             <div className="modal-content">
               <div className="modal-header">
-                {edit_appointment ? (
+                {isAddBookedService ? (
+                  <h4 className="modal-title font-weight-bolder">
+                    {t(searchedServiceName)}
+                  </h4>
+                ) : edit_appointment ? (
                   <h4 className="modal-title">{t("Редактировать запись")}</h4>
                 ) : (
                   <h4 className="modal-title">
@@ -1541,501 +1562,639 @@ class AddAppointment extends React.Component {
                 {/* <img src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} alt="" className="close" onClick={this.closeModal}*/}
                 {/*     style={{margin:"13px 5px 0 0"}}/>*/}
               </div>
-              <div className="form-group form-group-addService">
+              <div
+                className={`form-group form-group-addService ${isAddBookedService &&
+                  "mb-0"}`}
+              >
                 <div className="row">
                   <div className="calendar col-xl-8 pr-0">
-                    <div className="appointments-container">
-                      {appointment.map((appointmentItem, index) => {
-                        return (
-                          <div className="addApointmentEachBlock">
-                            {index !== 0 && (
-                              <hr className="appointments-line" />
-                            )}
-                            <p
-                              style={{ paddingBottom: "18px" }}
-                              className="title"
-                            >
-                              {t("Запись")} <span>{index + 1}</span>
-                            </p>
-                            <div className="row">
-                              {minutes.length !== 0 && (
-                                <div className="appointment-start">
-                                  <p>{t("Начало")}</p>
-                                  <TimePicker
-                                    value={
-                                      appointmentItem.appointmentTimeMillis &&
-                                      moment(
-                                        appointmentItem.appointmentTimeMillis,
-                                        "x"
-                                      )
-                                    }
-                                    clearIcon={<div />}
-                                    className={
-                                      staffCurrent.id && staffCurrent.id === -1
-                                        ? "disabledField col-md-12 p-0"
-                                        : "col-md-12 p-0"
-                                    }
-                                    showSecond={false}
-                                    minuteStep={15}
-                                    disabled={
-                                      (staffCurrent.id &&
-                                        staffCurrent.id === -1) ||
-                                      edit_appointment
-                                    }
-                                    disabledHours={this.disabledHours}
-                                    disabledMinutes={this.disabledMinutes}
-                                    onChange={(appointmentTimeMillis) =>
-                                      this.setTime(
-                                        appointmentTimeMillis,
-                                        minutes,
-                                        index
-                                      )
-                                    }
-                                  />
-                                </div>
-                              )}
-
-                              <div className="appointment-service">
-                                <p
-                                  className={
-                                    !servicesDisabling && "disabledField"
-                                  }
+                    {isAddBookedService ? (
+                      <>
+                        <div className="appointments-container overflow-visible mb-3 ml-4">
+                          <h5 className="add-helpers-text font-weight-bold mb-4">
+                            {t("Общая информация")}
+                          </h5>
+                          <div className="d-flex">
+                            <div className="col-3">
+                              <p>{t("Дата")}</p>
+                              <input type="text" />
+                            </div>
+                            <div className="col-2">
+                              <p>{t("Время")}</p>
+                              <div className="dropdown add-staff p-3 border border-2 mb-3">
+                                <a
+                                  className="select-button dropdown-toggle"
+                                  data-toggle="dropdown"
+                                  href="#"
                                 >
-                                  {t("Услуга")}
-                                </p>
-                                <div className="select-color dropdown border-color">
-                                  {serviceCurrent[index] &&
-                                  serviceCurrent[index].id !== -1 ? (
-                                    <a
-                                      onClick={() =>
-                                        this.setState({ servicesSearch: "" })
+                                  <span>9:00</span>
+                                </a>
+                                <ul className="dropdown-menu">
+                                  <li className="dropdown-item">
+                                    <a>
+                                      <span>5</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="col-7">
+                              <p>{t("Исполнитель")}</p>
+                              <div className="dropdown add-staff p-3 border border-2 mb-3">
+                                <a
+                                  className="select-button dropdown-toggle"
+                                  data-toggle="dropdown"
+                                  href="#"
+                                >
+                                  <span>{t("Выберите группу услуг")}</span>
+                                </a>
+                                <ul className="dropdown-menu">
+                                  <li className="dropdown-item">
+                                    <a>
+                                      <span>5</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="appointments-container overflow-visible mb-3 ml-4">
+                          <h5 className="add-helpers-text font-weight-bold mb-4">
+                            {t("Услуги")}
+                          </h5>
+                          <div className="d-flex">
+                            <div className="col-5">
+                              <p>{t("Услуга")}</p>
+                              <div className="dropdown add-staff p-3 border border-2 mb-3">
+                                <a
+                                  className="select-button dropdown-toggle"
+                                  data-toggle="dropdown"
+                                  href="#"
+                                >
+                                  <span>{t("Выберите группу услуг")}</span>
+                                </a>
+                                <ul className="dropdown-menu">
+                                  <li className="dropdown-item">
+                                    <a>
+                                      <span>5</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="col-2">
+                              <p>{t("Длит.")}</p>
+                              <div className="dropdown add-staff p-3 border border-2 mb-3">
+                                <a
+                                  className="select-button dropdown-toggle"
+                                  data-toggle="dropdown"
+                                  href="#"
+                                >
+                                  <span>1ч</span>
+                                </a>
+                                <ul className="dropdown-menu">
+                                  <li className="dropdown-item">
+                                    <a>
+                                      <span>2ч 30мин</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="col-2">
+                              <p>{t("Цена")}</p>
+                              <input type="text" />
+                            </div>
+                            <div className="col-2">
+                              <p>{`${t("Скидка")}, %`}</p>
+                              <input type="text" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="appointments-container ml-4">
+                          <InputCounter
+                            withCounter={true}
+                            title={t("Заметка")}
+                            placeholder={t("Клиент может опоздать")}
+                            // value={}
+                            name="markName"
+                            // handleChange={() => {}}
+                            maxLength={120}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="appointments-container">
+                        {appointment.map((appointmentItem, index) => {
+                          return (
+                            <div className="addApointmentEachBlock">
+                              {index !== 0 && (
+                                <hr className="appointments-line" />
+                              )}
+                              <p
+                                style={{ paddingBottom: "18px" }}
+                                className="title"
+                              >
+                                {t("Запись")} <span>{index + 1}</span>
+                              </p>
+                              <div className="row">
+                                {minutes?.length !== 0 && (
+                                  <div className="appointment-start">
+                                    <p>{t("Начало")}</p>
+                                    <TimePicker
+                                      value={
+                                        appointmentItem.appointmentTimeMillis &&
+                                        moment(
+                                          appointmentItem.appointmentTimeMillis,
+                                          "x"
+                                        )
                                       }
+                                      clearIcon={<div />}
                                       className={
-                                        serviceCurrent[index].service.color &&
-                                        serviceCurrent[
-                                          index
-                                          ].service.color.toLowerCase() +
-                                        " " +
-                                        "select-button dropdown-toggle"
+                                        staffCurrent.id &&
+                                        staffCurrent.id === -1
+                                          ? "disabledField col-md-12 p-0"
+                                          : "col-md-12 p-0"
                                       }
-                                      data-toggle={"dropdown"}
-                                    >
-                                      <span
+                                      showSecond={false}
+                                      minuteStep={15}
+                                      disabled={
+                                        (staffCurrent.id &&
+                                          staffCurrent.id === -1) ||
+                                        edit_appointment
+                                      }
+                                      disabledHours={this.disabledHours}
+                                      disabledMinutes={this.disabledMinutes}
+                                      onChange={(appointmentTimeMillis) =>
+                                        this.setTime(
+                                          appointmentTimeMillis,
+                                          minutes,
+                                          index
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                )}
+
+                                <div className="appointment-service">
+                                  <p
+                                    className={
+                                      !servicesDisabling && "disabledField"
+                                    }
+                                  >
+                                    {t("Услуга")}
+                                  </p>
+                                  <div className="select-color dropdown border-color">
+                                    {serviceCurrent[index] &&
+                                    serviceCurrent[index].id !== -1 ? (
+                                      <a
+                                        onClick={() =>
+                                          this.setState({ servicesSearch: "" })
+                                        }
                                         className={
                                           serviceCurrent[index].service.color &&
                                           serviceCurrent[
                                             index
-                                            ].service.color.toLowerCase() +
-                                          " " +
-                                          "color-circle"
+                                          ].service.color.toLowerCase() +
+                                            " " +
+                                            "select-button dropdown-toggle"
                                         }
-                                      />
-                                      <span className="yellow">
-                                        <span className="items-color">
-                                          <span>
-                                            {serviceCurrent[index].service.name}
-                                          </span>
-                                          <span className="right-block">
-                                            |&nbsp;
-                                            <span className="price">
+                                        data-toggle={"dropdown"}
+                                      >
+                                        <span
+                                          className={
+                                            serviceCurrent[index].service
+                                              .color &&
+                                            serviceCurrent[
+                                              index
+                                            ].service.color.toLowerCase() +
+                                              " " +
+                                              "color-circle"
+                                          }
+                                        />
+                                        <span className="yellow">
+                                          <span className="items-color">
+                                            <span>
                                               {
                                                 serviceCurrent[index].service
-                                                  .priceFrom
-                                              }{" "}
-                                              {serviceCurrent[index].service
-                                                .priceFrom !==
-                                              serviceCurrent[index].service
-                                                .priceTo &&
-                                              " - " +
-                                              serviceCurrent[index].service
-                                                .priceTo}{" "}
-                                              {
-                                                serviceCurrent[index].service
-                                                  .currency
+                                                  .name
                                               }
                                             </span>
-                                            &nbsp;|&nbsp;
-                                            <span className="timing">
-                                              {moment
-                                                .duration(
-                                                  parseInt(
-                                                    appointment[index].duration
-                                                  ),
-                                                  "seconds"
-                                                )
-                                                .format(
-                                                  `h[ ${t("ч")}] m[ ${t(
-                                                    "минут"
-                                                  )}]`
-                                                )}
-                                              &nbsp;|
+                                            <span className="right-block">
+                                              |&nbsp;
+                                              <span className="price">
+                                                {
+                                                  serviceCurrent[index].service
+                                                    .priceFrom
+                                                }{" "}
+                                                {serviceCurrent[index].service
+                                                  .priceFrom !==
+                                                  serviceCurrent[index].service
+                                                    .priceTo &&
+                                                  " - " +
+                                                    serviceCurrent[index]
+                                                      .service.priceTo}{" "}
+                                                {
+                                                  serviceCurrent[index].service
+                                                    .currency
+                                                }
+                                              </span>
+                                              &nbsp;|&nbsp;
+                                              <span className="timing">
+                                                {moment
+                                                  .duration(
+                                                    parseInt(
+                                                      appointment[index]
+                                                        .duration
+                                                    ),
+                                                    "seconds"
+                                                  )
+                                                  .format(
+                                                    `h[ ${t("ч")}] m[ ${t(
+                                                      "минут"
+                                                    )}]`
+                                                  )}
+                                                &nbsp;|
+                                              </span>
                                             </span>
                                           </span>
                                         </span>
-                                      </span>
-                                    </a>
-                                  ) : (
-                                    <a
-                                      onClick={() =>
-                                        this.setState({ servicesSearch: "" })
-                                      }
-                                      className={
-                                        !servicesDisabling || !hasAddedServices
-                                          ? "disabledField select-button dropdown-toggle yellow"
-                                          : "select-button dropdown-toggle yellow"
-                                      }
-                                      data-toggle={
-                                        servicesDisabling &&
-                                        hasAddedServices &&
-                                        "dropdown"
-                                      }
-                                    >
-                                      <span className="" />
-                                      <span className="">
-                                        <span className="items-color">
-                                          <span>
-                                            {hasAddedServices
-                                              ? t("Выберите услугу")
-                                              : t("Услуги не добавлены")}
-                                          </span>{" "}
-                                          <span></span> <span></span>
-                                        </span>
-                                      </span>
-                                    </a>
-                                  )}
-                                  <ul className="dropdown-menu">
-                                    <li className="dropdown-item-title">
-                                      <div
-                                        className="align-items-center content clients"
-                                        style={{
-                                          padding: "0 8px",
-                                          height: "52px",
-                                          boxShadow: "none",
-                                        }}
+                                      </a>
+                                    ) : (
+                                      <a
+                                        onClick={() =>
+                                          this.setState({ servicesSearch: "" })
+                                        }
+                                        className={
+                                          !servicesDisabling ||
+                                          !hasAddedServices
+                                            ? "disabledField select-button dropdown-toggle yellow"
+                                            : "select-button dropdown-toggle yellow"
+                                        }
+                                        data-toggle={
+                                          servicesDisabling &&
+                                          hasAddedServices &&
+                                          "dropdown"
+                                        }
                                       >
-                                        <div className="search">
-                                          <input
-                                            type="search"
-                                            placeholder={t(
-                                              "Введите название услуги"
-                                            )}
-                                            style={{
-                                              width: "185%",
-                                              border: "none",
-                                            }}
-                                            aria-label="Search"
-                                            value={servicesSearch}
-                                            onChange={this.handleServicesSearch}
-                                          />
-                                          <button
-                                            className="search-icon"
-                                            type="submit"
-                                          />
+                                        <span className="" />
+                                        <span className="">
+                                          <span className="items-color">
+                                            <span>
+                                              {hasAddedServices
+                                                ? t("Выберите услугу")
+                                                : t("Услуги не добавлены")}
+                                            </span>{" "}
+                                            <span></span> <span></span>
+                                          </span>
+                                        </span>
+                                      </a>
+                                    )}
+                                    <ul className="dropdown-menu">
+                                      <li className="dropdown-item-title">
+                                        <div
+                                          className="align-items-center content clients"
+                                          style={{
+                                            padding: "0 8px",
+                                            height: "52px",
+                                            boxShadow: "none",
+                                          }}
+                                        >
+                                          <div className="search">
+                                            <input
+                                              type="search"
+                                              placeholder={t(
+                                                "Введите название услуги"
+                                              )}
+                                              style={{
+                                                width: "185%",
+                                                border: "none",
+                                              }}
+                                              aria-label="Search"
+                                              value={servicesSearch}
+                                              onChange={
+                                                this.handleServicesSearch
+                                              }
+                                            />
+                                            <button
+                                              className="search-icon"
+                                              type="submit"
+                                            />
+                                          </div>
                                         </div>
-                                      </div>
-                                    </li>
-                                    <li className="services_list_wrapper">
-                                      <ul>{this.getServiceList(index)}</ul>
-                                    </li>
-                                  </ul>
-                                  <div className="arrow-dropdown">
-                                    <i></i>
+                                      </li>
+                                      <li className="services_list_wrapper">
+                                        <ul>{this.getServiceList(index)}</ul>
+                                      </li>
+                                    </ul>
+                                    <div className="arrow-dropdown">
+                                      <i></i>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                            <button
-                              className="close removeService-button"
-                              onClick={() => this.removeService(index)}
-                            ></button>
-                            <div className="row">
-                              <div className="appointment-timing">
-                                <p
-                                  className={
-                                    !servicesDisabling && "disabledField"
-                                  }
-                                >
-                                  {t("Длительность")}
-                                </p>
-                                <select
-                                  disabled={serviceCurrent[index].id === -1}
-                                  className="custom-select"
-                                  onChange={(e) =>
-                                    this.handleDurationChange(
-                                      e,
-                                      appointment,
-                                      index
-                                    )
-                                  }
-                                  name="duration"
-                                  value={appointment[index].duration}
-                                >
-                                  {this.getOptionList(index)}
-                                </select>
+                              <button
+                                className="close removeService-button"
+                                onClick={() => this.removeService(index)}
+                              ></button>
+                              <div className="row">
+                                <div className="appointment-timing">
+                                  <p
+                                    className={
+                                      !servicesDisabling && "disabledField"
+                                    }
+                                  >
+                                    {t("Длительность")}
+                                  </p>
+                                  <select
+                                    disabled={serviceCurrent[index].id === -1}
+                                    className="custom-select"
+                                    onChange={(e) =>
+                                      this.handleDurationChange(
+                                        e,
+                                        appointment,
+                                        index
+                                      )
+                                    }
+                                    name="duration"
+                                    value={appointment[index].duration}
+                                  >
+                                    {this.getOptionList(index)}
+                                  </select>
+                                </div>
+
+                                {index !== 0 && (
+                                  <div className="second-service-container">
+                                    {String(
+                                      serviceCurrent[index].service.priceTo
+                                    ) &&
+                                      index !== 0 && (
+                                        <div className="appointment-price">
+                                          <p>{t("Фактич цена")}</p>
+                                          <input
+                                            type="text"
+                                            name="price"
+                                            value={appointment[index].price}
+                                            onChange={(e) =>
+                                              this.handleChange(e, index)
+                                            }
+                                          />
+                                        </div>
+                                      )}
+
+                                    {index !== 0 && (
+                                      <div className="appointment-discont">
+                                        <p>{t("Однораз скидка")}</p>
+                                        <input
+                                          type="text"
+                                          placeholder="0%"
+                                          name="discountPercent"
+                                          value={
+                                            appointment[index].discountPercent
+                                          }
+                                          onChange={(e) =>
+                                            this.handleChange(e, index)
+                                          }
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+
+                                {index === 0 && (
+                                  <div className="appointment-staff add_appointment_staff">
+                                    <p>{t("Исполнитель")}</p>
+                                    <div className="dropdown add-staff">
+                                      <a
+                                        className={
+                                          edit_appointment || timeArrange === 0
+                                            ? "disabledField dropdown-toggle drop_menu_personal"
+                                            : "dropdown-toggle drop_menu_personal"
+                                        }
+                                        data-toggle={
+                                          !edit_appointment &&
+                                          timeArrange !== 0 &&
+                                          "dropdown"
+                                        }
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                      >
+                                        {activeStaffCurrent?.staffId && (
+                                          <div className="img-container">
+                                            <img
+                                              className="rounded-circle"
+                                              src={
+                                                activeStaffCurrent.imageBase64
+                                                  ? "data:image/png;base64," +
+                                                    activeStaffCurrent.imageBase64
+                                                  : `${process.env.CONTEXT}public/img/avatar.svg`
+                                              }
+                                              alt=""
+                                            />
+                                            <span className="staff-name">
+                                              {activeStaffCurrent.firstName +
+                                                " " +
+                                                (activeStaffCurrent.lastName
+                                                  ? activeStaffCurrent.lastName
+                                                  : "")}
+                                            </span>
+                                          </div>
+                                        )}
+                                      </a>
+                                      {!edit_appointment && timeArrange !== 0 && (
+                                        <ul
+                                          className="dropdown-menu"
+                                          role="menu"
+                                        >
+                                          {staffs?.timetable &&
+                                            staffs.timetable
+                                              .filter((timing) => {
+                                                return timing.timetables.some(
+                                                  (time) => {
+                                                    const checkingTiming = moment(
+                                                      time.startTimeMillis
+                                                    ).format("DD MM YYYY");
+                                                    const currentTiming = moment(
+                                                      selectedDay
+                                                    ).format("DD MM YYYY");
+                                                    return (
+                                                      checkingTiming ===
+                                                      currentTiming
+                                                    );
+                                                  }
+                                                );
+                                              })
+                                              .map((staff, key) => {
+                                                const activeStaff =
+                                                  staffFromProps &&
+                                                  staffFromProps.find(
+                                                    (staffItem) =>
+                                                      staffItem.staffId ===
+                                                      staff.staffId
+                                                  );
+
+                                                return (
+                                                  <li
+                                                    onClick={() =>
+                                                      this.setStaff(
+                                                        staff,
+                                                        staff.firstName,
+                                                        staff.lastName,
+                                                        activeStaff.imageBase64
+                                                      )
+                                                    }
+                                                    key={key}
+                                                  >
+                                                    <a>
+                                                      <div className="img-container">
+                                                        <img
+                                                          className="rounded-circle"
+                                                          src={
+                                                            activeStaff.imageBase64
+                                                              ? "data:image/png;base64," +
+                                                                activeStaff.imageBase64
+                                                              : `${process.env.CONTEXT}public/img/avatar.svg`
+                                                          }
+                                                          alt=""
+                                                        />
+                                                        <span
+                                                          style={{
+                                                            lineHeight: activeStaff.description
+                                                              ? "8px"
+                                                              : "20px",
+                                                          }}
+                                                          className=""
+                                                        >
+                                                          <p>
+                                                            {staff.firstName +
+                                                              " " +
+                                                              (staff.lastName
+                                                                ? staff.lastName
+                                                                : "")}
+                                                          </p>
+                                                          {activeStaff.description ? (
+                                                            <p
+                                                              style={{
+                                                                fontSize:
+                                                                  "10px",
+                                                              }}
+                                                              className=""
+                                                            >
+                                                              {
+                                                                activeStaff.description
+                                                              }
+                                                            </p>
+                                                          ) : (
+                                                            ""
+                                                          )}
+                                                        </span>
+                                                      </div>
+                                                    </a>
+                                                  </li>
+                                                );
+                                              })}
+                                        </ul>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
 
-                              {index !== 0 && (
-                                <div className="second-service-container">
-                                  {String(
-                                    serviceCurrent[index].service.priceTo
-                                  ) &&
-                                  index !== 0 && (
+                              <div className="addAppointmentRow row">
+                                {index === 0 && (
+                                  <div className="appointment-discont">
+                                    <p>{t("Однораз скидка")}</p>
+                                    <input
+                                      type="text"
+                                      placeholder="0%"
+                                      name="discountPercent"
+                                      value={appointment[index].discountPercent}
+                                      onChange={(e) =>
+                                        this.handleChange(e, index)
+                                      }
+                                    />
+                                  </div>
+                                )}
+
+                                {String(
+                                  serviceCurrent[index].service.priceTo
+                                ) &&
+                                  index === 0 && (
                                     <div className="appointment-price">
                                       <p>{t("Фактич цена")}</p>
                                       <input
                                         type="text"
                                         name="price"
                                         value={appointment[index].price}
-                                        onChange={(e) =>
-                                          this.handleChange(e, index)
-                                        }
+                                        onChange={(e) => {
+                                          this.handleChange(e, index);
+                                          console.log(e.value);
+                                        }}
                                       />
                                     </div>
                                   )}
 
-                                  {index !== 0 && (
-                                    <div className="appointment-discont">
-                                      <p>{t("Однораз скидка")}</p>
-                                      <input
-                                        type="text"
-                                        placeholder="0%"
-                                        name="discountPercent"
-                                        value={
-                                          appointment[index].discountPercent
-                                        }
-                                        onChange={(e) =>
-                                          this.handleChange(e, index)
-                                        }
-                                      />
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-
-                              {index === 0 && (
-                                <div className="appointment-staff add_appointment_staff">
-                                  <p>{t("Исполнитель")}</p>
-                                  <div className="dropdown add-staff">
-                                    <a
-                                      className={
-                                        edit_appointment || timeArrange === 0
-                                          ? "disabledField dropdown-toggle drop_menu_personal"
-                                          : "dropdown-toggle drop_menu_personal"
-                                      }
-                                      data-toggle={
-                                        !edit_appointment &&
-                                        timeArrange !== 0 &&
-                                        "dropdown"
-                                      }
-                                      aria-haspopup="true"
-                                      aria-expanded="false"
-                                    >
-                                      {activeStaffCurrent.staffId && (
-                                        <div className="img-container">
-                                          <img
-                                            className="rounded-circle"
-                                            src={
-                                              activeStaffCurrent.imageBase64
-                                                ? "data:image/png;base64," +
-                                                activeStaffCurrent.imageBase64
-                                                : `${process.env.CONTEXT}public/img/avatar.svg`
+                                {index === 0 && (
+                                  <React.Fragment>
+                                    <div className="appointment-note">
+                                      <p>{t("Заметка")}</p>
+                                      <div className="company_fields">
+                                        <div
+                                          style={{ height: "35px" }}
+                                          className="name_company_wrapper form-control"
+                                        >
+                                          <textarea
+                                            className="company_input"
+                                            placeholder={t(
+                                              "Например Без окраски"
+                                            )}
+                                            name="description"
+                                            maxLength={120}
+                                            value={
+                                              appointment[index].description
                                             }
-                                            alt=""
+                                            onChange={(e) =>
+                                              this.handleChange(e, index)
+                                            }
                                           />
-                                          <span className="staff-name">
-                                            {activeStaffCurrent.firstName +
-                                            " " +
-                                            (activeStaffCurrent.lastName
-                                              ? activeStaffCurrent.lastName
-                                              : "")}
+                                          <span
+                                            style={{ right: "16px" }}
+                                            className="company_counter"
+                                          >
+                                            {appointment[index].description
+                                              ? appointment[index].description
+                                                  .length
+                                              : 0}
+                                            /120
                                           </span>
                                         </div>
-                                      )}
-                                    </a>
-                                    {!edit_appointment && timeArrange !== 0 && (
-                                      <ul className="dropdown-menu" role="menu">
-                                        {staffs.timetable &&
-                                        staffs.timetable
-                                          .filter((timing) => {
-                                            return timing.timetables.some(
-                                              (time) => {
-                                                const checkingTiming = moment(
-                                                  time.startTimeMillis
-                                                ).format("DD MM YYYY");
-                                                const currentTiming = moment(
-                                                  selectedDay
-                                                ).format("DD MM YYYY");
-                                                return (
-                                                  checkingTiming ===
-                                                  currentTiming
-                                                );
-                                              }
-                                            );
-                                          })
-                                          .map((staff, key) => {
-                                            const activeStaff =
-                                              staffFromProps &&
-                                              staffFromProps.find(
-                                                (staffItem) =>
-                                                  staffItem.staffId ===
-                                                  staff.staffId
-                                              );
-
-                                            return (
-                                              <li
-                                                onClick={() =>
-                                                  this.setStaff(
-                                                    staff,
-                                                    staff.firstName,
-                                                    staff.lastName,
-                                                    activeStaff.imageBase64
-                                                  )
-                                                }
-                                                key={key}
-                                              >
-                                                <a>
-                                                  <div className="img-container">
-                                                    <img
-                                                      className="rounded-circle"
-                                                      src={
-                                                        activeStaff.imageBase64
-                                                          ? "data:image/png;base64," +
-                                                          activeStaff.imageBase64
-                                                          : `${process.env.CONTEXT}public/img/avatar.svg`
-                                                      }
-                                                      alt=""
-                                                    />
-                                                    <span
-                                                      style={{
-                                                        lineHeight: activeStaff.description
-                                                          ? "8px"
-                                                          : "20px",
-                                                      }}
-                                                      className=""
-                                                    >
-                                                        <p>
-                                                          {staff.firstName +
-                                                          " " +
-                                                          (staff.lastName
-                                                            ? staff.lastName
-                                                            : "")}
-                                                        </p>
-                                                      {activeStaff.description ? (
-                                                        <p
-                                                          style={{
-                                                            fontSize: "10px",
-                                                          }}
-                                                          className=""
-                                                        >
-                                                          {
-                                                            activeStaff.description
-                                                          }
-                                                        </p>
-                                                      ) : (
-                                                        ""
-                                                      )}
-                                                      </span>
-                                                  </div>
-                                                </a>
-                                              </li>
-                                            );
-                                          })}
-                                      </ul>
-                                    )}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="addAppointmentRow row">
-                              {index === 0 && (
-                                <div className="appointment-discont">
-                                  <p>{t("Однораз скидка")}</p>
-                                  <input
-                                    type="text"
-                                    placeholder="0%"
-                                    name="discountPercent"
-                                    value={appointment[index].discountPercent}
-                                    onChange={(e) =>
-                                      this.handleChange(e, index)
-                                    }
-                                  />
-                                </div>
-                              )}
-
-                              {String(serviceCurrent[index].service.priceTo) &&
-                              index === 0 && (
-                                <div className="appointment-price">
-                                  <p>{t("Фактич цена")}</p>
-                                  <input
-                                    type="text"
-                                    name="price"
-                                    value={appointment[index].price}
-                                    onChange={(e) => {
-                                      this.handleChange(e, index);
-                                      console.log(e.value);
-                                    }}
-                                  />
-                                </div>
-                              )}
-
-                              {index === 0 && (
-                                <React.Fragment>
-                                  <div className="appointment-note">
-                                    <p>{t("Заметка")}</p>
-                                    <div className="company_fields">
-                                      <div
-                                        style={{ height: "35px" }}
-                                        className="name_company_wrapper form-control"
-                                      >
-                                        <textarea
-                                          className="company_input"
-                                          placeholder={t(
-                                            "Например Без окраски"
-                                          )}
-                                          name="description"
-                                          maxLength={120}
-                                          value={appointment[index].description}
-                                          onChange={(e) =>
-                                            this.handleChange(e, index)
-                                          }
-                                        />
-                                        <span
-                                          style={{ right: "16px" }}
-                                          className="company_counter"
-                                        >
-                                          {appointment[index].description
-                                            ? appointment[index].description
-                                              .length
-                                            : 0}
-                                          /120
-                                        </span>
                                       </div>
                                     </div>
-                                  </div>
-                                </React.Fragment>
+                                  </React.Fragment>
+                                )}
+                              </div>
+                              {status === 200 && (
+                                <p className="alert-success p-1 rounded pl-3 mb-2">
+                                  {t("Запись сохранена")}
+                                </p>
                               )}
                             </div>
-                            {status === 200 && (
-                              <p className="alert-success p-1 rounded pl-3 mb-2">
-                                {t("Запись сохранена")}
-                              </p>
-                            )}
-                          </div>
-                        );
-                      })}
-                      <div
-                        className="addServiceButton"
-                        onClick={() => this.addNewService()}
-                      >
-                        <p className="text-center button-absolute">
-                          {t("Добавить услугу")} +
-                        </p>
+                          );
+                        })}
+                        <div
+                          className="addServiceButton"
+                          onClick={() => this.addNewService()}
+                        >
+                          <p className="text-center button-absolute">
+                            {t("Добавить услугу")} +
+                          </p>
+                        </div>
+                        <hr />
+                        {this.getCoStaffMarkup("desktop-visible")}
+                        {this.getCoStaffMarkup("mobile-visible")}
                       </div>
-                      <hr />
-                      {this.getCoStaffMarkup("desktop-visible")}
-                      {this.getCoStaffMarkup("mobile-visible")}
-                    </div>
+                    )}
 
                     {appointmentMessage && (
                       <div
@@ -2058,43 +2217,60 @@ class AddAppointment extends React.Component {
                   <div className="block-style2 col-md-12 col-lg-12 col-xl-4">
                     <div className="calendar">
                       {!edit_appointment && (
-                        <div className="addApointmentClientBlock">
+                        <div
+                          className={`addApointmentClientBlock ${isAddBookedService &&
+                            "mr-5 mb-3"}`}
+                        >
                           <div className="row">
                             <div className="col-sm-12">
-                              <p className="add-helpers-text mobile-visible">
-                                {companyTypeId === 4
-                                  ? t("Добавление пациента")
-                                  : t("Добавление клиента")}{" "}
-                                <Hint
-                                  hintMessage={t(
-                                    "Начните поиск. Если клиента нет в базе, заполните необходимые поля"
-                                  )}
-                                />
-                              </p>
-                              <p className="add-helpers-text mb-3 desktop-visible">
-                                {companyTypeId === 4
-                                  ? t("Добавление пациента")
-                                  : t("Добавление клиента")}{" "}
-                                <Hint
-                                  hintMessage={t(
-                                    "Начните поиск. Если клиента нет в базе, заполните необходимые поля"
-                                  )}
-                                />
-                              </p>
+                              {isAddBookedService ? (
+                                <>
+                                  <h5 className="font-weight-bold">
+                                    {t("Клиент")}
+                                  </h5>
+                                  <p>
+                                    {`${t(
+                                      "Быстрый поиск или добавление клиента"
+                                    )}:`}
+                                  </p>
+                                </>
+                              ) : (
+                                <>
+                                  <p className="add-helpers-text mobile-visible">
+                                    {companyTypeId === 4
+                                      ? t("Добавление пациента")
+                                      : t("Добавление клиента")}{" "}
+                                    <Hint
+                                      hintMessage={t(
+                                        "Начните поиск. Если клиента нет в базе, заполните необходимые поля"
+                                      )}
+                                    />
+                                  </p>
+                                  <p className="add-helpers-text mb-3 desktop-visible">
+                                    {companyTypeId === 4
+                                      ? t("Добавление пациента")
+                                      : t("Добавление клиента")}{" "}
+                                    <Hint
+                                      hintMessage={t(
+                                        "Начните поиск. Если клиента нет в базе, заполните необходимые поля"
+                                      )}
+                                    />
+                                  </p>
+                                </>
+                              )}
                             </div>
                           </div>
                           {/* <div className="search dropdown row">*/}
                           {/*    <form className="col-sm-12 form-inline" data-toggle="dropdown">*/}
                           {/*        <input type="search" placeholder="Поиск по имени, номеру тел., имейлу" aria-label="Search"  ref={input => this.search = input} onChange={this.handleSearch}/>*/}
                           {/*        <button className="search-icon" type="button"></button>*/}
-
                           {/*    </form>*/}
                           {/* </div>*/}
                           <div className="row">
                             <div className="col-12 py-4 py-mb-0">
                               {Object.entries({
                                 clientFirstName:
-                                typeAheadOptions.clientFirstName,
+                                  typeAheadOptions.clientFirstName,
                                 clientPhone: typeAheadOptions.clientPhone,
                               }).map(([key, value], i) => (
                                 <div
@@ -2228,7 +2404,6 @@ class AddAppointment extends React.Component {
                                 ))}
                             </div>
                           </div>
-
                           {cl && (
                             <React.Fragment>
                               <div className="buttons modal-edit-client-buttons">
@@ -2283,7 +2458,7 @@ class AddAppointment extends React.Component {
                                       <div className="col-6">
                                         <strong>
                                           {cl.appointments &&
-                                          cl.appointments.length}
+                                            cl.appointments.length}
                                         </strong>
                                         <span className="gray-text">
                                           {t("Всего визитов")}
@@ -2294,8 +2469,8 @@ class AddAppointment extends React.Component {
                                         <strong>
                                           {allPrice}{" "}
                                           {cl.appointments &&
-                                          cl.appointments[0] &&
-                                          cl.appointments[0].currency}
+                                            cl.appointments[0] &&
+                                            cl.appointments[0].currency}
                                         </strong>
                                         <span className="gray-text">
                                           {t("Сумма визитов")}
@@ -2331,52 +2506,52 @@ class AddAppointment extends React.Component {
                                   <hr className="gray" />
                                   <div className="last-visit-list">
                                     {cl.appointments &&
-                                    cl.appointments
-                                      .sort(
-                                        (a, b) =>
-                                          b.appointmentTimeMillis -
-                                          a.appointmentTimeMillis
-                                      )
-                                      .map((appointment) => {
-                                        const activeService =
-                                          servicesFromProps &&
-                                          servicesFromProps.servicesList.find(
-                                            (service) =>
-                                              service.serviceId ===
-                                              appointment.serviceId
-                                          );
-                                        const activeAppointmentStaff =
-                                          staffFromProps &&
-                                          staffFromProps.find(
-                                            (staffItem) =>
-                                              staffItem.staffId ===
-                                              appointment.staffId
-                                          );
-
-                                        return (
-                                          <div
-                                            style={{
-                                              paddingTop: "4px",
-                                              cursor: "pointer",
-                                              borderBottom:
-                                                "10px solid rgb(245, 245, 246)",
-                                            }}
-                                            className="visit-info row pl-4 pr-4 mb-2 d-flex justify-content-between"
-                                            onClick={() =>
-                                              this.goToPageCalendar(
-                                                appointment,
+                                      cl.appointments
+                                        .sort(
+                                          (a, b) =>
+                                            b.appointmentTimeMillis -
+                                            a.appointmentTimeMillis
+                                        )
+                                        .map((appointment) => {
+                                          const activeService =
+                                            servicesFromProps &&
+                                            servicesFromProps.servicesList.find(
+                                              (service) =>
+                                                service.serviceId ===
+                                                appointment.serviceId
+                                            );
+                                          const activeAppointmentStaff =
+                                            staffFromProps &&
+                                            staffFromProps.find(
+                                              (staffItem) =>
+                                                staffItem.staffId ===
                                                 appointment.staffId
-                                              )
-                                            }
-                                          >
+                                            );
+
+                                          return (
                                             <div
                                               style={{
-                                                display: "flex",
-                                                alignItems: "center",
+                                                paddingTop: "4px",
+                                                cursor: "pointer",
+                                                borderBottom:
+                                                  "10px solid rgb(245, 245, 246)",
                                               }}
-                                              className="col-8"
+                                              className="visit-info row pl-4 pr-4 mb-2 d-flex justify-content-between"
+                                              onClick={() =>
+                                                this.goToPageCalendar(
+                                                  appointment,
+                                                  appointment.staffId
+                                                )
+                                              }
                                             >
-                                              <p className="visit-detail">
+                                              <div
+                                                style={{
+                                                  display: "flex",
+                                                  alignItems: "center",
+                                                }}
+                                                className="col-8"
+                                              >
+                                                <p className="visit-detail">
                                                   <span
                                                     style={{
                                                       whiteSpace: "normal",
@@ -2394,88 +2569,88 @@ class AddAppointment extends React.Component {
                                                         "dd, DD MMMM YYYY, HH:mm"
                                                       )}
                                                   </span>
-                                                <span>
+                                                  <span>
                                                     <strong>
                                                       {t("Исполнитель")}:{" "}
                                                     </strong>
-                                                  {appointment.staffName}
+                                                    {appointment.staffName}
                                                   </span>
-                                                <span
-                                                  style={{ fontSize: "13px" }}
-                                                >
+                                                  <span
+                                                    style={{ fontSize: "13px" }}
+                                                  >
                                                     {appointment.serviceName}
                                                   </span>
-                                                {activeService &&
-                                                activeService.details ? (
-                                                  <span>
+                                                  {activeService &&
+                                                  activeService.details ? (
+                                                    <span>
                                                       {activeService.details}
                                                     </span>
-                                                ) : (
-                                                  ""
-                                                )}
-                                                {appointment.description ? (
-                                                  <span className="visit-description">
+                                                  ) : (
+                                                    ""
+                                                  )}
+                                                  {appointment.description ? (
+                                                    <span className="visit-description">
                                                       {t("Заметка")}:{" "}
-                                                    {appointment.description}
+                                                      {appointment.description}
                                                     </span>
-                                                ) : (
-                                                  ""
-                                                )}
-                                                {appointment.clientNotCome ? (
-                                                  <span
-                                                    style={{
-                                                      fontSize: "14px",
-                                                    }}
-                                                    className="visit-description red-text"
-                                                  >
+                                                  ) : (
+                                                    ""
+                                                  )}
+                                                  {appointment.clientNotCome ? (
+                                                    <span
+                                                      style={{
+                                                        fontSize: "14px",
+                                                      }}
+                                                      className="visit-description red-text"
+                                                    >
                                                       {t("Клиент не пришел")}
                                                     </span>
-                                                ) : (
-                                                  ""
-                                                )}
-                                                <span className="visit-price">
+                                                  ) : (
+                                                    ""
+                                                  )}
+                                                  <span className="visit-price">
                                                     {t("Цена")}:&nbsp;
-                                                  {appointment.priceFrom !==
-                                                  appointment.priceTo
-                                                    ? appointment.priceFrom +
-                                                    " - " +
+                                                    {appointment.priceFrom !==
                                                     appointment.priceTo
-                                                    : appointment.price}{" "}
-                                                  {appointment.currency}
+                                                      ? appointment.priceFrom +
+                                                        " - " +
+                                                        appointment.priceTo
+                                                      : appointment.price}{" "}
+                                                    {appointment.currency}
                                                   </span>
-                                              </p>
-                                            </div>
+                                                </p>
+                                              </div>
 
-                                            <div
-                                              style={{
-                                                padding: 0,
-                                                textAlign: "right",
-                                              }}
-                                              className="col-3 d-flex flex-column justify-content-center align-items-center"
-                                            >
-                                              {activeAppointmentStaff &&
-                                              activeAppointmentStaff.staffId && (
-                                                <div
-                                                  style={{
-                                                    position: "static",
-                                                  }}
-                                                  className="img-container text-center"
-                                                >
-                                                  <img
-                                                    className="rounded-circle"
-                                                    src={
-                                                      activeAppointmentStaff.imageBase64
-                                                        ? "data:image/png;base64," +
-                                                        activeAppointmentStaff.imageBase64
-                                                        : `${process.env.CONTEXT}public/img/avatar.svg`
-                                                    }
-                                                    alt=""
-                                                  />
-                                                  {/* <span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
-                                                </div>
-                                              )}
+                                              <div
+                                                style={{
+                                                  padding: 0,
+                                                  textAlign: "right",
+                                                }}
+                                                className="col-3 d-flex flex-column justify-content-center align-items-center"
+                                              >
+                                                {activeAppointmentStaff &&
+                                                  activeAppointmentStaff.staffId && (
+                                                    <div
+                                                      style={{
+                                                        position: "static",
+                                                      }}
+                                                      className="img-container text-center"
+                                                    >
+                                                      <img
+                                                        className="rounded-circle"
+                                                        src={
+                                                          activeAppointmentStaff.imageBase64
+                                                            ? "data:image/png;base64," +
+                                                              activeAppointmentStaff.imageBase64
+                                                            : `${process.env.CONTEXT}public/img/avatar.svg`
+                                                        }
+                                                        alt=""
+                                                      />
+                                                      {/* <span className="staff-name">{activeStaffCurrent.firstName+" "+(activeStaffCurrent.lastName ? activeStaffCurrent.lastName : '')}</span>*/}
+                                                    </div>
+                                                  )}
 
-                                              <span className="timing text-center my-2">
+                                                <span className="timing text-center my-2">
                                                   {moment
                                                     .duration(
                                                       parseInt(
@@ -2490,11 +2665,11 @@ class AddAppointment extends React.Component {
                                                     )}
                                                 </span>
 
-                                              <br />
+                                                <br />
+                                              </div>
                                             </div>
-                                          </div>
-                                        );
-                                      })}
+                                          );
+                                        })}
                                     {/* <Paginator*/}
                                     {/*    finalTotalPages={2}*/}
                                     {/*    onPageChange={this.handlePageClickAppointments}*/}
@@ -2519,93 +2694,106 @@ class AddAppointment extends React.Component {
                               )}
                             </React.Fragment>
                           )}
+                          {isAddBookedService ? (
+                            <>
+                              <h6 className="font-weight-bold">{`${t(
+                                "Итого со скидкой"
+                              )}: 120`}</h6>
+                              <p>{`${t("Без скидки")}: 123`}</p>
+                            </>
+                          ) : (
+                            <>
+                              <hr className="gray-line" />
 
-                          <hr className="gray-line" />
+                              <p className="appointments-all-price">
+                                {t("Общая сумма")}:{" "}
+                                {appointmentsAllPrice -
+                                  (appointmentsAllPrice *
+                                    (this.state.clientChecked
+                                      ? this.state.clientChecked.discountPercent
+                                      : 0)) /
+                                    100}{" "}
+                                {this.state.serviceCurrent &&
+                                this.state.serviceCurrent.length > 0
+                                  ? this.state.serviceCurrent[0].service
+                                      .currency
+                                  : ""}
+                              </p>
 
-                          <p className="appointments-all-price">
-                            {t("Общая сумма")}:{" "}
-                            {appointmentsAllPrice -
-                            (appointmentsAllPrice *
-                              (this.state.clientChecked
-                                ? this.state.clientChecked.discountPercent
-                                : 0)) /
-                            100}{" "}
-                            {this.state.serviceCurrent &&
-                            this.state.serviceCurrent.length > 0
-                              ? this.state.serviceCurrent[0].service.currency
-                              : ""}
-                          </p>
-
-                          <div className="calendar_modal_buttons text-center">
-                            <button
-                              style={{ minWidth: "48%", margin: "0" }}
-                              className={
-                                "button saveservices text-center button-absolute button-save"
-                              }
-                              type="button"
-                              onClick={() => {
-                                if (
-                                  status === 208 ||
-                                  (!edit_appointment &&
-                                    Object.entries(typeAheadOptions).some(
-                                      ([key, value]) =>
-                                        !value.isValid(this.state[key])
-                                    )) ||
-                                  serviceCurrent.some(
-                                    (elem) => elem.service.length === 0
-                                  ) ||
-                                  !staffCurrent.staffId ||
-                                  !appointment[0] ||
-                                  !appointment[0].appointmentTimeMillis
-                                ) {
-                                  this.setState({
-                                    appointmentMessage: t(
-                                      "Необходимо выбрать услугу"
-                                    ),
-                                  });
-                                } else {
-                                  pressSave()
-                                }
-                              }}
-                            >
-                              {t("Сохранить")}
-                            </button>
-                          </div>
-                          <div className="mobileButton">
-                            <button
-                              style={{ minWidth: "48%" }}
-                              className={"button text-center button-absolute"}
-                              type="button"
-                              onClick={() => {
-                                if (
-                                  status === 208 ||
-                                  (!edit_appointment &&
-                                    Object.entries(typeAheadOptions).some(
-                                      ([key, value]) =>
-                                        !value.isValid(this.state[key])
-                                    )) ||
-                                  serviceCurrent.some(
-                                    (elem) => elem.service.length === 0
-                                  ) ||
-                                  !staffCurrent.staffId ||
-                                  !appointment[0] ||
-                                  !appointment[0].appointmentTimeMillis
-                                ) {
-                                  this.setState({
-                                    appointmentMessage: t(
-                                      "Необходимо выбрать услугу"
-                                    ),
-                                  });
-                                } else {
-                                  pressSave()
-                                }
-                              }}
-                            >
-                              {edit_appointment
-                                ? t("Сохранить")
-                                : t("Сохранить")}
-                            </button>
-                          </div>
+                              <div className="calendar_modal_buttons text-center">
+                                <button
+                                  style={{ minWidth: "48%", margin: "0" }}
+                                  className={
+                                    "button saveservices text-center button-absolute button-save"
+                                  }
+                                  type="button"
+                                  onClick={() => {
+                                    if (
+                                      status === 208 ||
+                                      (!edit_appointment &&
+                                        Object.entries(typeAheadOptions).some(
+                                          ([key, value]) =>
+                                            !value.isValid(this.state[key])
+                                        )) ||
+                                      serviceCurrent.some(
+                                        (elem) => elem.service.length === 0
+                                      ) ||
+                                      !staffCurrent.staffId ||
+                                      !appointment[0] ||
+                                      !appointment[0].appointmentTimeMillis
+                                    ) {
+                                      this.setState({
+                                        appointmentMessage: t(
+                                          "Необходимо выбрать услугу"
+                                        ),
+                                      });
+                                    } else {
+                                      pressSave();
+                                    }
+                                  }}
+                                >
+                                  {t("Сохранить")}
+                                </button>
+                              </div>
+                              <div className="mobileButton">
+                                <button
+                                  style={{ minWidth: "48%" }}
+                                  className={
+                                    "button text-center button-absolute"
+                                  }
+                                  type="button"
+                                  onClick={() => {
+                                    if (
+                                      status === 208 ||
+                                      (!edit_appointment &&
+                                        Object.entries(typeAheadOptions).some(
+                                          ([key, value]) =>
+                                            !value.isValid(this.state[key])
+                                        )) ||
+                                      serviceCurrent.some(
+                                        (elem) => elem.service.length === 0
+                                      ) ||
+                                      !staffCurrent.staffId ||
+                                      !appointment[0] ||
+                                      !appointment[0].appointmentTimeMillis
+                                    ) {
+                                      this.setState({
+                                        appointmentMessage: t(
+                                          "Необходимо выбрать услугу"
+                                        ),
+                                      });
+                                    } else {
+                                      pressSave();
+                                    }
+                                  }}
+                                >
+                                  {edit_appointment
+                                    ? t("Сохранить")
+                                    : t("Сохранить")}
+                                </button>
+                              </div>
+                            </>
+                          )}
                         </div>
                       )}
 
@@ -2639,7 +2827,7 @@ class AddAppointment extends React.Component {
                                     ),
                                   });
                                 } else {
-                                  pressSave()
+                                  pressSave();
                                 }
                               }}
                             >
@@ -2672,7 +2860,7 @@ class AddAppointment extends React.Component {
                                     ),
                                   });
                                 } else {
-                                  pressSave()
+                                  pressSave();
                                 }
                               }}
                             >
@@ -2702,6 +2890,18 @@ class AddAppointment extends React.Component {
                     </div>
                   )}
                 </div>
+              </div>
+              <div className="modal-footer justify-content-end">
+                <p className="mr-4" role="button">
+                  {t("Назад")}
+                </p>
+                <button
+                  type="button"
+                  className="button"
+                  onClick={addAppointment}
+                >
+                  {t("Создать визит")}
+                </button>
               </div>
             </div>
           </div>
@@ -2863,9 +3063,24 @@ class AddAppointment extends React.Component {
   }
 
   editAppointment() {
-    const { appointment, coStaffs, propogatedAppointmentId, isAddCostaff, availableCoStaffs, appointmentsToDelete, serviceCurrent, staffCurrent, clientChecked, availableCoStaff } = this.state;
+    const {
+      appointment,
+      coStaffs,
+      propogatedAppointmentId,
+      isAddCostaff,
+      availableCoStaffs,
+      appointmentsToDelete,
+      serviceCurrent,
+      staffCurrent,
+      clientChecked,
+      availableCoStaff,
+    } = this.state;
 
-    const finalCoStaffs = coStaffs.filter((item) => availableCoStaffs.some((availableCoStaff) => item.staffId === availableCoStaff.staffId));
+    const finalCoStaffs = coStaffs.filter((item) =>
+      availableCoStaffs.some(
+        (availableCoStaff) => item.staffId === availableCoStaff.staffId
+      )
+    );
 
     const appointmentNew = appointment.map((item, i) => {
       return {
@@ -2874,7 +3089,9 @@ class AddAppointment extends React.Component {
         staffId: staffCurrent.staffId,
         serviceId: serviceCurrent[i].id,
         serviceName: serviceCurrent[i].service.name,
-        duration: item.duration ? item.duration : this.getDurationForCurrentStaff(serviceCurrent[i].service),
+        duration: item.duration
+          ? item.duration
+          : this.getDurationForCurrentStaff(serviceCurrent[i].service),
         color: serviceCurrent[i].service.color,
         currency: serviceCurrent[i].service.currency,
       };
@@ -2894,13 +3111,16 @@ class AddAppointment extends React.Component {
     //     );
     //   });
     // } else {
-      this.props.dispatch(calendarActions.editAppointment2(
+    this.props.dispatch(
+      calendarActions.editAppointment2(
         JSON.stringify(appointmentNew),
-        propogatedAppointmentId ? propogatedAppointmentId : appointment[0].appointmentId)
-      );
+        propogatedAppointmentId
+          ? propogatedAppointmentId
+          : appointment[0].appointmentId
+      )
+    );
     // }
   }
-
 
   handleClick(id) {
     const { client } = this.state;
