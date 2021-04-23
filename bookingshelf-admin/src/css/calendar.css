@@ -124,9 +124,6 @@
 }
 
 @media screen and (max-width: 960px) {
-  .calendar{
-    margin-bottom: 10px;
-  }
   .calendar .calendar-container {
     height: 87px;
   }

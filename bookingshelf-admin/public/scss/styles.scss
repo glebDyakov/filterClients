@@ -7753,6 +7753,8 @@ textarea {
 .modal_add_booking_service {
   div {
     .modal-content {
+      height: 720px;
+
       .modal-header {
         padding: 18px 30px;
       }
@@ -7804,9 +7806,9 @@ textarea {
         }
 
         @media screen and (max-width: 500px) {
-          &>div {
+          &>p-3 {
             &>div {
-              &>div {
+              &>d-flex {
                 padding-top: 20px !important;
 
                 .booking-timetable {

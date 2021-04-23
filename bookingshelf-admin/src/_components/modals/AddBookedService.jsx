@@ -93,10 +93,10 @@ const AddBookedServiceModal = ({
       searchedService.staffs.reduce(
         (acc, staff) => (
           staff.availableTimes &&
-            acc.push({
-              staffId: staff.staffId,
-              activeTimes: [],
-            }),
+          acc.push({
+            staffId: staff.staffId,
+            activeTimes: [],
+          }),
           acc
         ),
         []
@@ -133,11 +133,11 @@ const AddBookedServiceModal = ({
     updatedActiveTimesByStaffs.map(
       (activeTimesByStaff) => (
         activeTimesByStaff.staffId === staff.staffId &&
-          (activeTimesByStaff.activeTimes.includes(availableTime)
-            ? (activeTimesByStaff.activeTimes = activeTimesByStaff.activeTimes.filter(
-                (activeTime) => activeTime !== availableTime
-              ))
-            : activeTimesByStaff.activeTimes.push(availableTime)),
+        (activeTimesByStaff.activeTimes.includes(availableTime)
+          ? (activeTimesByStaff.activeTimes = activeTimesByStaff.activeTimes.filter(
+            (activeTime) => activeTime !== availableTime
+          ))
+          : activeTimesByStaff.activeTimes.push(availableTime)),
         activeTimesByStaff
       )
     );
@@ -196,56 +196,31 @@ const AddBookedServiceModal = ({
               <div className="modal-inner bg-modals">
                 <div className="p-3 bg-white">
                   <div className="d-flex">
-<<<<<<< HEAD
                     <div className="modal__inner_header">
-                    {bookingDays.map((bookingDay, index) => (
-                      <div
-                        key={bookingDay.weekDay}
-                        className={`p-2 border border-1 m-2 ${index ===
-                          activeDay && "bg-dark"}`}
-                        onClick={() => {
-                          bookingDayOnClick(bookingDay.dayInterval);
-                          setActiveDay(index);
-                        }}
-                      >
-                        <p
-                          className={`p-0 m-0 font-weight-bold ${index ===
-                            activeDay && "text-white"}`}
-                        >
-                          {bookingDay.monthDay}
-                        </p>
-                        <p className={index === activeDay && "text-white"}>
-                          {bookingDay.weekDay}
-                        </p>
-                      </div>
-                    ))}
+                      {bookingDays.map((bookingDay, index) => {
+                        const isActiveDay = index === activeDay;
+
+                        return (
+                          <div
+                            key={bookingDay.weekDay}
+                            className={`p-2 border border-1 m-2 ${isActiveDay &&
+                              "bg-dark"}`}
+                            onClick={() => bookingDayOnClick(bookingDay, index)}
+                          >
+                            <p
+                              className={`p-0 m-0 font-weight-bold ${isActiveDay &&
+                                "text-white"}`}
+                            >
+                              {bookingDay.monthDay}
+                            </p>
+                            <p className={isActiveDay && "text-white"}>
+                              {bookingDay.weekDay}
+                            </p>
+                          </div>
+                        );
+                      })}
                     </div>
                     <div className="border-1 booking-calendar">
-=======
-                    {bookingDays.map((bookingDay, index) => {
-                      const isActiveDay = index === activeDay;
-
-                      return (
-                        <div
-                          key={bookingDay.weekDay}
-                          className={`p-2 border border-1 m-2 ${isActiveDay &&
-                            "bg-dark"}`}
-                          onClick={() => bookingDayOnClick(bookingDay, index)}
-                        >
-                          <p
-                            className={`p-0 m-0 font-weight-bold ${isActiveDay &&
-                              "text-white"}`}
-                          >
-                            {bookingDay.monthDay}
-                          </p>
-                          <p className={isActiveDay && "text-white"}>
-                            {bookingDay.weekDay}
-                          </p>
-                        </div>
-                      );
-                    })}
-                    <div className="p-4 border border-1 m-auto booking-calendar">
->>>>>>> 0f22815c316fd06bbda373d0a47334505574cf2b
                       <DatePicker
                         isAddBookedService
                         language={language}

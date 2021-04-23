@@ -2994,15 +2994,18 @@
 .new_appointment {
   .modal-content {
     overflow-y: auto;
-    max-height: 100vh;
+    height: 720px;
   }
+  
 }
 
 .form-group-addService {
-  max-height: 80%;
+  max-height: 560px;
   background: #f8f8fb;
   padding: 16px 0 0 0;
   margin: 0;
+  overflow: auto;
+  overflow-x: hidden;
 
   .calendar_modal_buttons {
     margin-top: 20px;

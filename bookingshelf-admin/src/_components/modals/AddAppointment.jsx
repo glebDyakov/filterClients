@@ -32,15 +32,15 @@ class AddAppointment extends React.Component {
     super(props);
     const sortedAppointment = props.appointmentEdited
       ? props.appointmentEdited.sort(
-          (a, b) => a.appointmentId - b.appointmentId
-        )
+        (a, b) => a.appointmentId - b.appointmentId
+      )
       : null;
     const { authentication } = props;
     let defaultPhoneValue;
     switch (
-      authentication &&
-      authentication.user &&
-      authentication.user.countryCode
+    authentication &&
+    authentication.user &&
+    authentication.user.countryCode
     ) {
       case "RUS":
         defaultPhoneValue = "+7";
@@ -89,8 +89,8 @@ class AddAppointment extends React.Component {
             clientPhoneValue
               ? isValidNumber(clientPhoneValue)
               : this.state.clientFirstName
-              ? (clientPhoneValue && clientPhoneValue.length) > 0
-              : true,
+                ? (clientPhoneValue && clientPhoneValue.length) > 0
+                : true,
         },
         clientLastName: {
           label: this.props.t("Фамилия"),
@@ -137,10 +137,10 @@ class AddAppointment extends React.Component {
       timeArrange:
         props.clickedTime !== 0
           ? this.getTimeArrange(
-              props.clickedTime,
-              props.minutes,
-              sortedAppointment
-            )
+            props.clickedTime,
+            props.minutes,
+            sortedAppointment
+          )
           : null,
       timeNow:
         props.clickedTime === 0 ? moment().format("x") : props.clickedTime,
@@ -255,7 +255,7 @@ class AddAppointment extends React.Component {
     if (
       newProps.clients?.activeClientAppointments &&
       JSON.stringify(this.props.clients.activeClientAppointments) !==
-        JSON.stringify(newProps.clients.activeClientAppointments)
+      JSON.stringify(newProps.clients.activeClientAppointments)
     ) {
       let allPrice = 0;
       newProps.clients.activeClientAppointments &&
@@ -274,7 +274,7 @@ class AddAppointment extends React.Component {
     if (
       newProps.clients?.activeClient &&
       JSON.stringify(this.props.clients.activeClient) !==
-        JSON.stringify(newProps.clients.activeClient)
+      JSON.stringify(newProps.clients.activeClient)
     ) {
       this.setState({
         clientChecked: {
@@ -297,12 +297,12 @@ class AddAppointment extends React.Component {
           timeArrange:
             newProps.clickedTime !== 0
               ? this.getTimeArrange(
-                  newProps.clickedTime,
-                  newProps.minutes,
-                  (newProps.appointmentEdited || []).sort(
-                    (a, b) => a.appointmentId - b.appointmentId
-                  )
+                newProps.clickedTime,
+                newProps.minutes,
+                (newProps.appointmentEdited || []).sort(
+                  (a, b) => a.appointmentId - b.appointmentId
                 )
+              )
               : null,
           timeNow:
             newProps.clickedTime === 0
@@ -316,7 +316,7 @@ class AddAppointment extends React.Component {
               (a, b) => a.appointmentId - b.appointmentId
             ),
         },
-        () => {}
+        () => { }
       );
 
       // newProps.appointmentEdited!==null&&newProps.appointmentEdited&&this.getInfo(newProps.appointmentEdited[0][0]);
@@ -421,9 +421,9 @@ class AddAppointment extends React.Component {
                     appointment.some(
                       (currentAppointment) =>
                         item.appointmentId ===
-                          currentAppointment.appointmentId ||
+                        currentAppointment.appointmentId ||
                         item.appointmentId ===
-                          currentAppointment.coAppointmentId
+                        currentAppointment.coAppointmentId
                     )
                 )
                 .sort(
@@ -434,10 +434,10 @@ class AddAppointment extends React.Component {
               ownRelatedAppointments[0].appointmentTimeMillis <= i &&
               ownRelatedAppointments[ownRelatedAppointments.length - 1]
                 .appointmentTimeMillis +
-                ownRelatedAppointments[ownRelatedAppointments.length - 1]
-                  .duration *
-                  1000 >
-                i;
+              ownRelatedAppointments[ownRelatedAppointments.length - 1]
+                .duration *
+              1000 >
+              i;
           }
         }
 
@@ -468,11 +468,10 @@ class AddAppointment extends React.Component {
       const minute = i % 3600;
       optionList.push({
         duration: i,
-        label: `${hour ? `${hour} ч ` : ""}${
-          minute
+        label: `${hour ? `${hour} ч ` : ""}${minute
             ? `${minute / 60} ${this.props.t("минут")}`
             : `00 ${this.props.t("минут")}`
-        }`,
+          }`,
       });
     }
 
@@ -882,8 +881,8 @@ class AddAppointment extends React.Component {
     const startTime = parseInt(
       moment(
         moment(timeNow, "x").format("DD/MM/YYYY") +
-          " " +
-          moment(appointmentTimeMillis).format("HH:mm"),
+        " " +
+        moment(appointmentTimeMillis).format("HH:mm"),
         "DD/MM/YYYY HH:mm"
       ).format("x")
     );
@@ -1483,7 +1482,7 @@ class AddAppointment extends React.Component {
       const isAvailable = isAvailableTime(
         appointment[0].appointmentTimeMillis,
         appointment[appointment.length - 1].appointmentTimeMillis +
-          appointment[appointment.length - 1].duration * 1000,
+        appointment[appointment.length - 1].duration * 1000,
         activeStaffTimetable,
         appointmentsFromProps,
         [],
@@ -1532,6 +1531,7 @@ class AddAppointment extends React.Component {
     return (
       <Modal
         size="lg"
+        style={{ maxWidth: "1100px" }}
         onClose={this.closeModal}
         showCloseButton={false}
         className="mod calendar_modal"
@@ -1577,7 +1577,7 @@ class AddAppointment extends React.Component {
                           <div className="d-flex">
                             <div className="col-sm-2 col-4">
                               <p>{t("Дата")}</p>
-                              <input type="text"  />
+                              <input type="text" />
                             </div>
                             <div className="pl-0 col-sm-2 col-3 ">
                               <p>{t("Время")}</p>
@@ -1713,7 +1713,7 @@ class AddAppointment extends React.Component {
                                       clearIcon={<div />}
                                       className={
                                         staffCurrent.id &&
-                                        staffCurrent.id === -1
+                                          staffCurrent.id === -1
                                           ? "disabledField col-md-12 p-0"
                                           : "col-md-12 p-0"
                                       }
@@ -1747,7 +1747,7 @@ class AddAppointment extends React.Component {
                                   </p>
                                   <div className="select-color dropdown border-color">
                                     {serviceCurrent[index] &&
-                                    serviceCurrent[index].id !== -1 ? (
+                                      serviceCurrent[index].id !== -1 ? (
                                       <a
                                         onClick={() =>
                                           this.setState({ servicesSearch: "" })
@@ -1757,8 +1757,8 @@ class AddAppointment extends React.Component {
                                           serviceCurrent[
                                             index
                                           ].service.color.toLowerCase() +
-                                            " " +
-                                            "select-button dropdown-toggle-gray"
+                                          " " +
+                                          "select-button dropdown-toggle-gray"
                                         }
                                         data-toggle={"dropdown"}
                                       >
@@ -1769,8 +1769,8 @@ class AddAppointment extends React.Component {
                                             serviceCurrent[
                                               index
                                             ].service.color.toLowerCase() +
-                                              " " +
-                                              "color-circle"
+                                            " " +
+                                            "color-circle"
                                           }
                                         />
                                         <span className="yellow">
@@ -1793,8 +1793,8 @@ class AddAppointment extends React.Component {
                                                   serviceCurrent[index].service
                                                     .priceTo &&
                                                   " - " +
-                                                    serviceCurrent[index]
-                                                      .service.priceTo}{" "}
+                                                  serviceCurrent[index]
+                                                    .service.priceTo}{" "}
                                                 {
                                                   serviceCurrent[index].service
                                                     .currency
@@ -1828,7 +1828,7 @@ class AddAppointment extends React.Component {
                                         }
                                         className={
                                           !servicesDisabling ||
-                                          !hasAddedServices
+                                            !hasAddedServices
                                             ? "disabledField select-button dropdown-toggle-gray yellow"
                                             : "select-button dropdown-toggle-gray yellow"
                                         }
@@ -1987,7 +1987,7 @@ class AddAppointment extends React.Component {
                                               src={
                                                 activeStaffCurrent.imageBase64
                                                   ? "data:image/png;base64," +
-                                                    activeStaffCurrent.imageBase64
+                                                  activeStaffCurrent.imageBase64
                                                   : `${process.env.CONTEXT}public/img/avatar.svg`
                                               }
                                               alt=""
@@ -2053,7 +2053,7 @@ class AddAppointment extends React.Component {
                                                           src={
                                                             activeStaff.imageBase64
                                                               ? "data:image/png;base64," +
-                                                                activeStaff.imageBase64
+                                                              activeStaff.imageBase64
                                                               : `${process.env.CONTEXT}public/img/avatar.svg`
                                                           }
                                                           alt=""
@@ -2164,7 +2164,7 @@ class AddAppointment extends React.Component {
                                           >
                                             {appointment[index].description
                                               ? appointment[index].description
-                                                  .length
+                                                .length
                                               : 0}
                                             /120
                                           </span>
@@ -2481,7 +2481,7 @@ class AddAppointment extends React.Component {
 
                                   <hr className="gray" />
                                   {cl.appointments &&
-                                  cl.appointments.length !== 0 ? (
+                                    cl.appointments.length !== 0 ? (
                                     <p
                                       style={{
                                         textAlign: "center",
@@ -2581,7 +2581,7 @@ class AddAppointment extends React.Component {
                                                     {appointment.serviceName}
                                                   </span>
                                                   {activeService &&
-                                                  activeService.details ? (
+                                                    activeService.details ? (
                                                     <span>
                                                       {activeService.details}
                                                     </span>
@@ -2611,10 +2611,10 @@ class AddAppointment extends React.Component {
                                                   <span className="visit-price">
                                                     {t("Цена")}:&nbsp;
                                                     {appointment.priceFrom !==
-                                                    appointment.priceTo
+                                                      appointment.priceTo
                                                       ? appointment.priceFrom +
-                                                        " - " +
-                                                        appointment.priceTo
+                                                      " - " +
+                                                      appointment.priceTo
                                                       : appointment.price}{" "}
                                                     {appointment.currency}
                                                   </span>
@@ -2641,7 +2641,7 @@ class AddAppointment extends React.Component {
                                                         src={
                                                           activeAppointmentStaff.imageBase64
                                                             ? "data:image/png;base64," +
-                                                              activeAppointmentStaff.imageBase64
+                                                            activeAppointmentStaff.imageBase64
                                                             : `${process.env.CONTEXT}public/img/avatar.svg`
                                                         }
                                                         alt=""
@@ -2699,7 +2699,7 @@ class AddAppointment extends React.Component {
                               <h6 className="font-weight-bold">{`${t(
                                 "Итого со скидкой"
                               )}: 120`}</h6>
-                              <p style={{opacity:"0.5"}}>{`${t("Без скидки")}: 123`}</p>
+                              <p style={{ opacity: "0.5" }}>{`${t("Без скидки")}: 123`}</p>
                             </>
                           ) : (
                             <>
@@ -2712,11 +2712,11 @@ class AddAppointment extends React.Component {
                                     (this.state.clientChecked
                                       ? this.state.clientChecked.discountPercent
                                       : 0)) /
-                                    100}{" "}
+                                  100}{" "}
                                 {this.state.serviceCurrent &&
-                                this.state.serviceCurrent.length > 0
+                                  this.state.serviceCurrent.length > 0
                                   ? this.state.serviceCurrent[0].service
-                                      .currency
+                                    .currency
                                   : ""}
                               </p>
 
@@ -2912,20 +2912,20 @@ class AddAppointment extends React.Component {
               title="У клиента уже есть запись в эти часы. Уверенны что хотите добавить?"
               closeHandler={() => this.setState({ clientSubmitModal: false })}
               submitHandler={this.handleSave}
-              // buttons={[
-              //   {
-              //     handler: this.addAppointment,
-              //     params: this.props,
-              //     innerText: "Подтвердить",
-              //     className: "button",
-              //     additionalHandler: () => this.setState({ clientSubmitModal: false }),
-              //   },
-              //   {
-              //     handler: () => this.setState({ clientSubmitModal: false }),
-              //     innerText: t("Отмена"),
-              //     className: "gray-button",
-              //   },
-              // ]}
+            // buttons={[
+            //   {
+            //     handler: this.addAppointment,
+            //     params: this.props,
+            //     innerText: "Подтвердить",
+            //     className: "button",
+            //     additionalHandler: () => this.setState({ clientSubmitModal: false }),
+            //   },
+            //   {
+            //     handler: () => this.setState({ clientSubmitModal: false }),
+            //     innerText: t("Отмена"),
+            //     className: "gray-button",
+            //   },
+            // ]}
             />
             <div onClick={() => this.setState({ clientSubmitModal: false })}>
               <div className="check-submit-mask" />
