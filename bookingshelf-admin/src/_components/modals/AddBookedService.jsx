@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { connect } from "react-redux";
 import Modal from "@trendmicro/react-modal";
 import { withTranslation } from "react-i18next";
@@ -13,37 +13,40 @@ import {
 import { DatePicker } from "../DatePicker";
 import { AddAppointment } from "../modals/AddAppointment";
 
-const AddBookedServiceModal = (props) => {
-  const {
-    t,
-    i18n: { language },
-    dispatch,
-    closeModal,
-    timetable,
-    searchedService,
-  } = props;
+const AddBookedServiceModal = ({
+  t,
+  i18n: { language },
+  dispatch,
+  closeModal,
+  timetable,
+  searchedService,
+}) => {
   const [activeDay, setActiveDay] = useState(0);
-  const [state, forceUpdate] = useState(false);
   const [activeTimesByStaffs, setActiveTimesByStaffs] = useState([]);
   const [showNextModal, setShowNextModal] = useState(false);
-  const bookingDays = Array(8)
-    .fill({})
-    .map((el, index) => {
-      const day = moment().add(index, "days");
-      const monthDay = day.format("D MMMM");
-      const weekDay = day.format("dd");
-      const dayStart = day.startOf("day").format("x");
-      const dayEnd = day.endOf("day").format("x");
+  const currentDay = moment();
+  const bookingDays = useMemo(
+    () =>
+      Array(8)
+        .fill({})
+        .map((el, index) => {
+          const day = currentDay.add(index, "days");
+          const monthDay = day.format("D MMMM");
+          const weekDay = day.format("dd");
+          const dayStart = day.startOf("day").format("x");
+          const dayEnd = day.endOf("day").format("x");
 
-      return {
-        monthDay,
-        weekDay:
-          (index ? "" : `${t("Сегодня")}, `) +
-          weekDay[0].toUpperCase() +
-          weekDay[1],
-        dayInterval: [dayStart, dayEnd],
-      };
-    });
+          return {
+            monthDay,
+            weekDay:
+              (index ? "" : `${t("Сегодня")}, `) +
+              weekDay[0].toUpperCase() +
+              weekDay[1],
+            dayInterval: [dayStart, dayEnd],
+          };
+        }),
+    [currentDay]
+  );
 
   useEffect(() => {
     dispatch(
@@ -103,19 +106,21 @@ const AddBookedServiceModal = (props) => {
   // console.log(timetable, searchedService);
   // console.log(activeTimesByStaffs);
 
-  const bookingDayOnClick = useCallback(
-    (dayInterval) =>
-      dispatch(staffActions.getTimetableStaffs(...dayInterval, true)),
-    []
-  );
+  const getTimetableStaffs = (dayInterval) =>
+    dispatch(staffActions.getTimetableStaffs(...dayInterval, true));
 
-  const handleDayChange = (date) => {
+  const bookingDayOnClick = (bookingDay, index) => {
+    getTimetableStaffs(bookingDay.dayInterval);
+    setActiveDay(index);
+  };
+
+  const handleDayChange = useCallback((date) => {
     const day = moment(date.getTime(), "x").subtract(12, "hours");
     const dayStart = day.format("x");
     const dayEnd = day.add(1, "days").format("x");
 
-    bookingDayOnClick([dayStart, dayEnd]);
-  };
+    getTimetableStaffs([dayStart, dayEnd]);
+  }, []);
 
   const checkTimeOnAvailability = (staffId, time) =>
     activeTimesByStaffs
@@ -138,7 +143,6 @@ const AddBookedServiceModal = (props) => {
     );
 
     setActiveTimesByStaffs(updatedActiveTimesByStaffs);
-    forceUpdate(!state);
   };
 
   const addAppointment = (
@@ -192,6 +196,7 @@ const AddBookedServiceModal = (props) => {
               <div className="modal-inner bg-modals">
                 <div className="p-3 bg-white">
                   <div className="d-flex">
+<<<<<<< HEAD
                     <div className="modal__inner_header">
                     {bookingDays.map((bookingDay, index) => (
                       <div
@@ -216,6 +221,31 @@ const AddBookedServiceModal = (props) => {
                     ))}
                     </div>
                     <div className="border-1 booking-calendar">
+=======
+                    {bookingDays.map((bookingDay, index) => {
+                      const isActiveDay = index === activeDay;
+
+                      return (
+                        <div
+                          key={bookingDay.weekDay}
+                          className={`p-2 border border-1 m-2 ${isActiveDay &&
+                            "bg-dark"}`}
+                          onClick={() => bookingDayOnClick(bookingDay, index)}
+                        >
+                          <p
+                            className={`p-0 m-0 font-weight-bold ${isActiveDay &&
+                              "text-white"}`}
+                          >
+                            {bookingDay.monthDay}
+                          </p>
+                          <p className={isActiveDay && "text-white"}>
+                            {bookingDay.weekDay}
+                          </p>
+                        </div>
+                      );
+                    })}
+                    <div className="p-4 border border-1 m-auto booking-calendar">
+>>>>>>> 0f22815c316fd06bbda373d0a47334505574cf2b
                       <DatePicker
                         isAddBookedService
                         language={language}
@@ -249,7 +279,7 @@ const AddBookedServiceModal = (props) => {
                               {staff.availableTimes.map(
                                 (availableTime, index) => (
                                   <span
-                                    key={index}
+                                    key={availableTime + index}
                                     className={`p-1 border border-1 ${checkTimeOnAvailability(
                                       staff.staffId,
                                       availableTime

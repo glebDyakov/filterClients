@@ -269,8 +269,9 @@ class HeaderMain extends React.PureComponent {
       service.name.includes(search)
     );
 
-    return searchedServices.map((searchedService) => (
+    return searchedServices.map((searchedService, index) => (
       <div
+        key={searchedService + index}
         className="search-wrapper"
         onClick={() => this.onOpenAddBookingServiceModal(searchedService)}
       >
