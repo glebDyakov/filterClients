@@ -164,7 +164,7 @@ const AddBookedServiceModal = (props) => {
     <>
       <Modal
         size="sm"
-        style={{ maxWidth: "960px" }}
+        style={{ maxWidth: "1100px" }}
         onClose={closeModal}
         showCloseButton={false}
         className="mod"
@@ -190,8 +190,9 @@ const AddBookedServiceModal = (props) => {
               </div>
 
               <div className="modal-inner bg-modals">
-                <div className="p-3 mx-lg-4 mb-4 bg-white">
+                <div className="p-3 bg-white">
                   <div className="d-flex">
+                    <div className="modal__inner_header">
                     {bookingDays.map((bookingDay, index) => (
                       <div
                         key={bookingDay.weekDay}
@@ -213,7 +214,8 @@ const AddBookedServiceModal = (props) => {
                         </p>
                       </div>
                     ))}
-                    <div className="p-4 border border-1 m-auto booking-calendar">
+                    </div>
+                    <div className="border-1 booking-calendar">
                       <DatePicker
                         isAddBookedService
                         language={language}

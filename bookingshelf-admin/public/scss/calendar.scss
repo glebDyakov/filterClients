@@ -3070,14 +3070,6 @@
       font-size: 13px;
       line-height: 18px;
     }
-
-    // div {
-    //   p {
-    //     font-weight: normal;
-    //     font-size: 13px;
-    //     line-height: 18px;
-    //   }
-    // }
   }
 
   @media screen and (max-width: 768px) {
@@ -3172,6 +3164,13 @@
       &:nth-child(1) {
         padding-left: 0 !important;
       }
+    }
+  }
+
+  &>div {
+    input {
+      height: 36px;
+      border-radius: 2px;
     }
   }
 

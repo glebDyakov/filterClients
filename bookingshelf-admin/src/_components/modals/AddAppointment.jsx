@@ -1577,11 +1577,11 @@ class AddAppointment extends React.Component {
                           <div className="d-flex">
                             <div className="col-sm-2 col-4">
                               <p>{t("Дата")}</p>
-                              <input type="text" />
+                              <input type="text"  />
                             </div>
                             <div className="pl-0 col-sm-2 col-3 ">
                               <p>{t("Время")}</p>
-                              <div className="dropdown add-staff p-2 border border-2 mb-3 ">
+                              <div className="dropdown   add-staff p-2 border border-2 mb-3 ">
                                 <a
                                   className="select-button dropdown-toggle-gray"
                                   data-toggle="dropdown"
@@ -1600,7 +1600,7 @@ class AddAppointment extends React.Component {
                             </div>
                             <div className="pl-0 col-sm-8 col-11">
                               <p>{t("Исполнитель")}</p>
-                              <div className="dropdown add-staff p-2 border border-2 mb-3">
+                              <div className="dropdown add-staff p-2  border border-2 mb-3">
                                 <a
                                   className="select-button dropdown-toggle-gray"
                                   data-toggle="dropdown"
@@ -1626,7 +1626,7 @@ class AddAppointment extends React.Component {
                           <div className="d-flex">
                             <div className="col-6">
                               <p>{t("Услуга")}</p>
-                              <div className="dropdown add-staff p-2 border border-2 mb-3">
+                              <div className="dropdown add-staff p-2 border border-2  mb-3">
                                 <a
                                   className="select-button dropdown-toggle-gray"
                                   data-toggle="dropdown"
@@ -1645,7 +1645,7 @@ class AddAppointment extends React.Component {
                             </div>
                             <div className="col-2">
                               <p>{t("Длит.")}</p>
-                              <div className="dropdown add-staff p-2 border border-2 mb-3">
+                              <div className="dropdown add-staff p-2  border border-2 mb-3">
                                 <a
                                   className="select-button dropdown-toggle-gray"
                                   data-toggle="dropdown"
@@ -1668,7 +1668,7 @@ class AddAppointment extends React.Component {
                             </div>
                             <div className="col-2">
                               <p>{`${t("Скидка")}, %`}</p>
-                              <input className="col-sm-2" type="text" />
+                              <input className="col-sm-2 " type="text" />
                             </div>
                           </div>
                         </div>
