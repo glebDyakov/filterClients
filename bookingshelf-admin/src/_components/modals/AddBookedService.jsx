@@ -20,9 +20,11 @@ const AddBookedServiceModal = ({
   closeModal,
   timetable,
   searchedService,
+  clients,
 }) => {
   const [activeDay, setActiveDay] = useState(0);
   const [activeTimesByStaffs, setActiveTimesByStaffs] = useState([]);
+  const [state, forceUpdate] = useState(false);
   const [showNextModal, setShowNextModal] = useState(false);
   const currentDay = moment();
   const bookingDays = useMemo(
@@ -143,6 +145,7 @@ const AddBookedServiceModal = ({
     );
 
     setActiveTimesByStaffs(updatedActiveTimesByStaffs);
+    forceUpdate(!state);
   };
 
   const addAppointment = (
@@ -163,6 +166,8 @@ const AddBookedServiceModal = ({
   //     coStaffs
   //   )
   // );
+
+  const showPrevModal = useCallback(() => setShowNextModal(false), []);
 
   return (
     <>
@@ -201,7 +206,7 @@ const AddBookedServiceModal = ({
 
                       return (
                         <div
-                          key={bookingDay.weekDay}
+                          key={bookingDay.weekDay + index}
                           className={`p-2 border border-1 m-2 ${isActiveDay &&
                             "bg-dark"}`}
                           onClick={() => bookingDayOnClick(bookingDay, index)}
@@ -291,6 +296,8 @@ const AddBookedServiceModal = ({
           onClose={closeModal}
           searchedServiceName={searchedService.name}
           addAppointment={addAppointment}
+          showPrevModal={showPrevModal}
+          clients={clients}
         />
       )}
     </>

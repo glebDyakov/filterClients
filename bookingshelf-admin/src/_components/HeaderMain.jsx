@@ -804,6 +804,7 @@ class HeaderMain extends React.PureComponent {
                 closeModal={this.onCloseAddBookingServiceModal}
                 timetable={timetable}
                 searchedService={searchedService}
+                clients={clients}
               />
             )}
 

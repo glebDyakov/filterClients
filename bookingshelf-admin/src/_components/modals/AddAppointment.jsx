@@ -1442,6 +1442,7 @@ class AddAppointment extends React.Component {
       isAddBookedService,
       searchedServiceName,
       addAppointment,
+      showPrevModal,
     } = this.props;
     const {
       allPrice,
@@ -2699,7 +2700,9 @@ class AddAppointment extends React.Component {
                               <h6 className="font-weight-bold">{`${t(
                                 "Итого со скидкой"
                               )}: 120`}</h6>
-                              <p style={{opacity:"0.5"}}>{`${t("Без скидки")}: 123`}</p>
+                              <p style={{ opacity: "0.5" }}>{`${t(
+                                "Без скидки"
+                              )}: 123`}</p>
                             </>
                           ) : (
                             <>
@@ -2892,7 +2895,7 @@ class AddAppointment extends React.Component {
                 </div>
               </div>
               <div className="modal-footer justify-content-end">
-                <p className="mr-4" role="button">
+                <p className="mr-4" role="button" onClick={showPrevModal}>
                   {t("Назад")}
                 </p>
                 <button
