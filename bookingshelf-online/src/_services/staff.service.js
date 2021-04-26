@@ -52,7 +52,7 @@ function getSubcompanies(id) {
 }
 
 function getNearestTime(id) {
-    return fetch(`${origin}${config.apiUrl}/${id}/staffs/firstavailabletimes?dateFrom=${moment().utc().format('x')}&dateTo=${moment().add(2,'week').utc().format('x')}`, requestConstants.DEFAULT_REQUEST_OPTIONS_GET).then(handleResponse);
+    return fetch(`${origin}${config.apiUrl}/${id}/staffs/firstavailabletimes?dateFrom=${moment().utc().format('x')}&dateTo=${moment().add(3,'days').utc().format('x')}`, requestConstants.DEFAULT_REQUEST_OPTIONS_GET).then(handleResponse);
 }
 
 function getTimetable(id, date1, date2) {

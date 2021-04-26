@@ -130,7 +130,7 @@ class DatePicker extends PureComponent {
 
 
   render() {
-    const { analytic, type, selectedDay, selectedDays, closedDates, dayPickerProps = {} } = this.props;
+    const { analytic, type, selectedDay, selectedDays, closedDates, dayPickerProps = {}, disabled } = this.props;
     const { opacity, hoverRange } = this.state;
     let weekProps = {};
     let selectedDaysText;
@@ -229,6 +229,7 @@ class DatePicker extends PureComponent {
     return (
       <div className="select-date">
         <div className="select-inner">
+          {disabled && <div className="date-picker-disable" />}
           <span className="arrow-left" onClick={() => this.handleLeftArrowClick()}/>
           <div className="button-calendar" onClick={() => this.showCalendar(true)}>
             <span className="dates-full-width text-capitalize date-num">
