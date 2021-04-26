@@ -1059,6 +1059,10 @@ a {
     position: relative;
 }
 
+.calendar_modal .DayPicker-Day--today.DayPicker-Day--outside {
+    border: none;
+}
+
 .calendar_modal th {
     font-size: 24px;
     font-weight: bold;
