@@ -7017,6 +7017,12 @@ textarea {
     .check-box {
       text-align: left;
 
+      &.weekend-name {
+        label {
+          color: rgba(255, 0, 0, 0.707);
+        }
+      }
+
       label {
         padding: 0 0 0 25px;
         font-style: normal;

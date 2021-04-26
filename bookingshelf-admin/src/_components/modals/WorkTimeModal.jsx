@@ -374,7 +374,38 @@ class WorkTimeModal extends Component {
 
     render() {
         const {workTimeModalMessage, t, staff: {status, adding}} = this.props;
-        const weekDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        const weekDays = [
+            {
+              name: 'Пн',
+              key: 1
+            },
+            {
+                name: 'Вт',
+                key: 2
+              },
+              {
+                name: 'Ср',
+                key: 3
+              },
+              {
+                name: 'Чт',
+                key: 4
+              },
+              {
+                name: 'Пт',
+                key: 5
+              },
+              {
+                name: 'Сб',
+                key: 6,
+                isWeekend: true,
+              },
+              {
+                name: 'Вс',
+                key: 0,
+                isWeekend: true,
+              }
+            ];
         const {times, period, edit, activeStaffId, isOpenMobileSelectStaff} = this.state;
 
 
@@ -512,18 +543,17 @@ class WorkTimeModal extends Component {
                                                 hintMessage={
                                                     t('Выберите дату, до которой проставить расписание')
                                                 }
-                                            /></div>
-                                            </>}
+                                            /></div></>}
                                     <div className="inline-group d-flex">
                                         <div className="days">
                                             <h2 className="work-time-title">{t('Дни недели')}</h2>
 
                                             <div className="days-of-week flex-column d-flex">
-                                                {weekDays.map((item, key) => {
+                                                {weekDays.map(({ name, key, isWeekend }) => {
                                                     return (
-                                                        <div className="justify-content-end check-box">
+                                                        <div className={`justify-content-end check-box ${isWeekend ? 'weekend-name' : ''} `}>
                                                             <label>
-                                                                {t(item)}
+                                                                {t(name)}
                                                                 <input className="form-check-input" type="checkbox"
                                                                        checked={this.state.days.includes(key)}
                                                                        onChange={() => this.toggleDays(key)}
