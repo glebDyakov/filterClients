@@ -490,7 +490,8 @@ class WorkTimeModal extends Component {
                                         
                                     </div>
 
-                                    <div className="picker-title">{t("Дата, до которой применить расписание")}</div>
+                                    {!!period && <>
+                                        <div className="picker-title">{t("Дата, до которой применить расписание")}</div>
                                         <div className="picker">
                                         <DatePicker
                                             type="day"
@@ -512,6 +513,7 @@ class WorkTimeModal extends Component {
                                                     t('Выберите дату, до которой проставить расписание')
                                                 }
                                             /></div>
+                                            </>}
                                     <div className="inline-group d-flex">
                                         <div className="days">
                                             <h2 className="work-time-title">{t('Дни недели')}</h2>
