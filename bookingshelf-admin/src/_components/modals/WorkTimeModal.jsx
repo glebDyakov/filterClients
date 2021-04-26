@@ -92,14 +92,14 @@ class WorkTimeModal extends Component {
                     const matchDay = Number(d);
                     const daysToAdd = Math.ceil((startDate.day() - matchDay) / 7) * 7 + matchDay;
 
-                    let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
 
                     const updatedTimetables = [];
                     times.forEach((t) => {
                     switch (period) {
                         case 7: {
+                            let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
                             const endDate = moment(this.state.dateTo);
-                            while (moment(proposedDate) <= moment(endDate)) {
+                            while (moment(proposedDate) <= moment(endDate).endOf('day')) {
                                 updatedTimetables.push({
                                 period: 0,
                                 endTimeMillis: proposedDate.set({
@@ -117,7 +117,8 @@ class WorkTimeModal extends Component {
                         }
 
                         case 0: {
-                                updatedTimetables.push({
+                            let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
+                            updatedTimetables.push({
                                 period: 0,
                                 endTimeMillis: proposedDate.set({
                                     'hour': moment(t.endTimeMillis, 'x').get('hour'),
@@ -132,8 +133,9 @@ class WorkTimeModal extends Component {
                         }
                         
                         case 2: {
+                            let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
                             const endDate = moment(this.state.dateTo);
-                            while (moment(proposedDate) <= moment(endDate)) {
+                            while (moment(proposedDate) <= moment(endDate).endOf('day')) {
                                 updatedTimetables.push({
                                 period: 0,
                                 endTimeMillis: proposedDate.set({
@@ -152,8 +154,9 @@ class WorkTimeModal extends Component {
                         }
 
                         case 4: {
+                            let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
                             const endDate = moment(this.state.dateTo);
-                            while (moment(proposedDate) <= moment(endDate)) {
+                            while (moment(proposedDate) <= moment(endDate).endOf('day')) {
                                 updatedTimetables.push({
                                 period: 0,
                                 endTimeMillis: proposedDate.set({
@@ -383,10 +386,6 @@ class WorkTimeModal extends Component {
                 image: item.imageBase64,
             };
         }).filter(staff => edit ? staff.staffId === activeStaffId : true);
-
-        console.log(moment(this.props.date, 'DD/MM/YYYY').day());
-
-        console.log(isOpenMobileSelectStaff);
 
         return (
             <Modal size="md" onClose={this.onClose} showCloseButton={false}
