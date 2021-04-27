@@ -72,6 +72,7 @@ class Index extends Component {
           : parseInt(newProps.company.settings.onlineZapisEndTimeMillis),
         onlineZapisOn: newProps.company.settings.onlineZapisOn,
         booktimeOnlineStepSec: newProps.company.settings.booktimeOnlineStepSec,
+        existingAppointmentIgnored: newProps.company.settings.existingAppointmentIgnored,
       });
     }
     if (newProps.company && newProps.company.saved === 'stepSaved') {
@@ -165,7 +166,7 @@ class Index extends Component {
   }
 
   handleSubmit() {
-    const { onlineZapisEndTimeMillis, onlineZapisOn, appointmentMessage } = this.state;
+    const { onlineZapisEndTimeMillis, onlineZapisOn, appointmentMessage, existingAppointmentIgnored } = this.state;
     const activeCompany = this.props.company.subcompanies && this.props.company.subcompanies
       .find((item) => item.companyId === this.props.company.settings.companyId);
     this.props.dispatch(companyActions.add({
@@ -174,6 +175,7 @@ class Index extends Component {
       appointmentMessage,
       onlineZapisEndTimeMillis,
       onlineZapisOn,
+      existingAppointmentIgnored,
     }));
   }
 
@@ -238,7 +240,7 @@ class Index extends Component {
   render() {
     const { company, t } = this.props;
     const {
-      booking, booktimeStep, appointmentMessage, urlButton, selectedDay, onlineZapisOn, booktimeOnlineStepSec, status,
+      booking, booktimeStep, appointmentMessage, urlButton, selectedDay, onlineZapisOn, booktimeOnlineStepSec, status, existingAppointmentIgnored,
     } = this.state;
 
     const isOnlineZapisChecked = !onlineZapisOn;
@@ -431,6 +433,26 @@ class Index extends Component {
                       }
                       {t("Равен времени услуги")}
                     </label>
+                  </div>
+                </div>
+
+                <div className="content-pages-bg mb-0 h-auto p-zapis journal-interval">
+                  <p className="title">{t("Одновременная запись")}</p>
+                  <div className="check-box">
+                    <label>
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        checked={existingAppointmentIgnored}
+                        onChange={() => this.handleCheckboxChange('existingAppointmentIgnored')}
+                      />
+                      <span data-label-off={t("Выкл")} data-label-on={t("Вкл")} className="check"/>
+                    </label>
+                    
+                  {status === 'saved.settings' && <p className="alert-success p-1 rounded pl-3">{t("Сохранено")}</p>}
+                  <button className="ahref button button-save mt-3" onClick={this.handleSubmit}>
+                    {t("Сохранить")}
+                  </button>
                   </div>
                 </div>
 

@@ -56,7 +56,7 @@ class DragVertController extends React.Component {
 
   handleMouseUp({ makeMouseUpUpdating }) {
     const {
-      appointments, cellHeight, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId, step, booktimeStep,
+      appointments, cellHeight, staff, reservedTime, timetable, changingVisit, offsetHeight, textAreaId, step, booktimeStep, existingAppointmentIgnored,
     } = this.props;
     const { clientSubmitModal } = this.state;
     const newOffsetHeight = document.getElementById(textAreaId).offsetHeight;
@@ -87,10 +87,12 @@ class DragVertController extends React.Component {
     const shouldDrag = isAvailableTime(
       startTime, endTime, staffWithTimetable,
       appointments,
-      reservedTime, staff, isOwnInterval
+      reservedTime, staff, isOwnInterval, existingAppointmentIgnored
     );
     if (!shouldDrag && !clientSubmitModal) {
-      this.setState({ clientSubmitModal: true })
+        if (existingAppointmentIgnored) {
+          this.setState({ clientSubmitModal: true })
+        }
     } else if (shouldDrag || makeMouseUpUpdating) {
       this.setState({ clientSubmitModal: false })
       if (changingVisit.hasCoAppointments) {
@@ -170,7 +172,6 @@ class DragVertController extends React.Component {
       clientSubmitModal && ReactDOM.createPortal(
         <div className="check-client-submit-container">
           <CheckModal
-            title="У клиента уже есть запись в эти часы. Уверенны что хотите добавить?"
             closeHandler={() => this.setState({ clientSubmitModal: false })}
             submitHandler={() => this.handleMouseUp({ makeMouseUpUpdating: true })}
             // buttons={[

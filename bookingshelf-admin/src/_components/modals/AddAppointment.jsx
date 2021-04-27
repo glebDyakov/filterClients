@@ -1451,6 +1451,7 @@ class AddAppointment extends React.Component {
       availableCoStaffs,
       typeAheadOptions,
       isLoadingTypeahead,
+      isNotAvailable,
     } = this.state;
 
     console.log("this.state.timeArrange", this.state.timeArrange);
@@ -1474,7 +1475,11 @@ class AddAppointment extends React.Component {
         staffFromProps
       )
       if (!edit_appointment && !isAvailable && !clientSubmitModal) {
-        this.setState({ clientSubmitModal: true });
+        if (!isAvailable && !company?.settings?.existingAppointmentIgnored) {
+          this.setState({ isNotAvailable: true });
+        } else {
+          this.setState({ clientSubmitModal: true });
+        }
       } else {
         this.handleSave()
       }
@@ -2709,7 +2714,6 @@ class AddAppointment extends React.Component {
         {clientSubmitModal && (
           <div className="check-client-submit-container">
             <CheckModal
-              title="У клиента уже есть запись в эти часы. Уверенны что хотите добавить?"
               closeHandler={() => this.setState({ clientSubmitModal: false })}
               submitHandler={this.handleSave}
               // buttons={[
@@ -2726,6 +2730,18 @@ class AddAppointment extends React.Component {
               //     className: "gray-button",
               //   },
               // ]}
+            />
+            <div onClick={() => this.setState({ clientSubmitModal: false })}>
+              <div className="check-submit-mask" />
+            </div>
+          </div>
+        )}
+        {isNotAvailable && (
+          <div className="check-client-submit-container">
+            <CheckModal
+              title="Cоздание пересекающегося визита невозможно"
+              closeHandler={() => this.setState({ isNotAvailable: false })}
+              showSubmit={false}
             />
             <div onClick={() => this.setState({ clientSubmitModal: false })}>
               <div className="check-submit-mask" />

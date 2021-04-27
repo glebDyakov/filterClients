@@ -187,9 +187,11 @@ class BaseCell extends React.Component {
   render() {
     const {
       isWeekBefore, numberKey, staffKey, changeTime, numbers, moveVisit, services, selectedDaysKey,
-      time, workingStaffElement, handleUpdateClient, updateAppointmentForDeleting, step, cellHeight,
+      time, workingStaffElement, handleUpdateClient, updateAppointmentForDeleting, step, cellHeight, company,
     } = this.props;
     const { cellType, cell } = this.state;
+
+    const isExistingAppointmentIgnoring = company.settings?.existingAppointmentIgnored;
 
     // if (numberKey === 0 && staffKey === 0) {
     //   console.log('rerendered');
@@ -213,6 +215,7 @@ class BaseCell extends React.Component {
             services={services}
             workingStaffElement={workingStaffElement}
             updateAppointmentForDeleting={updateAppointmentForDeleting}
+            isExistingAppointmentIgnoring={isExistingAppointmentIgnoring}
           />
         );
       case cellTypes.CELL_RESERVED_TIME:
@@ -250,6 +253,7 @@ function mapStateToProps(state) {
       reservedTime,
     },
     cell: { selectedDays },
+    company,
   } = state;
 
   return {
@@ -259,6 +263,7 @@ function mapStateToProps(state) {
     appointments,
     reservedTime,
     selectedDays,
+    company,
   };
 }
 

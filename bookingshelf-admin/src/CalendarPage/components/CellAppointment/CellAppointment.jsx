@@ -24,7 +24,7 @@ class CellAppointment extends React.PureComponent {
 
   updateAppointmentInfo(props) {
     const {
-      services, appointment, appointments, blickClientId, selectedNote,
+      services, appointment, appointments, blickClientId, selectedNote, isExistingAppointmentIgnoring,
       selectedDays, selectedDaysKey, time, step, workingStaffElement, draggingAppointmentId
     } = props;
     const currentAppointments = [appointment];
@@ -87,7 +87,8 @@ class CellAppointment extends React.PureComponent {
         (parseInt(moment(currentTime).format('H')) === 23 && ' last-hour-notes')
       )
       + ((appointment.appointmentId === selectedNote && !appointment.coappointment) ? ' selected hovered' : '')
-      + (blickClientId === appointment.clientId ? ' custom-blick-div' : '');
+      + (blickClientId === appointment.clientId ? ' custom-blick-div' : '')
+      + (!isExistingAppointmentIgnoring && !appointment.intersected ? ' full-width' : '');
 
     const wrapperClassName = 'cell default-width ' +
       (currentTime <= moment().format('x') &&
