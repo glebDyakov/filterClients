@@ -170,7 +170,6 @@ class DragVertController extends React.Component {
       clientSubmitModal && ReactDOM.createPortal(
         <div className="check-client-submit-container">
           <CheckModal
-            title="У клиента уже есть запись в эти часы. Уверенны что хотите добавить?"
             closeHandler={() => this.setState({ clientSubmitModal: false })}
             submitHandler={() => this.handleMouseUp({ makeMouseUpUpdating: true })}
             // buttons={[
