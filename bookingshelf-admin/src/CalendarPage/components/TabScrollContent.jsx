@@ -146,7 +146,7 @@ class TabScroll extends React.Component {
     }
 
     const {company} = this.props;
-    const {booktimeStep} = company.settings;
+    const {booktimeStep, existingAppointmentIgnored} = company.settings;
     const step = booktimeStep / 60;
     const cellHeight = 25;
 
@@ -156,7 +156,7 @@ class TabScroll extends React.Component {
           {this.renderTable({step, cellHeight})}
         </DndProvider>
 
-        <DragVertController booktimeStep={booktimeStep} step={step} cellHeight={cellHeight}/>
+        <DragVertController booktimeStep={booktimeStep} step={step} cellHeight={cellHeight} existingAppointmentIgnored={existingAppointmentIgnored} />
       </div>
     );
   }

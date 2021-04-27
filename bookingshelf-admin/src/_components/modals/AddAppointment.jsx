@@ -1475,7 +1475,7 @@ class AddAppointment extends React.Component {
         staffFromProps
       )
       if (!edit_appointment && !isAvailable && !clientSubmitModal) {
-        if (!isAvailable && company?.settings?.existingAppointmentIgnored) {
+        if (!isAvailable && !company?.settings?.existingAppointmentIgnored) {
           this.setState({ isNotAvailable: true });
         } else {
           this.setState({ clientSubmitModal: true });
