@@ -95,10 +95,10 @@ const AddBookedServiceModal = ({
       searchedService.staffs.reduce(
         (acc, staff) => (
           staff.availableTimes &&
-            acc.push({
-              staffId: staff.staffId,
-              activeTimes: [],
-            }),
+          acc.push({
+            staffId: staff.staffId,
+            activeTimes: [],
+          }),
           acc
         ),
         []
@@ -135,11 +135,11 @@ const AddBookedServiceModal = ({
     updatedActiveTimesByStaffs.map(
       (activeTimesByStaff) => (
         activeTimesByStaff.staffId === staff.staffId &&
-          (activeTimesByStaff.activeTimes.includes(availableTime)
-            ? (activeTimesByStaff.activeTimes = activeTimesByStaff.activeTimes.filter(
-                (activeTime) => activeTime !== availableTime
-              ))
-            : activeTimesByStaff.activeTimes.push(availableTime)),
+        (activeTimesByStaff.activeTimes.includes(availableTime)
+          ? (activeTimesByStaff.activeTimes = activeTimesByStaff.activeTimes.filter(
+            (activeTime) => activeTime !== availableTime
+          ))
+          : activeTimesByStaff.activeTimes.push(availableTime)),
         activeTimesByStaff
       )
     );
@@ -173,7 +173,7 @@ const AddBookedServiceModal = ({
     <>
       <Modal
         size="sm"
-        style={{ maxWidth: "960px" }}
+        style={{ maxWidth: "1100px" }}
         onClose={closeModal}
         showCloseButton={false}
         className="mod"
@@ -199,31 +199,33 @@ const AddBookedServiceModal = ({
               </div>
 
               <div className="modal-inner bg-modals">
-                <div className="p-3 mx-lg-4 mb-4 bg-white">
+                <div className="p-3 bg-white">
                   <div className="d-flex">
-                    {bookingDays.map((bookingDay, index) => {
-                      const isActiveDay = index === activeDay;
+                    <div className="modal__inner_header">
+                      {bookingDays.map((bookingDay, index) => {
+                        const isActiveDay = index === activeDay;
 
-                      return (
-                        <div
-                          key={bookingDay.weekDay + index}
-                          className={`p-2 border border-1 m-2 ${isActiveDay &&
-                            "bg-dark"}`}
-                          onClick={() => bookingDayOnClick(bookingDay, index)}
-                        >
-                          <p
-                            className={`p-0 m-0 font-weight-bold ${isActiveDay &&
-                              "text-white"}`}
+                        return (
+                          <div
+                            key={bookingDay.weekDay}
+                            className={`p-2 border border-1 m-2 ${isActiveDay &&
+                              "bg-dark"}`}
+                            onClick={() => bookingDayOnClick(bookingDay, index)}
                           >
-                            {bookingDay.monthDay}
-                          </p>
-                          <p className={isActiveDay && "text-white"}>
-                            {bookingDay.weekDay}
-                          </p>
-                        </div>
-                      );
-                    })}
-                    <div className="p-4 border border-1 m-auto booking-calendar">
+                            <p
+                              className={`p-0 m-0 font-weight-bold ${isActiveDay &&
+                                "text-white"}`}
+                            >
+                              {bookingDay.monthDay}
+                            </p>
+                            <p className={isActiveDay && "text-white"}>
+                              {bookingDay.weekDay}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="border-1 booking-calendar">
                       <DatePicker
                         isAddBookedService
                         language={language}
