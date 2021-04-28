@@ -5,6 +5,7 @@ import moment from 'moment';
 import {connect} from 'react-redux';
 import {staffActions} from '../../_actions';
 import Hint from "../Hint";
+import { DatePicker } from '../DatePicker';
 
 
 class WorkTimeModal extends Component {
@@ -23,6 +24,8 @@ class WorkTimeModal extends Component {
             days: props.date ? [moment(props.date, 'DD/MM/YYYY').day()] : [],
             date: props.date ? props.date : moment().format('DD/MM/YYYY'),
             isOpenMobileSelectStaff: true,
+            dateTo: new Date(moment(props.date ? moment(props.date, 'DD/MM/YYYY') : new Date()).add(7, 'days')),
+            initialDateTo: new Date(moment(props.date ? moment(props.date, 'DD/MM/YYYY') : new Date()).add(7, 'days')),
         };
 
         this.toggleSelectStaff = this.toggleSelectStaff.bind(this);
@@ -88,50 +91,111 @@ class WorkTimeModal extends Component {
                     const startDate = moment(date, 'DD-MM-YYYY');
                     const matchDay = Number(d);
                     const daysToAdd = Math.ceil((startDate.day() - matchDay) / 7) * 7 + matchDay;
-                    const proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
 
-
-                    // console.log("start week: ", moment(startDate).startOf('week'));
-                    // console.log("start week add 1: ", moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd'));
-                    // console.log("startDate: ", startDate);
-                    // console.log("matchDay: ", matchDay);
-                    // console.log("daysToAdd: ", daysToAdd);
-                    // console.log("PROPOSED DATE: ", proposedDate);
 
                     const updatedTimetables = [];
                     times.forEach((t) => {
-                        updatedTimetables.push({
-                            // staffTimetableId: edit ? t.staffTimetableId : null,
-                            period,
-                            endTimeMillis: proposedDate.set({
-                                'hour': moment(t.endTimeMillis, 'x').get('hour'),
-                                'minute': moment(t.endTimeMillis, 'x').get('minute'),
-                            }).format('x'),
-                            startTimeMillis: proposedDate.set({
-                                'hour': moment(t.startTimeMillis, 'x').get('hour'),
-                                'minute': moment(t.startTimeMillis, 'x').get('minute'),
-                            }).format('x'),
-                        });
-                        if (period === 4) {
-                            const updatedDate = moment(proposedDate.format('x'), 'x').add(1, 'day');
-                            updatedTimetables.push({
-                                // staffTimetableId: edit ? t.staffTimetableId : null,
-                                period,
-                                endTimeMillis: updatedDate.set({
+                    switch (period) {
+                        case 7: {
+                            let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
+                            const endDate = moment(this.state.dateTo);
+                            while (moment(proposedDate) <= moment(endDate).endOf('day')) {
+                                updatedTimetables.push({
+                                period: 0,
+                                endTimeMillis: proposedDate.set({
                                     'hour': moment(t.endTimeMillis, 'x').get('hour'),
                                     'minute': moment(t.endTimeMillis, 'x').get('minute'),
                                 }).format('x'),
-                                startTimeMillis: updatedDate.set({
+                                startTimeMillis: proposedDate.set({
                                     'hour': moment(t.startTimeMillis, 'x').get('hour'),
                                     'minute': moment(t.startTimeMillis, 'x').get('minute'),
                                 }).format('x'),
                             });
+                            proposedDate = moment(proposedDate).add(7, 'days');
                         }
+                            break;
+                        }
+
+                        case 0: {
+                            let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
+                            updatedTimetables.push({
+                                period: 0,
+                                endTimeMillis: proposedDate.set({
+                                    'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.endTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                                startTimeMillis: proposedDate.set({
+                                    'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.startTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                            });
+                            break;
+                        }
+                        
+                        case 2: {
+                            let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
+                            const endDate = moment(this.state.dateTo);
+                            while (moment(proposedDate) <= moment(endDate).endOf('day')) {
+                                updatedTimetables.push({
+                                period: 0,
+                                endTimeMillis: proposedDate.set({
+                                    'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.endTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                                startTimeMillis: proposedDate.set({
+                                    'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.startTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                            });
+                            
+                            proposedDate = moment(proposedDate).add(2, 'days');
+                        }
+                            break;
+                        }
+
+                        case 4: {
+                            let proposedDate = moment(startDate).startOf('week').add((daysToAdd + 6) % 7, 'd');
+                            const endDate = moment(this.state.dateTo);
+                            while (moment(proposedDate) <= moment(endDate).endOf('day')) {
+                                updatedTimetables.push({
+                                period: 0,
+                                endTimeMillis: proposedDate.set({
+                                    'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.endTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                                startTimeMillis: proposedDate.set({
+                                    'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.startTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                            }, {
+                                period: 0,
+                                endTimeMillis: moment(proposedDate).add(1, 'days').set({
+                                    'hour': moment(t.endTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.endTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                                startTimeMillis: moment(proposedDate).add(1, 'days').set({
+                                    'hour': moment(t.startTimeMillis, 'x').get('hour'),
+                                    'minute': moment(t.startTimeMillis, 'x').get('minute'),
+                                }).format('x'),
+                            });
+                            
+                            
+                            proposedDate = moment(proposedDate).add(4, 'days');
+                        }
+                            break;
+                        }
+                    
+                        default:
+                            break;
+                    }
+                    
+                       
                     });
                     return updatedTimetables;
                 }),
             };
         });
+
 
         if (edit) {
             this.finalRemove(this.props.editing_object)
@@ -310,7 +374,38 @@ class WorkTimeModal extends Component {
 
     render() {
         const {workTimeModalMessage, t, staff: {status, adding}} = this.props;
-        const weekDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        const weekDays = [
+            {
+              name: 'Пн',
+              key: 1
+            },
+            {
+                name: 'Вт',
+                key: 2
+              },
+              {
+                name: 'Ср',
+                key: 3
+              },
+              {
+                name: 'Чт',
+                key: 4
+              },
+              {
+                name: 'Пт',
+                key: 5
+              },
+              {
+                name: 'Сб',
+                key: 6,
+                isWeekend: true,
+              },
+              {
+                name: 'Вс',
+                key: 0,
+                isWeekend: true,
+              }
+            ];
         const {times, period, edit, activeStaffId, isOpenMobileSelectStaff} = this.state;
 
 
@@ -322,10 +417,6 @@ class WorkTimeModal extends Component {
                 image: item.imageBase64,
             };
         }).filter(staff => edit ? staff.staffId === activeStaffId : true);
-
-        console.log(moment(this.props.date, 'DD/MM/YYYY').day());
-
-        console.log(isOpenMobileSelectStaff);
 
         return (
             <Modal size="md" onClose={this.onClose} showCloseButton={false}
@@ -380,7 +471,7 @@ class WorkTimeModal extends Component {
                                         <div className="form-check-inline">
                                             <input type="radio" className="form-check-input" name="radio33"
                                                    id="radio100" checked={period === 0} onChange={() => {
-                                                this.setState({period: 0});
+                                                this.setState({period: 0, dateTo: this.state.initialDateTo});
                                             }}/>
                                             <label className="form-check-label"
                                                    htmlFor="radio100">{t('Разовый')}</label>
@@ -427,19 +518,42 @@ class WorkTimeModal extends Component {
                                                 }
                                             />
                                         </div>
-
+                                        
                                     </div>
 
+                                    {!!period && <>
+                                        <div className="picker-title">{t("Дата, до которой применить расписание")}</div>
+                                        <div className="picker">
+                                        <DatePicker
+                                            type="day"
+                                            language={this.props.i18n.language}
+                                            selectedDay={this.state.dateTo}
+                                            handleDayClick={(day, modifiers) => {
+                                                this.setState({ dateTo: day })}}
+                                            disabled={!period}
+                                            dayPickerProps={{
+                                            disabledDays: [
+                                                {
+                                                    before: this.state.initialDateTo,
+                                                },
+                                            ],
+                                            }}
+                                    />
+                                    <Hint
+                                                hintMessage={
+                                                    t('Выберите дату, до которой проставить расписание')
+                                                }
+                                            /></div></>}
                                     <div className="inline-group d-flex">
                                         <div className="days">
                                             <h2 className="work-time-title">{t('Дни недели')}</h2>
 
                                             <div className="days-of-week flex-column d-flex">
-                                                {weekDays.map((item, key) => {
+                                                {weekDays.map(({ name, key, isWeekend }) => {
                                                     return (
-                                                        <div className="justify-content-end check-box">
+                                                        <div className={`justify-content-end check-box ${isWeekend ? 'weekend-name' : ''} `}>
                                                             <label>
-                                                                {t(item)}
+                                                                {t(name)}
                                                                 <input className="form-check-input" type="checkbox"
                                                                        checked={this.state.days.includes(key)}
                                                                        onChange={() => this.toggleDays(key)}

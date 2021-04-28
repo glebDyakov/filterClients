@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import PropTypes from 'prop-types';
 
 import "../../public/scss/calendar.scss";
 
@@ -156,7 +157,8 @@ class DatePicker extends PureComponent {
       selectedDays,
       closedDates,
       dayPickerProps = {},
-      isAddBookedService,
+      disabled,
+      showArrows
     } = this.props;
     const { opacity, hoverRange } = this.state;
     let weekProps = {};
@@ -309,36 +311,23 @@ class DatePicker extends PureComponent {
     return (
       <div className="select-date">
         <div className="select-inner">
-          {!isAddBookedService && (
+          {disabled && <div className="date-picker-disable" />}
+          {showArrows && (
             <span
               className="arrow-left"
               onClick={() => this.handleLeftArrowClick()}
             />
           )}
           <div
-            style={
-              isAddBookedService && {
-                position: "absolute",
-                top: "-25",
-                width: "60",
-                height: "60",
-              }
-            }
-            className={`${!isAddBookedService && "button-calendar"}`}
+            className={`${showArrows && "button-calendar"} button-wrap`}
             onClick={() => this.showCalendar(true)}
           >
-            {!isAddBookedService && (
+            {showArrows && (
               <span className="dates-full-width text-capitalize date-num">
                 {selectedDaysText}
               </span>
             )}
             <div
-              style={
-                isAddBookedService && {
-                  top: "-75",
-                  right: "555",
-                }
-              }
               className={classNames("SelectedWeekExample", {
                 visibility: !opacity,
               })}
@@ -356,7 +345,7 @@ class DatePicker extends PureComponent {
               />
             </div>
           </div>
-          {!isAddBookedService && (
+          {showArrows && (
             <span
               className="arrow-right"
               onClick={() => this.handleRightArrowClick()}
@@ -367,5 +356,9 @@ class DatePicker extends PureComponent {
     );
   }
 }
+
+DatePicker.defaultProps = {
+  showArrows: true,
+};
 
 export { DatePicker };

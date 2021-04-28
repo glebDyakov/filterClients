@@ -201,15 +201,15 @@ const AddBookedServiceModal = ({
               <div className="modal-inner bg-modals">
                 <div className="p-3 bg-white">
                   <div className="d-flex">
-                    <div className="modal__inner_header">
+                    <div className="modal__inner_header days-list">
                       {bookingDays.map((bookingDay, index) => {
                         const isActiveDay = index === activeDay;
 
                         return (
                           <div
                             key={bookingDay.weekDay}
-                            className={`p-2 border border-1 m-2 ${isActiveDay &&
-                              "bg-dark"}`}
+                            className={`border border-1 days-list-item ${isActiveDay &&
+                              "selected-day"}`}
                             onClick={() => bookingDayOnClick(bookingDay, index)}
                           >
                             <p
@@ -227,7 +227,7 @@ const AddBookedServiceModal = ({
                     </div>
                     <div className="border-1 booking-calendar">
                       <DatePicker
-                        isAddBookedService
+                        showArrows={false}
                         language={language}
                         selectedDays={new Date()}
                         handleDayChange={handleDayChange}
@@ -260,10 +260,10 @@ const AddBookedServiceModal = ({
                                 (availableTime, index) => (
                                   <span
                                     key={availableTime + index}
-                                    className={`p-1 border border-1 ${checkTimeOnAvailability(
+                                    className={`timetable-item border border-1 ${checkTimeOnAvailability(
                                       staff.staffId,
                                       availableTime
-                                    ) && "text-white bg-dark"}`}
+                                    ) && "text-white selected-time"}`}
                                     onClick={() =>
                                       availableTimeOnClick(staff, availableTime)
                                     }

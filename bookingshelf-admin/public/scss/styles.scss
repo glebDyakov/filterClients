@@ -2784,6 +2784,15 @@ input {
     align-items: center;
     justify-content: center;
 
+    .date-picker-disable {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+
     .button-calendar {
       height: 40px;
       border: none;
@@ -6399,7 +6408,6 @@ textarea {
 }
 
 .rc-time-picker-input {
-  z-index: 1;
   height: 36px;
   border: none;
   border-radius: 2px;
@@ -7158,6 +7166,12 @@ textarea {
     .check-box {
       text-align: left;
 
+      &.weekend-name {
+        label {
+          color: rgba(255, 0, 0, 0.707);
+        }
+      }
+
       label {
         padding: 0 0 0 25px;
         font-style: normal;
@@ -7205,6 +7219,72 @@ textarea {
     display: none;
   }
 
+  .work-time-container {
+    .picker-title {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 25px;
+      color: #2a3042;
+      margin-bottom: 12px;
+    }
+
+    .picker {
+      max-width: 160px;
+      position: relative;
+      margin-top: 12px;
+      margin-bottom: 16px;
+
+
+      .questions_black {
+        position: absolute;
+        left: auto;
+        right: 0;
+      }
+      .SelectedWeekExample {
+        left: 0;
+      }
+      .arrow-left, .arrow-right {
+        display: none !important;
+      }
+      .button-calendar {
+        max-width: 150px;
+        background: #f3f3f9 !important;
+        margin: 0;
+      }
+    }
+    .repeat {
+      display: flex;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+
+      
+      .form-check-inline {
+        margin-top: 12px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 720px) {
+    .work-time-container {
+      .repeat {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .picker {
+          .SelectedWeekExample {
+            left: -20px;
+          }
+          .button-calendar {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+
   @media screen and (max-width: $mob-width) {
     .mobile-select-staff-modal_wrapper {
       z-index: 1060;
@@ -7241,9 +7321,7 @@ textarea {
     margin-bottom: 0;
 
     .check-box.repeat .form-check-inline {
-      width: unset;
       margin-right: 50px;
-      margin-bottom: 50px;
 
       label {
         margin-bottom: 0;
@@ -7303,12 +7381,6 @@ textarea {
         max-width: 100%;
 
         .repeat {
-          display: grid;
-          grid-template-columns: 140px 300px;
-          grid-template-rows: 40px 30px;
-          grid-column-gap: 0px;
-          grid-row-gap: 0px;
-          max-width: 600px;
 
           .form-check-inline {
             max-width: 200px;
@@ -7464,7 +7536,7 @@ textarea {
       background: #ffffff;
       box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
       border-radius: 5px 0px 0px 0px;
-      padding: 37px 50px 25px 30px;
+      padding: 6px 50px 25px 30px;
       min-width: 819px;
 
       .work-time-title {
@@ -7473,7 +7545,7 @@ textarea {
         font-size: 18px;
         line-height: 25px;
         color: #2a3042;
-        margin-bottom: 25px;
+        margin-bottom: 12px;
       }
 
       .days {
@@ -7782,6 +7854,17 @@ textarea {
               display: flex;
               overflow: auto;
               margin-bottom: 10px;
+
+              .days-list-item {
+                padding: 7px 10px;
+                &:not(:last-child) {
+                  margin-right: 10px;
+                }
+              }
+
+              .selected-day {
+                background-color: #2A3042;
+              }
 
               div {
                 border-radius: 2px;
@@ -8284,6 +8367,20 @@ textarea {
   padding: 0px 0px 0px 40px !important;
   background-position: 40px;
 
+ 
+
+  .button-wrap {
+    cursor: pointer;
+    max-height: 50px;
+    max-width: 50px;
+
+    .SelectedWeekExample {
+      top: auto;
+      bottom: -77px;
+      left: -300px;
+    }
+  }
+
   @media screen and(max-width: 960px) {
     width: 60px;
     background-size: 40px;
@@ -8309,6 +8406,34 @@ textarea {
   grid-template-rows: repeat(2, 1fr);
   grid-auto-flow: column;
   gap: 10px;
+
+  .selected-time {
+    background-color: #2A3042;
+  }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #cccccc;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background: #CCCCCC;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+    scrollbar-color: #cccccc transparent;
+    scrollbar-width: thin;
+  
+
+  .timetable-item {
+    padding: 5px 8px;
+    cursor: pointer;
+  }
 }
 
 .button {

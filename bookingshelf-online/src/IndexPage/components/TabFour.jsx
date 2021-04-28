@@ -51,12 +51,12 @@ class TabFour extends PureComponent {
             currentTimeText = moment(this.state.arrayTime).format('LT');
         }
         let interval = company.booktimeOnlineStepSec ? company.booktimeOnlineStepSec / 60 : 15;
-        if (!company.booktimeOnlineStepSec && selectedServices && selectedServices.length > 0) {
-            interval = 0
-            selectedServices.forEach(item => {
-                interval += (getDurationForCurrentStaff(item) / 60)
-            })
-        }
+        // if (!company.booktimeOnlineStepSec && selectedServices && selectedServices.length > 0) {
+        //     interval = 0
+        //     selectedServices.forEach(item => {
+        //         interval += (getDurationForCurrentStaff(item) / 60)
+        //     })
+        // }
 
         if (timetableAvailable) {
             timetableAvailable.map(timetableItem =>
