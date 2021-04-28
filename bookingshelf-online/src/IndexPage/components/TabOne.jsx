@@ -385,7 +385,7 @@ class TabOne extends PureComponent {
                                                 time.staffId === staff.staffId && time.availableDays.length !== 0
 
                                             ) && <div className="no_zap">
-                                                    <span >{t("Нет записи")}</span>
+                                                    <span >{t("Ближайшие 3 дня нет записи")}</span>
                                                 </div>
                                             }
 
