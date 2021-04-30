@@ -123,7 +123,7 @@ class AddAppointment extends React.Component {
       allClients: props.clients,
       services: [props.services],
       clickedTime: props.clickedTime,
-      minutes: props.minutes,
+      minutes: props.minutes || [],
       hours: [],
       staffId: props.staffId,
       clientChecked: null,
@@ -812,16 +812,18 @@ class AddAppointment extends React.Component {
     if (time && minutes.length !== 0) {
       const minuteStart = time;
       let minute = time;
+      
 
       while (minutes.indexOf(moment(minute, "x").format("H:mm")) === -1) {
         minute = parseInt(minute) + step * 60 * 100;
         const bool = minutes.indexOf(moment(minute, "x").format("H:mm"));
+
         if (bool !== -1) {
           timeArrange = [minuteStart, minute];
           break;
         }
-      }
     }
+  }
     return moment
       .duration(timeArrange[1] - parseInt(timeArrange[0]), "milliseconds")
       .format("m")
@@ -1495,8 +1497,10 @@ class AddAppointment extends React.Component {
         const durationForCurrentStaff = this.getDurationForCurrentStaff(
           service
         );
+
         return parseInt(durationForCurrentStaff) / 60 <= parseInt(timeArrange);
       });
+
 
     const hasAddedServices =
       staffCurrent &&
@@ -1855,7 +1859,7 @@ class AddAppointment extends React.Component {
                                         {staffs.timetable &&
                                         staffs.timetable
                                           .filter((timing) => {
-                                            return timing.timetables.some(
+                                            return (timing.timetables || []).some(
                                               (time) => {
                                                 const checkingTiming = moment(
                                                   time.startTimeMillis
@@ -3100,4 +3104,4 @@ const connectedApp = compose(
   withRouter,
   withTranslation("common")
 )(AddAppointment);
-export { connectedApp as AddAppointment };
+export { connectedApp as AddAppointmentNew };

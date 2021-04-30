@@ -7823,6 +7823,50 @@ textarea {
 
 .modal_add_group,
 .modal_add_booking_service {
+  .button[disabled] {
+    opacity: 0.4;
+  }
+
+  .staff-item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+    .booking-timetable {
+      padding-bottom: 4px;
+    }
+
+    .staff-image {
+      width: 55px;
+      height: 55px;
+    }
+
+    .staff-info {
+      margin-left: 15px;
+
+      .staff-name {
+        margin-bottom: 9px;
+      }
+
+      .staff-service-info-wrap {
+        display: flex;
+        .staff-service-info {
+          border: 1px solid rgba(9, 9, 58, 0.1);
+          border-radius: 3px;
+          font-weight:400;
+          font-size: 13px;
+          line-height: 18px;
+          margin-right: 7px;
+          padding: 3px 7px;
+        }
+      }
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(9, 9, 58, 0.1);
+    }
+  }
+
   div {
     .modal-content {
       height: 720px;
@@ -7857,6 +7901,7 @@ textarea {
 
               .days-list-item {
                 padding: 7px 10px;
+                cursor: pointer;
                 &:not(:last-child) {
                   margin-right: 10px;
                 }

@@ -44,7 +44,6 @@ function getWeekDays(weekStart) {
     );
   }
 
-  console.log(days);
   return days;
 }
 
@@ -212,7 +211,6 @@ class Index extends PureComponent {
 
   updateAnalytic(date, staffId, isStaff = false) {
     if (isStaff) {
-      console.log(date)
       if (!this.props.analytic[moment(date, "DD-MM-YYYY").format("YYYY-MM-DD")] || staffId !== this.props.analyticStaffId) {
         this.props.dispatch(calendarActions.getStaffCalendarLoad(moment(date, "DD-MM-YYYY").startOf('month').format('x'), moment(date, "DD-MM-YYYY").endOf('month').format('x'), staffId));
       }

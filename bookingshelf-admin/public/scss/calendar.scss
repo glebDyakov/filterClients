@@ -32,7 +32,6 @@
 }
 
 .cell:nth-child(1) {
-
   .present-time-line::before,
   .present-time-line-shadow::before {
     content: attr(data-time);
@@ -74,7 +73,6 @@
 }
 
 .calendar {
-
   .present-time-line,
   .present-time-line-shadow {
     width: calc(100% - 10px);
@@ -169,7 +167,6 @@
                 justify-content: center;
                 align-items: center;
                 cursor: default;
-
                 @media screen and(max-width: $tablet-width) {
                   font-size: 11px;
                 }
@@ -211,11 +208,9 @@
         display: block;
         height: 50px;
         margin: auto;
-
         @media screen and(max-width: $laptop-width) {
           height: 35px;
         }
-
         @media screen and(max-width: $tablet-width) {
           height: 100%;
           width: 100%;
@@ -226,11 +221,9 @@
           cursor: pointer;
           float: left;
           display: block;
-
           @media screen and(max-width: $laptop-width) {
             font-size: 14px;
           }
-
           @media screen and(max-width: $tablet-width) {
             border-color: rgba(172, 172, 172, 0.2);
             border-right: none;
@@ -247,11 +240,9 @@
           margin-left: 5px;
           width: 110px;
           text-align: center;
-
           @media screen and(max-width: $laptop-width) {
             width: 70px;
           }
-
           @media screen and(max-width: $tablet-width) {
             width: 30%;
             justify-content: center;
@@ -268,7 +259,6 @@
           height: 98%;
           border-left: solid 1px rgba(172, 172, 172, 0.5);
           min-width: 200px;
-
           @media screen and(max-width: $tablet-width) {
             font-size: 11px;
             border-color: rgba(172, 172, 172, 0.2);
@@ -287,7 +277,6 @@
           border-radius: 5px;
           align-items: center;
           justify-content: center;
-
           @media screen and(max-width: $tablet-width) {
             width: calc(100% - 80px);
           }
@@ -316,7 +305,6 @@
     .modal-content {
       max-width: 80%;
       margin: auto;
-
       @media screen and(max-width: $mob-width) {
         max-width: 100%;
       }
@@ -334,7 +322,6 @@
 
     .calendar {
       padding-bottom: 70px;
-
       @media screen and(max-width: 991px) {
         padding-bottom: 0;
         position: static;
@@ -839,7 +826,6 @@
       }
 
       .tab-content-list-first {
-
         // overflow-y: scroll;
         .tab-content-staff-item {
           justify-content: flex-start;
@@ -949,7 +935,7 @@
           .form-check-input[type="checkbox"] {
             display: none;
 
-            +.check-box-circle {
+            + .check-box-circle {
               border-radius: 50%;
               background: rgba(0, 0, 0, 0) !important;
               display: flex;
@@ -969,7 +955,7 @@
             }
 
             &:checked {
-              +.check-box-circle {
+              + .check-box-circle {
                 transition: 200ms;
                 background: #ffffff;
                 border: 4px solid #50a5f1;
@@ -1052,7 +1038,6 @@
                     &.clientNotCome {
                       background: #f46a6a;
                     }
-
                     &.clientIsCome {
                       background: #009088;
                     }
@@ -1382,7 +1367,7 @@
                   }
                 }
 
-                .new-text+.client-name-book {
+                .new-text + .client-name-book {
                   margin-top: 16px;
                 }
 
@@ -1471,11 +1456,9 @@
             &.clientIsCome-background {
               background: #009088 !important;
             }
-
             &.clientConfirmed-background {
               background: #f1b44c !important;
             }
-
             &.waitClient-background {
               background: #2a3042 !important;
             }
@@ -1567,7 +1550,6 @@
               display: block;
               float: left;
               padding: 0 5px 0 3px;
-
               @media screen and(max-width: $tablet-width) {
                 display: none;
               }
@@ -1689,27 +1671,21 @@
             &.lime-color {
               background: $lime-color;
             }
-
             &.light-green-color {
               background: $light-green-color;
             }
-
             &.green_light-color {
               background: $light-green-color;
             }
-
             &.violet-color {
               background: $violet-color;
             }
-
             &.sky-color {
               background: $sky-color;
             }
-
             &.white-color {
               background: $white-color;
             }
-
             &.rose-color {
               background: $rose-color;
             }
@@ -1944,8 +1920,7 @@
           max-width: 49% !important;
           min-width: 0 !important;
           margin-left: 50% !important;
-
-          .client-name {
+          .client-name{
             line-height: 14px !important;
           }
         }
@@ -1953,8 +1928,7 @@
         .notes-left {
           max-width: 49% !important;
           min-width: 0 !important;
-
-          .client-name {
+          .client-name{
             line-height: 14px !important;
           }
         }
@@ -2147,7 +2121,8 @@
       }
     }
 
-    .close {}
+    .close {
+    }
   }
 }
 
@@ -2155,7 +2130,6 @@
   &::before {
     transition: 1s;
   }
-
   .check-notes-modal {
     position: fixed;
     z-index: 99001;
@@ -2166,7 +2140,7 @@
     max-height: 0;
     background-color: white;
     margin-top: 1em;
-    animation: 0.3s ease slideModel;
+    animation: 0.3s ease  slideModel;
   }
 
   .check-submit-mask {
@@ -2175,7 +2149,7 @@
     height: 100vh;
     width: 100vw;
     top: 0;
-    animation: 0.3s ease maskModel;
+    animation: 0.3s ease  maskModel;
     background-color: rgba(0, 0, 0, 0.3);
   }
 
@@ -2190,14 +2164,13 @@
       opacity: 1;
     }
   }
-
   @keyframes maskModel {
     from {
-      background-color: rgba(0, 0, 0, 0);
+      background-color: rgba(0,0,0,0);
     }
 
     to {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(0,0,0,0.3);
     }
   }
 }
@@ -2254,7 +2227,6 @@
     width: 40px;
     height: 40px;
     right: 0px;
-
     &::before {
       width: 15px;
       height: 1px;
@@ -2732,7 +2704,7 @@
           }
         }
 
-        >span {
+        > span {
           display: block;
           width: 100%;
 
@@ -3000,18 +2972,15 @@
 .new_appointment {
   .modal-content {
     overflow-y: auto;
-    height: 720px;
+    max-height: 100vh;
   }
-  
 }
 
 .form-group-addService {
-  max-height: 560px;
+  max-height: 80%;
   background: #f8f8fb;
   padding: 16px 0 0 0;
   margin: 0;
-  overflow: auto;
-  overflow-x: hidden;
 
   .calendar_modal_buttons {
     margin-top: 20px;
@@ -3034,7 +3003,6 @@
   .addService {
     width: 140px;
     margin: 20px 0;
-
     @media screen and(max-width: $tablet-width) {
       width: 100%;
     }
@@ -3061,127 +3029,11 @@
   margin: 0 15px 0 0;
   box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
   border-radius: 5px;
-  padding: 25px 25px 10px 20px;
+  padding: 25px 25px 10px 30px;
   background: #fff;
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 735px;
-
-  .font-weight-bold {
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 27px;
-  }
-
-  div {
-    p {
-      font-weight: normal;
-      font-size: 13px;
-      line-height: 18px;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  @media screen and (max-width: 500px) {
-    .font-weight-bold {
-      font-weight: 600 !important;
-      font-size: 16px;
-      line-height: 22px;
-    }
-
-    &:nth-child(1) {
-      &>div {
-        flex-wrap: wrap;
-
-        &>div {
-          &:nth-child(1) {
-            max-width: 24.333% !important;
-          }
-
-          &:nth-child(3) {
-            flex: 0 0 99% !important;
-            max-width: 99% !important;
-          }
-        }
-      }
-    }
-
-    &:nth-child(2) {
-      &>div {
-        flex-wrap: wrap;
-
-        &>div {
-
-          &:nth-child(1) {
-            flex: 0 0 99% !important;
-            max-width: 99% !important;
-          }
-
-          &:nth-child(2) {
-            padding-left: 0 !important;
-            flex: 0 0 28% !important;
-            max-width: 28% !important;
-          }
-
-          &:nth-child(3) {
-            padding-left: 0 !important;
-            flex: 0 0 22% !important;
-            max-width: 22% !important;
-          }
-
-          &:nth-child(4) {
-            padding-left: 0 !important;
-            flex: 0 0 22% !important;
-            max-width: 22% !important;
-          }
-        }
-      }
-    }
-
-    &:nth-child(3) {
-      div {
-        width: 97%;
-
-        &>input {
-          width: 99%;
-        }
-
-      }
-    }
-  }
-
-  div {
-    div {
-      .dropdown {
-        .dropdown-toggle-gray {
-          &::after {
-            content: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNyIgaGVpZ2h0PSI1IiB2aWV3Qm94PSIwIDAgNyA1IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xLjAxMzc1IDAuNjQ3NDYxTDMuNSAzLjEzMzcxTDUuOTg2MjUgMC42NDc0NjFMNi43NSAxLjQxNjYzTDMuNSA0LjY2NjYzTDAuMjUgMS40MTY2M0wxLjAxMzc1IDAuNjQ3NDYxWiIgZmlsbD0iIzU1NUI2RCIvPg0KPC9zdmc+DQo=);
-
-            position: absolute;
-            right: 5px;
-            top: 14px;
-          }
-        }
-      }
-
-
-
-      &:nth-child(1) {
-        padding-left: 0 !important;
-      }
-    }
-  }
-
-  &>div {
-    input {
-      height: 36px;
-      border-radius: 2px;
-    }
-  }
 
   .appointments-line {
     margin: 25px 0;
@@ -3196,7 +3048,7 @@
       .form-check-input[type="checkbox"] {
         display: none;
 
-        +.check-box-circle {
+        + .check-box-circle {
           border-radius: 50%;
           background: rgba(0, 0, 0, 0) !important;
           display: flex;
@@ -3216,7 +3068,7 @@
         }
 
         &:checked {
-          +.check-box-circle {
+          + .check-box-circle {
             transition: 200ms;
             background: #ffffff;
             border: 4px solid #50a5f1;
@@ -3279,45 +3131,8 @@
 .addApointmentClientBlock {
   box-shadow: 0px 10px 20px rgba(18, 38, 63, 0.0313726);
   border-radius: 5px;
-  padding: 25px 20px;
+  padding: 25px 30px;
   background: #fff;
-
-  .font-weight-bold {
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 27px;
-  }
-
-  div {
-    p {
-      font-weight: normal;
-      font-size: 13px;
-      line-height: 18px;
-    }
-  }
-
-
-  @media screen and (max-width: 1199px) {
-    margin-top: 20px;
-    margin-left: 2.7rem !important;
-    margin-top: 10px !important;
-  }
-
-  @media screen and (max-width: 768px) {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding: 20px 40px;
-  }
-
-  @media screen and (max-width: 500px) {
-    padding: 20px 25px;
-
-    .font-weight-bold {
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 22px;
-    }
-  }
 
   .title {
     font-weight: 300 !important;
@@ -3446,7 +3261,6 @@
   display: none !important;
   width: 100%;
   padding: 0 15px;
-
   @media screen and(max-width: $tablet-width) {
     display: flex !important;
   }
@@ -3460,12 +3274,10 @@
 .client-title {
   display: none;
   width: 100%;
-
   @media screen and(max-width: $tablet-width) {
     display: flex;
     line-height: 40px;
     justify-content: space-between;
-
     p {
       font-size: 16px;
     }
@@ -3507,22 +3319,18 @@
     transform: scaleX(1);
     box-shadow: none;
   }
-
   30% {
     transform: scaleX(0.995);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
   }
-
   50% {
     transform: scaleX(1);
     box-shadow: none;
   }
-
   70% {
     transform: scaleX(0.995);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
   }
-
   100% {
     transform: scaleX(1);
     box-shadow: none;
@@ -3537,8 +3345,7 @@
     height: 36px;
     border: none;
     border-radius: 2px;
-    background-color: white;
-    border: solid 1px rgba(172, 172, 172, 0.5);
+    background: #f3f3f9;
   }
 
   &.redBorderWrapper {
@@ -3747,28 +3554,23 @@
     }
   }
 }
-
 .cash-choice {
   div {
     width: 100% !important;
-
     &:hover {
       opacity: 1 !important;
     }
   }
-
   .form-button {
     flex-direction: column;
     padding-top: 10px;
   }
-
   span.check {
     width: 20px !important;
     height: 20px;
     right: 0;
     left: initial !important;
   }
-
   label {
     width: 100%;
     padding: 0 !important;
