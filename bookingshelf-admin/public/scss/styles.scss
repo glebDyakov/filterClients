@@ -8495,6 +8495,12 @@ textarea {
 
 
 .modal_add_booking_service {
+  .loading {
+    display: flex;
+    justify-content: center;
+    height: 80px;
+  }
+
   .button {
     background: #50a5f1;
     border-radius: 30px;

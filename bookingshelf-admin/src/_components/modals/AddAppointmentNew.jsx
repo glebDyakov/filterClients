@@ -156,6 +156,10 @@ class AddAppointment extends React.Component {
       appointmentsAllPrice: 0,
     };
 
+    if (props.selectedService) {
+      this.setService(props.selectedService.serviceId, props.selectedService, 0);
+    }
+
     this.addAppointment = this.addAppointment.bind(this);
     this.handleTypeaheadSelect = this.handleTypeaheadSelect.bind(this);
     this.handleDurationChange = this.handleDurationChange.bind(this);
@@ -1424,6 +1428,7 @@ class AddAppointment extends React.Component {
       staff: staffFromProps,
       services: servicesFromProps,
       selectedDay,
+      disableStaff,
       t,
     } = this.props;
     const {
@@ -1820,7 +1825,7 @@ class AddAppointment extends React.Component {
                                   <div className="dropdown add-staff">
                                     <a
                                       className={
-                                        edit_appointment || timeArrange === 0
+                                        edit_appointment || timeArrange === 0 || disableStaff
                                           ? "disabledField dropdown-toggle drop_menu_personal"
                                           : "dropdown-toggle drop_menu_personal"
                                       }
