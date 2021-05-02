@@ -7241,30 +7241,25 @@ textarea {
         left: auto;
         right: 0;
       }
-
       .SelectedWeekExample {
         left: 0;
       }
-
-      .arrow-left,
-      .arrow-right {
+      .arrow-left, .arrow-right {
         display: none !important;
       }
-
       .button-calendar {
         max-width: 150px;
         background: #f3f3f9 !important;
         margin: 0;
       }
     }
-
     .repeat {
       display: flex;
       align-items: center;
       margin-bottom: 14px;
       flex-wrap: wrap;
 
-
+      
       .form-check-inline {
         margin-top: 12px;
       }
@@ -7281,7 +7276,6 @@ textarea {
           .SelectedWeekExample {
             left: -20px;
           }
-
           .button-calendar {
             margin: 0;
           }
@@ -7837,13 +7831,12 @@ textarea {
     display: flex;
     align-items: center;
     margin-top: 10px;
-
     @media screen and (max-width: 500px) {
-      &.staff_item_mobile {
+      &.staff_item_mobile{
         flex-wrap: wrap;
       }
     }
-
+    
     .booking-timetable {
       padding-bottom: 4px;
     }
@@ -7862,11 +7855,10 @@ textarea {
 
       .staff-service-info-wrap {
         display: flex;
-
         .staff-service-info {
           border: 1px solid rgba(9, 9, 58, 0.1);
           border-radius: 3px;
-          font-weight: 400;
+          font-weight:400;
           font-size: 13px;
           line-height: 18px;
           margin-right: 7px;
@@ -7915,11 +7907,9 @@ textarea {
               .days-list-item {
                 padding: 7px 10px;
                 cursor: pointer;
-
                 &:not(:last-child) {
                   margin-right: 10px;
                 }
-
                 &:nth-child(1) {
                   margin-left: 0px !important;
                 }
@@ -8430,7 +8420,7 @@ textarea {
   padding: 0px 0px 0px 40px !important;
   background-position: 40px;
 
-
+ 
 
   .button-wrap {
     cursor: pointer;
@@ -8473,50 +8463,54 @@ textarea {
     background-color: #2A3042;
   }
 
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    border-radius: 3px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #cccccc;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background: #CCCCCC;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-
-  scrollbar-color: #cccccc transparent;
-  scrollbar-width: thin;
-
-  @media screen and(max-width: 500px) {
-    width: auto;
-    margin-top: 30px !important;
-  }
-
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      border-radius: 3px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #cccccc;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background: #CCCCCC;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+    scrollbar-color: #cccccc transparent;
+    scrollbar-width: thin;
+  
+    @media screen and(max-width: 500px) {
+      width: auto;
+      margin-top: 30px !important;
+    }
   .timetable-item {
     padding: 5px 8px;
     cursor: pointer;
   }
+
 }
 
-.button {
-  background: #50a5f1;
-  border-radius: 30px;
-  font-weight: normal;
-  font-size: 13px;
-  line-height: 18px;
-  // display: flex;
-  // align-items: center;
-  text-align: center;
-  color: #ffffff;
-  padding: 10px 35px;
-  height: 38px;
-  border: 0;
+
+
+.modal_add_booking_service {
+  .loading {
+    display: flex;
+    justify-content: center;
+    height: 80px;
+  }
+
+  .button {
+    background: #50a5f1;
+    border-radius: 30px;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    color: #ffffff;
+    padding: 10px 35px;
+    height: 38px;
+    border: 0;
+  }
 }
