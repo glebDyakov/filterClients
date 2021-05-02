@@ -5,18 +5,35 @@ import { withTranslation } from 'react-i18next';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
-import {
-  staffActions,
-  //  calendarActions
-} from '../../_actions';
-
 import { DatePicker } from '../DatePicker';
 import { AddAppointmentNew } from './AddAppointmentNew';
 import useStaffs from '../../_hooks/useStaffs';
 import useServices from '../../_hooks/useServices';
+import useSWR from 'swr';
+import { staffService } from '../../_services';
+import Loader from '../../_components/Loader';
+import { DAY_MINUTES } from '../../_constants/global.constants';
+import { calendarActions } from '../../_actions';
 
-const AddBookedServiceModal = ({ t, i18n: { language }, dispatch, closeModal, timetable, searchedService, clients }) => {
+const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedService, clients, dispatch }) => {
   const [activeDay, setActiveDay] = useState(new Date());
+  const { data: timetable, error } = useSWR(['timetableStaffs', activeDay], async () => {
+    const from = moment(activeDay)
+      .startOf('day')
+      .format('x');
+    const to = moment(activeDay)
+      .endOf('day')
+      .format('x');
+    const normalViewTimeFrom = moment(parseInt(from)).format('hh:ss');
+    if (normalViewTimeFrom === '03:00') {
+      from = parseInt(from) - 3600 * 1000 * 3;
+      to = parseInt(to) - 3600 * 1000 * 3;
+    }
+
+    const result = await staffService.getTimetableStaffs(from, to);
+    return result;
+  });
+
   const [activeTimesByStaffs, setActiveTimesByStaffs] = useState([]);
   const [showNextModal, setShowNextModal] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -41,10 +58,6 @@ const AddBookedServiceModal = ({ t, i18n: { language }, dispatch, closeModal, ti
         };
       })
   );
-
-  useEffect(() => {
-    dispatch(staffActions.getTimetableStaffs(...bookingDays[0].dayInterval, true));
-  }, []);
 
   useEffect(() => {
     if (!searchedService.staffs) return;
@@ -86,41 +99,18 @@ const AddBookedServiceModal = ({ t, i18n: { language }, dispatch, closeModal, ti
     );
   }, [timetable]);
 
-  const getTimetableStaffs = (dayInterval) => dispatch(staffActions.getTimetableStaffs(...dayInterval, true));
-
-  const bookingDayOnClick = (bookingDay, index) => {
-    getTimetableStaffs(bookingDay.dayInterval);
+  const bookingDayOnClick = (bookingDay) => {
     setActiveDay(bookingDay.day);
   };
-
-  const handleDayChange = useCallback((date) => {
-    const day = moment(date.getTime(), 'x').subtract(12, 'hours');
-    const dayStart = day.format('x');
-    const dayEnd = day.add(1, 'days').format('x');
-
-    getTimetableStaffs([dayStart, dayEnd]);
-  }, []);
-
-  const checkTimeOnAvailability = (staffId, time) =>
-    activeTimesByStaffs.find((staff) => staff.staffId === staffId)?.activeTimes.includes(time);
 
   const availableTimeOnClick = (staff, availableTime) => {
     setSelectedStaff(staff);
     setSelectedTime(availableTime);
   };
 
-  const addAppointment = (appointment, serviceId, staffId, clientId, coStaffs) => console.log('qwe');
-  // dispatch(
-  //   calendarActions.addAppointment(
-  //     JSON.stringify(appointment),
-  //     serviceId,
-  //     staffId,
-  //     clientId,
-  //     // startTime,
-  //     // endTime,
-  //     coStaffs
-  //   )
-  // );
+  const addAppointment = (appointment, serviceId, staffId, clientId, coStaffs) => dispatch(
+    calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, "", "", coStaffs)
+  );
 
   const showPrevModal = useCallback(() => setShowNextModal(false), []);
 
@@ -162,7 +152,6 @@ const AddBookedServiceModal = ({ t, i18n: { language }, dispatch, closeModal, ti
                       <DatePicker
                         showArrows={false}
                         language={language}
-                        handleDayChange={handleDayChange}
                         selectedDay={activeDay}
                         type="day"
                         handleDayClick={(day) => setActiveDay(day)}
@@ -170,39 +159,43 @@ const AddBookedServiceModal = ({ t, i18n: { language }, dispatch, closeModal, ti
                     </div>
                   </div>
                   <div>
-                    {searchedService.staffs?.map((staff) => {
-                      if (staff.availableTimes) {
-                        const staffData = staffs.staff.find((item) => item.staffId === staff.staffId);
-                        return (
-                          <div
-                            key={staff.staffId}
-                            className="staff-item"
-                          >
-                            <img className="staff-image" src={staffData?.imageBase64 ? 'data:image/png;base64,' + staffData.imageBase64 : ''} />
-                            <div className="staff-info ">
-                              <p className="staff-name font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
-                              <div className="staff-service-info-wrap">
-                                <div className="staff-service-info">{`${staff.serviceDuration / 60} ${t('мин')}`}</div>
-                                <div className="staff-service-info">{`${searchedService.priceFrom}-${searchedService.priceTo} ${searchedService.currency}`}</div>
+                    {timetable ? (
+                      searchedService.staffs?.map((staff) => {
+                        if (staff.availableTimes) {
+                          const staffData = staffs.staff.find((item) => item.staffId === staff.staffId);
+                          return (
+                            <div key={staff.staffId} className="staff-item staff_item_mobile">
+                              <img
+                                className="staff-image"
+                                src={staffData?.imageBase64 ? 'data:image/png;base64,' + staffData.imageBase64 : ''}
+                              />
+                              <div className="staff-info ">
+                                <p className="staff-name font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
+                                <div className="staff-service-info-wrap">
+                                  <div className="staff-service-info">{`${staff.serviceDuration / 60} ${t('мин')}`}</div>
+                                  <div className="staff-service-info">{`${searchedService.priceFrom}-${searchedService.priceTo} ${searchedService.currency}`}</div>
+                                </div>
+                              </div>
+                              <div className="m-3 ml-auto booking-timetable">
+                                {staff.availableTimes.map((availableTime, index) => (
+                                  <span
+                                    key={availableTime + index}
+                                    className={`timetable-item border border-1 ${selectedStaff?.staffId === staff.staffId &&
+                                      availableTime === selectedTime &&
+                                      'text-white selected-time'}`}
+                                    onClick={() => availableTimeOnClick(staff, availableTime)}
+                                  >
+                                    {availableTime}
+                                  </span>
+                                ))}
                               </div>
                             </div>
-                            <div className="m-3 ml-auto booking-timetable">
-                              {staff.availableTimes.map((availableTime, index) => (
-                                <span
-                                  key={availableTime + index}
-                                  className={`timetable-item border border-1 ${selectedStaff?.staffId === staff.staffId &&
-                                    availableTime === selectedTime &&
-                                    'text-white selected-time'}`}
-                                  onClick={() => availableTimeOnClick(staff, availableTime)}
-                                >
-                                  {availableTime}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        );
-                      }
-                    })}
+                          );
+                        }
+                      })
+                    ) : (
+                      <Loader />
+                    )}
                   </div>
                 </div>
               </div>
@@ -226,15 +219,21 @@ const AddBookedServiceModal = ({ t, i18n: { language }, dispatch, closeModal, ti
           staff={staffs.staff}
           staffs={staffs}
           randNum={Math.random()}
-          // adding={adding}
-          // status={status}
           services={services}
-          clickedTime={selectedTime ? +moment(activeDay).startOf('day').set({"hour": selectedTime.split(':')[0], "minute": selectedTime.split(':')[1], "seconds": 0}).format('x') : null}
-          minutes={selectedStaff.availableTimes ? selectedStaff.availableTimes : []}
+          clickedTime={
+            selectedTime
+              ? +moment(activeDay)
+                  .startOf('day')
+                  .set({ hour: selectedTime.split(':')[0], minute: selectedTime.split(':')[1], seconds: 0 })
+                  .format('x')
+              : null
+          }
+          minutes={selectedStaff.availableTimes ? DAY_MINUTES.filter((item) => !selectedStaff.availableTimes.includes(item)) : []}
           staffId={selectedStaff}
           selectedDayMoment={moment(activeDay).startOf('day')}
           selectedDay={new Date(moment(activeDay).startOf('day'))}
-          // getHours={this.changeTime}
+          disableStaff
+          selectedService={searchedService}
         />
       )}
     </>

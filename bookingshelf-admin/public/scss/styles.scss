@@ -7831,7 +7831,12 @@ textarea {
     display: flex;
     align-items: center;
     margin-top: 10px;
-
+    @media screen and (max-width: 500px) {
+      &.staff_item_mobile{
+        flex-wrap: wrap;
+      }
+    }
+    
     .booking-timetable {
       padding-bottom: 4px;
     }
@@ -7904,6 +7909,9 @@ textarea {
                 cursor: pointer;
                 &:not(:last-child) {
                   margin-right: 10px;
+                }
+                &:nth-child(1) {
+                  margin-left: 0px !important;
                 }
               }
 
@@ -8436,9 +8444,8 @@ textarea {
   }
 
   @media screen and(max-width: 500px) {
-    width: 100px;
-    background-size: 30px;
-    margin: 20px 0 auto 10px;
+    width: 40px;
+    margin: 0px 0 auto 10px;
     padding: 0px 0px 0px 0px !important;
     background-position: 0px;
   }
@@ -8474,24 +8481,36 @@ textarea {
     scrollbar-color: #cccccc transparent;
     scrollbar-width: thin;
   
-
+    @media screen and(max-width: 500px) {
+      width: auto;
+      margin-top: 30px !important;
+    }
   .timetable-item {
     padding: 5px 8px;
     cursor: pointer;
   }
+
 }
 
-.button {
-  background: #50a5f1;
-  border-radius: 30px;
-  font-weight: normal;
-  font-size: 13px;
-  line-height: 18px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: #ffffff;
-  padding: 10px 35px;
-  height: 38px;
-  border: 0;
+
+
+.modal_add_booking_service {
+  .loading {
+    display: flex;
+    justify-content: center;
+    height: 80px;
+  }
+
+  .button {
+    background: #50a5f1;
+    border-radius: 30px;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    color: #ffffff;
+    padding: 10px 35px;
+    height: 38px;
+    border: 0;
+  }
 }
