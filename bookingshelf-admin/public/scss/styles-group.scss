@@ -17,12 +17,14 @@ $laptop-width: 1650px;
 $tablet-width: 960px;
 $large-width: 1820px;
 
+
 @mixin font-bold() {
   font-family: 'Open Sans', "sans-serif";
   font-size: 16px;
   font-weight: bold;
   letter-spacing: -0.1px;
   color: $content-color;
+
   @media screen {
     @media (max-width: $laptop-width) {
       font-size: $font-reg;
@@ -40,13 +42,16 @@ $large-width: 1820px;
 @mixin red-title() {
   font-size: 18px;
   color: rgb(237, 27, 36);
+
   @media screen {
     @media (max-width: $large-width) {
       font-size: 16px;
     }
+
     @media (max-width: $laptop-width) {
       font-size: 15px;
     }
+
     @media (max-width: $tablet-width) {
       font-size: 15px;
       text-align: center;
@@ -63,11 +68,13 @@ $large-width: 1820px;
   height: 50px;
   margin-bottom: 10px;
   font-size: 18px;
+
   @media screen {
     @media (max-width: $large-width) {
       font-size: 16px;
       padding: 15px 20px 15px;
     }
+
     @media (max-width: $laptop-width) {
       font-size: $font-reg;
       padding: 8px 10px 8px;

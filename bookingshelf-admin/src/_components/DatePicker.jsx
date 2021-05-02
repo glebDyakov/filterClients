@@ -1,15 +1,16 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from "react";
+import PropTypes from 'prop-types';
 
-import '../../public/scss/calendar.scss';
+import "../../public/scss/calendar.scss";
 
-import moment from 'moment';
-import 'react-day-picker/lib/style.css';
-import DayPicker from 'react-day-picker';
-import MomentLocaleUtils from 'react-day-picker/moment';
-import '../../public/css_admin/date.css';
-import classNames from 'classnames';
-import { getWeekRange } from '../_helpers/time';
-import { cloneWithRef } from 'react-dnd/lib/utils/cloneWithRef';
+import moment from "moment";
+import "react-day-picker/lib/style.css";
+import DayPicker from "react-day-picker";
+import MomentLocaleUtils from "react-day-picker/moment";
+import "../../public/css_admin/date.css";
+import classNames from "classnames";
+import { getWeekRange } from "../_helpers/time";
+import { cloneWithRef } from "react-dnd/lib/utils/cloneWithRef";
 
 class DatePicker extends PureComponent {
   constructor(props) {
@@ -18,7 +19,7 @@ class DatePicker extends PureComponent {
     this.state = {
       opacity: false,
       hoverRange: undefined,
-      language: 'ru',
+      language: "ru",
     };
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.handleLocalDayClick = this.handleLocalDayClick.bind(this);
@@ -31,9 +32,9 @@ class DatePicker extends PureComponent {
 
   componentDidUpdate() {
     if (this.state.opacity) {
-      document.addEventListener('click', this.handleOutsideClick, false);
+      document.addEventListener("click", this.handleOutsideClick, false);
     } else {
-      document.removeEventListener('click', this.handleOutsideClick, false);
+      document.removeEventListener("click", this.handleOutsideClick, false);
     }
   }
 
@@ -44,7 +45,7 @@ class DatePicker extends PureComponent {
   }
 
   handleOutsideClick(e) {
-    if (e.target.parentElement.className !== 'DayPicker-NavBar') {
+    if (e.target.parentElement.className !== "DayPicker-NavBar") {
       this.showCalendar(false);
     }
   }
@@ -53,13 +54,17 @@ class DatePicker extends PureComponent {
     const { type } = this.props;
     this.showCalendar(false);
 
-    if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(date).format("YYYY-MM")) {
+    if (
+      this.props.calendar &&
+      moment(this.props.selectedDay).format("YYYY-MM") !==
+        moment(date).format("YYYY-MM")
+    ) {
       if (this.props.typeSelected && this.props.selectedStaff) {
         this.props.updateAnalytic(date, this.props.selectedStaff, true);
       }
     }
 
-    if (type === 'day') {
+    if (type === "day") {
       this.props.handleDayClick(date);
     } else {
       this.props.handleDayChange(date);
@@ -69,14 +74,22 @@ class DatePicker extends PureComponent {
   handleLeftArrowClick() {
     const { type, selectedDay } = this.props;
     this.showCalendar(false);
-    if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(moment(selectedDay).subtract(1, 'day')).format("YYYY-MM")) {
+    if (
+      this.props.calendar &&
+      moment(this.props.selectedDay).format("YYYY-MM") !==
+        moment(moment(selectedDay).subtract(1, "day")).format("YYYY-MM")
+    ) {
       if (this.props.typeSelected && this.props.selectedStaff) {
-        this.props.updateAnalytic(moment(selectedDay).subtract(1, 'day'), this.props.selectedStaff, true);
+        this.props.updateAnalytic(
+          moment(selectedDay).subtract(1, "day"),
+          this.props.selectedStaff,
+          true
+        );
       }
     }
 
-    if (type === 'day') {
-      this.props.handleDayClick(moment(selectedDay).subtract(1, 'day'), {});
+    if (type === "day") {
+      this.props.handleDayClick(moment(selectedDay).subtract(1, "day"), {});
     } else {
       this.props.showPrevWeek();
     }
@@ -86,14 +99,22 @@ class DatePicker extends PureComponent {
     const { type, selectedDay } = this.props;
     this.showCalendar(false);
 
-    if (this.props.calendar && moment(this.props.selectedDay).format('YYYY-MM') !== moment(moment(selectedDay).add(1, 'day')).format("YYYY-MM")) {
+    if (
+      this.props.calendar &&
+      moment(this.props.selectedDay).format("YYYY-MM") !==
+        moment(moment(selectedDay).add(1, "day")).format("YYYY-MM")
+    ) {
       if (this.props.typeSelected && this.props.selectedStaff) {
-        this.props.updateAnalytic(moment(selectedDay).add(1, 'day'), this.props.selectedStaff, true);
+        this.props.updateAnalytic(
+          moment(selectedDay).add(1, "day"),
+          this.props.selectedStaff,
+          true
+        );
       }
     }
 
-    if (type === 'day') {
-      this.props.handleDayClick(moment(selectedDay).add(1, 'day'), {});
+    if (type === "day") {
+      this.props.handleDayClick(moment(selectedDay).add(1, "day"), {});
     } else {
       this.props.showNextWeek();
     }
@@ -104,33 +125,41 @@ class DatePicker extends PureComponent {
     this.setState({
       hoverRange,
     });
-  };
+  }
 
   handleDayLeave() {
     this.setState({
       hoverRange: undefined,
     });
-  };
+  }
 
   getPercent(day) {
     const { analytic } = this.props;
 
     if (analytic && day && Object.keys(analytic).length > 0) {
-
-
-      const analyticDay = analytic[moment(day).format('YYYY-MM-DD')]
+      const analyticDay = analytic[moment(day).format("YYYY-MM-DD")];
       if (!analyticDay || !analyticDay.availableTime) {
         return null;
       }
 
-      return Math.ceil((analyticDay && analyticDay.percentWorkload || 0) * 10) / 10;
+      return (
+        Math.ceil(((analyticDay && analyticDay.percentWorkload) || 0) * 10) / 10
+      );
     }
     return 0;
   }
 
-
   render() {
-    const { analytic, type, selectedDay, selectedDays, closedDates, dayPickerProps = {}, disabled } = this.props;
+    const {
+      analytic,
+      type,
+      selectedDay,
+      selectedDays,
+      closedDates,
+      dayPickerProps = {},
+      disabled,
+      showArrows
+    } = this.props;
     const { opacity, hoverRange } = this.state;
     let weekProps = {};
     let selectedDaysText;
@@ -143,23 +172,56 @@ class DatePicker extends PureComponent {
     //   newSelectedDays = newSelectedDays.concat(currentStaff.timetables.map((item) => moment(item.endTimeMillis).utc().startOf('day').toDate()));
     // }
 
-
-    if (type === 'day') {
-      const clDates = closedDates && closedDates.some((st) =>
-        parseInt(moment(st.startDateMillis, 'x').startOf('day').format('x')) <= parseInt(moment(selectedDays[0]).startOf('day').format('x')) &&
-        parseInt(moment(st.endDateMillis, 'x').endOf('day').format('x')) >= parseInt(moment(selectedDays[0]).endOf('day').format('x')));
+    if (type === "day") {
+      const clDates =
+        closedDates &&
+        closedDates.some(
+          (st) =>
+            parseInt(
+              moment(st.startDateMillis, "x")
+                .startOf("day")
+                .format("x")
+            ) <=
+              parseInt(
+                moment(selectedDays[0])
+                  .startOf("day")
+                  .format("x")
+              ) &&
+            parseInt(
+              moment(st.endDateMillis, "x")
+                .endOf("day")
+                .format("x")
+            ) >=
+              parseInt(
+                moment(selectedDays[0])
+                  .endOf("day")
+                  .format("x")
+              )
+        );
 
       selectedDaysText = (
         <React.Fragment>
-          {moment(selectedDay).format('dd, DD MMMM YYYY')}
-          {clDates && <span className="closedDate-color"
-                            style={{ textTransform: 'none', marginLeft: '5px' }}> (выходной)</span>}
+          {moment(selectedDay).format("dd, DD MMMM YYYY")}
+          {clDates && (
+            <span
+              className="closedDate-color"
+              style={{ textTransform: "none", marginLeft: "5px" }}
+            >
+              {" "}
+              (выходной)
+            </span>
+          )}
         </React.Fragment>
       );
     } else {
-      selectedDaysText = (
-        moment(selectedDays[0]).startOf('day').format('DD.MM.YYYY') + ' - ' + moment(selectedDays[6]).endOf('day').format('DD.MM.YYYY')
-      );
+      selectedDaysText =
+        moment(selectedDays[0])
+          .startOf("day")
+          .format("DD.MM.YYYY") +
+        " - " +
+        moment(selectedDays[6])
+          .endOf("day")
+          .format("DD.MM.YYYY");
     }
 
     const days = [];
@@ -167,12 +229,16 @@ class DatePicker extends PureComponent {
     if (this.props.typeSelected && analytic) {
       Object.entries(analytic).forEach(([key, value]) => {
         if (!value.availableTime) {
-          days.push(moment(key, 'YYYY-MM-DD').endOf('day').toDate());
+          days.push(
+            moment(key, "YYYY-MM-DD")
+              .endOf("day")
+              .toDate()
+          );
         }
       });
     }
 
-    if (type === 'week') {
+    if (type === "week") {
       const daysAreSelected = selectedDays && selectedDays.length > 0;
 
       const modifiers = {
@@ -198,11 +264,11 @@ class DatePicker extends PureComponent {
 
     let modifiers;
 
-    if (this.props.typeSelected === true && type !== 'week') {
+    if (this.props.typeSelected === true && type !== "week") {
       modifiers = {
         notWorking: days,
       };
-    } else if (type !== 'week') {
+    } else if (type !== "week") {
       modifiers = {
         notWorking: days,
       };
@@ -210,9 +276,8 @@ class DatePicker extends PureComponent {
 
     modifiers = {
       ...modifiers,
-      selected: selectedDay
-    }
-
+      selected: selectedDay,
+    };
 
     const renderDay = (day, dayModifiers) => {
       const date = day.getDate();
@@ -221,7 +286,24 @@ class DatePicker extends PureComponent {
       return (
         <React.Fragment>
           {date}
-          {this.props.typeSelected && this.props.calendar && (percent !== null) && <span className={"percent" + (percent === 0 ? " default-percent" : percent <= 40 ? " green-percent" : (percent <= 80 ? " orange-percent" : " red-percent"))}>{percent}%</span>}
+          {this.props.typeSelected &&
+            this.props.calendar &&
+            percent !== null && (
+              <span
+                className={
+                  "percent" +
+                  (percent === 0
+                    ? " default-percent"
+                    : percent <= 40
+                    ? " green-percent"
+                    : percent <= 80
+                    ? " orange-percent"
+                    : " red-percent")
+                }
+              >
+                {percent}%
+              </span>
+            )}
         </React.Fragment>
       );
     };
@@ -230,12 +312,26 @@ class DatePicker extends PureComponent {
       <div className="select-date">
         <div className="select-inner">
           {disabled && <div className="date-picker-disable" />}
-          <span className="arrow-left" onClick={() => this.handleLeftArrowClick()}/>
-          <div className="button-calendar" onClick={() => this.showCalendar(true)}>
-            <span className="dates-full-width text-capitalize date-num">
-              {selectedDaysText}
-            </span>
-            <div className={classNames('SelectedWeekExample', { 'visibility': !opacity })}>
+          {showArrows && (
+            <span
+              className="arrow-left"
+              onClick={() => this.handleLeftArrowClick()}
+            />
+          )}
+          <div
+            className={`${showArrows && "button-calendar"} button-wrap`}
+            onClick={() => this.showCalendar(true)}
+          >
+            {showArrows && (
+              <span className="dates-full-width text-capitalize date-num">
+                {selectedDaysText}
+              </span>
+            )}
+            <div
+              className={classNames("SelectedWeekExample", {
+                visibility: !opacity,
+              })}
+            >
               <DayPicker
                 selectedDays={selectedDays}
                 modifiers={modifiers}
@@ -249,11 +345,20 @@ class DatePicker extends PureComponent {
               />
             </div>
           </div>
-          <span className="arrow-right" onClick={() => this.handleRightArrowClick()}/>
+          {showArrows && (
+            <span
+              className="arrow-right"
+              onClick={() => this.handleRightArrowClick()}
+            />
+          )}
         </div>
       </div>
     );
   }
 }
+
+DatePicker.defaultProps = {
+  showArrows: true,
+};
 
 export { DatePicker };
