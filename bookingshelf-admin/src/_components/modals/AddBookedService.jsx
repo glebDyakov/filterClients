@@ -176,7 +176,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, dispatch, closeModal, ti
                         return (
                           <div
                             key={staff.staffId}
-                            className="staff-item"
+                            className="staff-item staff_item_mobile"
                           >
                             <img className="staff-image" src={staffData?.imageBase64 ? 'data:image/png;base64,' + staffData.imageBase64 : ''} />
                             <div className="staff-info ">

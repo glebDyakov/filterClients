@@ -1523,7 +1523,7 @@ class AddAppointment extends React.Component {
       >
         <div className="new_appointment">
           <div>
-            <div className="modal-content">
+            <div className="modal-content search__modal">
               <div className="modal-header">
                 {edit_appointment ? (
                   <h4 className="modal-title">{t("Редактировать запись")}</h4>
