@@ -8489,19 +8489,22 @@ textarea {
     padding: 5px 8px;
     cursor: pointer;
   }
+
 }
 
-.button {
-  background: #50a5f1;
-  border-radius: 30px;
-  font-weight: normal;
-  font-size: 13px;
-  line-height: 18px;
-  // display: flex;
-  // align-items: center;
-  text-align: center;
-  color: #ffffff;
-  padding: 10px 35px;
-  height: 38px;
-  border: 0;
+
+
+.modal_add_booking_service {
+  .button {
+    background: #50a5f1;
+    border-radius: 30px;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    color: #ffffff;
+    padding: 10px 35px;
+    height: 38px;
+    border: 0;
+  }
 }
