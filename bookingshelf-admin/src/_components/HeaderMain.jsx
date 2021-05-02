@@ -266,7 +266,7 @@ class HeaderMain extends React.PureComponent {
 
   showSearchedServices = (search, services) => {
     const searchedServices = services.filter((service) =>
-      service.name.includes(search.toLowerCase())
+      service.name.toLowerCase().includes(search.toLowerCase())
     );
 
     return searchedServices.map((searchedService, index) => (
