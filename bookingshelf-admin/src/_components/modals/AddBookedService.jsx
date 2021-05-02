@@ -128,7 +128,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
               </div>
 
               <div className="modal-inner bg-modals">
-                <div className="p-3 bg-white">
+                <div className="p-3 bg-white search__modal_block">
                   <div className="d-flex">
                     <div className="modal__inner_header days-list">
                       {bookingDays.map((bookingDay, index) => {
@@ -172,7 +172,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                               <div className="staff-info ">
                                 <p className="staff-name font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
                                 <div className="staff-service-info-wrap">
-                                  <div className="staff-service-info">{`${staff.serviceDuration / 60} ${t('мин')}`}</div>
+                                  <div className="staff-service-info">{`${staff.serviceDuration / 60} ${t('минут')}`}</div>
                                   <div className="staff-service-info">{`${searchedService.priceFrom}-${searchedService.priceTo} ${searchedService.currency}`}</div>
                                 </div>
                               </div>

@@ -1915,6 +1915,11 @@
           p {
             color: #fff;
           }
+          .title_block{
+            span{
+              color:#fff;
+            }
+          }
         }
 
         .services_items {
@@ -2160,7 +2165,62 @@
       color: #fff;
     }
   }
-
+  .modal_add_booking_service{
+    div{
+      .modal-content{
+        .modal-inner{
+          .search__modal_block{
+            background-color: #2E3548 !important;
+            color: #fff;
+              .modal__inner_header{
+                .days-list-item {
+                  background-color: #222736 !important;
+                    p{
+                    color: #fff;
+                  }
+                  border: 1px solid #46506c !important;
+                  border-radius: 3px;
+                  &.selected-day{
+                    background-color: #50a5f1 !important;
+                  }
+                }
+            }
+            .booking-calendar{
+              border-left: 1px solid #46506c;
+              @media screen and(max-width: 500px) {
+                border: none !important;
+              }
+            }
+            .staff-item{
+              .staff-info {
+                p{
+                  color:#fff
+                }
+                div{
+                  color:#fff
+                }
+                .staff-service-info{
+                  border: 1px solid #46506c;
+                }
+              }
+              .booking-timetable{
+                .selected-time{
+                  background-color: #50a5f1 !important;
+                }
+                .timetable-item{
+                  border: 1px solid #46506c !important;
+                }
+              }
+            }
+          }
+        }
+        .modal-footer{
+          background-color: #2E3548 !important;
+          border: none;
+        }
+      }
+    }
+  }
 }
 
 
