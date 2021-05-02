@@ -2174,21 +2174,21 @@
             color: #fff;
               .modal__inner_header{
                 .days-list-item {
-                  background-color: #222736 !important;
+                  background-color: #222736 ;
                     p{
                     color: #fff;
                   }
                   border: 1px solid #46506c !important;
                   border-radius: 3px;
                   &.selected-day{
-                    background-color: #50a5f1 !important;
+                    background-color: #50a5f1 ;
                   }
                 }
             }
             .booking-calendar{
               border-left: 1px solid #46506c;
               @media screen and(max-width: 500px) {
-                border: none !important;
+                border: none;
               }
             }
             .staff-item{
@@ -2205,7 +2205,7 @@
               }
               .booking-timetable{
                 .selected-time{
-                  background-color: #50a5f1 !important;
+                  background-color: #50a5f1 ;
                 }
                 .timetable-item{
                   border: 1px solid #46506c !important;
@@ -2215,7 +2215,7 @@
           }
         }
         .modal-footer{
-          background-color: #2E3548 !important;
+          background-color: #2E3548 ;
           border: none;
         }
       }
