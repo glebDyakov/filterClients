@@ -176,7 +176,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                                   <div className="staff-service-info">{`${searchedService.priceFrom}-${searchedService.priceTo} ${searchedService.currency}`}</div>
                                 </div>
                               </div>
-                              <div className="m-3 ml-auto booking-timetable">
+                              <div className={"m-3 ml-auto booking-timetable" + `${ staff.availableTimes.length <= 4 ? " timetable_grid_four_elements":"" }`+ `${staff.availableTimes.length >4 && staff.availableTimes.length <= 7 ? " timetable_grid_seven_elements":"" }`}>
                                 {staff.availableTimes.map((availableTime, index) => (
                                   <span
                                     key={availableTime + index}
