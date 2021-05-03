@@ -182,7 +182,8 @@
 }
 
 .search-content-wrapper {
-  overflow: hidden;
+  overflow: auto;
+  max-height: 600px;
   width: 288px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
@@ -2929,7 +2930,7 @@ input {
     font-size: 11px;
     line-height: 18px;
     color: #555b6d;
-    padding: 10px 30px 10px 24px;
+    padding: 10px 16px 10px 24px;
     height: 18px;
     margin: 0;
 
