@@ -8459,12 +8459,12 @@ textarea {
   grid-auto-flow: column;
   gap: 10px;
   &.timetable_grid_four_elements{
-    width: 120px;
-    margin-right: 120px !important;
+    width: 110px;
+    margin-right: 135px !important;
   }
   &.timetable_grid_seven_elements{
     width: 170px;
-    margin-right: 80px !important;
+    margin-right: 75px !important;
 }
   .selected-time {
     background-color: #2A3042;
@@ -8495,13 +8495,11 @@ textarea {
       &.timetable_grid_four_elements{
         width: auto;
         margin-right: 0% !important;
-        grid-template-rows: repeat(1, 1fr); 
         margin-left: 0 !important;
       }
       &.timetable_grid_seven_elements{
         width: auto;
         margin-right: 0% !important;
-        grid-template-rows: repeat(2, 1fr);
         margin-left: 0 !important;
     }
     }
