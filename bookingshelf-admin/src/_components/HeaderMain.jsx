@@ -285,7 +285,7 @@ class HeaderMain extends React.PureComponent {
           {searchedService.specialDescription ||
             this.props.t("Описание отсутствует")}
         </span>
-        <span className="text-info">{`${searchedService.priceFrom} ${searchedService.currency}/ ${searchedService.duration} мин`}</span>
+        <span className="text-info">{`${searchedService.priceFrom} ${searchedService.currency}/ ${searchedService.duration / 60} мин`}</span>
       </div>
     ));
   };
@@ -391,7 +391,7 @@ class HeaderMain extends React.PureComponent {
                   <input
                     className="search-input"
                     type="search"
-                    placeholder={t("Поиск по имени, номеру тел, Email")}
+                    placeholder={t("Поиск клиента, услуги, создание визита")}
                     aria-label="Search"
                     value={search}
                     onChange={this.handleSearch}
@@ -400,7 +400,7 @@ class HeaderMain extends React.PureComponent {
                   <input
                     className="mob-search-input"
                     type="search"
-                    placeholder={t("Поиск по имени, номеру тел, Email")}
+                    placeholder={t("Поиск клиента, услуги, создание визита")}
                     aria-label="Search"
                     value={search}
                     onChange={this.handleSearch}
