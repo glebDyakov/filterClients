@@ -17,7 +17,23 @@ import { calendarActions } from '../../_actions';
 
 const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedService, clients, dispatch }) => {
   const [activeDay, setActiveDay] = useState(new Date());
-  const { data: timetable } = useSWR(['timetableStaffs', activeDay], async () => {
+  const [bookingDays, setBookingDays] = useState([]);
+  const [isTimeLoaded, setIsTimeLoaded] = useState(false);
+
+  const { data: time } = useSWR(['availableTimetableStaffs'], async () => {
+    const from = moment()
+      .startOf('day')
+      .format('x');
+    const to = moment()
+      .add(2, 'months')
+      .endOf('day')
+      .format('x');
+    const result = await staffService.getTimetableStaffs(from, to);
+    return result;
+  });
+
+  
+  const { data: timetable } = useSWR(time ? ['timetableStaffs', activeDay] : null, async () => {
     const from = moment(activeDay)
       .startOf('day')
       .format('x');
@@ -34,17 +50,32 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
     return result;
   });
 
-  const [activeTimesByStaffs, setActiveTimesByStaffs] = useState([]);
-  const [showNextModal, setShowNextModal] = useState(false);
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedStaff, setSelectedStaff] = useState(null);
-  const staffs = useStaffs();
-  const services = useServices();
-  const [bookingDays] = useState(
-    Array(8)
-      .fill({})
-      .map((el, index) => {
-        const day = moment().add(index, 'days');
+  useEffect(() => {
+    const days = [];
+    (time || []).forEach((item) => {
+      if ((searchedService.staffs || []).find((staff) => staff.staffId === item.staffId)) {
+        const serviceDurationMillis = searchedService.duration * 1000;
+        item.availableDays.forEach((day) => {
+          const hasTime = day.availableTimes.reduce(
+            (acc, time) => acc || time.endTimeMillis - time.startTimeMillis >= serviceDurationMillis,
+            false
+          );
+          if (hasTime && !days.includes(day.dayMillis) && days.length < 8) {
+            const indexOfMaxValue = days.indexOf(Math.max(...days));
+            if (indexOfMaxValue === -1 || days[indexOfMaxValue] < day.dayMillis) {
+              days.push(day.dayMillis);
+            } else {
+              days[indexOfMaxValue] = day.dayMillis;
+            }
+          }
+        });
+      }
+    });
+
+    const data = days
+      .sort((a, b) => a - b)
+      .map((el) => {
+        const day = moment(el, 'x');
         const monthDay = day.format('D MMMM');
         const weekDay = day.format('dd');
         const dayStart = day.startOf('day').format('x');
@@ -53,11 +84,31 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
         return {
           day: new Date(day),
           monthDay,
-          weekDay: (index ? '' : `${t('Сегодня')}, `) + weekDay[0].toUpperCase() + weekDay[1],
+          weekDay:
+            (moment(day)
+              .startOf('day')
+              .isSame(moment().startOf('day'))
+              ? `${t('Сегодня')}, `
+              : '') +
+            weekDay[0].toUpperCase() +
+            weekDay[1],
           dayInterval: [dayStart, dayEnd],
         };
-      })
-  );
+      });
+
+    setBookingDays(data);
+    if (!isTimeLoaded) {
+      setActiveDay(data[0] ? new Date(data[0].day) : new Date());
+      setIsTimeLoaded(true);
+    }
+  }, [time]);
+
+  const [activeTimesByStaffs, setActiveTimesByStaffs] = useState([]);
+  const [showNextModal, setShowNextModal] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedStaff, setSelectedStaff] = useState(null);
+  const staffs = useStaffs();
+  const services = useServices();
 
   useEffect(() => {
     if (!searchedService.staffs) return;
@@ -108,9 +159,8 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
     setSelectedTime(availableTime);
   };
 
-  const addAppointment = (appointment, serviceId, staffId, clientId, coStaffs) => dispatch(
-    calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, "", "", coStaffs)
-  );
+  const addAppointment = (appointment, serviceId, staffId, clientId, coStaffs) =>
+    dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, '', '', coStaffs));
 
   const showPrevModal = useCallback(() => setShowNextModal(false), []);
 
@@ -129,35 +179,39 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
 
               <div className="modal-inner bg-modals">
                 <div className="p-3 bg-white search__modal_block">
-                  <div className="d-flex">
-                    <div className="modal__inner_header days-list">
-                      {bookingDays.map((bookingDay, index) => {
-                        const isActiveDay = moment(bookingDay.day)
-                          .startOf('day')
-                          .isSame(moment(activeDay).startOf('day'));
+                  {time ? (
+                    <div className="d-flex">
+                      <div className="modal__inner_header days-list">
+                        {bookingDays.map((bookingDay, index) => {
+                          const isActiveDay = moment(bookingDay.day)
+                            .startOf('day')
+                            .isSame(moment(activeDay).startOf('day'));
 
-                        return (
-                          <div
-                            key={bookingDay.weekDay}
-                            className={`border border-1 days-list-item ${isActiveDay && 'selected-day'}`}
-                            onClick={() => bookingDayOnClick(bookingDay, index)}
-                          >
-                            <p className={`p-0 m-0 font-weight-bold ${isActiveDay && 'text-white'}`}>{bookingDay.monthDay}</p>
-                            <p className={isActiveDay && 'text-white'}>{bookingDay.weekDay}</p>
-                          </div>
-                        );
-                      })}
+                          return (
+                            <div
+                              key={bookingDay.weekDay}
+                              className={`border border-1 days-list-item ${isActiveDay && 'selected-day'}`}
+                              onClick={() => bookingDayOnClick(bookingDay, index)}
+                            >
+                              <p className={`p-0 m-0 font-weight-bold ${isActiveDay && 'text-white'}`}>{bookingDay.monthDay}</p>
+                              <p className={isActiveDay && 'text-white'}>{bookingDay.weekDay}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="border-1 booking-calendar">
+                        <DatePicker
+                          showArrows={false}
+                          language={language}
+                          selectedDay={activeDay}
+                          type="day"
+                          handleDayClick={(day) => setActiveDay(day)}
+                        />
+                      </div>
                     </div>
-                    <div className="border-1 booking-calendar">
-                      <DatePicker
-                        showArrows={false}
-                        language={language}
-                        selectedDay={activeDay}
-                        type="day"
-                        handleDayClick={(day) => setActiveDay(day)}
-                      />
-                    </div>
-                  </div>
+                  ) : (
+                    <Loader />
+                  )}
                   <div>
                     {timetable ? (
                       searchedService.staffs?.map((staff) => {
