@@ -17,7 +17,7 @@ import { calendarActions } from '../../_actions';
 
 const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedService, clients, dispatch }) => {
   const [activeDay, setActiveDay] = useState(new Date());
-  const { data: timetable, error } = useSWR(['timetableStaffs', activeDay], async () => {
+  const { data: timetable } = useSWR(['timetableStaffs', activeDay], async () => {
     const from = moment(activeDay)
       .startOf('day')
       .format('x');
