@@ -221,7 +221,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                             <div key={staff.staffId} className="staff-item staff_item_mobile">
                               <img
                                 className="staff-image"
-                                src={staffData?.imageBase64 ? 'data:image/png;base64,' + staffData.imageBase64 : ''}
+                                src={staffData?.imageBase64 ? 'data:image/png;base64,' + staffData.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
                               />
                               <div className="staff-info ">
                                 <p className="staff-name font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
@@ -230,7 +230,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                                   <div className="staff-service-info">{`${searchedService.priceFrom}-${searchedService.priceTo} ${searchedService.currency}`}</div>
                                 </div>
                               </div>
-                              <div className="m-3 ml-auto booking-timetable">
+                              <div className={"m-3 ml-auto booking-timetable" + `${ staff.availableTimes.length <= 4 ? " timetable_grid_four_elements":"" }`+ `${staff.availableTimes.length >4 && staff.availableTimes.length < 7 ? " timetable_grid_seven_elements":"" }`}>
                                 {staff.availableTimes.map((availableTime, index) => (
                                   <span
                                     key={availableTime + index}

@@ -8459,7 +8459,14 @@ textarea {
   grid-template-rows: repeat(2, 1fr);
   grid-auto-flow: column;
   gap: 10px;
-
+  &.timetable_grid_four_elements{
+    width: 110px;
+    margin-right: 135px !important;
+  }
+  &.timetable_grid_seven_elements{
+    width: 170px;
+    margin-right: 75px !important;
+}
   .selected-time {
     background-color: #2A3042;
   }
@@ -8485,6 +8492,17 @@ textarea {
     @media screen and(max-width: 500px) {
       width: auto;
       margin-top: 30px !important;
+      margin-left: 0 !important;
+      &.timetable_grid_four_elements{
+        width: auto;
+        margin-right: 0% !important;
+        margin-left: 0 !important;
+      }
+      &.timetable_grid_seven_elements{
+        width: auto;
+        margin-right: 0% !important;
+        margin-left: 0 !important;
+    }
     }
   .timetable-item {
     padding: 5px 8px;
