@@ -17,14 +17,15 @@ import { calendarActions } from '../../_actions';
 
 const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedService, clients, dispatch }) => {
   const [activeDay, setActiveDay] = useState(new Date());
+  const [timeTrigger, setTimeTrigger] = useState(false);
   const [bookingDays, setBookingDays] = useState([]);
   const [isTimeLoaded, setIsTimeLoaded] = useState(false);
 
-  const { data: time } = useSWR(['availableTimetableStaffs'], async () => {
-    const from = moment()
+  const { data: time } = useSWR(['availableTimetableStaffs', timeTrigger], async () => {
+    const from = moment(activeDay)
       .startOf('day')
       .format('x');
-    const to = moment()
+    const to = moment(activeDay)
       .add(2, 'months')
       .endOf('day')
       .format('x');
@@ -32,7 +33,6 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
     return result;
   });
 
-  
   const { data: timetable } = useSWR(time ? ['timetableStaffs', activeDay] : null, async () => {
     const from = moment(activeDay)
       .startOf('day')
@@ -72,7 +72,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
           });
         }
       });
-  
+
       const data = days
         .sort((a, b) => a - b)
         .map((el) => {
@@ -81,7 +81,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
           const weekDay = day.format('dd');
           const dayStart = day.startOf('day').format('x');
           const dayEnd = day.endOf('day').format('x');
-  
+
           return {
             day: new Date(day),
             monthDay,
@@ -96,15 +96,14 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
             dayInterval: [dayStart, dayEnd],
           };
         });
-  
-      setBookingDays(data);
-  
+
+      setBookingDays([...data]);
+
       if (!isTimeLoaded) {
         setActiveDay(data.length && data[0] ? new Date(moment(data[0].day).startOf('day')) : new Date());
         setIsTimeLoaded(true);
       }
     }
-    
   }, [time]);
 
   const [activeTimesByStaffs, setActiveTimesByStaffs] = useState([]);
@@ -193,7 +192,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
 
                           return (
                             <div
-                              key={bookingDay.weekDay}
+                              key={bookingDay.dayInterval[0]}
                               className={`border border-1 days-list-item ${isActiveDay && 'selected-day'}`}
                               onClick={() => bookingDayOnClick(bookingDay, index)}
                             >
@@ -209,7 +208,10 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                           language={language}
                           selectedDay={activeDay}
                           type="day"
-                          handleDayClick={(day) => setActiveDay(day)}
+                          handleDayClick={(day) => {
+                            setActiveDay(day);
+                            setTimeTrigger(day);
+                          }}
                         />
                       </div>
                     </div>
@@ -225,7 +227,11 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                             <div key={staff.staffId} className="staff-item staff_item_mobile">
                               <img
                                 className="staff-image"
-                                src={staffData?.imageBase64 ? 'data:image/png;base64,' + staffData.imageBase64 : `${process.env.CONTEXT}public/img/avatar.svg`}
+                                src={
+                                  staffData?.imageBase64
+                                    ? 'data:image/png;base64,' + staffData.imageBase64
+                                    : `${process.env.CONTEXT}public/img/avatar.svg`
+                                }
                               />
                               <div className="staff-info ">
                                 <p className="staff-name font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
@@ -234,7 +240,17 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                                   <div className="staff-service-info">{`${searchedService.priceFrom}-${searchedService.priceTo} ${searchedService.currency}`}</div>
                                 </div>
                               </div>
-                              <div className={"m-3 ml-auto booking-timetable" + `${ staff.availableTimes.length <= 4 ? " timetable_grid_four_elements":"" }`+ `${staff.availableTimes.length >4 && staff.availableTimes.length < 7 ? " timetable_grid_seven_elements":"" }`}>
+                              <div
+                                className={
+                                  'm-3 ml-auto booking-timetable' +
+                                  `${staff.availableTimes.length <= 4 ? ' timetable_grid_four_elements' : ''}` +
+                                  `${
+                                    staff.availableTimes.length > 4 && staff.availableTimes.length < 7
+                                      ? ' timetable_grid_seven_elements'
+                                      : ''
+                                  }`
+                                }
+                              >
                                 {staff.availableTimes.map((availableTime, index) => (
                                   <span
                                     key={availableTime + index}
