@@ -211,6 +211,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                           handleDayClick={(day) => {
                             setActiveDay(day);
                             setTimeTrigger(day);
+                            setIsTimeLoaded(false);
                           }}
                         />
                       </div>
