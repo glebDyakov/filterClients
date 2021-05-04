@@ -106,7 +106,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
     }
   }, [time]);
 
-  const [activeTimesByStaffs, setActiveTimesByStaffs] = useState([]);
+  const [, setActiveTimesByStaffs] = useState([]);
   const [showNextModal, setShowNextModal] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedStaff, setSelectedStaff] = useState(null);
