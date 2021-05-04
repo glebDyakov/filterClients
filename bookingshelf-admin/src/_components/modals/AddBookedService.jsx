@@ -51,56 +51,60 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
   });
 
   useEffect(() => {
-    const days = [];
-    (time || []).forEach((item) => {
-      if ((searchedService.staffs || []).find((staff) => staff.staffId === item.staffId)) {
-        const serviceDurationMillis = searchedService.duration * 1000;
-        item.availableDays.forEach((day) => {
-          const hasTime = day.availableTimes.reduce(
-            (acc, time) => acc || time.endTimeMillis - time.startTimeMillis >= serviceDurationMillis,
-            false
-          );
-          if (hasTime && !days.includes(day.dayMillis) && days.length < 8) {
-            const indexOfMaxValue = days.indexOf(Math.max(...days));
-            if (indexOfMaxValue === -1 || days[indexOfMaxValue] < day.dayMillis) {
-              days.push(day.dayMillis);
-            } else {
-              days[indexOfMaxValue] = day.dayMillis;
+    if (time) {
+      const days = [];
+      (time || []).forEach((item) => {
+        if ((searchedService.staffs || []).find((staff) => staff.staffId === item.staffId)) {
+          const serviceDurationMillis = searchedService.duration * 1000;
+          item.availableDays.forEach((day) => {
+            const hasTime = day.availableTimes.reduce(
+              (acc, time) => acc || time.endTimeMillis - time.startTimeMillis >= serviceDurationMillis,
+              false
+            );
+            if (hasTime && !days.includes(day.dayMillis) && days.length < 8) {
+              const indexOfMaxValue = days.indexOf(Math.max(...days));
+              if (indexOfMaxValue === -1 || days[indexOfMaxValue] < day.dayMillis) {
+                days.push(day.dayMillis);
+              } else {
+                days[indexOfMaxValue] = day.dayMillis;
+              }
             }
-          }
-        });
-      }
-    });
-
-    const data = days
-      .sort((a, b) => a - b)
-      .map((el) => {
-        const day = moment(el, 'x');
-        const monthDay = day.format('D MMMM');
-        const weekDay = day.format('dd');
-        const dayStart = day.startOf('day').format('x');
-        const dayEnd = day.endOf('day').format('x');
-
-        return {
-          day: new Date(day),
-          monthDay,
-          weekDay:
-            (moment(day)
-              .startOf('day')
-              .isSame(moment().startOf('day'))
-              ? `${t('Сегодня')}, `
-              : '') +
-            weekDay[0].toUpperCase() +
-            weekDay[1],
-          dayInterval: [dayStart, dayEnd],
-        };
+          });
+        }
       });
-
-    setBookingDays(data);
-    if (!isTimeLoaded) {
-      setActiveDay(data[0] ? new Date(data[0].day) : new Date());
-      setIsTimeLoaded(true);
+  
+      const data = days
+        .sort((a, b) => a - b)
+        .map((el) => {
+          const day = moment(el, 'x');
+          const monthDay = day.format('D MMMM');
+          const weekDay = day.format('dd');
+          const dayStart = day.startOf('day').format('x');
+          const dayEnd = day.endOf('day').format('x');
+  
+          return {
+            day: new Date(day),
+            monthDay,
+            weekDay:
+              (moment(day)
+                .startOf('day')
+                .isSame(moment().startOf('day'))
+                ? `${t('Сегодня')}, `
+                : '') +
+              weekDay[0].toUpperCase() +
+              weekDay[1],
+            dayInterval: [dayStart, dayEnd],
+          };
+        });
+  
+      setBookingDays(data);
+  
+      if (!isTimeLoaded) {
+        setActiveDay(data.length && data[0] ? new Date(moment(data[0].day).startOf('day')) : new Date());
+        setIsTimeLoaded(true);
+      }
     }
+    
   }, [time]);
 
   const [activeTimesByStaffs, setActiveTimesByStaffs] = useState([]);
