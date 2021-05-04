@@ -239,7 +239,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                                 <p className="staff-name font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
                                 <div className="staff-service-info-wrap">
                                   <div className="staff-service-info">{`${staff.serviceDuration / 60} ${t('минут')}`}</div>
-                                  <div className="staff-service-info">{`${searchedService.priceFrom}-${searchedService.priceTo} ${searchedService.currency}`}</div>
+                                  <div className="staff-service-info">{`${searchedService.priceFrom} - ${searchedService.priceTo} ${searchedService.currency}`}</div>
                                 </div>
                               </div>
                               <div

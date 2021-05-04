@@ -275,14 +275,14 @@ class HeaderMain extends React.PureComponent {
         className="search-wrapper"
         onClick={() => this.onOpenAddBookingServiceModal(searchedService)}
       >
-        <div className="d-flex align-items-center">
+        <div className="d-flex align-items-center search-service-name">
           <span
             className={`color-circle ${searchedService.color.toLowerCase()}`}
           />
           <span className="name">{searchedService.name}</span>
         </div>
         <span>
-          {searchedService.specialDescription ||
+          {searchedService.details ||
             this.props.t("Описание отсутствует")}
         </span>
         <span className="text-info">{`${searchedService.priceFrom} ${searchedService.currency}/ ${searchedService.duration / 60} мин`}</span>
