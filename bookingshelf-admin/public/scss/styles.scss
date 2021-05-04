@@ -8518,6 +8518,24 @@ textarea {
 
 
 .modal_add_booking_service {
+  .modal-content .modal-header .modal-title {
+    font-size: 20px;
+  }
+
+  .modal-content .modal-header {
+    display: flex;
+    align-items: center;
+    .service-info {
+      text-align: left;
+
+      .service-details {
+        font-size: 12px;
+        color: #474747;
+      }
+    }
+  }
+
+
   .loading {
     display: flex;
     justify-content: center;
