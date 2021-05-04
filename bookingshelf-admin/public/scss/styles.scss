@@ -118,10 +118,10 @@
   background-color: #fff;
 
   .color-circle {
+    min-width: 15px;
     width: 15px;
     height: 15px;
-    margin-left: 0;
-    margin-right: 5;
+    margin: 0px 5px 0px 0px;
   }
 
   .name {
@@ -7883,7 +7883,7 @@ textarea {
 
       .modal-inner {
         padding: 15px 30px 0px;
-        min-height: 560px;
+        height: 575px;
         overflow-y: auto;
         overflow-x: hidden;
 
@@ -8531,5 +8531,66 @@ textarea {
     padding: 10px 35px;
     height: 38px;
     border: 0;
+  }
+
+  .modal-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    .d-flex{
+      .color-circle {
+        min-width: 25px;
+        margin-left: 0px;
+      }
+      .modal-title{
+        line-height: 1;
+      }
+      .red {
+        background-color: $red-color;
+      }
+    
+      .green {
+        background-color: $green-color;
+      }
+    
+      .lime {
+        background-color: $lime-color;
+      }
+    
+      .light-green {
+        background-color: $light-green-color;
+      }
+    
+      .green_light {
+        background-color: $light-green-color;
+      }
+    
+      .violet {
+        background-color: $violet-color;
+      }
+    
+      .sky {
+        background-color: $sky-color;
+      }
+    
+      .white {
+        background-color: $white-color;
+      }
+    
+      .rose {
+        background-color: $rose-color;
+      }
+    
+      .yellow {
+        background-color: #f5cc1f;
+      }
+    }
+    .close_btn{
+      width: 23px;
+      height: 23px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
   }
 }

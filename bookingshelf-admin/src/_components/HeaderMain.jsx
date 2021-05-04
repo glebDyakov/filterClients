@@ -275,7 +275,7 @@ class HeaderMain extends React.PureComponent {
         className="search-wrapper"
         onClick={() => this.onOpenAddBookingServiceModal(searchedService)}
       >
-        <div className="d-block">
+        <div className="d-flex align-items-center">
           <span
             className={`color-circle ${searchedService.color.toLowerCase()}`}
           />
