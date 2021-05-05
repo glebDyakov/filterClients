@@ -3001,7 +3001,11 @@
   .search__modal {
     overflow-y: auto;
     height: 720px;
+    @media screen and(max-width: $mob-width) {
+      height: auto;
+    }
   }
+  
 }
 
 .form-group-addService {
