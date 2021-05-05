@@ -3000,8 +3000,12 @@
 .new_appointment {
   .search__modal {
     overflow-y: auto;
-    max-height: 720px;
+    height: 720px;
+    @media screen and(max-width: $mob-width) {
+      height: auto;
+    }
   }
+  
 }
 
 .form-group-addService {

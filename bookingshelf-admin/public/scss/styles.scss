@@ -7879,8 +7879,10 @@ textarea {
 
   div {
     .modal-content {
-      height: 720px;
-
+      height: 700px;
+      @media screen and(max-width: $mob-width) {
+        height: 100%;
+      }
       .modal-header {
         padding: 18px 30px;
       }
@@ -7890,7 +7892,10 @@ textarea {
         min-height: 560px;
         overflow-y: auto;
         overflow-x: hidden;
-
+        @media screen and(max-width: $mob-width) {
+          min-height: 520px;
+          height: 520px;
+        }
         span {
           border-radius: 3px;
           width: 50px;
@@ -8541,7 +8546,9 @@ textarea {
     justify-content: center;
     height: 80px;
   }
-
+.modal-content{
+  height: auto;
+}
   .button {
     background: #50a5f1;
     border-radius: 30px;
@@ -8554,13 +8561,7 @@ textarea {
     height: 38px;
     border: 0;
   }
-  div{
-    .modal-content{
-        .modal-inner {
-        height: 575px;
-      }
-    }
-  }
+
   .modal-header{
     display: flex;
     justify-content: space-between;
