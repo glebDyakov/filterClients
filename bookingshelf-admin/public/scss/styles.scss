@@ -7881,8 +7881,6 @@ textarea {
     .modal-content {
       height: 720px;
       @media screen and(max-width: $mob-width) {
-        // height: 100%;
-        overflow-y: auto;
         max-height: 100vh;
       }
       .modal-header {
