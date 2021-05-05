@@ -3000,7 +3000,7 @@
 .new_appointment {
   .search__modal {
     overflow-y: auto;
-    height: 720px;
+    max-height: 720px;
   }
 }
 
