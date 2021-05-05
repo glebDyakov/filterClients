@@ -3000,10 +3000,14 @@
 .new_appointment {
   .search__modal {
     overflow-y: auto;
+<<<<<<< HEAD
     height: 720px;
     @media screen and(max-width: $mob-width) {
       height: auto;
     }
+=======
+    max-height: 720px;
+>>>>>>> 769342491eb5a022e65832e9c42eb4292fbeb8e9
   }
   
 }

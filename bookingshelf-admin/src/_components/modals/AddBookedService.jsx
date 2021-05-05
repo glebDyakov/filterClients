@@ -174,12 +174,16 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
           <div className="" role="document">
             <div className="modal-content visibleDropdown">
               <div className="modal-header">
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center service-info">
                 <span className={`color-circle ${searchedService.color.toLowerCase()}`}/>
-                <h4 className="modal-title">{searchedService.name}</h4>
+                <div>
+                  <h4 className="modal-title">{searchedService.name}</h4>
+                  {!!searchedService.details && <div className="service-details">{searchedService.details}</div>}
+                </div>
               </div>
               <img className="close_btn" src={`${process.env.CONTEXT}public/img/icons/cancel.svg`} onClick={closeModal} alt={t("Закрыть")}></img>
               </div>
+              
 
               <div className="modal-inner bg-modals">
                 <div className="p-3 bg-white search__modal_block">
@@ -239,7 +243,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                                 <p className="staff-name font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
                                 <div className="staff-service-info-wrap">
                                   <div className="staff-service-info">{`${staff.serviceDuration / 60} ${t('минут')}`}</div>
-                                  <div className="staff-service-info">{`${searchedService.priceFrom}-${searchedService.priceTo} ${searchedService.currency}`}</div>
+                                  <div className="staff-service-info">{`${searchedService.priceFrom} - ${searchedService.priceTo} ${searchedService.currency}`}</div>
                                 </div>
                               </div>
                               <div

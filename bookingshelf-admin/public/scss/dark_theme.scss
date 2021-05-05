@@ -2166,6 +2166,15 @@
     }
   }
   .modal_add_booking_service{
+    .modal-content .modal-header {
+      .service-info {
+        .service-details {
+          font-size: 12px;
+          color: #fff;
+        }
+      }
+    }
+
     div{
       .modal-content{
         .modal-inner{
