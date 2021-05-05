@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import Modal from '@trendmicro/react-modal';
 import { withTranslation } from 'react-i18next';
@@ -26,33 +26,16 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
       .startOf('day')
       .format('x');
     const to = moment(activeDay)
-      .add(2, 'months')
+      .add(1, 'month')
       .endOf('day')
       .format('x');
-    const result = await staffService.getTimetableStaffs(from, to);
-    return result;
-  });
-
-  const { data: timetable } = useSWR(time ? ['timetableStaffs', activeDay] : null, async () => {
-    const from = moment(activeDay)
-      .startOf('day')
-      .format('x');
-    const to = moment(activeDay)
-      .endOf('day')
-      .format('x');
-    const normalViewTimeFrom = moment(parseInt(from)).format('hh:ss');
-    if (normalViewTimeFrom === '03:00') {
-      from = parseInt(from) - 3600 * 1000 * 3;
-      to = parseInt(to) - 3600 * 1000 * 3;
-    }
-
     const result = await staffService.getTimetableStaffs(from, to);
     return result;
   });
 
   useEffect(() => {
     if (time) {
-      const days = [];
+    const days = [];
       (time || []).forEach((item) => {
         if ((searchedService.staffs || []).find((staff) => staff.staffId === item.staffId)) {
           const serviceDurationMillis = searchedService.duration * 1000;
@@ -106,52 +89,11 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
     }
   }, [time]);
 
-  const [, setActiveTimesByStaffs] = useState([]);
   const [showNextModal, setShowNextModal] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const staffs = useStaffs();
   const services = useServices();
-
-  useEffect(() => {
-    if (!searchedService.staffs) return;
-    searchedService.staffs.forEach((staff, index) => {
-      const staffTimetable = timetable?.find((staffTimetable) => staffTimetable.staffId === staff.staffId);
-
-      searchedService.staffs[index] = {
-        ...searchedService.staffs[index],
-        ...staffTimetable,
-      };
-
-      searchedService.staffs[index].availableTimes = staffTimetable?.availableDays?.[0]?.availableTimes.reduce((acc, availableTime) => {
-        const serviceDurationMillis = staff.serviceDuration * 1000;
-        const endTimeBookingMillis = availableTime.endTimeMillis - serviceDurationMillis;
-        const intervalMillis = 30 * 60 * 1000;
-        let subtimeMillis = availableTime.startTimeMillis;
-
-        while (subtimeMillis <= endTimeBookingMillis) {
-          acc.push(moment(subtimeMillis, 'x').format('HH:mm'));
-          subtimeMillis += intervalMillis;
-        }
-
-        return acc;
-      }, []);
-    });
-
-    setActiveTimesByStaffs(
-      searchedService.staffs.reduce(
-        (acc, staff) => (
-          staff.availableTimes &&
-            acc.push({
-              staffId: staff.staffId,
-              activeTimes: [],
-            }),
-          acc
-        ),
-        []
-      )
-    );
-  }, [timetable]);
 
   const bookingDayOnClick = (bookingDay) => {
     setActiveDay(bookingDay.day);
@@ -166,6 +108,31 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
     dispatch(calendarActions.addAppointment(JSON.stringify(appointment), serviceId, staffId, clientId, '', '', coStaffs));
 
   const showPrevModal = useCallback(() => setShowNextModal(false), []);
+
+  const getAvailableTimes = (staffId) => {
+    const staff = (time || []).find((staff) => staffId === staff.staffId);
+    if (staff) {
+      const day = staff.availableDays.find((day) => moment(day.dayMillis, 'x').startOf('day').isSame(moment(activeDay).startOf('day')));
+      if (day) {
+        const availableTimes = [];
+         day.availableTimes.forEach((item) => {
+          const duration = searchedService.duration * 1000;
+          const hasTime = item.endTimeMillis - item.startTimeMillis >= duration;
+          if (hasTime) {
+            let start = item.startTimeMillis;
+            while (start <= item.endTimeMillis) {
+              availableTimes.push(moment(start, 'x').format('HH:mm'));
+              start += duration;
+            }
+          }
+        });
+
+        return availableTimes;
+      }
+      return null;
+    }
+    return null;
+  }
 
   return (
     <>
@@ -225,9 +192,9 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                     <Loader />
                   )}
                   <div>
-                    {timetable ? (
-                      searchedService.staffs?.map((staff) => {
-                        if (staff.availableTimes) {
+                    {searchedService.staffs?.map((staff) => {
+                        const availableTimes = getAvailableTimes(staff.staffId);
+                        if (availableTimes) {
                           const staffData = staffs.staff.find((item) => item.staffId === staff.staffId);
                           return (
                             <div key={staff.staffId} className="staff-item staff_item_mobile">
@@ -240,7 +207,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                                 }
                               />
                               <div className="staff-info ">
-                                <p className="staff-name font-weight-bold">{`${staff.firstName} ${staff.lastName}`}</p>
+                                <p className="staff-name font-weight-bold">{`${staffData.firstName} ${staffData.lastName}`}</p>
                                 <div className="staff-service-info-wrap">
                                   <div className="staff-service-info">{`${staff.serviceDuration / 60} ${t('минут')}`}</div>
                                   <div className="staff-service-info">{`${searchedService.priceFrom} - ${searchedService.priceTo} ${searchedService.currency}`}</div>
@@ -249,21 +216,21 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                               <div
                                 className={
                                   'm-3 ml-auto booking-timetable' +
-                                  `${staff.availableTimes.length <= 4 ? ' timetable_grid_four_elements' : ''}` +
+                                  `${availableTimes.length <= 4 ? ' timetable_grid_four_elements' : ''}` +
                                   `${
-                                    staff.availableTimes.length > 4 && staff.availableTimes.length < 7
+                                    availableTimes.length > 4 && availableTimes.length < 7
                                       ? ' timetable_grid_seven_elements'
                                       : ''
                                   }`
                                 }
                               >
-                                {staff.availableTimes.map((availableTime, index) => (
+                                {availableTimes.map((availableTime, index) => (
                                   <span
                                     key={availableTime + index}
                                     className={`timetable-item border border-1 ${selectedStaff?.staffId === staff.staffId &&
                                       availableTime === selectedTime &&
                                       'text-white selected-time'}`}
-                                    onClick={() => availableTimeOnClick(staff, availableTime)}
+                                    onClick={() => availableTimeOnClick({ ...staffData, availableTimes }, availableTime)}
                                   >
                                     {availableTime}
                                   </span>
@@ -272,10 +239,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
                             </div>
                           );
                         }
-                      })
-                    ) : (
-                      <Loader />
-                    )}
+                      })}
                   </div>
                 </div>
               </div>
@@ -325,7 +289,6 @@ AddBookedServiceModal.propTypes = {
   language: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
-  timetable: PropTypes.array.isRequired,
   searchedService: PropTypes.object.isRequired,
 };
 
