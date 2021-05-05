@@ -7879,9 +7879,9 @@ textarea {
 
   div {
     .modal-content {
-      height: 700px;
+      height: 720px;
       @media screen and(max-width: $mob-width) {
-        height: 100%;
+        max-height: 100vh;
       }
       .modal-header {
         padding: 18px 30px;
@@ -8621,6 +8621,15 @@ textarea {
       &:hover{
         cursor: pointer;
       }
+    }
+  }
+}
+@media screen and(max-width: $mob-width) {
+.new_appointment {
+  .modal-content {
+    
+      overflow-y: auto;
+      max-height: 100vh;
     }
   }
 }
