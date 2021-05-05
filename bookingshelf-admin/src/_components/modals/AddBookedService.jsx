@@ -26,7 +26,7 @@ const AddBookedServiceModal = ({ t, i18n: { language }, closeModal, searchedServ
       .startOf('day')
       .format('x');
     const to = moment(activeDay)
-      .add(1, 'month')
+      .add(2, 'months')
       .endOf('day')
       .format('x');
     const result = await staffService.getTimetableStaffs(from, to);
