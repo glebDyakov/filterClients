@@ -316,7 +316,6 @@
     .modal-content {
       max-width: 80%;
       margin: auto;
-
       @media screen and(max-width: $mob-width) {
         max-width: 100%;
       }
@@ -3001,7 +3000,11 @@
   .search__modal {
     overflow-y: auto;
     height: 720px;
+    @media screen and(max-width: $mob-width) {
+      height: auto;
+    }
   }
+  
 }
 
 .form-group-addService {
