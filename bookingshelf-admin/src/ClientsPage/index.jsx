@@ -8,13 +8,19 @@ import UserInfo from './UserInfo';
 
 import { staffActions } from '../_actions/staff.actions';
 import { clientActions } from '../_actions';
+import { clientService } from "../_services";
 
 import { access } from '../_helpers/access';
 
 import '../../public/scss/clients.scss';
 import {withTranslation} from "react-i18next";
+import { store } from '../_helpers';
 
 class Index extends Component {
+  
+  needClean = false
+  clients = [];
+
   constructor(props) {
     super(props);
 
@@ -24,6 +30,14 @@ class Index extends Component {
     document.title = props.t('Клиенты | Онлайн-запись');
 
     this.state = {
+      activeClients: '',
+      regularClients: '',
+      inactiveClients: '',
+      missingClients: '',
+      notvisitedClients: '',
+      newClients: '',
+      blacklistedClients: '',
+      problemClients: '',
       client: props.client,
       edit: false,
       client_working: {},
@@ -38,6 +52,18 @@ class Index extends Component {
       clientForDel: 0,
       handleOpen: false,
       isOpenDropdownMenu: false,
+      filterEnable:false,
+      checkboxFilters:
+      [false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false],
+        allClients:[],
+        SortClients:[]
     };
 
     this.uploadFile = React.createRef();
@@ -65,6 +91,15 @@ class Index extends Component {
     this.handleOpenDropdownMenu = this.handleOpenDropdownMenu.bind(this);
     this.isLeapYear = this.isLeapYear.bind(this);
     this.calcDiff = this.calcDiff.bind(this);
+    this.activeFilterChange=this.activeFilterChange.bind(this)
+    this.inActiveFilterChange=this.inActiveFilterChange.bind(this)
+    this.missingFilterChange=this.missingFilterChange.bind(this)
+    this.problemFilterChange=this.problemFilterChange.bind(this)
+    this.blackListFilterChange=this.blackListFilterChange.bind(this)
+    this.notVisitedFilterChange=this.notVisitedFilterChange.bind(this)
+    this.regularFilterChange=this.regularFilterChange.bind(this)
+    this.newFilterChange=this.newFilterChange.bind(this)
+    
   }
 
   handleOpenModal(e) {
@@ -98,15 +133,59 @@ class Index extends Component {
     }
   }
 
-  componentDidMount() {
+   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
 
     if (this.props.authentication.loginChecked) {
       this.queryInitData();
     }
     initializeJs();
+    
   }
+ async componentWillMount(){
 
+
+  const activeClients = await clientService.getClientsByType('active')
+  const regularClients = await clientService.getClientsByType('regular')
+  const inactiveClients = await clientService.getClientsByType('inactive')
+  const missingClients = await clientService.getClientsByType('missing')
+  const notvisitedClients = await clientService.getClientsByType('notvisited')
+  const newClients = await clientService.getClientsByType('new')
+  const blacklistedClients = await clientService.getClientsByType('blacklisted')
+  const problemClients = await clientService.getClientsByType('problem')
+  
+  this.setState({
+    activeClients: await clientService.getClientsByType('active'),
+    regularClients: await clientService.getClientsByType('regular'),
+    inactiveClients: await clientService.getClientsByType('inactive'),
+    missingClients: await clientService.getClientsByType('missing'),
+    notvisitedClients: await clientService.getClientsByType('notvisited'),
+    newClients: await clientService.getClientsByType('new'),
+    blacklistedClients: await clientService.getClientsByType('blacklisted'),
+    problemClients: await clientService.getClientsByType('problem'),
+    
+  })
+    
+
+  this.setState({
+    allClients: [
+      ...this.state.problemClients,
+      ...this.state.activeClients,
+      ...this.state.inactiveClients,
+      ...this.state.regularClients,
+      ...this.state.missingClients,
+      ...this.state.notvisitedClients,
+      ...this.state.newClients,
+      ...this.state.blacklistedClients
+    ]
+  })
+
+  await this.setState({
+    SortClients: this.state.allClients
+  })
+
+  
+  }
   queryInitData() {
     // this.props.dispatch(clientActions.getClient());
     // this.props.dispatch(clientActions.getClientWithInfo());
@@ -200,6 +279,209 @@ class Index extends Component {
     }
   }
 
+ChangeFilter=()=>{
+  this.setState({filterEnable:!this.state.filterEnable})
+  this.clients = []
+  if(this.state.filterEnable){
+    for(let customcheckbox of document.querySelectorAll('.customcheckboxes')) {
+      customcheckbox.checked = false
+    }
+    this.setState({SortClients:this.state.allClients})
+    
+    this.setState({
+      checkboxFilters: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    })
+    
+  }
+}
+
+  SortFilterChange=(filterIndex) => {
+    if(this.state.checkboxFilters[filterIndex]){
+      if(this.needClean){
+        this.clients = []
+        this.needClean = false
+      }
+      if(filterIndex == 0 && this.state.activeClients !== ""){
+        this.clients =  [ ...this.clients, ...this.state.activeClients ]
+      }
+      if(filterIndex == 1 && this.state.regularClients !== ""){
+        this.clients = [ ...this.clients, ...this.state.regularClients ]
+      }
+      if(filterIndex == 2 && this.state.inactiveClients !== ""){
+        this.clients = [ ...this.clients, ...this.state.inactiveClients ]
+      }
+      if(filterIndex == 3 && this.state.missingClients !== ""){
+        this.clients = [ ...this.clients, ...this.state.missingClients ]
+      }
+      if(filterIndex == 4  && this.state.notvisitedClients !== ""){
+        this.clients = [ ...this.clients, ...this.state.notvisitedClients ]
+      }
+      if(filterIndex == 5  && this.state.newClients !== ""){
+        this.clients = [ ...this.clients, ...this.state.newClients ]
+      }
+      if(filterIndex == 6  && this.state.problemClients !== ""){
+        this.clients = [ ...this.clients, ...this.state.problemClients ]
+      }
+      if(filterIndex == 7  && this.state.blacklistedClients !== ""){
+        this.clients = [ ...this.clients, ...this.state.blacklistedClients ]
+      }
+    }
+    else if(!this.state.checkboxFilters[filterIndex]){
+      this.clients = []
+      this.state.checkboxFilters.map((checkboxFilter, checkboxFilterIndex) => {
+        if(this.state.checkboxFilters.every((value) => {
+            this.needClean = true
+            return value === false
+          })
+        ) {
+          this.clients =this.state.allClients
+        } else if(checkboxFilter){
+          if(checkboxFilterIndex == 0 && this.state.activeClients !== ""){
+            this.state.activeClients.map((activeClient) => {
+              this.clients.push(activeClient)
+            })
+          } else if(checkboxFilterIndex == 1 && this.state.regularClients !== ""){
+            this.state.regularClients.map((regularClient) => {
+              this.clients.push(regularClient)
+            })
+          } else if(checkboxFilterIndex == 2 && this.state.inactiveClients !== ""){
+            this.state.inactiveClients.map((inactiveClient) => {
+              this.clients.push(inactiveClient)
+            })
+          } else if(checkboxFilterIndex == 3 && this.state.missingClients !== ""){
+            this.state.missingClients.map((missingClient) => {
+              this.clients.push(missingClient)
+            })
+          } else if(checkboxFilterIndex == 4  && this.state.notvisitedClients !== ""){
+            this.state.notvisitedClients.map((notvisitedClient) => {
+              this.clients.push(notvisitedClient)
+            })
+          } else if(checkboxFilterIndex == 5  && this.state.newClients !== ""){
+            this.state.newClients.map((newClient) => {
+              this.clients.push(newClient)
+            })
+          } else if(checkboxFilterIndex == 6  && this.state.problemClients !== ""){
+            this.state.problemClients.map((problemClient) => {
+              this.clients.push(problemClient)
+            })
+          } else if(checkboxFilterIndex == 7  && this.state.blacklistedClients !== ""){
+            this.state.blacklistedClients.map((blacklistedClient) => {
+              this.clients.push(blacklistedClient)
+            })
+          }
+        }
+      })
+        
+      
+     
+    }
+     this.setState({
+      SortClients: this.clients
+     })
+  }
+
+  onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+  
+  activeFilterChange(){
+    if(this.state.filterEnable){
+      const actualFilters = this.state.checkboxFilters
+      actualFilters[0] = !this.state.checkboxFilters[0]
+      this.setState({
+        checkboxFilters: actualFilters
+      })
+      this.SortFilterChange(0)
+    }
+  }
+
+  regularFilterChange=()=>{
+    if(this.state.filterEnable){
+      const actualFilters = this.state.checkboxFilters
+      actualFilters[1] = !this.state.checkboxFilters[1]
+      this.setState({
+        checkboxFilters: actualFilters
+      })
+      this.SortFilterChange(1)
+    }
+  }
+
+  inActiveFilterChange=()=>{
+    if(this.state.filterEnable){
+      const actualFilters = this.state.checkboxFilters
+      actualFilters[2] = !this.state.checkboxFilters[2]
+      this.setState({
+        checkboxFilters: actualFilters
+      })
+      this.SortFilterChange(2)
+    }
+  }
+
+  missingFilterChange=()=>{
+    if(this.state.filterEnable){
+      const actualFilters = this.state.checkboxFilters
+      actualFilters[3] = !this.state.checkboxFilters[3]
+      this.setState({
+        checkboxFilters: actualFilters
+      })
+      this.SortFilterChange(3)
+    }
+  }
+
+  notVisitedFilterChange=()=>{
+    if(this.state.filterEnable){
+      const actualFilters = this.state.checkboxFilters
+      actualFilters[4] = !this.state.checkboxFilters[4]
+      this.setState({
+        checkboxFilters: actualFilters
+      })
+      this.SortFilterChange(4)
+    }
+  }
+
+  newFilterChange=()=>{
+    if(this.state.filterEnable){
+      const actualFilters = this.state.checkboxFilters
+      actualFilters[5] = !this.state.checkboxFilters[5]
+      this.setState({
+        checkboxFilters: actualFilters
+      })
+      this.SortFilterChange(5)
+    }
+  }
+
+  problemFilterChange=()=>{
+    if(this.state.filterEnable){
+      const actualFilters = this.state.checkboxFilters
+      actualFilters[6] = !this.state.checkboxFilters[6]
+      this.setState({
+        checkboxFilters: actualFilters
+      })
+      this.SortFilterChange(6)
+    }
+  }
+
+  blackListFilterChange=()=>{
+    if(this.state.filterEnable){
+      const actualFilters = this.state.checkboxFilters
+      actualFilters[7] = !this.state.checkboxFilters[7]
+      this.setState({
+        checkboxFilters: actualFilters
+      })
+      this.SortFilterChange(7)
+    }
+  }
+  
+  
 
   render() {
     const {
@@ -215,206 +497,261 @@ class Index extends Component {
 
     const companyTypeId = this.props.company && this.props.company.settings && this.props.company.settings.companyTypeId;
 
+    
+    
+    
+    //console.log(clients[0].address);
+
     return (
-      <div className="clients-page">
-        {isLoading &&
-                <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+      <div style={{ display: "flex"  }}>
+        <div  style={{ overflow: "scroll", height: "500px", width:"350px", margin: "0px 5px" }} className="clients-page">
+          <div>
+            <div style={{ display: "flex"  }}>
+            <input   onChange={this.ChangeFilter} type="checkbox" />
+            <p className="font-weight-bold">Фильтры</p>
+            </div>
+            <div style={{ display: 'flex' }}>
+              <input className={'customcheckboxes'} disabled={!this.state.filterEnable}  type="checkbox" onChange={this.activeFilterChange}/>
+              <p className="font-weight-bold">Наиболее активные</p>
+              <div className="text-light" style={{boxSizing: 'border-box', padding: '10px', textAlign: 'center', width: '30px', height: '30px', backgroundColor: 'cyan', borderRadius: '100%' }}>{ this.state.activeClients.length }</div>
+            </div>
+            <div style={{ display: 'flex' }}>
+            <input className={'customcheckboxes'}  disabled={!this.state.filterEnable} type="checkbox" onChange={this.regularFilterChange}/>
+            <p className="font-weight-bold">Постоянные</p>
+            <div className="text-light" style={{ boxSizing: 'border-box', padding: '10px', textAlign: 'center', width: '30px', height: '30px', backgroundColor: 'green', borderRadius: '100%' }}>{ this.state.regularClients.length }</div>
+            </div>
+            <div style={{ display: 'flex' }}>
+            <input className={'customcheckboxes'} disabled={!this.state.filterEnable} type="checkbox" onChange={this.inActiveFilterChange}/>
+            <p className="font-weight-bold">Не активные</p>
+            <div className="text-light" style={{ boxSizing: 'border-box', padding: '10px', textAlign: 'center', width: '30px', height: '30px', backgroundColor: 'orange', borderRadius: '100%' }}>{ this.state.inactiveClients.length }</div>
+            </div>
+            <div style={{ display: 'flex' }}>
+            <input className={'customcheckboxes'} disabled={!this.state.filterEnable} type="checkbox" onChange={this.missingFilterChange}/>
+            <p className="font-weight-bold">Пропавшие</p>
+            <div className="text-light" style={{ boxSizing: 'border-box', padding: '10px', textAlign: 'center', width: '30px', height: '30px', backgroundColor: 'red', borderRadius: '100%' }}>{ this.state.missingClients.length }</div>
+            </div>
+            <div style={{ display: 'flex' }}>
+            <input className={'customcheckboxes'} disabled={!this.state.filterEnable} type="checkbox" onChange={this.notVisitedFilterChange}/>
+            <p className="font-weight-bold">Не посещали</p>
+            <div className="text-light" style={{ boxSizing: 'border-box', padding: '10px', textAlign: 'center', width: '30px', height: '30px', backgroundColor: 'black', borderRadius: '100%' }}>{ this.state.notvisitedClients.length }</div>
+            </div>
+            <div style={{ display: 'flex' }}>
+            <input className={'customcheckboxes'} disabled={!this.state.filterEnable} type="checkbox" onChange={this.newFilterChange}/>
+            <p className="font-weight-bold">Новые клиенты</p>
+            <div className="text-light" style={{ boxSizing: 'border-box', padding: '10px', textAlign: 'center', width: '30px', height: '30px', backgroundColor: 'blue', borderRadius: '100%' }}>{ this.state.newClients.length }</div>
+            </div>
+            <div style={{ display: 'flex' }}>
+            <input className={'customcheckboxes'} disabled={!this.state.filterEnable} type="checkbox" onChange={this.problemFilterChange}/>
+            <p className="font-weight-bold">Проблемные</p>
+            <div className="text-light" style={{ boxSizing: 'border-box', padding: '10px', textAlign: 'center', width: '30px', height: '30px', backgroundColor: 'black', borderRadius: '100%' }}>{ this.state.problemClients.length }</div>
+            </div>
+            <div style={{ display: 'flex' }}>
+            <input className={'customcheckboxes'} disabled={!this.state.filterEnable}  type="checkbox" onChange={this.blackListFilterChange}/>
+            <p className="font-weight-bold">Черный список</p>
+            <div className="text-light" style={{ boxSizing: 'border-box', padding: '10px', textAlign: 'center', width: '30px', height: '30px', backgroundColor: 'black', borderRadius: '100%' }}>{ this.state.blacklistedClients.length }</div>
+            </div>
+          </div>
+        </div>
+        <div className="clients-page">
+          
+          {isLoading &&
+                  <div className="loader"><img src={`${process.env.CONTEXT}public/img/spinner.gif`} alt=""/></div>}
+          <div style={{ position: 'relative' }} className="clients-page-container">
+            <div style={{ zIndex: 2 }} className="row content clients">
+              {/* <StaffChoice*/}
+              {/*    selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}*/}
+              {/*    typeSelected={typeSelected}*/}
+              {/*    staff={staff.staff}*/}
+              {/*    timetable={staff.staff}*/}
+              {/*    setWorkingStaff={this.setWorkingStaff}*/}
+              {/*    hideWorkingStaff={true}*/}
+              {/* />*/}
+              
+              <div className="search">
+                
+                <input type="search" placeholder={(companyTypeId === 4 ? t("Поиск пациента") : t("Поиск клиента"))}
+                  aria-label="Search" ref={(input) => this.search = input} onChange={this.handleSearch}/>
+                <button className="search-icon" type="submit"/>
+              </div>
 
+              <div className="header-tabs d-flex">
+                
+                <a className={'nav-link' + (activeTab === 'clients' ? ' active show' : '')}
+                  data-toggle="tab" href="#tab1" onClick={() => {
+                    this.setTab('clients');
+                  }}>{companyTypeId === 4 ? t("Пациенты") : t("Клиенты")}</a>
+                <a className={'nav-link' + (activeTab === 'blacklist' ? ' active show' : '')}
+                  data-toggle="tab" href="#tab2" onClick={() => this.setTab('blacklist')}>{t("Черный список")}</a>
+              </div>
 
-        <div style={{ position: 'relative' }} className="clients-page-container">
-          <div style={{ zIndex: 2 }} className="row content clients">
-            {/* <StaffChoice*/}
-            {/*    selectedStaff={selectedStaffList && selectedStaffList[0] && JSON.stringify(selectedStaffList[0])}*/}
-            {/*    typeSelected={typeSelected}*/}
-            {/*    staff={staff.staff}*/}
-            {/*    timetable={staff.staff}*/}
-            {/*    setWorkingStaff={this.setWorkingStaff}*/}
-            {/*    hideWorkingStaff={true}*/}
-            {/* />*/}
+              <div className={'header-tabs-mob' + (this.state.isOpenDropdownMenu ? ' opened' : '')}>
+                <p onClick={this.handleOpenDropdownMenu}
+                  className="dropdown-button">{activeTab === 'clients' ? (companyTypeId === 4 ? t("Пациенты") : t("Клиенты")) : t('Черный список')}</p>
 
-            <div className="search">
-              <input type="search" placeholder={(companyTypeId === 4 ? t("Поиск пациента") : t("Поиск клиента"))}
-                aria-label="Search" ref={(input) => this.search = input} onChange={this.handleSearch}/>
-              <button className="search-icon" type="submit"/>
+                {this.state.isOpenDropdownMenu && (
+                  <div className="dropdown-buttons">
+                    <a className={'nav-link' + (activeTab === 'clients' ? ' active show' : '')}
+                      data-toggle="tab" href="#tab1" onClick={() => {
+                        this.setTab('clients');
+                        this.handleOpenDropdownMenu();
+                      }}>{companyTypeId === 4 ? t("Пациенты") : t("Клиенты")}</a>
+                    <a className={'nav-link' + (activeTab === 'blacklist' ? ' active show' : '')}
+                      data-toggle="tab" href="#tab2" onClick={() => {
+                        this.setTab('blacklist');
+                        this.handleOpenDropdownMenu();
+                      }}>{t("Черный список")}</a>
+                  </div>
+                )}
+              </div>
+              
+              <div className="col-2 d-flex justify-content-end export-container">
+                {/* {access(5) &&*/}
+                {/* <div className="export">*/}
+                {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
+                {/*        <input onChange={this.onFileChange} type="file" className="button client-download"
+                ref={this.uploadFile} />*/}
+                {/*        <input type="submit" value="Загрузить" />*/}
+                {/*    </form>*/}
+                {/* </div>}*/}
+                {access(5) &&
+                  <div className="export">
+                    <button onClick={this.downloadFile} type="button" className="button client-download">
+                      {t("Скачать CSV")}
+                    </button>
+                  </div>
+                }
+              </div>
             </div>
 
-            <div className="header-tabs d-flex">
-              <a className={'nav-link' + (activeTab === 'clients' ? ' active show' : '')}
-                data-toggle="tab" href="#tab1" onClick={() => {
-                  this.setTab('clients');
-                }}>{companyTypeId === 4 ? t("Пациенты") : t("Клиенты")}</a>
-              <a className={'nav-link' + (activeTab === 'blacklist' ? ' active show' : '')}
-                data-toggle="tab" href="#tab2" onClick={() => this.setTab('blacklist')}>{t("Черный список")}</a>
-            </div>
-
-            <div className={'header-tabs-mob' + (this.state.isOpenDropdownMenu ? ' opened' : '')}>
-              <p onClick={this.handleOpenDropdownMenu}
-                className="dropdown-button">{activeTab === 'clients' ? (companyTypeId === 4 ? t("Пациенты") : t("Клиенты")) : t('Черный список')}</p>
-
-              {this.state.isOpenDropdownMenu && (
-                <div className="dropdown-buttons">
-                  <a className={'nav-link' + (activeTab === 'clients' ? ' active show' : '')}
-                    data-toggle="tab" href="#tab1" onClick={() => {
-                      this.setTab('clients');
-                      this.handleOpenDropdownMenu();
-                    }}>{companyTypeId === 4 ? t("Пациенты") : t("Клиенты")}</a>
-                  <a className={'nav-link' + (activeTab === 'blacklist' ? ' active show' : '')}
-                    data-toggle="tab" href="#tab2" onClick={() => {
-                      this.setTab('blacklist');
-                      this.handleOpenDropdownMenu();
-                    }}>{t("Черный список")}</a>
-                </div>
+            <div className="final-clients">
+              <div className="tab-content-list" style={{ position: 'relative' }}>
+                <div className="column-header">{companyTypeId === 4 ? t("Имя пациента") : t("Имя клиента")}</div>
+                <div className="column-header">{t("Телефон/Email")}</div>
+                <div className="column-header">{t("Адрес")}</div>
+                <div className="column-header">{t("Последний визит")}</div>
+                <div className="column-header">{t("Скидка")}</div>
+                <div className="column-header">{t("День Рождения")}</div>
+              </div>
+                
+              {finalClients && this.state.SortClients.map((client_user, i) => {
+                let condition = true;
+                if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
+                  condition = client_user.appointments.find((appointment) => selectedStaffList
+                    .find((selectedStaff) => appointment.staffId === selectedStaff.staffId),
+                  );
+                }
+                return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
+                  
+                  <UserInfo
+                    client_user={client_user}
+                    activeTab={activeTab}
+                    i={i}
+                    dispatch={this.props.dispatch}
+                    handleClick={this.handleClick}
+                    updateClient={this.updateClient}
+                    openClientsStats={this.openClientStats}
+                  />
+                );
+              },
               )}
             </div>
 
-            <div className="col-2 d-flex justify-content-end export-container">
-              {/* {access(5) &&*/}
-              {/* <div className="export">*/}
-              {/*    <form onSubmit={this.handleFileSubmit} encType="multipart/form-data">*/}
-              {/*        <input onChange={this.onFileChange} type="file" className="button client-download"
-              ref={this.uploadFile} />*/}
-              {/*        <input type="submit" value="Загрузить" />*/}
-              {/*    </form>*/}
-              {/* </div>}*/}
-              {access(5) &&
-                <div className="export">
-                  <button onClick={this.downloadFile} type="button" className="button client-download">
-                    {t("Скачать CSV")}
+            <div className="tab-content">
+              {(!isLoading && (!defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients']
+                || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length === 0)) &&
+                  <div className="no-holiday">
+                    {(this.search && this.search.value.length > 0)
+                      ? <span>{t("Поиск результатов не дал")}</span>
+                      : (
+                        <span>
+                          {client.error ? client.error : (companyTypeId === 4 ? t("Пациенты не добавлены") : t('Клиенты не добавлены'))}
+                          {activeTab === 'clients' &&
+                                  <button
+                                    type="button"
+                                    className="button mt-3 p-3"
+                                    onClick={(e) => this.handleClick(null, e)}
+                                  >
+                                      {companyTypeId === 4 ? t("Добавить нового пациента") : t("Добавить нового клиента")}
+                                  </button>
+                          }
+                          {activeTab === 'blacklist' &&
+                                  <button
+                                    type="button"
+                                    className="button mt-3 p-3"
+                                    data-target=".add-black-list-modal"
+                                    data-toggle="modal"
+                                    onClick={this.addToBlackList}
+                                  >
+                                    {t("Добавить в черный список")}
+                                  </button>
+                          }
+                        </span>
+                      )
+                    }
+                  </div>
+              }
+            </div>
+
+            <div className="paginator-wrapper">
+              <Paginator
+                finalTotalPages={finalTotalPages}
+                onPageChange={this.handlePageClick}
+              />
+            </div>
+          </div>
+          <div ref={this.setWrapperRef}>
+            <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#" onClick={this.handleOpenModal}/>
+            <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
+              <div className="buttons">
+                {activeTab === 'clients' &&
+                  <button type="button" className="button" onClick={(e) => {
+                    this.handleClick(null, e);
+                    this.handleOpenModal();
+                  }}
+                  >
+                    {companyTypeId === 4 ? t("Новый пациент") : t("Новый клиент")}
                   </button>
-                </div>
-              }
+                }
+                {activeTab === 'blacklist' &&
+                  <button type="button" className="button"
+                    data-target=".add-black-list-modal"
+                    data-toggle="modal"
+                    onClick={this.addToBlackList}
+                  >
+                    {t("Добавить в черный список")}
+                  </button>
+                }
+              </div>
+              <div className="arrow"/>
             </div>
           </div>
 
-          <div className="final-clients">
-            <div className="tab-content-list" style={{ position: 'relative' }}>
-              <div className="column-header">{companyTypeId === 4 ? t("Имя пациента") : t("Имя клиента")}</div>
-              <div className="column-header">{t("Телефон/Email")}</div>
-              <div className="column-header">{t("Адрес")}</div>
-              <div className="column-header">{t("Последний визит")}</div>
-              <div className="column-header">{t("Скидка")}</div>
-              <div className="column-header">{t("День Рождения")}</div>
-            </div>
-
-            {finalClients && finalClients.sort((a, b) => {
-              return this.calcDiff(a.birthDate) - this.calcDiff(b.birthDate);
-            }).map((client_user, i) => {
-              let condition = true;
-              if ((typeSelected !== 2) && selectedStaffList && selectedStaffList.length) {
-                condition = client_user.appointments.find((appointment) => selectedStaffList
-                  .find((selectedStaff) => appointment.staffId === selectedStaff.staffId),
-                );
-              }
-              return condition && (activeTab === 'blacklist' ? client_user.blacklisted : !client_user.blacklisted) && (
-                <UserInfo
-                  client_user={client_user}
-                  activeTab={activeTab}
-                  i={i}
-                  dispatch={this.props.dispatch}
-                  handleClick={this.handleClick}
-                  updateClient={this.updateClient}
-                  openClientsStats={this.openClientStats}
-                />
-              );
-            },
-            )}
-          </div>
-
-          <div className="tab-content">
-            {(!isLoading && (!defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients']
-              || defaultClientsList[activeTab === 'clients' ? 'client' : 'blacklistedClients'].length === 0)) &&
-                <div className="no-holiday">
-                  {(this.search && this.search.value.length > 0)
-                    ? <span>{t("Поиск результатов не дал")}</span>
-                    : (
-                      <span>
-                        {client.error ? client.error : (companyTypeId === 4 ? t("Пациенты не добавлены") : t('Клиенты не добавлены'))}
-                        {activeTab === 'clients' &&
-                                <button
-                                  type="button"
-                                  className="button mt-3 p-3"
-                                  onClick={(e) => this.handleClick(null, e)}
-                                >
-                                    {companyTypeId === 4 ? t("Добавить нового пациента") : t("Добавить нового клиента")}
-                                </button>
-                        }
-                        {activeTab === 'blacklist' &&
-                                <button
-                                  type="button"
-                                  className="button mt-3 p-3"
-                                  data-target=".add-black-list-modal"
-                                  data-toggle="modal"
-                                  onClick={this.addToBlackList}
-                                >
-                                  {t("Добавить в черный список")}
-                                </button>
-                        }
-                      </span>
-                    )
-                  }
-                </div>
-            }
-          </div>
-
-          <div className="paginator-wrapper">
-            <Paginator
-              finalTotalPages={finalTotalPages}
-              onPageChange={this.handlePageClick}
+          {openedModal &&
+            <NewClient
+              client_working={client_working}
+              edit={edit}
+              updateClient={this.updateClient}
+              addClient={this.addClient}
+              onClose={this.onClose}
             />
-          </div>
-        </div>
-        <div ref={this.setWrapperRef}>
-          <a className={'add' + (this.state.handleOpen ? ' rotate' : '')} href="#" onClick={this.handleOpenModal}/>
-          <div className={'buttons-container' + (this.state.handleOpen ? '' : ' hide')}>
-            <div className="buttons">
-              {activeTab === 'clients' &&
-                <button type="button" className="button" onClick={(e) => {
-                  this.handleClick(null, e);
-                  this.handleOpenModal();
-                }}
-                >
-                  {companyTypeId === 4 ? t("Новый пациент") : t("Новый клиент")}
-                </button>
-              }
-              {activeTab === 'blacklist' &&
-                <button type="button" className="button"
-                  data-target=".add-black-list-modal"
-                  data-toggle="modal"
-                  onClick={this.addToBlackList}
-                >
-                  {t("Добавить в черный список")}
-                </button>
-              }
-            </div>
-            <div className="arrow"/>
-          </div>
-        </div>
+          }
 
-        {openedModal &&
-          <NewClient
-            client_working={client_working}
-            edit={edit}
-            updateClient={this.updateClient}
-            addClient={this.addClient}
-            onClose={this.onClose}
+          {blackListModal &&
+            <AddBlackList
+              isLoading={isLoading}
+              clients={client}
+              updateClient={this.updateClient}
+              addClient={this.addClient}
+              onClose={this.closeBlackListModal}
+            />
+          }
+
+          <ClientDetails
+            clientId={infoClient}
+            // editClient={this.handleEditClient}
+            editClient={this.handleClick}
           />
-        }
-
-        {blackListModal &&
-          <AddBlackList
-            isLoading={isLoading}
-            clients={client}
-            updateClient={this.updateClient}
-            addClient={this.addClient}
-            onClose={this.closeBlackListModal}
-          />
-        }
-
-        <ClientDetails
-          clientId={infoClient}
-          // editClient={this.handleEditClient}
-          editClient={this.handleClick}
-        />
+        </div>
       </div>
     );
   }

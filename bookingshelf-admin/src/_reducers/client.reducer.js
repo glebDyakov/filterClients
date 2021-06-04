@@ -1,5 +1,6 @@
 import { clientConstants } from '../_constants';
 
+
 export function client(state= { activeClientAppointments: [], client: [] }, action) {
   switch (action.type) {
     case clientConstants.CLIENT_SUCCESS_TIME:
@@ -122,6 +123,11 @@ export function client(state= { activeClientAppointments: [], client: [] }, acti
         ...state,
         client: action.client || [],
       };
+    case clientConstants.GET_CLIENTS_TYPES:
+    return {
+      ...state,
+      clientsByTypes: []
+    };
     default:
       return state;
   }

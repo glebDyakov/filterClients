@@ -810,6 +810,8 @@ class HeaderMain extends React.PureComponent {
 
             <UserPhoto />
           </div>
+          
+          
         </div>
         {this.state.openManager && (
           <ManagerSettings onClose={this.closeModalManager} />

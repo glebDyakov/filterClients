@@ -13,6 +13,7 @@ export const clientActions = {
   getClientV2,
   downloadFile,
   uploadFile,
+  getClientsByTypes
 };
 
 function addClient(params) {
@@ -213,4 +214,8 @@ function deleteClient(clientId) {
   function failure(error) {
     return { type: clientConstants.DELETE_CLIENT_FAILURE, error };
   }
+}
+
+function getClientsByTypes() {
+  return { type: clientConstants.GET_CLIENTS_TYPES };
 }

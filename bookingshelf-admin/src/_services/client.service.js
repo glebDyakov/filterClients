@@ -14,6 +14,8 @@ export const clientService = {
   getActiveClientAppointments,
   downloadFile,
   uploadFile,
+  getClientsByTypes,
+  getClientsByType
 };
 
 function addClient(params) {
@@ -193,4 +195,35 @@ function deleteClient(id) {
 
   return fetch(`${origin}${config.apiUrl}/clients/${id}`, requestOptions)
     .then((data) => handleResponse(data, requestOptions));
+}
+
+
+function getClientsByTypes() {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}${config.apiUrl}/clients/types`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions))
+}
+
+function getClientsByType(typeOfClient) {
+  const requestOptions = {
+    method: 'GET',
+    crossDomain: true,
+    credentials: 'include',
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers: authHeader(),
+  };
+
+  return fetch(`${origin}${config.apiUrl}/clients/types/${typeOfClient}/?pageNum=1&pageSize=20&sortBy=lastName&orderBy=ASC`, requestOptions)
+    .then((data) => handleResponse(data, requestOptions))
 }

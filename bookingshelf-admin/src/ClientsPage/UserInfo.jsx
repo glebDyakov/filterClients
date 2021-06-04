@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import moment from 'moment';
 
+import { clientService } from "../_services";
+import {store} from '../_helpers/store'
+
 import ActionModal from '../_components/modals/ActionModal';
 
 import { clientActions } from '../_actions';
@@ -10,6 +13,7 @@ import {compose} from "redux";
 import {withTranslation} from "react-i18next";
 
 class UserInfo extends Component {
+  
   constructor(props) {
     super(props);
 
@@ -27,6 +31,16 @@ class UserInfo extends Component {
   componentWillMount() {
     const { dispatch } = this.props;
     dispatch(clientActions.getActiveClientAppointments(this.props.client_user.clientId, 1));
+    
+    /*clientService.getClientsByTypes()
+    .then((clients) => {
+      console.log(clients.length);
+      return JSON.stringify(clients);
+    });
+    console.log("AAAAAAAAAAAAAAAAAAA");
+    //console.log(clients[0].address);
+*/
+    
   }
 
 
@@ -50,14 +64,14 @@ class UserInfo extends Component {
     this.closeDeleteClientModal();
   }
 
-  render() {
+  render(){
     const { client_user, activeTab, i, handleClick, openClientsStats, t } = this.props;
     console.log(this.state);
 
     return (
       <div className="tab-content-list" key={i}
         style={{ position: 'relative' }}>
-        <div className="cell_name-client" style={{ position: 'relative' }}>
+          <div className="cell_name-client" style={{ position: 'relative' }}>
           <a onClick={() => openClientsStats(client_user)}>
             <p> {client_user.firstName} {client_user.lastName}</p>
           </a>
